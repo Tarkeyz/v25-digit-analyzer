@@ -2,14 +2,12 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 
-<title>V25 Digit Analyzer</title>
+<title>V25 Digit Analyzer V5</title>
 
 <style>
-*{
-    box-sizing:border-box;
-}
+*{box-sizing:border-box}
 
 body{
     margin:0;
@@ -20,9 +18,9 @@ body{
 
 .container{
     width:94%;
-    max-width:1200px;
+    max-width:1250px;
     margin:auto;
-    padding:20px 0 50px;
+    padding:20px 0 60px;
 }
 
 .header{
@@ -37,29 +35,31 @@ body{
 
 .header p{
     color:#8ea4bd;
-    margin-top:8px;
 }
 
 .status{
-    text-align:center;
     padding:10px;
     border-radius:10px;
+    text-align:center;
     background:#102238;
-    margin-bottom:18px;
     color:#9fc3e8;
 }
 
-.status.connected{
-    color:#6cff9a;
+.status.connected{color:#67f39a}
+.status.error{color:#ff7777}
+
+.section{
+    margin-top:20px;
 }
 
-.status.error{
-    color:#ff7272;
+.section-title{
+    font-size:20px;
+    margin-bottom:12px;
 }
 
 .grid{
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
+    grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
     gap:12px;
 }
 
@@ -72,7 +72,7 @@ body{
 
 .card h3{
     margin:0 0 8px;
-    font-size:14px;
+    font-size:13px;
     color:#8ea4bd;
 }
 
@@ -81,39 +81,30 @@ body{
     font-weight:bold;
 }
 
-.section{
-    margin-top:18px;
-}
-
-.section-title{
-    font-size:20px;
-    margin-bottom:12px;
-}
-
 .controls{
     display:flex;
     flex-wrap:wrap;
     gap:8px;
 }
 
-button,
-select{
+button,select,input{
     border:1px solid #294765;
     background:#102238;
     color:white;
-    padding:10px 14px;
+    padding:10px 13px;
     border-radius:9px;
+}
+
+button{
     cursor:pointer;
 }
 
-button:hover,
-select:hover{
+button:hover{
     background:#18304a;
 }
 
 button.active{
     background:#1769aa;
-    border-color:#328fd3;
 }
 
 .digits{
@@ -129,8 +120,15 @@ button.active{
     text-align:center;
 }
 
+.digit.hot{
+    border:1px solid #d89028;
+}
+
+.digit.cold{
+    border:1px solid #50657b;
+}
+
 .digit-number{
-    font-size:17px;
     font-weight:bold;
 }
 
@@ -144,61 +142,77 @@ button.active{
     height:7px;
     background:#1b2c40;
     border-radius:10px;
-    margin-top:7px;
     overflow:hidden;
+    margin-top:7px;
 }
 
 .bar{
     height:100%;
     background:#36a3ff;
-    width:0%;
-}
-
-.hot{
-    border:1px solid #d98b27;
-}
-
-.cold{
-    border:1px solid #43576d;
 }
 
 .stream{
     display:flex;
     flex-wrap:wrap;
     gap:6px;
-    max-height:110px;
-    overflow:hidden;
 }
 
 .stream span{
     width:29px;
     height:29px;
+    border-radius:50%;
+    background:#142b44;
     display:flex;
     align-items:center;
     justify-content:center;
-    border-radius:50%;
-    background:#142b44;
-    font-weight:bold;
     font-size:13px;
+    font-weight:bold;
 }
 
-.backtest-controls{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-    gap:10px;
+.signal-box{
+    padding:25px;
+    background:#0d1b2d;
+    border:1px solid #294765;
+    border-radius:15px;
+    text-align:center;
+}
+
+.signal{
+    font-size:30px;
+    font-weight:bold;
+}
+
+.signal-sub{
+    margin-top:8px;
+    color:#8ea4bd;
+    line-height:1.5;
+}
+
+.confidence{
+    margin:15px auto;
+    max-width:500px;
+    height:10px;
+    background:#1b2c40;
+    border-radius:20px;
+    overflow:hidden;
+}
+
+.confidence-bar{
+    height:100%;
+    width:0%;
+    background:#36a3ff;
 }
 
 .result-grid{
     display:grid;
     grid-template-columns:repeat(auto-fit,minmax(130px,1fr));
     gap:10px;
-    margin-top:12px;
 }
 
 .result{
     background:#102238;
+    padding:13px;
     border-radius:10px;
-    padding:12px;
 }
 
 .result-label{
@@ -212,15 +226,17 @@ button.active{
     margin-top:5px;
 }
 
+.good{color:#65ef95}
+.bad{color:#ff7070}
+.neutral{color:#ffd166}
+
 table{
     width:100%;
     border-collapse:collapse;
-    margin-top:12px;
 }
 
-th,
-td{
-    padding:10px 8px;
+th,td{
+    padding:10px 7px;
     border-bottom:1px solid #20364d;
     text-align:left;
     font-size:13px;
@@ -230,48 +246,32 @@ th{
     color:#8ea4bd;
 }
 
-.good{
-    color:#62ef93;
-}
-
-.bad{
-    color:#ff6f6f;
-}
-
-.neutral{
-    color:#ffd166;
-}
-
-.signal-box{
-    margin-top:14px;
-    padding:18px;
-    border-radius:12px;
-    text-align:center;
-    background:#102238;
-}
-
-.signal{
-    font-size:26px;
-    font-weight:bold;
-}
-
-.signal-sub{
-    color:#8ea4bd;
-    margin-top:7px;
-    font-size:13px;
-}
-
 .warning{
+    margin-top:15px;
     background:#241b0c;
     border:1px solid #6b4d17;
     color:#eacb82;
     padding:13px;
     border-radius:10px;
-    margin-top:15px;
     line-height:1.5;
 }
 
+.history{
+    max-height:350px;
+    overflow:auto;
+}
+
+.history-item{
+    display:grid;
+    grid-template-columns:90px 1fr 80px 80px;
+    gap:8px;
+    padding:9px 5px;
+    border-bottom:1px solid #20364d;
+    font-size:12px;
+}
+
 @media(max-width:650px){
+
     .digits{
         grid-template-columns:repeat(5,1fr);
     }
@@ -284,13 +284,13 @@ th{
         font-size:21px;
     }
 
-    table{
-        font-size:11px;
+    .history-item{
+        grid-template-columns:70px 1fr 60px 60px;
+        font-size:10px;
     }
 
-    th,
-    td{
-        padding:8px 5px;
+    th,td{
+        font-size:10px;
     }
 }
 </style>
@@ -300,301 +300,392 @@ th{
 
 <div class="container">
 
-    <div class="header">
-        <h1>⚡ V25 (1s) Digit Analyzer</h1>
-        <p>Live statistical analysis • Volatility 25 (1s)</p>
-    </div>
+<div class="header">
+<h1>⚡ V25 (1s) Digit Analyzer V5</h1>
+<p>Statistical research • Backtesting • Live signal engine</p>
+</div>
 
-    <div id="status" class="status">
-        Connecting to Deriv...
-    </div>
+<div id="status" class="status">
+Connecting to Deriv...
+</div>
 
-    <!-- BASIC ANALYSIS -->
-    <div class="section">
-        <div class="section-title">📊 Live Analysis</div>
 
-        <div class="grid">
+<!-- LIVE ANALYSIS -->
 
-            <div class="card">
-                <h3>Current Quote</h3>
-                <div id="quote" class="value">--</div>
-            </div>
+<div class="section">
 
-            <div class="card">
-                <h3>Last Digit</h3>
-                <div id="lastDigit" class="value">--</div>
-            </div>
+<div class="section-title">📊 Live Analysis</div>
 
-            <div class="card">
-                <h3>Ticks Analyzed</h3>
-                <div id="tickCount" class="value">0</div>
-            </div>
+<div class="grid">
 
-            <div class="card">
-                <h3>Analysis Window</h3>
-                <div id="windowDisplay" class="value">100</div>
-            </div>
+<div class="card">
+<h3>Current Quote</h3>
+<div id="quote" class="value">--</div>
+</div>
 
-            <div class="card">
-                <h3>Hot Digit</h3>
-                <div id="hotDigit" class="value">--</div>
-            </div>
+<div class="card">
+<h3>Last Digit</h3>
+<div id="lastDigit" class="value">--</div>
+</div>
 
-            <div class="card">
-                <h3>Cold Digit</h3>
-                <div id="coldDigit" class="value">--</div>
-            </div>
+<div class="card">
+<h3>Ticks Loaded</h3>
+<div id="tickCount" class="value">0</div>
+</div>
 
-        </div>
-    </div>
+<div class="card">
+<h3>Analysis Window</h3>
+<div id="windowDisplay" class="value">100</div>
+</div>
 
-    <!-- WINDOW -->
-    <div class="section">
-        <div class="section-title">Analysis Window</div>
+<div class="card">
+<h3>Hot Digit</h3>
+<div id="hotDigit" class="value">--</div>
+</div>
 
-        <div class="controls">
-            <button onclick="setWindow(25)">25</button>
-            <button onclick="setWindow(50)">50</button>
-            <button class="active" onclick="setWindow(100)">100</button>
-            <button onclick="setWindow(500)">500</button>
-            <button onclick="setWindow(1000)">1000</button>
-        </div>
-    </div>
-
-    <!-- DIGIT FREQUENCY -->
-    <div class="section">
-
-        <div class="section-title">
-            🔢 Digit Frequency
-        </div>
-
-        <div id="digits" class="digits"></div>
-
-    </div>
-
-    <!-- OVER UNDER -->
-    <div class="section">
-
-        <div class="section-title">
-            📈 Over / Under 5
-        </div>
-
-        <div class="grid">
-
-            <div class="card">
-                <h3>Over 5</h3>
-                <div id="overPercent" class="value">--%</div>
-            </div>
-
-            <div class="card">
-                <h3>Under 5</h3>
-                <div id="underPercent" class="value">--%</div>
-            </div>
-
-            <div class="card">
-                <h3>Even</h3>
-                <div id="evenPercent" class="value">--%</div>
-            </div>
-
-            <div class="card">
-                <h3>Odd</h3>
-                <div id="oddPercent" class="value">--%</div>
-            </div>
-
-        </div>
-    </div>
-
-    <!-- STREAK -->
-    <div class="section">
-
-        <div class="section-title">
-            🔥 Streak Analysis
-        </div>
-
-        <div class="grid">
-
-            <div class="card">
-                <h3>Current Digit Streak</h3>
-                <div id="digitStreak" class="value">--</div>
-            </div>
-
-            <div class="card">
-                <h3>Current Over/Under</h3>
-                <div id="ouStreak" class="value">--</div>
-            </div>
-
-            <div class="card">
-                <h3>Current Even/Odd</h3>
-                <div id="eoStreak" class="value">--</div>
-            </div>
-
-        </div>
-    </div>
-
-    <!-- LIVE STREAM -->
-    <div class="section">
-
-        <div class="section-title">
-            📡 Live Last Digits
-        </div>
-
-        <div id="stream" class="stream"></div>
-
-    </div>
-
-    <!-- HISTORICAL BACKTEST -->
-    <div class="section">
-
-        <div class="section-title">
-            🧪 Strategy Lab
-        </div>
-
-        <div class="card">
-
-            <div class="backtest-controls">
-
-                <div>
-                    <label>Strategy</label><br>
-                    <select id="strategy">
-                        <option value="over">Majority Over 5</option>
-                        <option value="under">Majority Under 5</option>
-                        <option value="even">Majority Even</option>
-                        <option value="odd">Majority Odd</option>
-                        <option value="hot">Hot Digit</option>
-                        <option value="cold">Cold Digit</option>
-                        <option value="digit0">Digit 0</option>
-                        <option value="digit1">Digit 1</option>
-                        <option value="digit2">Digit 2</option>
-                        <option value="digit3">Digit 3</option>
-                        <option value="digit4">Digit 4</option>
-                        <option value="digit5">Digit 5</option>
-                        <option value="digit6">Digit 6</option>
-                        <option value="digit7">Digit 7</option>
-                        <option value="digit8">Digit 8</option>
-                        <option value="digit9">Digit 9</option>
-                    </select>
-                </div>
-
-                <div>
-                    <label>Lookback</label><br>
-                    <select id="lookback">
-                        <option value="25">25 ticks</option>
-                        <option value="50">50 ticks</option>
-                        <option value="100" selected>100 ticks</option>
-                        <option value="250">250 ticks</option>
-                        <option value="500">500 ticks</option>
-                    </select>
-                </div>
-
-                <div>
-                    <label>Historical Sample</label><br>
-                    <select id="sampleSize">
-                        <option value="100">100 ticks</option>
-                        <option value="250">250 ticks</option>
-                        <option value="500">500 ticks</option>
-                        <option value="1000" selected>1000 ticks</option>
-                    </select>
-                </div>
-
-            </div>
-
-            <div class="result-grid">
-
-                <div class="result">
-                    <div class="result-label">Signals Tested</div>
-                    <div id="signals" class="result-value">--</div>
-                </div>
-
-                <div class="result">
-                    <div class="result-label">Wins</div>
-                    <div id="wins" class="result-value good">--</div>
-                </div>
-
-                <div class="result">
-                    <div class="result-label">Losses</div>
-                    <div id="losses" class="result-value bad">--</div>
-                </div>
-
-                <div class="result">
-                    <div class="result-label">No Signal</div>
-                    <div id="noSignal" class="result-value neutral">--</div>
-                </div>
-
-                <div class="result">
-                    <div class="result-label">Hit Rate</div>
-                    <div id="hitRate" class="result-value">--%</div>
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-    <!-- STRATEGY COMPARISON -->
-    <div class="section">
-
-        <div class="section-title">
-            📋 Strategy Comparison
-        </div>
-
-        <div class="card">
-
-            <table>
-
-                <thead>
-                    <tr>
-                        <th>Strategy</th>
-                        <th>Signals</th>
-                        <th>Wins</th>
-                        <th>Losses</th>
-                        <th>Hit Rate</th>
-                    </tr>
-                </thead>
-
-                <tbody id="comparisonTable"></tbody>
-
-            </table>
-
-        </div>
-    </div>
-
-    <!-- SIGNAL ENGINE -->
-    <div class="section">
-
-        <div class="section-title">
-            🎯 Statistical Signal Engine
-        </div>
-
-        <div class="signal-box">
-
-            <div id="signal" class="signal">
-                NO SIGNAL
-            </div>
-
-            <div id="signalSub" class="signal-sub">
-                Waiting for enough historical data...
-            </div>
-
-        </div>
-
-        <div class="warning">
-            ⚠️ This analyzer describes historical tick statistics.
-            It does not guarantee the next digit. A high historical
-            hit rate does not automatically mean a profitable trade,
-            especially when contract payout and risk are considered.
-        </div>
-
-    </div>
+<div class="card">
+<h3>Cold Digit</h3>
+<div id="coldDigit" class="value">--</div>
+</div>
 
 </div>
+</div>
+
+
+<!-- WINDOW -->
+
+<div class="section">
+
+<div class="section-title">Analysis Window</div>
+
+<div class="controls">
+
+<button onclick="setWindow(25)">25</button>
+<button onclick="setWindow(50)">50</button>
+<button class="active" onclick="setWindow(100)">100</button>
+<button onclick="setWindow(500)">500</button>
+<button onclick="setWindow(1000)">1000</button>
+
+</div>
+</div>
+
+
+<!-- DIGITS -->
+
+<div class="section">
+
+<div class="section-title">🔢 Digit Frequency</div>
+
+<div id="digits" class="digits"></div>
+
+</div>
+
+
+<!-- BASIC STATS -->
+
+<div class="section">
+
+<div class="section-title">📈 Distribution</div>
+
+<div class="grid">
+
+<div class="card">
+<h3>Over 5</h3>
+<div id="overPercent" class="value">--%</div>
+</div>
+
+<div class="card">
+<h3>Under 5</h3>
+<div id="underPercent" class="value">--%</div>
+</div>
+
+<div class="card">
+<h3>Even</h3>
+<div id="evenPercent" class="value">--%</div>
+</div>
+
+<div class="card">
+<h3>Odd</h3>
+<div id="oddPercent" class="value">--%</div>
+</div>
+
+</div>
+</div>
+
+
+<!-- STREAK -->
+
+<div class="section">
+
+<div class="section-title">🔥 Streaks</div>
+
+<div class="grid">
+
+<div class="card">
+<h3>Digit Streak</h3>
+<div id="digitStreak" class="value">--</div>
+</div>
+
+<div class="card">
+<h3>Over / Under Streak</h3>
+<div id="ouStreak" class="value">--</div>
+</div>
+
+<div class="card">
+<h3>Even / Odd Streak</h3>
+<div id="eoStreak" class="value">--</div>
+</div>
+
+</div>
+</div>
+
+
+<!-- STREAM -->
+
+<div class="section">
+
+<div class="section-title">📡 Live Digits</div>
+
+<div id="stream" class="stream"></div>
+
+</div>
+
+
+<!-- SIGNAL ENGINE -->
+
+<div class="section">
+
+<div class="section-title">🎯 Signal Engine 2.0</div>
+
+<div class="signal-box">
+
+<div id="signal" class="signal">
+NO SIGNAL
+</div>
+
+<div class="confidence">
+<div id="confidenceBar" class="confidence-bar"></div>
+</div>
+
+<div id="confidenceText" class="signal-sub">
+Waiting for enough data...
+</div>
+
+</div>
+
+</div>
+
+
+<!-- ENGINE DETAILS -->
+
+<div class="section">
+
+<div class="section-title">🧠 Signal Components</div>
+
+<div class="grid">
+
+<div class="card">
+<h3>Distribution Score</h3>
+<div id="distributionScore" class="value">--</div>
+</div>
+
+<div class="card">
+<h3>Momentum Score</h3>
+<div id="momentumScore" class="value">--</div>
+</div>
+
+<div class="card">
+<h3>Consistency</h3>
+<div id="consistencyScore" class="value">--</div>
+</div>
+
+<div class="card">
+<h3>Validation Hit Rate</h3>
+<div id="validationRate" class="value">--%</div>
+</div>
+
+</div>
+
+</div>
+
+
+<!-- BACKTEST -->
+
+<div class="section">
+
+<div class="section-title">🧪 V5 Backtest</div>
+
+<div class="card">
+
+<div class="controls">
+
+<select id="lookback">
+<option value="25">25 tick lookback</option>
+<option value="50">50 tick lookback</option>
+<option value="100" selected>100 tick lookback</option>
+<option value="250">250 tick lookback</option>
+</select>
+
+<select id="sampleSize">
+<option value="250">250 ticks</option>
+<option value="500">500 ticks</option>
+<option value="1000" selected>1000 ticks</option>
+</select>
+
+</div>
+
+<br>
+
+<div class="result-grid">
+
+<div class="result">
+<div class="result-label">Signals</div>
+<div id="btSignals" class="result-value">--</div>
+</div>
+
+<div class="result">
+<div class="result-label">Wins</div>
+<div id="btWins" class="result-value good">--</div>
+</div>
+
+<div class="result">
+<div class="result-label">Losses</div>
+<div id="btLosses" class="result-value bad">--</div>
+</div>
+
+<div class="result">
+<div class="result-label">Hit Rate</div>
+<div id="btRate" class="result-value">--%</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+
+<!-- TRAIN / VALIDATION -->
+
+<div class="section">
+
+<div class="section-title">🔬 Out-of-Sample Validation</div>
+
+<div class="card">
+
+<div class="result-grid">
+
+<div class="result">
+<div class="result-label">Training Signals</div>
+<div id="trainSignals" class="result-value">--</div>
+</div>
+
+<div class="result">
+<div class="result-label">Training Hit Rate</div>
+<div id="trainRate" class="result-value">--%</div>
+</div>
+
+<div class="result">
+<div class="result-label">Validation Signals</div>
+<div id="validSignals" class="result-value">--</div>
+</div>
+
+<div class="result">
+<div class="result-label">Validation Hit Rate</div>
+<div id="validRate" class="result-value">--%</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+
+<!-- SIGNAL HISTORY -->
+
+<div class="section">
+
+<div class="section-title">📜 Signal History</div>
+
+<div class="card">
+
+<div class="history" id="signalHistory">
+
+No signals recorded yet.
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- PAYOUT -->
+
+<div class="section">
+
+<div class="section-title">💰 Payout / Break-even Calculator</div>
+
+<div class="card">
+
+<div class="controls">
+
+<input
+id="payoutInput"
+type="number"
+min="1"
+max="1000"
+step="0.1"
+value="20"
+placeholder="Payout %">
+
+</div>
+
+<br>
+
+<div class="result-grid">
+
+<div class="result">
+<div class="result-label">Payout</div>
+<div id="payoutDisplay" class="result-value">20%</div>
+</div>
+
+<div class="result">
+<div class="result-label">Break-even Win Rate</div>
+<div id="breakEven" class="result-value">83.3%</div>
+</div>
+
+<div class="result">
+<div class="result-label">Validation Rate</div>
+<div id="payoutValidation" class="result-value">--%</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+
+<div class="warning">
+
+⚠️ <b>Important:</b> This is a statistical research and
+backtesting tool. Historical digit frequency, streaks,
+momentum and hit rates do not guarantee the next tick.
+A signal is deliberately allowed to be <b>NO SIGNAL</b>.
+Never treat the displayed signal as a guaranteed trade.
+
+</div>
+
+</div>
+
 
 <script>
 
 const WS_URL =
-    "wss://api.derivws.com/trading/v1/options/ws/public";
+"wss://api.derivws.com/trading/v1/options/ws/public";
 
 const SYMBOL = "1HZ25V";
+
+const MAX_TICKS = 1000;
 
 let ws;
 
@@ -602,1283 +693,1366 @@ let ticks = [];
 
 let currentWindow = 100;
 
-let currentQuote = null;
+let signalHistory = [];
 
-const MAX_TICKS = 1000;
+let lastSignal = null;
 
 
-/* ============================
-   CONNECT
-============================ */
+/* =========================
+CONNECT
+========================= */
 
 function connect(){
 
-    ws = new WebSocket(WS_URL);
+ws = new WebSocket(WS_URL);
 
-    ws.onopen = () => {
+ws.onopen = ()=>{
 
-        setStatus(
-            "Connected to Deriv • Receiving V25 (1s) data",
-            "connected"
-        );
+setStatus(
+"Connected to Deriv • V25 (1s) live",
+"connected"
+);
 
-        requestHistory();
+requestHistory();
 
-        subscribeTicks();
-    };
+subscribeTicks();
 
-    ws.onmessage = event => {
+};
 
-        try{
+ws.onmessage = event=>{
 
-            const data = JSON.parse(event.data);
+try{
 
-            if(data.history){
+const data = JSON.parse(event.data);
 
-                loadHistory(data.history);
+if(data.history){
 
-            }
+loadHistory(data.history);
 
-            if(data.tick){
+}
 
-                processTick(data.tick);
-            }
+if(data.tick){
 
-        }catch(error){
+processTick(data.tick);
 
-            console.error(error);
-        }
+}
 
-    };
+}catch(e){
 
-    ws.onerror = () => {
+console.log(e);
 
-        setStatus(
-            "Connection error",
-            "error"
-        );
+}
 
-    };
+};
 
-    ws.onclose = () => {
+ws.onerror = ()=>{
 
-        setStatus(
-            "Disconnected • reconnecting...",
-            "error"
-        );
+setStatus(
+"Connection error",
+"error"
+);
 
-        setTimeout(connect,3000);
+};
 
-    };
+ws.onclose = ()=>{
+
+setStatus(
+"Disconnected • reconnecting...",
+"error"
+);
+
+setTimeout(connect,3000);
+
+};
 
 }
 
 
-/* ============================
-   HISTORY
-============================ */
+/* =========================
+HISTORY
+========================= */
 
 function requestHistory(){
 
-    ws.send(JSON.stringify({
+ws.send(JSON.stringify({
 
-        ticks_history: SYMBOL,
+ticks_history:SYMBOL,
 
-        count: MAX_TICKS,
+count:MAX_TICKS,
 
-        end: "latest",
+end:"latest",
 
-        style: "ticks",
+style:"ticks",
 
-        req_id: 1
+req_id:1
 
-    }));
+}));
 
 }
 
 
-/* ============================
-   LIVE SUBSCRIPTION
-============================ */
+/* =========================
+SUBSCRIBE
+========================= */
 
 function subscribeTicks(){
 
-    ws.send(JSON.stringify({
+ws.send(JSON.stringify({
 
-        ticks: SYMBOL,
+ticks:SYMBOL,
 
-        subscribe: 1,
+subscribe:1,
 
-        req_id: 2
+req_id:2
 
-    }));
+}));
 
 }
 
 
-/* ============================
-   HISTORY LOADER
-============================ */
+/* =========================
+LOAD HISTORY
+========================= */
 
 function loadHistory(history){
 
-    if(!history.prices){
+if(!history.prices)return;
 
-        return;
-    }
+ticks=[];
 
-    ticks = [];
+history.prices.forEach(price=>{
 
-    history.prices.forEach(price => {
+addTick(price);
 
-        addTick(price);
+});
 
-    });
-
-    render();
+render();
 
 }
 
 
-/* ============================
-   PROCESS TICK
-============================ */
+/* =========================
+PROCESS TICK
+========================= */
 
 function processTick(tick){
 
-    const quote = Number(tick.quote);
+const quote=Number(tick.quote);
 
-    if(!Number.isFinite(quote)){
+if(!Number.isFinite(quote))return;
 
-        return;
-    }
+addTick(quote);
 
-    addTick(quote);
-
-    currentQuote = quote;
-
-    render();
+render();
 
 }
 
 
-/* ============================
-   ADD TICK
-============================ */
+/* =========================
+ADD TICK
+========================= */
 
 function addTick(quote){
 
-    ticks.push({
+ticks.push({
 
-        quote: Number(quote),
+quote:Number(quote),
 
-        digit: extractDigit(quote)
+digit:extractDigit(quote)
 
-    });
+});
 
-    if(ticks.length > MAX_TICKS){
+if(ticks.length>MAX_TICKS){
 
-        ticks.shift();
+ticks.shift();
 
-    }
+}
 
 }
 
 
-/* ============================
-   DIGIT EXTRACTION
-============================ */
+/* =========================
+DIGIT
+========================= */
 
 function extractDigit(value){
 
-    const formatted =
-        Number(value).toFixed(2);
+const formatted=
+Number(value).toFixed(2);
 
-    const digits =
-        formatted.replace(".","");
+const raw=
+formatted.replace(".","");
 
-    return Number(
-        digits.charAt(digits.length - 1)
-    );
+return Number(
+raw.charAt(raw.length-1)
+);
 
 }
 
 
-/* ============================
-   WINDOW
-============================ */
+/* =========================
+WINDOW
+========================= */
 
 function setWindow(size){
 
-    currentWindow = size;
+currentWindow=size;
 
-    document
-        .getElementById("windowDisplay")
-        .textContent = size;
+document.getElementById(
+"windowDisplay"
+).textContent=size;
 
-    document
-        .querySelectorAll(".controls button")
-        .forEach(btn => {
+document
+.querySelectorAll(".controls button")
+.forEach(btn=>btn.classList.remove("active"));
 
-            btn.classList.remove("active");
+if(event && event.target){
 
-        });
+event.target.classList.add("active");
 
-    event.target.classList.add("active");
+}
 
-    render();
+render();
 
 }
 
 
-/* ============================
-   GET WINDOW
-============================ */
+/* =========================
+WINDOW DATA
+========================= */
 
-function getWindowDigits(){
+function getDigits(size=currentWindow){
 
-    return ticks
-        .slice(-currentWindow)
-        .map(t => t.digit);
-
-}
-
-
-/* ============================
-   DIGIT STATS
-============================ */
-
-function getDigitStats(digits){
-
-    const counts =
-        Array(10).fill(0);
-
-    digits.forEach(d => {
-
-        counts[d]++;
-
-    });
-
-    return counts;
+return ticks
+.slice(-size)
+.map(t=>t.digit);
 
 }
 
 
-/* ============================
-   MAIN RENDER
-============================ */
+/* =========================
+COUNTS
+========================= */
+
+function digitCounts(data){
+
+const counts=Array(10).fill(0);
+
+data.forEach(d=>counts[d]++);
+
+return counts;
+
+}
+
+
+/* =========================
+MAIN RENDER
+========================= */
 
 function render(){
 
-    if(!ticks.length){
+if(!ticks.length)return;
 
-        return;
-    }
+const latest=ticks[ticks.length-1];
 
-    const digits =
-        getWindowDigits();
+document.getElementById(
+"quote"
+).textContent=
+latest.quote.toFixed(2);
 
-    const counts =
-        getDigitStats(digits);
+document.getElementById(
+"lastDigit"
+).textContent=
+latest.digit;
 
-    const latest =
-        ticks[ticks.length - 1];
+document.getElementById(
+"tickCount"
+).textContent=
+ticks.length;
 
-    document
-        .getElementById("quote")
-        .textContent =
-        latest.quote.toFixed(2);
+const data=getDigits();
 
-    document
-        .getElementById("lastDigit")
-        .textContent =
-        latest.digit;
+renderDigits(data);
 
-    document
-        .getElementById("tickCount")
-        .textContent =
-        ticks.length;
+renderDistribution(data);
 
-    renderDigits(counts,digits);
+renderStreaks();
 
-    renderOverUnder(digits);
+renderStream();
 
-    renderEvenOdd(digits);
+runBacktest();
 
-    renderStreaks();
+runValidation();
 
-    renderStream();
+runSignalEngine();
 
-    runBacktest();
-
-    runComparison();
-
-    runSignalEngine();
+updatePayout();
 
 }
 
 
-/* ============================
-   DIGIT DISPLAY
-============================ */
+/* =========================
+DIGITS
+========================= */
 
-function renderDigits(counts,digits){
+function renderDigits(data){
 
-    const container =
-        document.getElementById("digits");
+const counts=digitCounts(data);
 
-    container.innerHTML = "";
+const max=Math.max(...counts);
 
-    const max =
-        Math.max(...counts);
+const min=Math.min(...counts);
 
-    const min =
-        Math.min(...counts);
+const hot=counts.indexOf(max);
 
-    const hot =
-        counts.indexOf(max);
+const cold=counts.indexOf(min);
 
-    const cold =
-        counts.indexOf(min);
+document.getElementById(
+"hotDigit"
+).textContent=hot;
 
-    document
-        .getElementById("hotDigit")
-        .textContent = hot;
+document.getElementById(
+"coldDigit"
+).textContent=cold;
 
-    document
-        .getElementById("coldDigit")
-        .textContent = cold;
+const container=
+document.getElementById("digits");
 
-    counts.forEach((count,digit)=>{
+container.innerHTML="";
 
-        const percent =
-            digits.length
-            ? ((count / digits.length)*100).toFixed(1)
-            : 0;
+counts.forEach((count,digit)=>{
 
-        const div =
-            document.createElement("div");
+const percent=
+data.length
+?count/data.length*100
+:0;
 
-        div.className = "digit";
+const div=
+document.createElement("div");
 
-        if(digit === hot){
+div.className="digit";
 
-            div.classList.add("hot");
+if(digit===hot)
+div.classList.add("hot");
 
-        }
+if(digit===cold)
+div.classList.add("cold");
 
-        if(digit === cold){
+div.innerHTML=`
 
-            div.classList.add("cold");
+<div class="digit-number">
+${digit}
+</div>
 
-        }
+<div class="digit-count">
+${count} • ${percent.toFixed(1)}%
+</div>
 
-        div.innerHTML = `
+<div class="bar-wrap">
+<div
+class="bar"
+style="width:${max?(count/max)*100:0}%">
+</div>
+</div>
 
-            <div class="digit-number">
-                ${digit}
-            </div>
+`;
 
-            <div class="digit-count">
-                ${count} • ${percent}%
-            </div>
+container.appendChild(div);
 
-            <div class="bar-wrap">
-                <div
-                    class="bar"
-                    style="width:${max ? (count/max)*100 : 0}%">
-                </div>
-            </div>
-
-        `;
-
-        container.appendChild(div);
-
-    });
+});
 
 }
 
 
-/* ============================
-   OVER / UNDER
-============================ */
+/* =========================
+DISTRIBUTION
+========================= */
 
-function renderOverUnder(digits){
+function renderDistribution(data){
 
-    let over = 0;
-    let under = 0;
+let over=0;
+let under=0;
+let even=0;
+let odd=0;
 
-    digits.forEach(d=>{
+data.forEach(d=>{
 
-        if(d > 5){
+if(d>5)over++;
+if(d<5)under++;
 
-            over++;
+if(d%2===0)even++;
+else odd++;
 
-        }
+});
 
-        if(d < 5){
+document.getElementById(
+"overPercent"
+).textContent=
+(over/data.length*100).toFixed(1)+"%";
 
-            under++;
+document.getElementById(
+"underPercent"
+).textContent=
+(under/data.length*100).toFixed(1)+"%";
 
-        }
+document.getElementById(
+"evenPercent"
+).textContent=
+(even/data.length*100).toFixed(1)+"%";
 
-    });
-
-    const total =
-        over + under;
-
-    document
-        .getElementById("overPercent")
-        .textContent =
-        total
-        ? ((over/total)*100).toFixed(1)+"%"
-        : "--%";
-
-    document
-        .getElementById("underPercent")
-        .textContent =
-        total
-        ? ((under/total)*100).toFixed(1)+"%"
-        : "--%";
-
-}
-
-
-/* ============================
-   EVEN / ODD
-============================ */
-
-function renderEvenOdd(digits){
-
-    let even = 0;
-    let odd = 0;
-
-    digits.forEach(d=>{
-
-        if(d % 2 === 0){
-
-            even++;
-
-        }else{
-
-            odd++;
-
-        }
-
-    });
-
-    const total =
-        even + odd;
-
-    document
-        .getElementById("evenPercent")
-        .textContent =
-        total
-        ? ((even/total)*100).toFixed(1)+"%"
-        : "--%";
-
-    document
-        .getElementById("oddPercent")
-        .textContent =
-        total
-        ? ((odd/total)*100).toFixed(1)+"%"
-        : "--%";
+document.getElementById(
+"oddPercent"
+).textContent=
+(odd/data.length*100).toFixed(1)+"%";
 
 }
 
 
-/* ============================
-   STREAKS
-============================ */
-
-function getStreak(type){
-
-    if(!ticks.length){
-
-        return "--";
-    }
-
-    const latest =
-        ticks[ticks.length-1].digit;
-
-    let count = 0;
-
-    for(let i=ticks.length-1;i>=0;i--){
-
-        const d =
-            ticks[i].digit;
-
-        let match = false;
-
-        if(type === "digit"){
-
-            match = d === latest;
-
-        }
-
-        if(type === "ou"){
-
-            match =
-                d > 5
-                ? latest > 5
-                : latest < 5;
-
-            if(latest === 5){
-
-                return "5";
-
-            }
-
-        }
-
-        if(type === "eo"){
-
-            match =
-                d % 2 === 0
-                ? latest % 2 === 0
-                : latest % 2 !== 0;
-
-        }
-
-        if(match){
-
-            count++;
-
-        }else{
-
-            break;
-
-        }
-
-    }
-
-    return count;
-
-}
-
+/* =========================
+STREAK
+========================= */
 
 function renderStreaks(){
 
-    document
-        .getElementById("digitStreak")
-        .textContent =
-        getStreak("digit");
+const latest=
+ticks[ticks.length-1].digit;
 
-    document
-        .getElementById("ouStreak")
-        .textContent =
-        getStreak("ou");
+let digitCount=0;
 
-    document
-        .getElementById("eoStreak")
-        .textContent =
-        getStreak("eo");
+for(
+let i=ticks.length-1;
+i>=0;
+i--
+){
+
+if(ticks[i].digit===latest)
+digitCount++;
+else break;
+
+}
+
+let ouCount=0;
+
+const latestOU=
+latest>5?"over":
+latest<5?"under":"five";
+
+if(latestOU!=="five"){
+
+for(
+let i=ticks.length-1;
+i>=0;
+i--
+){
+
+const d=ticks[i].digit;
+
+if(
+(latestOU==="over"&&d>5)||
+(latestOU==="under"&&d<5)
+)
+ouCount++;
+else break;
+
+}
+
+}
+
+let eoCount=0;
+
+const latestEO=
+latest%2===0?"even":"odd";
+
+for(
+let i=ticks.length-1;
+i>=0;
+i--
+){
+
+const d=ticks[i].digit;
+
+if(
+(latestEO==="even"&&d%2===0)||
+(latestEO==="odd"&&d%2!==0)
+)
+eoCount++;
+else break;
+
+}
+
+document.getElementById(
+"digitStreak"
+).textContent=digitCount;
+
+document.getElementById(
+"ouStreak"
+).textContent=
+latestOU==="five"
+?"5"
+:ouCount;
+
+document.getElementById(
+"eoStreak"
+).textContent=eoCount;
 
 }
 
 
-/* ============================
-   LIVE STREAM
-============================ */
+/* =========================
+STREAM
+========================= */
 
 function renderStream(){
 
-    const container =
-        document.getElementById("stream");
+const container=
+document.getElementById("stream");
 
-    container.innerHTML = "";
+container.innerHTML="";
 
-    ticks
-        .slice(-50)
-        .reverse()
-        .forEach(t=>{
+ticks.slice(-60)
+.reverse()
+.forEach(t=>{
 
-            const span =
-                document.createElement("span");
+const span=
+document.createElement("span");
 
-            span.textContent =
-                t.digit;
+span.textContent=t.digit;
 
-            container.appendChild(span);
+container.appendChild(span);
 
-        });
+});
 
 }
 
 
-/* ============================
-   BACKTEST ENGINE
-============================ */
+/* =========================
+PREDICT
+========================= */
+
+function majorityPrediction(data){
+
+if(!data.length)return null;
+
+let over=0;
+let under=0;
+let even=0;
+let odd=0;
+
+data.forEach(d=>{
+
+if(d>5)over++;
+if(d<5)under++;
+
+if(d%2===0)even++;
+else odd++;
+
+});
+
+const ou=
+over>under
+?"OVER"
+:under>over
+?"UNDER"
+:null;
+
+const eo=
+even>odd
+?"EVEN"
+:odd>even
+?"ODD"
+:null;
+
+return {ou,eo,over,under,even,odd};
+
+}
+
+
+/* =========================
+BACKTEST
+========================= */
 
 function runBacktest(){
 
-    const strategy =
-        document.getElementById("strategy").value;
-
-    const lookback =
-        Number(
-            document.getElementById("lookback").value
-        );
-
-    const sample =
-        Number(
-            document.getElementById("sampleSize").value
-        );
-
-    const result =
-        backtestStrategy(
-            strategy,
-            lookback,
-            sample
-        );
-
-    document
-        .getElementById("signals")
-        .textContent =
-        result.signals;
-
-    document
-        .getElementById("wins")
-        .textContent =
-        result.wins;
-
-    document
-        .getElementById("losses")
-        .textContent =
-        result.losses;
-
-    document
-        .getElementById("noSignal")
-        .textContent =
-        result.noSignal;
-
-    document
-        .getElementById("hitRate")
-        .textContent =
-        result.hitRate + "%";
-
-}
-
-
-/* ============================
-   STRATEGY PREDICTION
-============================ */
-
-function predictStrategy(strategy,history){
-
-    if(history.length === 0){
-
-        return null;
-
-    }
-
-    const counts =
-        getDigitStats(history);
-
-    if(strategy === "over"){
-
-        const over =
-            counts[6] +
-            counts[7] +
-            counts[8] +
-            counts[9];
-
-        const under =
-            counts[0] +
-            counts[1] +
-            counts[2] +
-            counts[3] +
-            counts[4];
-
-        if(over === under){
-
-            return null;
-
-        }
-
-        return over > under
-            ? "over"
-            : "under";
-
-    }
-
-
-    if(strategy === "under"){
-
-        const over =
-            counts[6] +
-            counts[7] +
-            counts[8] +
-            counts[9];
-
-        const under =
-            counts[0] +
-            counts[1] +
-            counts[2] +
-            counts[3] +
-            counts[4];
-
-        if(over === under){
-
-            return null;
-
-        }
-
-        return under > over
-            ? "under"
-            : "over";
-
-    }
-
-
-    if(strategy === "even"){
-
-        let even = 0;
-        let odd = 0;
-
-        history.forEach(d=>{
-
-            if(d%2===0){
-
-                even++;
-
-            }else{
-
-                odd++;
-
-            }
-
-        });
-
-        if(even === odd){
-
-            return null;
-
-        }
-
-        return even > odd
-            ? "even"
-            : "odd";
-
-    }
-
-
-    if(strategy === "odd"){
-
-        let even = 0;
-        let odd = 0;
-
-        history.forEach(d=>{
-
-            if(d%2===0){
-
-                even++;
-
-            }else{
-
-                odd++;
-
-            }
-
-        });
-
-        if(even === odd){
-
-            return null;
-
-        }
-
-        return odd > even
-            ? "odd"
-            : "even";
-
-    }
-
-
-    if(strategy === "hot"){
-
-        const max =
-            Math.max(...counts);
-
-        const digit =
-            counts.indexOf(max);
-
-        return {
-            type:"digit",
-            digit
-        };
-
-    }
-
-
-    if(strategy === "cold"){
-
-        const min =
-            Math.min(...counts);
-
-        const digit =
-            counts.indexOf(min);
-
-        return {
-            type:"digit",
-            digit
-        };
-
-    }
-
-
-    if(strategy.startsWith("digit")){
-
-        return {
-            type:"digit",
-            digit:Number(
-                strategy.replace("digit","")
-            )
-        };
-
-    }
-
-    return null;
-
-}
-
-
-/* ============================
-   CHECK PREDICTION
-============================ */
-
-function predictionWins(prediction,actual){
-
-    if(prediction === null){
-
-        return null;
-
-    }
-
-    if(typeof prediction === "string"){
-
-        if(prediction === "over"){
-
-            return actual > 5;
-
-        }
-
-        if(prediction === "under"){
-
-            return actual < 5;
-
-        }
-
-        if(prediction === "even"){
-
-            return actual % 2 === 0;
-
-        }
-
-        if(prediction === "odd"){
-
-            return actual % 2 !== 0;
-
-        }
-
-    }
-
-    if(prediction.type === "digit"){
-
-        return actual === prediction.digit;
-
-    }
-
-    return null;
-
-}
-
-
-/* ============================
-   BACKTEST
-============================ */
-
-function backtestStrategy(
-    strategy,
-    lookback,
-    sample
+const lookback=
+Number(
+document.getElementById("lookback").value
+);
+
+const sample=
+Number(
+document.getElementById("sampleSize").value
+);
+
+if(ticks.length<lookback+10)return;
+
+const data=
+ticks
+.slice(-Math.min(
+sample+lookback,
+ticks.length
+))
+.map(t=>t.digit);
+
+let wins=0;
+let losses=0;
+let signals=0;
+
+for(
+let i=lookback;
+i<data.length;
+i++
 ){
 
-    if(ticks.length <= lookback){
+const history=
+data.slice(i-lookback,i);
 
-        return {
-            signals:0,
-            wins:0,
-            losses:0,
-            noSignal:0,
-            hitRate:"0.0"
-        };
+const actual=data[i];
 
-    }
+const prediction=
+majorityPrediction(history);
 
-    const data =
-        ticks
-            .slice(-Math.min(
-                sample + lookback,
-                ticks.length
-            ))
-            .map(t=>t.digit);
+if(!prediction)continue;
 
-    let signals = 0;
-    let wins = 0;
-    let losses = 0;
-    let noSignal = 0;
+/*
+Use only a clear majority.
+*/
 
-    for(
-        let i=lookback;
-        i<data.length;
-        i++
-    ){
+let signal=null;
 
-        const history =
-            data.slice(
-                i-lookback,
-                i
-            );
+if(
+prediction.over>
+prediction.under &&
+prediction.over/prediction.under>=1.10
+){
 
-        const actual =
-            data[i];
+signal="OVER";
 
-        const prediction =
-            predictStrategy(
-                strategy,
-                history
-            );
+}else if(
+prediction.under>
+prediction.over &&
+prediction.under/prediction.over>=1.10
+){
 
-        if(prediction === null){
+signal="UNDER";
 
-            noSignal++;
+}
 
-            continue;
+if(!signal)continue;
 
-        }
+signals++;
 
-        signals++;
+const won=
+signal==="OVER"
+?actual>5
+:actual<5;
 
-        if(
-            predictionWins(
-                prediction,
-                actual
-            )
-        ){
+if(won)wins++;
+else losses++;
 
-            wins++;
+}
 
-        }else{
+const rate=
+signals
+?(wins/signals)*100
+:0;
 
-            losses++;
+document.getElementById(
+"btSignals"
+).textContent=signals;
 
-        }
+document.getElementById(
+"btWins"
+).textContent=wins;
 
-    }
+document.getElementById(
+"btLosses"
+).textContent=losses;
 
-    const hitRate =
-        signals
-        ? ((wins/signals)*100).toFixed(1)
-        : "0.0";
-
-    return {
-        signals,
-        wins,
-        losses,
-        noSignal,
-        hitRate
-    };
+document.getElementById(
+"btRate"
+).textContent=
+rate.toFixed(1)+"%";
 
 }
 
 
-/* ============================
-   COMPARISON
-============================ */
+/* =========================
+VALIDATION
+========================= */
 
-function runComparison(){
+function validationTest(){
 
-    const strategies = [
+const lookback=
+Number(
+document.getElementById("lookback").value
+);
 
-        ["Majority Over 5","over"],
+if(ticks.length<lookback+100)
+return null;
 
-        ["Majority Under 5","under"],
+/*
+Older 70% = training.
+Newest 30% = validation.
+*/
 
-        ["Majority Even","even"],
+const all=
+ticks.map(t=>t.digit);
 
-        ["Majority Odd","odd"],
+const split=
+Math.floor(all.length*0.70);
 
-        ["Hot Digit","hot"],
+const training=
+all.slice(0,split);
 
-        ["Cold Digit","cold"],
+const validation=
+all.slice(split);
 
-        ["Digit 0","digit0"],
+return {
 
-        ["Digit 1","digit1"],
+training,
 
-        ["Digit 2","digit2"],
+validation,
 
-        ["Digit 3","digit3"],
+lookback
 
-        ["Digit 4","digit4"],
-
-        ["Digit 5","digit5"],
-
-        ["Digit 6","digit6"],
-
-        ["Digit 7","digit7"],
-
-        ["Digit 8","digit8"],
-
-        ["Digit 9","digit9"]
-
-    ];
-
-    const lookback =
-        Number(
-            document.getElementById("lookback").value
-        );
-
-    const sample =
-        Number(
-            document.getElementById("sampleSize").value
-        );
-
-    const tbody =
-        document.getElementById(
-            "comparisonTable"
-        );
-
-    tbody.innerHTML = "";
-
-    strategies.forEach(item=>{
-
-        const result =
-            backtestStrategy(
-                item[1],
-                lookback,
-                sample
-            );
-
-        const tr =
-            document.createElement("tr");
-
-        let rateClass =
-            "neutral";
-
-        if(result.signals >= 20){
-
-            if(Number(result.hitRate) >= 55){
-
-                rateClass = "good";
-
-            }else if(
-                Number(result.hitRate) < 45
-            ){
-
-                rateClass = "bad";
-
-            }
-
-        }
-
-        tr.innerHTML = `
-
-            <td>${item[0]}</td>
-
-            <td>${result.signals}</td>
-
-            <td class="good">
-                ${result.wins}
-            </td>
-
-            <td class="bad">
-                ${result.losses}
-            </td>
-
-            <td class="${rateClass}">
-                ${result.hitRate}%
-            </td>
-
-        `;
-
-        tbody.appendChild(tr);
-
-    });
+};
 
 }
 
 
-/* ============================
-   SIGNAL ENGINE
-============================ */
+/* =========================
+VALIDATION
+========================= */
+
+function testDataset(data,lookback){
+
+let signals=0;
+let wins=0;
+
+for(
+let i=lookback;
+i<data.length;
+i++
+){
+
+const history=
+data.slice(i-lookback,i);
+
+const p=
+majorityPrediction(history);
+
+if(!p)continue;
+
+let signal=null;
+
+if(
+p.over>p.under &&
+p.over/p.under>=1.10
+){
+
+signal="OVER";
+
+}else if(
+p.under>p.over &&
+p.under/p.over>=1.10
+){
+
+signal="UNDER";
+
+}
+
+if(!signal)continue;
+
+signals++;
+
+const actual=data[i];
+
+const won=
+signal==="OVER"
+?actual>5
+:actual<5;
+
+if(won)wins++;
+
+}
+
+return {
+
+signals,
+
+wins,
+
+rate:
+signals
+?wins/signals*100
+:0
+
+};
+
+}
+
+
+/* =========================
+RUN VALIDATION
+========================= */
+
+function runValidation(){
+
+const test=
+validationTest();
+
+if(!test)return;
+
+const trainingResult=
+testDataset(
+test.training,
+test.lookback
+);
+
+const validationResult=
+testDataset(
+test.validation,
+test.lookback
+);
+
+document.getElementById(
+"trainSignals"
+).textContent=
+trainingResult.signals;
+
+document.getElementById(
+"trainRate"
+).textContent=
+trainingResult.rate.toFixed(1)+"%";
+
+document.getElementById(
+"validSignals"
+).textContent=
+validationResult.signals;
+
+document.getElementById(
+"validRate"
+).textContent=
+validationResult.rate.toFixed(1)+"%";
+
+}
+
+
+/* =========================
+SIGNAL ENGINE
+========================= */
+
+function calculateComponents(){
+
+const data=getDigits(100);
+
+if(data.length<100){
+
+return null;
+
+}
+
+const counts=
+digitCounts(data);
+
+const total=data.length;
+
+/*
+Distribution:
+How far the distribution is
+from an even 50/50 split.
+*/
+
+const over=
+counts[6]+
+counts[7]+
+counts[8]+
+counts[9];
+
+const under=
+counts[0]+
+counts[1]+
+counts[2]+
+counts[3]+
+counts[4];
+
+const overRate=over/total;
+
+const underRate=under/total;
+
+const distributionScore=
+Math.abs(overRate-underRate)*200;
+
+
+/*
+Momentum:
+Compare recent 25 ticks
+with previous 25.
+*/
+
+const recent=data.slice(-25);
+
+const previous=data.slice(-50,-25);
+
+const recentOver=
+recent.filter(d=>d>5).length/25;
+
+const previousOver=
+previous.filter(d=>d>5).length/25;
+
+const momentumScore=
+Math.abs(
+recentOver-previousOver
+)*200;
+
+
+/*
+Consistency:
+Check whether recent windows
+agree with each other.
+*/
+
+const windows=[];
+
+for(let i=0;i<4;i++){
+
+const segment=
+data.slice(
+-25*(i+1),
+-25*i||undefined
+);
+
+const p=
+majorityPrediction(segment);
+
+if(p&&p.ou)
+windows.push(p.ou);
+
+}
+
+let consistency=0;
+
+if(windows.length){
+
+const overCount=
+windows.filter(x=>x==="OVER").length;
+
+const underCount=
+windows.filter(x=>x==="UNDER").length;
+
+consistency=
+Math.max(
+overCount,
+underCount
+)/windows.length*100;
+
+}
+
+return {
+
+counts,
+
+distributionScore,
+
+momentumScore,
+
+consistency,
+
+overRate,
+
+underRate
+
+};
+
+}
+
+
+/* =========================
+LIVE SIGNAL
+========================= */
 
 function runSignalEngine(){
 
-    const lookback =
-        Number(
-            document.getElementById("lookback").value
-        );
+const c=
+calculateComponents();
 
-    const sample =
-        Number(
-            document.getElementById("sampleSize").value
-        );
+if(!c){
 
-    const strategies = [
+setSignal(
+"NO SIGNAL",
+"Waiting for at least 100 ticks.",
+0
+);
 
-        ["Over 5","over"],
-        ["Under 5","under"],
-        ["Even","even"],
-        ["Odd","odd"],
-        ["Hot Digit","hot"],
-        ["Cold Digit","cold"]
-
-    ];
-
-    let best = null;
-
-    strategies.forEach(item=>{
-
-        const result =
-            backtestStrategy(
-                item[1],
-                lookback,
-                sample
-            );
-
-        /*
-         Only consider strategies with
-         enough observations.
-        */
-
-        if(result.signals < 30){
-
-            return;
-
-        }
-
-        const rate =
-            Number(result.hitRate);
-
-        if(!best || rate > best.rate){
-
-            best = {
-
-                name:item[0],
-
-                rate,
-
-                signals:result.signals
-
-            };
-
-        }
-
-    });
-
-
-    const signal =
-        document.getElementById("signal");
-
-    const sub =
-        document.getElementById("signalSub");
-
-
-    if(!best){
-
-        signal.textContent =
-            "NO SIGNAL";
-
-        sub.textContent =
-            "Not enough historical observations.";
-
-        return;
-
-    }
-
-
-    /*
-       Require a meaningful separation
-       from a simple 50% reference.
-
-       This is intentionally conservative.
-    */
-
-    if(best.rate < 55){
-
-        signal.textContent =
-            "NO SIGNAL";
-
-        sub.textContent =
-            `Best historical rule: ${best.name}
-             at ${best.rate}% over
-             ${best.signals} signals.
-             Statistical edge threshold not reached.`;
-
-        return;
-
-    }
-
-
-    signal.textContent =
-        best.name.toUpperCase();
-
-    sub.textContent =
-        `Historical hit rate ${best.rate}%
-         over ${best.signals} tested signals.
-         This is NOT a guaranteed next-tick prediction.`;
+return;
 
 }
 
 
-/* ============================
-   STATUS
-============================ */
+/*
+Validation.
+*/
 
-function setStatus(text,className){
+const test=
+validationTest();
 
-    const status =
-        document.getElementById("status");
+let validationRate=0;
 
-    status.textContent = text;
+if(test){
 
-    status.className =
-        "status " + className;
+const result=
+testDataset(
+test.validation,
+test.lookback
+);
+
+validationRate=result.rate;
 
 }
 
 
-/* ============================
-   CONTROLS
-============================ */
+/*
+Candidate direction.
+*/
 
-document
-    .getElementById("strategy")
-    .addEventListener(
-        "change",
-        render
-    );
+let direction=null;
 
-document
-    .getElementById("lookback")
-    .addEventListener(
-        "change",
-        render
-    );
+if(c.overRate>c.underRate){
 
-document
-    .getElementById("sampleSize")
-    .addEventListener(
-        "change",
-        render
-    );
+direction="OVER";
+
+}else if(c.underRate>c.overRate){
+
+direction="UNDER";
+
+}
 
 
-/* ============================
-   START
-============================ */
+/*
+Conservative conditions.
+*/
+
+const distributionOK=
+c.distributionScore>=8;
+
+const momentumOK=
+c.momentumScore>=5;
+
+const consistencyOK=
+c.consistency>=75;
+
+const validationOK=
+validationRate>=52;
+
+
+/*
+Score.
+*/
+
+let score=0;
+
+if(distributionOK)score+=25;
+
+if(momentumOK)score+=20;
+
+if(consistencyOK)score+=30;
+
+if(validationOK)score+=25;
+
+
+/*
+Display components.
+*/
+
+document.getElementById(
+"distributionScore"
+).textContent=
+c.distributionScore.toFixed(1);
+
+document.getElementById(
+"momentumScore"
+).textContent=
+c.momentumScore.toFixed(1);
+
+document.getElementById(
+"consistencyScore"
+).textContent=
+c.consistency.toFixed(0)+"%";
+
+document.getElementById(
+"validationRate"
+).textContent=
+validationRate.toFixed(1)+"%";
+
+
+/*
+Signal.
+*/
+
+if(
+!direction||
+score<75||
+!distributionOK||
+!consistencyOK
+){
+
+setSignal(
+"NO SIGNAL",
+`Evidence score ${score}/100.
+Conditions are not sufficiently aligned.`,
+score
+);
+
+return;
+
+}
+
+
+setSignal(
+direction,
+`Evidence score ${score}/100.
+Historical validation: ${validationRate.toFixed(1)}%.`,
+score
+);
+
+}
+
+
+/* =========================
+SET SIGNAL
+========================= */
+
+function setSignal(name,text,score){
+
+document.getElementById(
+"signal"
+).textContent=name;
+
+document.getElementById(
+"confidenceText"
+).textContent=text;
+
+document.getElementById(
+"confidenceBar"
+).style.width=
+Math.min(score,100)+"%";
+
+if(
+name==="NO SIGNAL"
+){
+
+document.getElementById(
+"signal"
+).className=
+"signal neutral";
+
+}else{
+
+document.getElementById(
+"signal"
+).className=
+"signal good";
+
+}
+
+
+/*
+Record only when signal changes.
+*/
+
+if(
+name!=="NO SIGNAL" &&
+name!==lastSignal
+){
+
+recordSignal(name,score);
+
+}
+
+lastSignal=name;
+
+}
+
+
+/* =========================
+SIGNAL HISTORY
+========================= */
+
+function recordSignal(name,score){
+
+const latest=
+ticks[ticks.length-1];
+
+signalHistory.unshift({
+
+time:new Date().toLocaleTimeString(),
+
+signal:name,
+
+digit:latest.digit,
+
+score
+
+});
+
+if(signalHistory.length>30){
+
+signalHistory.pop();
+
+}
+
+renderSignalHistory();
+
+}
+
+
+/* =========================
+HISTORY DISPLAY
+========================= */
+
+function renderSignalHistory(){
+
+const box=
+document.getElementById(
+"signalHistory"
+);
+
+if(!signalHistory.length){
+
+box.textContent=
+"No signals recorded yet.";
+
+return;
+
+}
+
+box.innerHTML="";
+
+signalHistory.forEach(item=>{
+
+const div=
+document.createElement("div");
+
+div.className=
+"history-item";
+
+div.innerHTML=`
+
+<div>${item.time}</div>
+
+<div>
+<b>${item.signal}</b>
+</div>
+
+<div>
+Digit ${item.digit}
+</div>
+
+<div>
+${item.score}/100
+</div>
+
+`;
+
+box.appendChild(div);
+
+});
+
+}
+
+
+/* =========================
+PAYOUT
+========================= */
+
+function updatePayout(){
+
+const payout=
+Number(
+document.getElementById(
+"payoutInput"
+).value
+);
+
+if(!payout||payout<=0)return;
+
+const breakEven=
+100/(100+payout);
+
+document.getElementById(
+"payoutDisplay"
+).textContent=
+payout.toFixed(1)+"%";
+
+document.getElementById(
+"breakEven"
+).textContent=
+(breakEven*100).toFixed(1)+"%";
+
+const validation=
+document.getElementById(
+"validRate"
+).textContent;
+
+document.getElementById(
+"payoutValidation"
+).textContent=
+validation;
+
+}
+
+
+/* =========================
+PAYOUT LISTENER
+========================= */
+
+document.getElementById(
+"payoutInput"
+).addEventListener(
+"input",
+updatePayout
+);
+
+
+/* =========================
+SELECT LISTENERS
+========================= */
+
+document.getElementById(
+"lookback"
+).addEventListener(
+"change",
+render
+);
+
+document.getElementById(
+"sampleSize"
+).addEventListener(
+"change",
+render
+);
+
+
+/* =========================
+STATUS
+========================= */
+
+function setStatus(text,type){
+
+const el=
+document.getElementById("status");
+
+el.textContent=text;
+
+el.className=
+"status "+type;
+
+}
+
+
+/* =========================
+START
+========================= */
 
 connect();
 
