@@ -230,31 +230,34 @@
 
   <div class="grid">
 
-    <!-- CURRENT TICK -->
     <div class="card">
       <h2>Current Quote</h2>
       <div id="quote" class="big">--</div>
+
       <div class="small">
         Last digit:
         <strong id="lastDigit">--</strong>
       </div>
     </div>
 
-    <!-- TICK COUNT -->
+
     <div class="card">
       <h2>Ticks Analyzed</h2>
+
       <div id="tickCount" class="big">0</div>
+
       <div class="small">
-        Symbol: <span id="symbol">1HZ25V</span>
+        Symbol:
+        <span id="symbol">Searching...</span>
       </div>
     </div>
 
-    <!-- DIGIT FREQUENCY -->
+
     <div class="card" style="grid-column: 1 / -1;">
 
       <h2>Digit Frequency</h2>
 
-      <div id="digits" class="digits">
+      <div class="digits">
 
         <div class="digit">
           <div class="digit-number">0</div>
@@ -339,20 +342,29 @@
       </div>
     </div>
 
-    <!-- HOT / COLD -->
+
     <div class="card">
       <h2>Hot Digit</h2>
+
       <div id="hotDigit" class="big">--</div>
-      <div id="hotPercent" class="small">--</div>
+
+      <div id="hotPercent" class="small">
+        --
+      </div>
     </div>
+
 
     <div class="card">
       <h2>Cold Digit</h2>
+
       <div id="coldDigit" class="big">--</div>
-      <div id="coldPercent" class="small">--</div>
+
+      <div id="coldPercent" class="small">
+        --
+      </div>
     </div>
 
-    <!-- OVER UNDER -->
+
     <div class="card">
 
       <h2>Over / Under 5</h2>
@@ -374,7 +386,7 @@
 
     </div>
 
-    <!-- EVEN ODD -->
+
     <div class="card">
 
       <h2>Even / Odd</h2>
@@ -391,20 +403,30 @@
 
     </div>
 
-    <!-- STREAK -->
+
     <div class="card">
 
       <h2>Current Streak</h2>
 
       <div class="signal">
-        <div class="signal-title">Latest pattern</div>
-        <div id="streakType" class="signal-value">--</div>
-        <div id="streakCount" class="small">--</div>
+
+        <div class="signal-title">
+          Latest pattern
+        </div>
+
+        <div id="streakType" class="signal-value">
+          --
+        </div>
+
+        <div id="streakCount" class="small">
+          --
+        </div>
+
       </div>
 
     </div>
 
-    <!-- WINDOWS -->
+
     <div class="card">
 
       <h2>Rolling Windows</h2>
@@ -433,11 +455,13 @@
 
   </div>
 
+
   <div class="warning">
-    ⚠️ This analyzer shows historical tick statistics. A hot digit,
-    cold digit, streak, or frequency does NOT guarantee the next digit.
-    Use the statistics as information, not as a guaranteed prediction.
+    ⚠️ This analyzer shows historical tick statistics.
+    Hot/cold digits, streaks and frequency do not guarantee
+    the next digit.
   </div>
+
 
   <div class="footer">
     V25 Digit Analyzer • Market data only
@@ -450,16 +474,25 @@
 
   /*
    * ==========================================
-   * SETTINGS
+   * CONNECTION
    * ==========================================
    */
 
   const WS_URL =
     "wss://ws.binaryws.com/websockets/v3?app_id=1089";
 
-  const SYMBOL = "1HZ25V";
 
-  const HISTORY_COUNT = 1000;
+  /*
+   * IMPORTANT:
+   *
+   * We DO NOT hard-code the V25 symbol anymore.
+   *
+   * Deriv will tell us the currently active symbol.
+   */
+
+  let symbol = null;
+
+  let pipSize = null;
 
   let socket = null;
 
@@ -471,20 +504,20 @@
 
   let digits = [];
 
-  let pipSize = null;
-
 
   /*
    * ==========================================
-   * UI HELPERS
+   * STATUS
    * ==========================================
    */
 
   function setStatus(message, type = "normal") {
 
-    const status = document.getElementById("status");
+    const status =
+      document.getElementById("status");
 
-    const text = document.getElementById("statusText");
+    const text =
+      document.getElementById("statusText");
 
     status.className = "status";
 
@@ -502,7 +535,8 @@
 
   function setText(id, value) {
 
-    const element = document.getElementById(id);
+    const element =
+      document.getElementById(id);
 
     if (element) {
       element.textContent = value;
@@ -513,7 +547,7 @@
 
   /*
    * ==========================================
-   * DECIMAL / LAST DIGIT HANDLING
+   * DECIMAL PLACES
    * ==========================================
    */
 
@@ -527,15 +561,16 @@
 
     if (text.includes("e-")) {
 
-      const parts = text.split("e-");
-
-      return Number(parts[1]);
+      return Number(
+        text.split("e-")[1]
+      );
 
     }
 
     if (text.includes(".")) {
 
-      return text.split(".")[1]
+      return text
+        .split(".")[1]
         .replace(/0+$/, "")
         .length;
 
@@ -545,35 +580,52 @@
   }
 
 
+  /*
+   * ==========================================
+   * GET LAST DIGIT
+   * ==========================================
+   */
+
   function getLastDigit(quote) {
 
-    let decimals = decimalsFromPipSize(pipSize);
+    let decimals =
+      decimalsFromPipSize(pipSize);
 
-    /*
-     * If pip_size is unavailable, determine the
-     * number of decimal places from the quote.
-     */
 
     if (decimals === null) {
 
-      const text = String(quote);
+      const text =
+        String(quote);
 
       if (text.includes(".")) {
-        decimals = text.split(".")[1].length;
+
+        decimals =
+          text.split(".")[1].length;
+
       } else {
+
         decimals = 0;
+
       }
 
     }
 
-    const formatted = Number(quote).toFixed(decimals);
 
-    const clean = formatted.replace(".", "");
+    const formatted =
+      Number(quote).toFixed(decimals);
+
+
+    const clean =
+      formatted.replace(".", "");
+
 
     const lastCharacter =
       clean.charAt(clean.length - 1);
 
-    const digit = Number(lastCharacter);
+
+    const digit =
+      Number(lastCharacter);
+
 
     if (Number.isInteger(digit)) {
       return digit;
@@ -585,37 +637,7 @@
 
   /*
    * ==========================================
-   * ADD DIGIT
-   * ==========================================
-   */
-
-  function addDigit(digit, quote) {
-
-    if (digit === null || digit === undefined) {
-      return;
-    }
-
-    digits.push(digit);
-
-    prices.push(Number(quote));
-
-    /*
-     * Keep memory reasonable.
-     */
-
-    if (digits.length > 5000) {
-      digits.shift();
-      prices.shift();
-    }
-
-    updateAnalyzer();
-
-  }
-
-
-  /*
-   * ==========================================
-   * LOAD HISTORICAL DATA
+   * PROCESS HISTORY
    * ==========================================
    */
 
@@ -625,17 +647,25 @@
       return;
     }
 
-    const pricesArray = history.prices || [];
-
-    digits = [];
+    const historyPrices =
+      history.prices || [];
 
     prices = [];
 
-    for (let i = 0; i < pricesArray.length; i++) {
+    digits = [];
 
-      const quote = Number(pricesArray[i]);
 
-      const digit = getLastDigit(quote);
+    for (
+      let i = 0;
+      i < historyPrices.length;
+      i++
+    ) {
+
+      const quote =
+        Number(historyPrices[i]);
+
+      const digit =
+        getLastDigit(quote);
 
       if (digit !== null) {
 
@@ -647,6 +677,7 @@
 
     }
 
+
     updateAnalyzer();
 
   }
@@ -654,22 +685,70 @@
 
   /*
    * ==========================================
-   * UPDATE ANALYZER
+   * ADD LIVE TICK
+   * ==========================================
+   */
+
+  function addTick(quote) {
+
+    const digit =
+      getLastDigit(quote);
+
+    if (digit === null) {
+      return;
+    }
+
+
+    prices.push(
+      Number(quote)
+    );
+
+    digits.push(digit);
+
+
+    /*
+     * Keep maximum 5000 ticks.
+     */
+
+    if (digits.length > 5000) {
+
+      digits.shift();
+
+      prices.shift();
+
+    }
+
+
+    updateAnalyzer();
+
+  }
+
+
+  /*
+   * ==========================================
+   * ANALYZER
    * ==========================================
    */
 
   function updateAnalyzer() {
 
-    const total = digits.length;
+    const total =
+      digits.length;
 
-    setText("tickCount", total);
+
+    setText(
+      "tickCount",
+      total
+    );
+
 
     if (total === 0) {
       return;
     }
 
+
     /*
-     * Current digit
+     * Latest quote
      */
 
     const latestDigit =
@@ -678,12 +757,12 @@
     const latestPrice =
       prices[prices.length - 1];
 
+
     setText(
       "quote",
-      latestPrice !== undefined
-        ? latestPrice
-        : "--"
+      latestPrice
     );
+
 
     setText(
       "lastDigit",
@@ -692,13 +771,17 @@
 
 
     /*
-     * Digit counts
+     * Count digits 0-9
      */
 
-    const counts = Array(10).fill(0);
+    const counts =
+      Array(10).fill(0);
+
 
     for (const digit of digits) {
+
       counts[digit]++;
+
     }
 
 
@@ -706,154 +789,203 @@
      * Percentages
      */
 
-    const percentages = counts.map(count =>
-      (count / total) * 100
-    );
+    const percentages =
+      counts.map(
+        count =>
+          (count / total) * 100
+      );
 
 
     /*
-     * Display 0-9
+     * Display digits
      */
 
     for (let i = 0; i <= 9; i++) {
 
-      const percent =
-        percentages[i];
-
       setText(
         "p" + i,
-        percent.toFixed(1) + "%"
+        percentages[i].toFixed(1) + "%"
       );
 
+
       const bar =
-        document.getElementById("b" + i);
+        document.getElementById(
+          "b" + i
+        );
+
 
       if (bar) {
+
         bar.style.width =
-          Math.min(percent, 100) + "%";
+          Math.min(
+            percentages[i],
+            100
+          ) + "%";
+
       }
 
     }
 
 
     /*
-     * Hot digit
+     * HOT DIGIT
      */
 
     let hotDigit = 0;
 
+
     for (let i = 1; i <= 9; i++) {
 
-      if (counts[i] > counts[hotDigit]) {
+      if (
+        counts[i] >
+        counts[hotDigit]
+      ) {
+
         hotDigit = i;
+
       }
 
     }
 
-    setText("hotDigit", hotDigit);
+
+    setText(
+      "hotDigit",
+      hotDigit
+    );
+
 
     setText(
       "hotPercent",
-      percentages[hotDigit].toFixed(1) +
-      "% of analyzed ticks"
+      percentages[hotDigit].toFixed(1)
+      + "% of analyzed ticks"
     );
 
 
     /*
-     * Cold digit
+     * COLD DIGIT
      */
 
     let coldDigit = 0;
 
+
     for (let i = 1; i <= 9; i++) {
 
-      if (counts[i] < counts[coldDigit]) {
+      if (
+        counts[i] <
+        counts[coldDigit]
+      ) {
+
         coldDigit = i;
+
       }
 
     }
 
-    setText("coldDigit", coldDigit);
+
+    setText(
+      "coldDigit",
+      coldDigit
+    );
+
 
     setText(
       "coldPercent",
-      percentages[coldDigit].toFixed(1) +
-      "% of analyzed ticks"
+      percentages[coldDigit].toFixed(1)
+      + "% of analyzed ticks"
     );
 
 
     /*
-     * Over / Under 5
+     * OVER / UNDER 5
      */
 
     let under5Count = 0;
 
     let over5Count = 0;
 
-    let digit5Count = counts[5];
 
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i <= 4; i++) {
+
       under5Count += counts[i];
+
     }
+
 
     for (let i = 6; i <= 9; i++) {
+
       over5Count += counts[i];
+
     }
+
 
     setText(
       "under5",
-      ((under5Count / total) * 100).toFixed(1) + "%"
+      ((under5Count / total) * 100)
+        .toFixed(1) + "%"
     );
+
 
     setText(
       "digit5",
-      ((digit5Count / total) * 100).toFixed(1) + "%"
+      ((counts[5] / total) * 100)
+        .toFixed(1) + "%"
     );
+
 
     setText(
       "over5",
-      ((over5Count / total) * 100).toFixed(1) + "%"
+      ((over5Count / total) * 100)
+        .toFixed(1) + "%"
     );
 
 
     /*
-     * Even / Odd
+     * EVEN / ODD
      */
 
     let evenCount = 0;
 
     let oddCount = 0;
 
+
     for (const digit of digits) {
 
       if (digit % 2 === 0) {
+
         evenCount++;
+
       } else {
+
         oddCount++;
+
       }
 
     }
 
+
     setText(
       "even",
-      ((evenCount / total) * 100).toFixed(1) + "%"
+      ((evenCount / total) * 100)
+        .toFixed(1) + "%"
     );
+
 
     setText(
       "odd",
-      ((oddCount / total) * 100).toFixed(1) + "%"
+      ((oddCount / total) * 100)
+        .toFixed(1) + "%"
     );
 
 
     /*
-     * Current streak
+     * STREAK
      */
 
     calculateStreak();
 
 
     /*
-     * Rolling windows
+     * WINDOWS
      */
 
     setText(
@@ -881,7 +1013,7 @@
 
   /*
    * ==========================================
-   * ROLLING WINDOW SUMMARY
+   * WINDOW SUMMARY
    * ==========================================
    */
 
@@ -891,31 +1023,50 @@
       return "--";
     }
 
+
     const start =
-      Math.max(0, digits.length - size);
+      Math.max(
+        0,
+        digits.length - size
+      );
+
 
     const window =
       digits.slice(start);
 
+
     const counts =
       Array(10).fill(0);
 
+
     for (const digit of window) {
+
       counts[digit]++;
+
     }
+
 
     let highest = 0;
 
+
     for (let i = 1; i <= 9; i++) {
 
-      if (counts[i] > counts[highest]) {
+      if (
+        counts[i] >
+        counts[highest]
+      ) {
+
         highest = i;
+
       }
 
     }
 
+
     const percentage =
-      (counts[highest] / window.length) * 100;
+      (counts[highest] /
+       window.length) * 100;
+
 
     return (
       "Hot " +
@@ -930,7 +1081,7 @@
 
   /*
    * ==========================================
-   * STREAK ANALYSIS
+   * STREAK
    * ==========================================
    */
 
@@ -940,10 +1091,13 @@
       return;
     }
 
+
     const latest =
       digits[digits.length - 1];
 
+
     let count = 1;
+
 
     for (
       let i = digits.length - 2;
@@ -951,22 +1105,31 @@
       i--
     ) {
 
-      if (digits[i] === latest) {
+      if (
+        digits[i] === latest
+      ) {
+
         count++;
+
       } else {
+
         break;
+
       }
 
     }
+
 
     setText(
       "streakType",
       "Digit " + latest
     );
 
+
     setText(
       "streakCount",
-      count + " consecutive occurrence" +
+      count +
+      " consecutive occurrence" +
       (count === 1 ? "" : "s")
     );
 
@@ -975,26 +1138,131 @@
 
   /*
    * ==========================================
-   * WEBSOCKET CONNECTION
+   * REQUEST V25 DATA
+   * ==========================================
+   */
+
+  function requestV25Data() {
+
+    if (
+      !socket ||
+      socket.readyState !== WebSocket.OPEN
+    ) {
+
+      return;
+
+    }
+
+
+    if (!symbol) {
+
+      setStatus(
+        "Finding V25 (1s)..."
+      );
+
+      return;
+
+    }
+
+
+    console.log(
+      "Using V25 symbol:",
+      symbol
+    );
+
+
+    setText(
+      "symbol",
+      symbol
+    );
+
+
+    /*
+     * HISTORY
+     */
+
+    socket.send(
+      JSON.stringify({
+
+        ticks_history: symbol,
+
+        count: 1000,
+
+        end: "latest",
+
+        style: "ticks",
+
+        req_id: 2
+
+      })
+    );
+
+
+    /*
+     * LIVE TICKS
+     */
+
+    socket.send(
+      JSON.stringify({
+
+        ticks: symbol,
+
+        subscribe: 1,
+
+        req_id: 3
+
+      })
+    );
+
+
+    setStatus(
+      "Connected • V25 live",
+      "connected"
+    );
+
+  }
+
+
+  /*
+   * ==========================================
+   * CONNECT
    * ==========================================
    */
 
   function connect() {
 
-    clearTimeout(reconnectTimer);
+    clearTimeout(
+      reconnectTimer
+    );
+
+
+    symbol = null;
+
+    pipSize = null;
+
+
+    setText(
+      "symbol",
+      "Searching..."
+    );
+
 
     setStatus(
       "Connecting to Deriv..."
     );
 
+
     try {
 
-      socket = new WebSocket(WS_URL);
+      socket =
+        new WebSocket(WS_URL);
 
     } catch (error) {
 
+      console.error(error);
+
       setStatus(
-        "WebSocket could not start",
+        "WebSocket failed",
         "error"
       );
 
@@ -1006,66 +1274,39 @@
 
 
     /*
-     * OPEN
+     * CONNECTED
      */
 
     socket.onopen = function() {
 
-      reconnectAttempts = 0;
+      console.log(
+        "WebSocket connected"
+      );
+
 
       setStatus(
-        "Connected",
-        "connected"
+        "Finding V25 (1s)..."
       );
 
 
       /*
-       * Request active symbols.
+       * IMPORTANT:
+       *
+       * No product_type.
+       *
+       * We ask Deriv for the
+       * current active symbols.
        */
 
-      socket.send(JSON.stringify({
+      socket.send(
+        JSON.stringify({
 
-        active_symbols: "brief",
+          active_symbols: "brief",
 
-        product_type: "basic",
+          req_id: 1
 
-        req_id: 1
-
-      }));
-
-
-      /*
-       * Request historical ticks.
-       */
-
-      socket.send(JSON.stringify({
-
-        ticks_history: SYMBOL,
-
-        count: HISTORY_COUNT,
-
-        end: "latest",
-
-        style: "ticks",
-
-        req_id: 2
-
-      }));
-
-
-      /*
-       * Subscribe to live ticks.
-       */
-
-      socket.send(JSON.stringify({
-
-        ticks: SYMBOL,
-
-        subscribe: 1,
-
-        req_id: 3
-
-      }));
+        })
+      );
 
     };
 
@@ -1074,212 +1315,355 @@
      * MESSAGE
      */
 
-    socket.onmessage = function(event) {
+    socket.onmessage =
+      function(event) {
 
-      let data;
+        let data;
 
-      try {
 
-        data = JSON.parse(event.data);
+        try {
 
-      } catch (error) {
+          data =
+            JSON.parse(
+              event.data
+            );
+
+        } catch (error) {
+
+          console.error(
+            "Invalid message:",
+            event.data
+          );
+
+          return;
+
+        }
+
 
         console.log(
-          "Invalid WebSocket message:",
-          event.data
+          "Deriv message:",
+          data
         );
 
-        return;
 
-      }
+        /*
+         * API ERROR
+         */
 
+        if (data.error) {
 
-      /*
-       * API error
-       */
-
-      if (data.error) {
-
-        console.error(
-          "Deriv API error:",
-          data.error
-        );
-
-        setStatus(
-          "Deriv error: " +
-          (data.error.message || "Unknown error"),
-          "error"
-        );
-
-        return;
-
-      }
+          console.error(
+            "Deriv API error:",
+            data.error
+          );
 
 
-      /*
-       * Active symbols
-       */
+          setStatus(
+            "Deriv error: " +
+            data.error.message,
+            "error"
+          );
 
-      if (
-        data.msg_type ===
-        "active_symbols"
-      ) {
 
-        const symbols =
-          data.active_symbols || [];
+          return;
 
-        const found =
-          symbols.find(item => {
+        }
 
-            const name =
-              String(
-                item.underlying_symbol_name ||
-                item.display_name ||
-                ""
+
+        /*
+         * ==================================
+         * ACTIVE SYMBOLS
+         * ==================================
+         */
+
+        if (
+          data.msg_type ===
+          "active_symbols"
+        ) {
+
+          const symbols =
+            data.active_symbols || [];
+
+
+          console.log(
+            "Active symbols received:",
+            symbols.length
+          );
+
+
+          /*
+           * Find exact V25 (1s)
+           */
+
+          const found =
+            symbols.find(
+              item => {
+
+                const name =
+                  String(
+                    item.underlying_symbol_name ||
+                    item.display_name ||
+                    ""
+                  );
+
+
+                return (
+                  /Volatility\s*25\s*\(1s\)/i
+                    .test(name)
+                );
+
+              }
+            );
+
+
+          if (!found) {
+
+            console.error(
+              "V25 (1s) was not found."
+            );
+
+
+            /*
+             * Look for anything containing
+             * "25" and "Volatility" to help
+             * diagnose future symbol changes.
+             */
+
+            const possible =
+              symbols.filter(
+                item => {
+
+                  const name =
+                    String(
+                      item.underlying_symbol_name ||
+                      item.display_name ||
+                      ""
+                    );
+
+                  return (
+                    /Volatility/i.test(name) &&
+                    /25/i.test(name)
+                  );
+
+                }
               );
 
-            return /Volatility\s*25\s*\(1s\)/i
-              .test(name);
 
-          });
+            console.log(
+              "Possible V25 symbols:",
+              possible
+            );
 
-        if (found) {
 
-          const detectedSymbol =
+            setStatus(
+              "V25 (1s) not found",
+              "error"
+            );
+
+
+            return;
+
+          }
+
+
+          /*
+           * Get the REAL current symbol
+           */
+
+          symbol =
             found.underlying_symbol ||
             found.symbol;
 
-          if (detectedSymbol) {
 
-            setText(
-              "symbol",
-              detectedSymbol
-            );
-
-            console.log(
-              "V25 symbol detected:",
-              detectedSymbol
-            );
-
-          }
+          /*
+           * Get pip size
+           */
 
           if (
             found.pip_size !== undefined
           ) {
 
             pipSize =
-              Number(found.pip_size);
+              Number(
+                found.pip_size
+              );
 
-          }
-
-        }
-
-      }
-
-
-      /*
-       * History
-       */
-
-      if (
-        data.msg_type === "history"
-      ) {
-
-        if (
-          data.pip_size !== undefined
-        ) {
-
-          pipSize =
-            Number(data.pip_size);
-
-        }
-
-        processHistory(
-          data.history
-        );
-
-      }
-
-
-      /*
-       * Live tick
-       */
-
-      if (
-        data.msg_type === "tick"
-      ) {
-
-        if (
-          data.tick &&
-          data.tick.quote !== undefined
-        ) {
-
-          const quote =
-            Number(data.tick.quote);
-
-          if (
-            data.tick.pip_size !== undefined
+          } else if (
+            found.pip !== undefined
           ) {
 
             pipSize =
-              Number(data.tick.pip_size);
+              Number(
+                found.pip
+              );
 
           }
 
-          const digit =
-            getLastDigit(quote);
 
-          addDigit(
-            digit,
-            quote
+          console.log(
+            "V25 FOUND:",
+            found
+          );
+
+
+          console.log(
+            "Actual symbol:",
+            symbol
+          );
+
+
+          console.log(
+            "Pip size:",
+            pipSize
+          );
+
+
+          setText(
+            "symbol",
+            symbol
+          );
+
+
+          /*
+           * NOW request the data.
+           */
+
+          requestV25Data();
+
+        }
+
+
+        /*
+         * ==================================
+         * HISTORY
+         * ==================================
+         */
+
+        if (
+          data.msg_type ===
+          "history"
+        ) {
+
+
+          if (
+            data.pip_size !== undefined
+          ) {
+
+            pipSize =
+              Number(
+                data.pip_size
+              );
+
+          }
+
+
+          processHistory(
+            data.history
+          );
+
+
+          setStatus(
+            "Connected • V25 live",
+            "connected"
           );
 
         }
 
-      }
 
-    };
+        /*
+         * ==================================
+         * LIVE TICK
+         * ==================================
+         */
+
+        if (
+          data.msg_type ===
+          "tick"
+        ) {
+
+          if (
+            data.tick &&
+            data.tick.quote !== undefined
+          ) {
+
+
+            const quote =
+              Number(
+                data.tick.quote
+              );
+
+
+            if (
+              data.tick.pip_size !== undefined
+            ) {
+
+              pipSize =
+                Number(
+                  data.tick.pip_size
+                );
+
+            }
+
+
+            addTick(
+              quote
+            );
+
+          }
+
+        }
+
+      };
 
 
     /*
+     * ==========================================
      * ERROR
+     * ==========================================
      */
 
-    socket.onerror = function(error) {
+    socket.onerror =
+      function(error) {
 
-      console.error(
-        "WebSocket error:",
-        error
-      );
+        console.error(
+          "WebSocket error:",
+          error
+        );
 
-      setStatus(
-        "WebSocket connection error",
-        "error"
-      );
 
-    };
+        setStatus(
+          "WebSocket connection error",
+          "error"
+        );
+
+      };
 
 
     /*
+     * ==========================================
      * CLOSED
+     * ==========================================
      */
 
-    socket.onclose = function(event) {
+    socket.onclose =
+      function(event) {
 
-      console.log(
-        "WebSocket closed:",
-        event.code,
-        event.reason
-      );
+        console.log(
+          "WebSocket closed:",
+          event.code,
+          event.reason
+        );
 
-      setStatus(
-        "Disconnected - reconnecting...",
-        "error"
-      );
 
-      scheduleReconnect();
+        setStatus(
+          "Disconnected • reconnecting...",
+          "error"
+        );
 
-    };
+
+        scheduleReconnect();
+
+      };
 
   }
 
@@ -1294,17 +1678,17 @@
 
     reconnectAttempts++;
 
+
     const delay =
       Math.min(
-        1000 * Math.pow(2, reconnectAttempts),
+        1000 *
+        Math.pow(
+          2,
+          reconnectAttempts
+        ),
         30000
       );
 
-    console.log(
-      "Reconnecting in",
-      delay,
-      "ms"
-    );
 
     reconnectTimer =
       setTimeout(
@@ -1320,11 +1704,6 @@
    * START
    * ==========================================
    */
-
-  setText(
-    "symbol",
-    SYMBOL
-  );
 
   connect();
 
