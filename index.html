@@ -3,206 +3,206 @@
 
 <head>
 
-  <meta charset="UTF-8">
+<meta charset="UTF-8">
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
 
-  <title>V25 Digit Analyzer</title>
+<title>V25 Digit Analyzer</title>
 
-  <style>
+<style>
 
-    * {
-      box-sizing: border-box;
-    }
+* {
+  box-sizing: border-box;
+}
 
-    body {
-      margin: 0;
-      background: #080d19;
-      color: #ffffff;
-      font-family: Arial, sans-serif;
-    }
+body {
+  margin: 0;
+  background: #080d19;
+  color: white;
+  font-family: Arial, sans-serif;
+}
 
-    .container {
-      max-width: 1100px;
-      margin: auto;
-      padding: 18px;
-    }
+.container {
+  max-width: 1100px;
+  margin: auto;
+  padding: 18px;
+}
 
-    header {
-      text-align: center;
-      margin-bottom: 20px;
-    }
+header {
+  text-align: center;
+  margin-bottom: 20px;
+}
 
-    h1 {
-      margin: 0;
-      font-size: 28px;
-    }
+h1 {
+  margin: 0;
+  font-size: 28px;
+}
 
-    .subtitle {
-      color: #9ca3af;
-      margin-top: 7px;
-      font-size: 14px;
-    }
+.subtitle {
+  color: #9ca3af;
+  margin-top: 7px;
+  font-size: 14px;
+}
 
-    .status {
-      display: inline-block;
-      margin-top: 12px;
-      padding: 7px 14px;
-      border-radius: 20px;
-      background: #374151;
-      color: #e5e7eb;
-      font-size: 13px;
-    }
+.status {
+  display: inline-block;
+  margin-top: 12px;
+  padding: 7px 14px;
+  border-radius: 20px;
+  background: #374151;
+  color: #e5e7eb;
+  font-size: 13px;
+}
 
-    .connected {
-      background: #14532d;
-      color: #86efac;
-    }
+.connected {
+  background: #14532d;
+  color: #86efac;
+}
 
-    .error {
-      background: #7f1d1d;
-      color: #fecaca;
-    }
+.error {
+  background: #7f1d1d;
+  color: #fecaca;
+}
 
-    .warning {
-      background: #78350f;
-      color: #fde68a;
-    }
+.warning {
+  background: #78350f;
+  color: #fde68a;
+}
 
-    .error-box {
-      display: none;
-      margin-bottom: 15px;
-      padding: 12px;
-      border-radius: 10px;
-      background: #351010;
-      border: 1px solid #7f1d1d;
-      color: #fecaca;
-      font-size: 13px;
-      word-break: break-word;
-    }
+.error-box {
+  display: none;
+  margin-bottom: 15px;
+  padding: 12px;
+  border-radius: 10px;
+  background: #351010;
+  border: 1px solid #7f1d1d;
+  color: #fecaca;
+  font-size: 13px;
+  word-break: break-word;
+}
 
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 14px;
-    }
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
 
-    .top-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
-      margin-bottom: 14px;
-    }
+.top-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-bottom: 14px;
+}
 
-    .card {
-      background: #121a2b;
-      border: 1px solid #27324a;
-      border-radius: 14px;
-      padding: 16px;
-    }
+.card {
+  background: #121a2b;
+  border: 1px solid #27324a;
+  border-radius: 14px;
+  padding: 16px;
+}
 
-    .full {
-      grid-column: 1 / -1;
-    }
+.full {
+  grid-column: 1 / -1;
+}
 
-    .label {
-      color: #9ca3af;
-      font-size: 13px;
-      margin-bottom: 8px;
-    }
+.label {
+  color: #9ca3af;
+  font-size: 13px;
+  margin-bottom: 8px;
+}
 
-    .big {
-      font-size: 27px;
-      font-weight: bold;
-    }
+.big {
+  font-size: 27px;
+  font-weight: bold;
+}
 
-    .digits {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 8px;
-    }
+.digits {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+}
 
-    .digit {
-      text-align: center;
-      background: #0b1220;
-      border: 1px solid #27324a;
-      border-radius: 10px;
-      padding: 12px 5px;
-    }
+.digit {
+  text-align: center;
+  background: #0b1220;
+  border: 1px solid #27324a;
+  border-radius: 10px;
+  padding: 12px 5px;
+}
 
-    .digit-number {
-      font-size: 20px;
-      font-weight: bold;
-    }
+.digit-number {
+  font-size: 20px;
+  font-weight: bold;
+}
 
-    .digit-percent {
-      color: #9ca3af;
-      font-size: 12px;
-      margin-top: 4px;
-    }
+.digit-percent {
+  color: #9ca3af;
+  font-size: 12px;
+  margin-top: 4px;
+}
 
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-    }
+.stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
 
-    .stat {
-      background: #0b1220;
-      border-radius: 10px;
-      padding: 12px;
-    }
+.stat {
+  background: #0b1220;
+  border-radius: 10px;
+  padding: 12px;
+}
 
-    .stat-label {
-      color: #9ca3af;
-      font-size: 12px;
-    }
+.stat-label {
+  color: #9ca3af;
+  font-size: 12px;
+}
 
-    .stat-value {
-      font-size: 20px;
-      font-weight: bold;
-      margin-top: 5px;
-    }
+.stat-value {
+  font-size: 20px;
+  font-weight: bold;
+  margin-top: 5px;
+}
 
-    .signal {
-      background: #0b1220;
-      border-radius: 10px;
-      padding: 15px;
-      font-size: 20px;
-      font-weight: bold;
-    }
+.signal {
+  background: #0b1220;
+  border-radius: 10px;
+  padding: 15px;
+  font-size: 20px;
+  font-weight: bold;
+}
 
-    .small {
-      color: #9ca3af;
-      font-size: 12px;
-      margin-top: 10px;
-      line-height: 1.5;
-    }
+.small {
+  color: #9ca3af;
+  font-size: 12px;
+  margin-top: 10px;
+  line-height: 1.5;
+}
 
-    @media(max-width:700px) {
+@media(max-width:700px) {
 
-      .top-grid {
-        grid-template-columns: 1fr;
-      }
+  .top-grid {
+    grid-template-columns: 1fr;
+  }
 
-      .grid {
-        grid-template-columns: 1fr;
-      }
+  .grid {
+    grid-template-columns: 1fr;
+  }
 
-      .full {
-        grid-column: auto;
-      }
+  .full {
+    grid-column: auto;
+  }
 
-      h1 {
-        font-size: 23px;
-      }
+  h1 {
+    font-size: 23px;
+  }
 
-    }
+}
 
-  </style>
+</style>
 
 </head>
 
@@ -212,379 +212,356 @@
 <div class="container">
 
 
-  <header>
+<header>
 
-    <h1>
-      V25 (1s) Digit Analyzer
-    </h1>
+<h1>
+V25 (1s) Digit Analyzer
+</h1>
 
-    <div class="subtitle">
-      Live tick analysis for Volatility 25 (1s)
-    </div>
+<div class="subtitle">
+Live tick analysis for Volatility 25 (1s)
+</div>
 
-    <div
-      id="status"
-      class="status"
-    >
-      Connecting to Deriv...
-    </div>
+<div
+id="status"
+class="status"
+>
+Connecting to Deriv...
+</div>
 
-  </header>
+</header>
 
 
-  <div
-    id="errorBox"
-    class="error-box"
-  ></div>
+<div
+id="errorBox"
+class="error-box"
+></div>
 
 
-  <!-- TOP -->
+<div class="top-grid">
 
-  <div class="top-grid">
 
+<div class="card">
 
-    <div class="card">
+<div class="label">
+Current Quote
+</div>
 
-      <div class="label">
-        Current Quote
-      </div>
+<div
+id="quote"
+class="big"
+>
+--
+</div>
 
-      <div
-        id="quote"
-        class="big"
-      >
-        --
-      </div>
+</div>
 
-    </div>
 
+<div class="card">
 
-    <div class="card">
+<div class="label">
+Last Digit
+</div>
 
-      <div class="label">
-        Last Digit
-      </div>
+<div
+id="lastDigit"
+class="big"
+>
+--
+</div>
 
-      <div
-        id="lastDigit"
-        class="big"
-      >
-        --
-      </div>
+</div>
 
-    </div>
 
+<div class="card">
 
-    <div class="card">
+<div class="label">
+Ticks Analyzed
+</div>
 
-      <div class="label">
-        Ticks Analyzed
-      </div>
+<div
+id="tickCount"
+class="big"
+>
+0
+</div>
 
-      <div
-        id="tickCount"
-        class="big"
-      >
-        0
-      </div>
+</div>
 
-    </div>
 
+</div>
 
-  </div>
 
+<div class="grid">
 
-  <div class="grid">
 
+<div class="card full">
 
-    <!-- DIGITS -->
+<div class="label">
+Digit Frequency — Latest 1000 Ticks
+</div>
 
-    <div class="card full">
+<div
+id="digits"
+class="digits"
+></div>
 
-      <div class="label">
-        Digit Frequency — Latest 1000 Ticks
-      </div>
+</div>
 
-      <div
-        id="digits"
-        class="digits"
-      ></div>
 
-    </div>
+<div class="card">
 
+<div class="label">
+Over / Under 5
+</div>
 
-    <!-- OVER UNDER -->
+<div class="stats">
 
-    <div class="card">
 
-      <div class="label">
-        Over / Under 5
-      </div>
+<div class="stat">
 
-      <div class="stats">
+<div class="stat-label">
+Under 5
+</div>
 
+<div
+id="under5"
+class="stat-value"
+>
+--
+</div>
 
-        <div class="stat">
+</div>
 
-          <div class="stat-label">
-            Under 5
-          </div>
 
-          <div
-            id="under5"
-            class="stat-value"
-          >
-            --
-          </div>
+<div class="stat">
 
-        </div>
+<div class="stat-label">
+Exactly 5
+</div>
 
+<div
+id="equal5"
+class="stat-value"
+>
+--
+</div>
 
-        <div class="stat">
+</div>
 
-          <div class="stat-label">
-            Exactly 5
-          </div>
 
-          <div
-            id="equal5"
-            class="stat-value"
-          >
-            --
-          </div>
+<div class="stat">
 
-        </div>
+<div class="stat-label">
+Over 5
+</div>
 
+<div
+id="over5"
+class="stat-value"
+>
+--
+</div>
 
-        <div class="stat">
+</div>
 
-          <div class="stat-label">
-            Over 5
-          </div>
 
-          <div
-            id="over5"
-            class="stat-value"
-          >
-            --
-          </div>
+<div class="stat">
 
-        </div>
+<div class="stat-label">
+Under + Over
+</div>
 
+<div
+id="underOver"
+class="stat-value"
+>
+--
+</div>
 
-        <div class="stat">
+</div>
 
-          <div class="stat-label">
-            Under + Over
-          </div>
 
-          <div
-            id="underOver"
-            class="stat-value"
-          >
-            --
-          </div>
+</div>
 
-        </div>
+</div>
 
 
-      </div>
+<div class="card">
 
-    </div>
+<div class="label">
+Even / Odd
+</div>
 
+<div class="stats">
 
-    <!-- EVEN ODD -->
 
-    <div class="card">
+<div class="stat">
 
-      <div class="label">
-        Even / Odd
-      </div>
+<div class="stat-label">
+Even
+</div>
 
-      <div class="stats">
+<div
+id="even"
+class="stat-value"
+>
+--
+</div>
 
+</div>
 
-        <div class="stat">
 
-          <div class="stat-label">
-            Even
-          </div>
+<div class="stat">
 
-          <div
-            id="even"
-            class="stat-value"
-          >
-            --
-          </div>
+<div class="stat-label">
+Odd
+</div>
 
-        </div>
+<div
+id="odd"
+class="stat-value"
+>
+--
+</div>
 
+</div>
 
-        <div class="stat">
 
-          <div class="stat-label">
-            Odd
-          </div>
+</div>
 
-          <div
-            id="odd"
-            class="stat-value"
-          >
-            --
-          </div>
+</div>
 
-        </div>
 
+<div class="card">
 
-      </div>
+<div class="label">
+Hot / Cold Digits
+</div>
 
-    </div>
+<div class="stats">
 
 
-    <!-- HOT COLD -->
+<div class="stat">
 
-    <div class="card">
+<div class="stat-label">
+Hot Digit
+</div>
 
-      <div class="label">
-        Hot / Cold
-      </div>
+<div
+id="hotDigit"
+class="stat-value"
+>
+--
+</div>
 
-      <div class="stats">
+</div>
 
 
-        <div class="stat">
+<div class="stat">
 
-          <div class="stat-label">
-            Hot Digit
-          </div>
+<div class="stat-label">
+Cold Digit
+</div>
 
-          <div
-            id="hotDigit"
-            class="stat-value"
-          >
-            --
-          </div>
+<div
+id="coldDigit"
+class="stat-value"
+>
+--
+</div>
 
-        </div>
+</div>
 
 
-        <div class="stat">
+</div>
 
-          <div class="stat-label">
-            Cold Digit
-          </div>
+</div>
 
-          <div
-            id="coldDigit"
-            class="stat-value"
-          >
-            --
-          </div>
 
-        </div>
+<div class="card">
 
+<div class="label">
+Connected Symbol
+</div>
 
-      </div>
+<div
+id="symbol"
+class="stat-value"
+>
+Searching...
+</div>
 
-    </div>
+</div>
 
 
-    <!-- SYMBOL -->
+<div class="card full">
 
-    <div class="card">
+<div class="label">
+Statistical Analysis
+</div>
 
-      <div class="label">
-        Connected Symbol
-      </div>
+<div
+id="signal"
+class="signal"
+>
+Waiting for live data...
+</div>
 
-      <div
-        id="symbol"
-        class="stat-value"
-      >
-        Searching...
-      </div>
+<div class="small">
 
-    </div>
+Historical statistics only.
+This does not guarantee the next digit.
 
+</div>
 
-    <!-- SIGNAL -->
+</div>
 
-    <div class="card full">
 
-      <div class="label">
-        Statistical Analysis
-      </div>
+<div class="card full">
 
-      <div
-        id="signal"
-        class="signal"
-      >
-        Waiting for live data...
-      </div>
+<div class="label">
+Connection Information
+</div>
 
-      <div class="small">
-        This is statistical information from previous ticks,
-        not a guaranteed prediction of the next digit.
-      </div>
+<div
+id="debug"
+class="small"
+>
+Starting...
+</div>
 
-    </div>
+</div>
 
 
-    <!-- DEBUG -->
-
-    <div class="card full">
-
-      <div class="label">
-        Connection Information
-      </div>
-
-      <div
-        id="debug"
-        class="small"
-      >
-        Waiting...
-      </div>
-
-    </div>
-
-
-  </div>
-
+</div>
 
 </div>
 
 
 <script>
 
-
 /* =====================================================
-   DERIV CONNECTION
+   CURRENT DERIV PUBLIC WEBSOCKET
    ===================================================== */
 
-
-/*
-  IMPORTANT:
-
-  We are intentionally NOT using:
-
-  ?app_id=1089
-
-  The public market-data WebSocket does not
-  require authentication.
-*/
-
 const WS_URL =
-  "wss://ws.binaryws.com/websockets/v3";
+"wss://api.derivws.com/trading/v1/options/ws/public";
 
 
 /*
-  We are NOT going to blindly send 1HZ25V.
+  Known V25 (1s) symbol.
 
-  First we ask Deriv for the current active
-  symbol list.
-
-  Then we find V25 from that response.
+  We will verify it through active_symbols
+  before subscribing.
 */
+
+const KNOWN_V25 =
+"1HZ25V";
+
+
+const HISTORY_COUNT =
+1000;
 
 
 let socket = null;
@@ -597,63 +574,61 @@ let ticks = [];
 
 let reconnectTimer = null;
 
-let hasReceivedLiveTick = false;
-
 
 /* =====================================================
    ELEMENTS
    ===================================================== */
 
 const status =
-  document.getElementById("status");
+document.getElementById("status");
 
 const errorBox =
-  document.getElementById("errorBox");
+document.getElementById("errorBox");
 
 const quote =
-  document.getElementById("quote");
+document.getElementById("quote");
 
 const lastDigit =
-  document.getElementById("lastDigit");
+document.getElementById("lastDigit");
 
 const tickCount =
-  document.getElementById("tickCount");
+document.getElementById("tickCount");
 
 const digits =
-  document.getElementById("digits");
+document.getElementById("digits");
 
 const under5 =
-  document.getElementById("under5");
+document.getElementById("under5");
 
 const equal5 =
-  document.getElementById("equal5");
+document.getElementById("equal5");
 
 const over5 =
-  document.getElementById("over5");
+document.getElementById("over5");
 
 const underOver =
-  document.getElementById("underOver");
+document.getElementById("underOver");
 
 const even =
-  document.getElementById("even");
+document.getElementById("even");
 
 const odd =
-  document.getElementById("odd");
+document.getElementById("odd");
 
 const hotDigit =
-  document.getElementById("hotDigit");
+document.getElementById("hotDigit");
 
 const coldDigit =
-  document.getElementById("coldDigit");
+document.getElementById("coldDigit");
 
 const symbol =
-  document.getElementById("symbol");
+document.getElementById("symbol");
 
 const signal =
-  document.getElementById("signal");
+document.getElementById("signal");
 
 const debug =
-  document.getElementById("debug");
+document.getElementById("debug");
 
 
 /* =====================================================
@@ -662,13 +637,17 @@ const debug =
 
 function setStatus(text, type = "") {
 
-  status.textContent = text;
+status.textContent =
+text;
 
-  status.className = "status";
+status.className =
+"status";
 
-  if (type) {
-    status.classList.add(type);
-  }
+if (type) {
+
+status.classList.add(type);
+
+}
 
 }
 
@@ -679,174 +658,65 @@ function setStatus(text, type = "") {
 
 function showError(message) {
 
-  errorBox.style.display = "block";
+errorBox.style.display =
+"block";
 
-  errorBox.textContent =
-    "Deriv error: " + message;
+errorBox.textContent =
+"Deriv error: " + message;
 
 }
 
 
 function clearError() {
 
-  errorBox.style.display = "none";
+errorBox.style.display =
+"none";
 
-  errorBox.textContent = "";
-
-}
-
-
-/* =====================================================
-   FIND V25
-   ===================================================== */
-
-function findV25(list) {
-
-  if (!Array.isArray(list)) {
-    return null;
-  }
-
-
-  /*
-    FIRST:
-    exact known symbol.
-  */
-
-  let found =
-    list.find(item => {
-
-      const s =
-        String(
-          item.symbol ??
-          item.underlying_symbol ??
-          ""
-        ).trim().toUpperCase();
-
-      return s === "1HZ25V";
-
-    });
-
-
-  if (found) {
-    return found;
-  }
-
-
-  /*
-    SECOND:
-    search names.
-
-    We support both old and new
-    Deriv response fields.
-  */
-
-  found =
-    list.find(item => {
-
-      const names = [
-
-        item.display_name,
-
-        item.underlying_symbol_name,
-
-        item.market_display_name,
-
-        item.submarket_display_name,
-
-        item.subgroup_display_name
-
-      ]
-      .filter(Boolean)
-      .map(x =>
-        String(x).toLowerCase()
-      );
-
-
-      return names.some(name =>
-
-        (
-          name.includes("volatility 25") &&
-          name.includes("1s")
-        )
-
-      );
-
-    });
-
-
-  if (found) {
-    return found;
-  }
-
-
-  /*
-    THIRD:
-    search the entire object.
-  */
-
-  found =
-    list.find(item => {
-
-      const text =
-        JSON.stringify(item)
-          .toLowerCase();
-
-      return (
-
-        text.includes("1hz25v") ||
-
-        (
-          text.includes("volatility 25") &&
-          text.includes("1s")
-        )
-
-      );
-
-    });
-
-
-  return found || null;
+errorBox.textContent =
+"";
 
 }
 
 
 /* =====================================================
-   GET DECIMAL PLACES
+   DECIMAL PLACES
    ===================================================== */
 
-function decimalPlaces(value) {
+function getDecimalPlaces(value) {
 
-  const number =
-    Number(value);
+const number =
+Number(value);
 
-  if (
-    !Number.isFinite(number) ||
-    number <= 0
-  ) {
-    return null;
-  }
+if (
+!Number.isFinite(number) ||
+number <= 0
+) {
 
+return null;
 
-  let places = 0;
+}
 
-  let temp = number;
+let places = 0;
 
-
-  while (
-    places < 10 &&
-    Math.abs(
-      temp - Math.round(temp)
-    ) > 0.000000001
-  ) {
-
-    temp *= 10;
-
-    places++;
-
-  }
+let temp =
+number;
 
 
-  return places;
+while (
+places < 10 &&
+Math.abs(
+temp - Math.round(temp)
+) > 0.000000001
+) {
+
+temp *= 10;
+
+places++;
+
+}
+
+
+return places;
 
 }
 
@@ -857,44 +727,43 @@ function decimalPlaces(value) {
 
 function formatPrice(value) {
 
-  const number =
-    Number(value);
+const number =
+Number(value);
 
-  if (!Number.isFinite(number)) {
-    return "--";
-  }
+if (!Number.isFinite(number)) {
 
+return "--";
 
-  let places =
-    decimalPlaces(pipSize);
+}
 
 
-  /*
-    If pip_size isn't available,
-    preserve the decimals supplied
-    by the quote itself.
-  */
-
-  if (places === null) {
-
-    const text =
-      String(value);
-
-    if (text.includes(".")) {
-
-      places =
-        text.split(".")[1].length;
-
-    } else {
-
-      places = 0;
-
-    }
-
-  }
+let places =
+getDecimalPlaces(pipSize);
 
 
-  return number.toFixed(places);
+if (places === null) {
+
+const text =
+String(value);
+
+
+if (text.includes(".")) {
+
+places =
+text.split(".")[1].length;
+
+}
+
+else {
+
+places = 0;
+
+}
+
+}
+
+
+return number.toFixed(places);
 
 }
 
@@ -905,115 +774,268 @@ function formatPrice(value) {
 
 function getLastDigit(value) {
 
-  const formatted =
-    formatPrice(value);
+const formatted =
+formatPrice(value);
 
 
-  const digitsOnly =
-    formatted.replace(
-      /[^0-9]/g,
-      ""
-    );
+const clean =
+formatted.replace(
+/[^0-9]/g,
+""
+);
 
 
-  if (!digitsOnly) {
-    return null;
-  }
+if (!clean) {
+
+return null;
+
+}
 
 
-  return Number(
-    digitsOnly[
-      digitsOnly.length - 1
-    ]
-  );
+return Number(
+clean.charAt(
+clean.length - 1
+)
+);
 
 }
 
 
 /* =====================================================
-   REQUEST HISTORY + LIVE STREAM
+   FIND V25
    ===================================================== */
 
-function startV25() {
+function findV25(list) {
 
-  if (!socket) {
-    return;
-  }
+if (!Array.isArray(list)) {
 
+return null;
 
-  if (
-    socket.readyState !==
-    WebSocket.OPEN
-  ) {
-    return;
-  }
+}
 
 
-  if (!selectedSymbol) {
+/*
+  Exact symbol first.
+*/
 
-    setStatus(
-      "V25 symbol not found",
-      "error"
-    );
+let found =
+list.find(item => {
 
-    return;
+const itemSymbol =
+String(
+item.underlying_symbol ??
+item.symbol ??
+""
+)
+.trim()
+.toUpperCase();
 
-  }
+return (
+itemSymbol ===
+KNOWN_V25
+);
 
-
-  clearError();
-
-
-  /*
-    HISTORY
-  */
-
-  socket.send(
-    JSON.stringify({
-
-      ticks_history:
-        selectedSymbol,
-
-      count: 1000,
-
-      end: "latest",
-
-      style: "ticks",
-
-      req_id: 100
-
-    })
-  );
+});
 
 
-  /*
-    LIVE STREAM
+if (found) {
 
-    This is the important part.
-  */
+return found;
 
-  socket.send(
-    JSON.stringify({
-
-      ticks:
-        selectedSymbol,
-
-      subscribe: 1,
-
-      req_id: 101
-
-    })
-  );
+}
 
 
-  setStatus(
-    "Connecting live tick stream..."
-  );
+/*
+  Search current Deriv name.
+*/
+
+found =
+list.find(item => {
+
+const name =
+String(
+item.underlying_symbol_name ??
+item.display_name ??
+""
+)
+.toLowerCase();
 
 
-  debug.textContent =
-    "Requested live stream for " +
-    selectedSymbol;
+return (
+
+name.includes(
+"volatility 25"
+)
+
+&&
+
+name.includes(
+"1s"
+)
+
+);
+
+});
+
+
+if (found) {
+
+return found;
+
+}
+
+
+/*
+  Final broad search.
+*/
+
+found =
+list.find(item => {
+
+const text =
+JSON.stringify(item)
+.toLowerCase();
+
+
+return (
+
+text.includes(
+"1hz25v"
+)
+
+||
+
+(
+text.includes(
+"volatility 25"
+)
+
+&&
+
+text.includes(
+"1s"
+)
+)
+
+);
+
+});
+
+
+return found || null;
+
+}
+
+
+/* =====================================================
+   REQUEST SYMBOLS
+   ===================================================== */
+
+function requestSymbols() {
+
+debug.textContent =
+"Connected. Requesting current Deriv symbols...";
+
+
+socket.send(
+JSON.stringify({
+
+active_symbols:
+"brief",
+
+req_id: 1
+
+})
+);
+
+}
+
+
+/* =====================================================
+   START MARKET DATA
+   ===================================================== */
+
+function startMarketData() {
+
+if (!selectedSymbol) {
+
+showError(
+"V25 symbol was not found."
+);
+
+setStatus(
+"V25 not found",
+"error"
+);
+
+return;
+
+}
+
+
+clearError();
+
+
+symbol.textContent =
+selectedSymbol;
+
+
+setStatus(
+"V25 found • Loading history..."
+);
+
+
+debug.textContent =
+"Confirmed symbol: " +
+selectedSymbol;
+
+
+/*
+  Historical ticks.
+*/
+
+socket.send(
+JSON.stringify({
+
+ticks_history:
+selectedSymbol,
+
+count:
+HISTORY_COUNT,
+
+end:
+"latest",
+
+style:
+"ticks",
+
+req_id: 2
+
+})
+);
+
+
+/*
+  LIVE TICK STREAM.
+*/
+
+socket.send(
+JSON.stringify({
+
+ticks:
+selectedSymbol,
+
+subscribe:
+1,
+
+req_id: 3
+
+}));
+
+
+setStatus(
+"V25 found • Starting live stream..."
+);
 
 }
 
@@ -1024,41 +1046,43 @@ function startV25() {
 
 function handleHistory(history) {
 
-  if (!history) {
-    return;
-  }
+if (!history) {
+
+return;
+
+}
 
 
-  const prices =
-    Array.isArray(history.prices)
-      ? history.prices
-      : [];
+const prices =
+Array.isArray(history.prices)
+? history.prices
+: [];
 
 
-  if (!prices.length) {
+if (!prices.length) {
 
-    debug.textContent =
-      "Deriv returned no historical ticks.";
+debug.textContent =
+"No historical prices received.";
 
-    return;
+return;
 
-  }
-
-
-  ticks =
-    prices
-      .map(Number)
-      .filter(Number.isFinite)
-      .slice(-1000);
+}
 
 
-  render();
+ticks =
+prices
+.map(Number)
+.filter(Number.isFinite)
+.slice(-HISTORY_COUNT);
 
 
-  debug.textContent =
-    "Historical data loaded: " +
-    ticks.length +
-    " ticks. Waiting for live stream...";
+render();
+
+
+debug.textContent =
+"Loaded " +
+ticks.length +
+" historical ticks. Waiting for live tick...";
 
 }
 
@@ -1069,157 +1093,153 @@ function handleHistory(history) {
 
 function handleTick(tick) {
 
-  if (!tick) {
-    return;
-  }
+if (!tick) {
+
+return;
+
+}
 
 
-  const price =
-    Number(tick.quote);
+const price =
+Number(tick.quote);
 
 
-  if (!Number.isFinite(price)) {
-    return;
-  }
+if (!Number.isFinite(price)) {
+
+return;
+
+}
 
 
-  /*
-    Get pip size from tick if supplied.
-  */
+/*
+  New API says pip_size may be absent.
+*/
 
-  if (
-    tick.pip_size !== undefined &&
-    tick.pip_size !== null
-  ) {
+if (
+tick.pip_size !== undefined &&
+tick.pip_size !== null
+) {
 
-    pipSize =
-      Number(tick.pip_size);
+pipSize =
+Number(tick.pip_size);
 
-  }
-
-
-  /*
-    Add new tick.
-  */
-
-  ticks.push(price);
+}
 
 
-  /*
-    Keep latest 1000.
-  */
-
-  if (ticks.length > 1000) {
-
-    ticks =
-      ticks.slice(-1000);
-
-  }
+ticks.push(price);
 
 
-  hasReceivedLiveTick = true;
+if (
+ticks.length >
+HISTORY_COUNT
+) {
+
+ticks =
+ticks.slice(
+-HISTORY_COUNT
+);
+
+}
 
 
-  setStatus(
-    "LIVE • V25 (1s)",
-    "connected"
-  );
+setStatus(
+"LIVE • V25 (1s)",
+"connected"
+);
 
 
-  render();
+debug.textContent =
+"Live tick received • " +
+selectedSymbol;
 
 
-  debug.textContent =
-    "LIVE STREAM ACTIVE • " +
-    selectedSymbol +
-    " • New tick received.";
+render();
 
 }
 
 
 /* =====================================================
-   CALCULATE
+   CALCULATE STATS
    ===================================================== */
 
-function calculate() {
+function calculateStats() {
 
-  const counts =
-    Array(10).fill(0);
+const counts =
+Array(10).fill(0);
 
-  let under = 0;
+let under = 0;
 
-  let equal = 0;
+let equal = 0;
 
-  let over = 0;
+let over = 0;
 
-  let evens = 0;
+let evens = 0;
 
-  let odds = 0;
-
-
-  ticks.forEach(price => {
-
-    const digit =
-      getLastDigit(price);
+let odds = 0;
 
 
-    if (digit === null) {
-      return;
-    }
+ticks.forEach(price => {
+
+const digit =
+getLastDigit(price);
 
 
-    counts[digit]++;
+if (digit === null) {
+
+return;
+
+}
 
 
-    if (digit < 5) {
-
-      under++;
-
-    }
-
-    else if (digit === 5) {
-
-      equal++;
-
-    }
-
-    else {
-
-      over++;
-
-    }
+counts[digit]++;
 
 
-    if (digit % 2 === 0) {
+if (digit < 5) {
 
-      evens++;
+under++;
 
-    }
+}
 
-    else {
+else if (digit === 5) {
 
-      odds++;
+equal++;
 
-    }
+}
 
-  });
+else {
+
+over++;
+
+}
 
 
-  return {
+if (
+digit % 2 === 0
+) {
 
-    counts,
+evens++;
 
-    under,
+}
 
-    equal,
+else {
 
-    over,
+odds++;
 
-    evens,
+}
 
-    odds
+});
 
-  };
+
+return {
+
+counts,
+under,
+equal,
+over,
+evens,
+odds
+
+};
 
 }
 
@@ -1230,306 +1250,324 @@ function calculate() {
 
 function renderDigits(stats) {
 
-  digits.innerHTML = "";
+digits.innerHTML =
+"";
 
 
-  const total =
-    ticks.length;
+const total =
+ticks.length;
 
 
-  for (
-    let i = 0;
-    i <= 9;
-    i++
-  ) {
+for (
+let i = 0;
+i <= 9;
+i++
+) {
 
-    const percentage =
-      total > 0
-        ? (
-            stats.counts[i] /
-            total
-          ) * 100
-        : 0;
+const percentage =
+total > 0
 
+?
 
-    const box =
-      document.createElement("div");
+(
+stats.counts[i] /
+total *
+100
+)
 
+:
 
-    box.className =
-      "digit";
-
-
-    box.innerHTML = `
-
-      <div class="digit-number">
-        ${i}
-      </div>
-
-      <div class="digit-percent">
-        ${percentage.toFixed(1)}%
-      </div>
-
-    `;
+0;
 
 
-    digits.appendChild(box);
+const box =
+document.createElement(
+"div"
+);
 
-  }
+
+box.className =
+"digit";
+
+
+box.innerHTML = `
+
+<div class="digit-number">
+${i}
+</div>
+
+<div class="digit-percent">
+${percentage.toFixed(1)}%
+</div>
+
+`;
+
+
+digits.appendChild(box);
+
+}
 
 }
 
 
 /* =====================================================
-   HOT / COLD
+   HOT DIGIT
    ===================================================== */
 
-function getHot(counts) {
+function getHotDigit(counts) {
 
-  let index = 0;
-
-
-  for (
-    let i = 1;
-    i < counts.length;
-    i++
-  ) {
-
-    if (
-      counts[i] >
-      counts[index]
-    ) {
-
-      index = i;
-
-    }
-
-  }
+let index = 0;
 
 
-  return index;
+for (
+let i = 1;
+i < counts.length;
+i++
+) {
+
+if (
+counts[i] >
+counts[index]
+) {
+
+index = i;
+
+}
 
 }
 
 
-function getCold(counts) {
-
-  let index = 0;
-
-
-  for (
-    let i = 1;
-    i < counts.length;
-    i++
-  ) {
-
-    if (
-      counts[i] <
-      counts[index]
-    ) {
-
-      index = i;
-
-    }
-
-  }
-
-
-  return index;
+return index;
 
 }
 
 
 /* =====================================================
-   RENDER EVERYTHING
+   COLD DIGIT
+   ===================================================== */
+
+function getColdDigit(counts) {
+
+let index = 0;
+
+
+for (
+let i = 1;
+i < counts.length;
+i++
+) {
+
+if (
+counts[i] <
+counts[index]
+) {
+
+index = i;
+
+}
+
+}
+
+
+return index;
+
+}
+
+
+/* =====================================================
+   RENDER
    ===================================================== */
 
 function render() {
 
-  if (!ticks.length) {
-    return;
-  }
+if (!ticks.length) {
+
+return;
+
+}
 
 
-  const stats =
-    calculate();
+const stats =
+calculateStats();
 
 
-  const latest =
-    ticks[ticks.length - 1];
+const total =
+ticks.length;
 
 
-  const digit =
-    getLastDigit(latest);
+const latest =
+ticks[
+ticks.length - 1
+];
 
 
-  const total =
-    ticks.length;
+const digit =
+getLastDigit(latest);
 
 
-  /*
-    Current price
-  */
+/*
+  Current quote.
+*/
 
-  quote.textContent =
-    formatPrice(latest);
-
-
-  /*
-    Last digit
-  */
-
-  lastDigit.textContent =
-    digit === null
-      ? "--"
-      : digit;
+quote.textContent =
+formatPrice(latest);
 
 
-  /*
-    Tick count
-  */
+/*
+  Last digit.
+*/
 
-  tickCount.textContent =
-    total;
-
-
-  /*
-    Symbol
-  */
-
-  symbol.textContent =
-    selectedSymbol || "--";
+lastDigit.textContent =
+digit === null
+? "--"
+: digit;
 
 
-  /*
-    Digits
-  */
+/*
+  Tick count.
+*/
 
-  renderDigits(stats);
-
-
-  /*
-    Over / Under
-  */
-
-  under5.textContent =
-    (
-      stats.under /
-      total *
-      100
-    ).toFixed(1) + "%";
+tickCount.textContent =
+total;
 
 
-  equal5.textContent =
-    (
-      stats.equal /
-      total *
-      100
-    ).toFixed(1) + "%";
+/*
+  Symbol.
+*/
+
+symbol.textContent =
+selectedSymbol || "--";
 
 
-  over5.textContent =
-    (
-      stats.over /
-      total *
-      100
-    ).toFixed(1) + "%";
+/*
+  Digit frequency.
+*/
+
+renderDigits(stats);
 
 
-  underOver.textContent =
-    (
-      (
-        stats.under +
-        stats.over
-      ) /
-      total *
-      100
-    ).toFixed(1) + "%";
+/*
+  Over / Under.
+*/
+
+const underPercent =
+stats.under /
+total *
+100;
 
 
-  /*
-    Even / Odd
-  */
-
-  even.textContent =
-    (
-      stats.evens /
-      total *
-      100
-    ).toFixed(1) + "%";
+const equalPercent =
+stats.equal /
+total *
+100;
 
 
-  odd.textContent =
-    (
-      stats.odds /
-      total *
-      100
-    ).toFixed(1) + "%";
+const overPercent =
+stats.over /
+total *
+100;
 
 
-  /*
-    Hot / Cold
-  */
-
-  hotDigit.textContent =
-    getHot(stats.counts);
+under5.textContent =
+underPercent.toFixed(1) +
+"%";
 
 
-  coldDigit.textContent =
-    getCold(stats.counts);
+equal5.textContent =
+equalPercent.toFixed(1) +
+"%";
 
 
-  /*
-    Basic statistical description.
-  */
-
-  const underPercent =
-    stats.under /
-    total *
-    100;
+over5.textContent =
+overPercent.toFixed(1) +
+"%";
 
 
-  const overPercent =
-    stats.over /
-    total *
-    100;
+underOver.textContent =
+(
+underPercent +
+overPercent
+).toFixed(1) +
+"%";
 
 
-  if (total < 100) {
+/*
+  Even / Odd.
+*/
 
-    signal.textContent =
-      "Collecting more data...";
+even.textContent =
+(
+stats.evens /
+total *
+100
+).toFixed(1) +
+"%";
 
-  }
 
-  else if (
-    underPercent >= 55
-  ) {
+odd.textContent =
+(
+stats.odds /
+total *
+100
+).toFixed(1) +
+"%";
 
-    signal.textContent =
-      "Historical Under 5 bias: " +
-      underPercent.toFixed(1) +
-      "%";
 
-  }
+/*
+  Hot / Cold.
+*/
 
-  else if (
-    overPercent >= 55
-  ) {
+hotDigit.textContent =
+getHotDigit(
+stats.counts
+);
 
-    signal.textContent =
-      "Historical Over 5 bias: " +
-      overPercent.toFixed(1) +
-      "%";
 
-  }
+coldDigit.textContent =
+getColdDigit(
+stats.counts
+);
 
-  else {
 
-    signal.textContent =
-      "No strong Over/Under bias";
+/*
+  Statistical description.
+*/
 
-  }
+if (total < 100) {
+
+signal.textContent =
+"Collecting more data...";
+
+}
+
+else if (
+underPercent >= 55
+) {
+
+signal.textContent =
+"Historical Under 5 bias: " +
+underPercent.toFixed(1) +
+"%";
+
+}
+
+else if (
+overPercent >= 55
+) {
+
+signal.textContent =
+"Historical Over 5 bias: " +
+overPercent.toFixed(1) +
+"%";
+
+}
+
+else {
+
+signal.textContent =
+"No strong Over/Under bias";
+
+}
 
 }
 
@@ -1540,332 +1578,333 @@ function render() {
 
 function connect() {
 
-  clearError();
+clearError();
 
-  hasReceivedLiveTick =
-    false;
 
+setStatus(
+"Connecting to Deriv..."
+);
 
-  setStatus(
-    "Connecting to Deriv..."
-  );
 
+debug.textContent =
+"Opening current public Deriv WebSocket...";
 
-  debug.textContent =
-    "Opening public market-data connection...";
 
+try {
 
-  try {
+socket =
+new WebSocket(
+WS_URL
+);
 
-    socket =
-      new WebSocket(WS_URL);
+}
 
-  }
+catch (error) {
 
-  catch (e) {
+showError(
+error.message ||
+"Could not create WebSocket."
+);
 
-    showError(
-      "Could not create WebSocket."
-    );
+setStatus(
+"Connection failed",
+"error"
+);
 
-    setStatus(
-      "Connection failed",
-      "error"
-    );
+scheduleReconnect();
 
-    return;
+return;
 
-  }
+}
 
 
-  /*
-    OPEN
-  */
+/*
+  CONNECTED.
+*/
 
-  socket.onopen = () => {
+socket.onopen = () => {
 
-    setStatus(
-      "Connected • Finding V25..."
-    );
+setStatus(
+"Connected • Finding V25..."
+);
 
 
-    debug.textContent =
-      "Connected. Asking Deriv for active symbols...";
+debug.textContent =
+"Public WebSocket connected successfully.";
 
 
-    /*
-      IMPORTANT:
+/*
+  Ask Deriv for active symbols.
+*/
 
-      No product_type.
-      No hardcoded symbol.
-    */
+requestSymbols();
 
-    socket.send(
-      JSON.stringify({
+};
 
-        active_symbols: "brief",
 
-        req_id: 1
+/*
+  MESSAGE.
+*/
 
-      })
-    );
+socket.onmessage = event => {
 
-  };
+let data;
 
 
-  /*
-    MESSAGE
-  */
+try {
 
-  socket.onmessage = event => {
+data =
+JSON.parse(
+event.data
+);
 
-    let data;
+}
 
+catch (error) {
 
-    try {
+debug.textContent =
+"Received non-JSON response.";
 
-      data =
-        JSON.parse(event.data);
+return;
 
-    }
+}
 
-    catch (e) {
 
-      return;
+console.log(
+"DERIV:",
+data
+);
 
-    }
 
+/*
+  Error.
+*/
 
-    console.log(
-      "DERIV:",
-      data
-    );
+if (data.error) {
 
+const message =
+data.error.message ||
+"Unknown Deriv error";
 
-    /*
-      ERROR
-    */
 
-    if (data.error) {
+showError(
+message
+);
 
-      showError(
-        data.error.message ||
-        "Unknown Deriv error"
-      );
 
+setStatus(
+"Deriv request error",
+"error"
+);
 
-      setStatus(
-        "Deriv rejected request",
-        "error"
-      );
 
+debug.textContent =
+JSON.stringify(
+data.error
+);
 
-      debug.textContent =
-        JSON.stringify(
-          data.error
-        );
+return;
 
+}
 
-      return;
 
-    }
+/*
+  Active symbols.
+*/
 
+if (
+data.msg_type ===
+"active_symbols"
+) {
 
-    /*
-      ACTIVE SYMBOLS
-    */
+const list =
+data.active_symbols || [];
 
-    if (
-      data.msg_type ===
-      "active_symbols"
-    ) {
 
-      const list =
-        data.active_symbols || [];
+const found =
+findV25(list);
 
 
-      console.log(
-        "ACTIVE SYMBOLS:",
-        list
-      );
+if (!found) {
 
+setStatus(
+"V25 not found",
+"error"
+);
 
-      const found =
-        findV25(list);
 
+showError(
+"Deriv did not return Volatility 25 (1s) in active_symbols."
+);
 
-      if (!found) {
 
-        /*
-          Don't fake a connection.
+const candidates =
+list
+.filter(item => {
 
-          Show the actual candidates
-          containing "25" so we can see
-          what Deriv is returning.
-        */
+const text =
+JSON.stringify(item)
+.toLowerCase();
 
-        const candidates =
-          list
-            .filter(item => {
+return (
+text.includes("25") ||
+text.includes("1hz")
+);
 
-              const text =
-                JSON.stringify(item)
-                  .toLowerCase();
+})
+.slice(0, 15);
 
-              return (
-                text.includes("25") ||
-                text.includes("1hz")
-              );
 
-            })
-            .slice(0, 20);
+debug.textContent =
+"Possible symbols returned: " +
+JSON.stringify(
+candidates
+);
 
+return;
 
-        setStatus(
-          "V25 not returned by Deriv",
-          "error"
-        );
+}
 
 
-        showError(
-          "V25 was not found in Deriv's active symbol list."
-        );
+/*
+  IMPORTANT:
+  New API uses underlying_symbol.
+*/
 
+selectedSymbol =
+found.underlying_symbol ||
+found.symbol;
 
-        debug.textContent =
-          "Candidates returned by Deriv: " +
-          JSON.stringify(candidates);
 
+/*
+  Get pip size if available.
+*/
 
-        return;
+pipSize =
+Number(
+found.pip_size ??
+found.pip
+) || null;
 
-      }
 
+symbol.textContent =
+selectedSymbol;
 
-      /*
-        Get the REAL symbol from Deriv.
-      */
 
-      selectedSymbol =
-        found.symbol ||
-        found.underlying_symbol;
+debug.textContent =
+"V25 confirmed by Deriv: " +
+selectedSymbol;
 
 
-      /*
-        Get pip size.
-      */
+startMarketData();
 
-      pipSize =
-        Number(
-          found.pip_size ??
-          found.pip
-        ) || null;
+}
 
 
-      symbol.textContent =
-        selectedSymbol;
+/*
+  Historical data.
+*/
 
+if (
+data.msg_type ===
+"history"
+) {
 
-      debug.textContent =
-        "V25 found. Symbol confirmed by Deriv: " +
-        selectedSymbol;
+handleHistory(
+data.history
+);
 
+}
 
-      setStatus(
-        "V25 found • Starting live stream..."
-      );
 
+/*
+  Live tick.
+*/
 
-      /*
-        NOW start history + live ticks.
-      */
+if (
+data.msg_type ===
+"tick"
+) {
 
-      startV25();
+handleTick(
+data.tick
+);
 
-    }
+}
 
+};
 
-    /*
-      HISTORY
-    */
 
-    if (
-      data.msg_type ===
-      "history"
-    ) {
+/*
+  CONNECTION ERROR.
+*/
 
-      handleHistory(
-        data.history
-      );
+socket.onerror = () => {
 
-    }
+setStatus(
+"WebSocket connection error",
+"error"
+);
 
 
-    /*
-      LIVE TICK
-    */
+showError(
+"The Deriv public WebSocket connection failed."
+);
 
-    if (
-      data.msg_type ===
-      "tick"
-    ) {
 
-      handleTick(
-        data.tick
-      );
+debug.textContent =
+"Browser could not maintain the Deriv WebSocket.";
 
-    }
+};
 
-  };
 
+/*
+  CONNECTION CLOSED.
+*/
 
-  /*
-    SOCKET ERROR
-  */
+socket.onclose = () => {
 
-  socket.onerror = () => {
+setStatus(
+"Disconnected",
+"error"
+);
 
-    setStatus(
-      "WebSocket error",
-      "error"
-    );
 
+debug.textContent =
+"Connection closed. Reconnecting...";
 
-    debug.textContent =
-      "The browser could not maintain the Deriv WebSocket connection.";
 
-  };
+scheduleReconnect();
 
+};
 
-  /*
-    SOCKET CLOSED
-  */
+}
 
-  socket.onclose = () => {
 
-    setStatus(
-      "Disconnected"
-    );
+/* =====================================================
+   RECONNECT
+   ===================================================== */
 
+function scheduleReconnect() {
 
-    if (
-      reconnectTimer
-    ) {
+if (reconnectTimer) {
 
-      clearTimeout(
-        reconnectTimer
-      );
+clearTimeout(
+reconnectTimer
+);
 
-    }
+}
 
 
-    reconnectTimer =
-      setTimeout(
-        connect,
-        3000
-      );
+reconnectTimer =
+setTimeout(
+() => {
 
-  };
+connect();
+
+},
+3000
+);
 
 }
 
@@ -1875,7 +1914,6 @@ function connect() {
    ===================================================== */
 
 connect();
-
 
 </script>
 
