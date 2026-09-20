@@ -1,12 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
 
 <title>V25 (1s) Digit Analyzer</title>
 
 <style>
+
 * {
     box-sizing: border-box;
 }
@@ -213,7 +217,19 @@ button.active {
     margin-top: 12px;
 }
 
+.error-box {
+    display: none;
+    margin-top: 15px;
+    padding: 12px;
+    border-radius: 10px;
+    background: #321725;
+    border: 1px solid #6b2940;
+    color: #ff9aaa;
+    font-size: 13px;
+}
+
 @media(max-width: 800px) {
+
     .grid {
         grid-template-columns: repeat(2, 1fr);
     }
@@ -225,9 +241,11 @@ button.active {
     .two {
         grid-template-columns: 1fr;
     }
+
 }
 
 @media(max-width: 450px) {
+
     .container {
         padding: 12px;
     }
@@ -247,8 +265,11 @@ button.active {
     .big {
         font-size: 24px;
     }
+
 }
+
 </style>
+
 </head>
 
 <body>
@@ -256,15 +277,25 @@ button.active {
 <div class="container">
 
 <header>
+
     <h1>V25 (1s) Digit Analyzer</h1>
+
     <div class="subtitle">
         Live tick analysis for Volatility 25 (1s)
     </div>
 
     <div class="status">
+
         <span id="statusDot" class="dot"></span>
-        <span id="statusText">Connecting...</span>
+
+        <span id="statusText">
+            Connecting...
+        </span>
+
     </div>
+
+    <div id="errorBox" class="error-box"></div>
+
 </header>
 
 
@@ -273,73 +304,153 @@ button.active {
 <div class="grid">
 
     <div class="card">
-        <div class="card-title">CURRENT QUOTE</div>
-        <div id="quote" class="big">--</div>
+
+        <div class="card-title">
+            CURRENT QUOTE
+        </div>
+
+        <div id="quote" class="big">
+            --
+        </div>
+
     </div>
 
-    <div class="card">
-        <div class="card-title">LAST DIGIT</div>
-        <div id="lastDigit" class="big">--</div>
-    </div>
 
     <div class="card">
-        <div class="card-title">TICKS ANALYZED</div>
-        <div id="tickCount" class="big">0</div>
+
+        <div class="card-title">
+            LAST DIGIT
+        </div>
+
+        <div id="lastDigit" class="big">
+            --
+        </div>
+
     </div>
 
+
     <div class="card">
-        <div class="card-title">CURRENT STREAK</div>
-        <div id="streak" class="big">--</div>
+
+        <div class="card-title">
+            TICKS ANALYZED
+        </div>
+
+        <div id="tickCount" class="big">
+            0
+        </div>
+
+    </div>
+
+
+    <div class="card">
+
+        <div class="card-title">
+            CURRENT STREAK
+        </div>
+
+        <div id="streak" class="big">
+            --
+        </div>
+
     </div>
 
 </div>
 
 
-<!-- WINDOW -->
+<!-- WINDOWS -->
 
 <div class="controls">
 
-    <button class="window active" data-window="25">25</button>
-    <button class="window" data-window="50">50</button>
-    <button class="window" data-window="100">100</button>
-    <button class="window" data-window="500">500</button>
-    <button class="window" data-window="1000">1000</button>
+    <button class="window active"
+            data-window="25">
+        25
+    </button>
+
+    <button class="window"
+            data-window="50">
+        50
+    </button>
+
+    <button class="window"
+            data-window="100">
+        100
+    </button>
+
+    <button class="window"
+            data-window="500">
+        500
+    </button>
+
+    <button class="window"
+            data-window="1000">
+        1000
+    </button>
 
 </div>
 
 
-<!-- DIGIT DISTRIBUTION -->
+<!-- DIGITS -->
 
 <div class="section">
 
-<h2>Digit Distribution</h2>
+    <h2>
+        Digit Distribution
+    </h2>
 
-<div id="digits" class="digits"></div>
+    <div id="digits"
+         class="digits">
+    </div>
 
 </div>
 
 
-<!-- TWO COLUMNS -->
+<!-- OVER UNDER / EVEN ODD -->
 
 <div class="section two">
 
+
     <div class="card">
 
-        <h2>Over / Under 5</h2>
+        <h2>
+            Over / Under 5
+        </h2>
 
         <div class="stat-row">
-            <span>Under 5 (0–4)</span>
-            <strong id="under5">--</strong>
+
+            <span>
+                Under 5 (0–4)
+            </span>
+
+            <strong id="under5">
+                --
+            </strong>
+
         </div>
 
-        <div class="stat-row">
-            <span>Exactly 5</span>
-            <strong id="equal5">--</strong>
-        </div>
 
         <div class="stat-row">
-            <span>Over 5 (6–9)</span>
-            <strong id="over5">--</strong>
+
+            <span>
+                Exactly 5
+            </span>
+
+            <strong id="equal5">
+                --
+            </strong>
+
+        </div>
+
+
+        <div class="stat-row">
+
+            <span>
+                Over 5 (6–9)
+            </span>
+
+            <strong id="over5">
+                --
+            </strong>
+
         </div>
 
     </div>
@@ -347,16 +458,33 @@ button.active {
 
     <div class="card">
 
-        <h2>Even / Odd</h2>
+        <h2>
+            Even / Odd
+        </h2>
 
         <div class="stat-row">
-            <span>Even (0,2,4,6,8)</span>
-            <strong id="even">--</strong>
+
+            <span>
+                Even
+            </span>
+
+            <strong id="even">
+                --
+            </strong>
+
         </div>
 
+
         <div class="stat-row">
-            <span>Odd (1,3,5,7,9)</span>
-            <strong id="odd">--</strong>
+
+            <span>
+                Odd
+            </span>
+
+            <strong id="odd">
+                --
+            </strong>
+
         </div>
 
     </div>
@@ -368,11 +496,17 @@ button.active {
 
 <div class="section two">
 
+
     <div class="card">
 
-        <h2>Hot Digits</h2>
+        <h2>
+            Hot Digits
+        </h2>
 
-        <div id="hotDigits" class="value green">--</div>
+        <div id="hotDigits"
+             class="value green">
+            --
+        </div>
 
         <div class="note">
             Highest frequency within the selected window.
@@ -383,9 +517,14 @@ button.active {
 
     <div class="card">
 
-        <h2>Cold Digits</h2>
+        <h2>
+            Cold Digits
+        </h2>
 
-        <div id="coldDigits" class="value red">--</div>
+        <div id="coldDigits"
+             class="value red">
+            --
+        </div>
 
         <div class="note">
             Lowest frequency within the selected window.
@@ -400,21 +539,47 @@ button.active {
 
 <div class="section card">
 
-    <h2>Digit Streak</h2>
+    <h2>
+        Digit Streak
+    </h2>
+
 
     <div class="stat-row">
-        <span>Current digit</span>
-        <strong id="streakDigit">--</strong>
+
+        <span>
+            Current digit
+        </span>
+
+        <strong id="streakDigit">
+            --
+        </strong>
+
     </div>
 
-    <div class="stat-row">
-        <span>Consecutive appearances</span>
-        <strong id="streakLength">--</strong>
-    </div>
 
     <div class="stat-row">
-        <span>Longest streak in window</span>
-        <strong id="longestStreak">--</strong>
+
+        <span>
+            Consecutive appearances
+        </span>
+
+        <strong id="streakLength">
+            --
+        </strong>
+
+    </div>
+
+
+    <div class="stat-row">
+
+        <span>
+            Longest streak
+        </span>
+
+        <strong id="longestStreak">
+            --
+        </strong>
+
     </div>
 
 </div>
@@ -424,9 +589,13 @@ button.active {
 
 <div class="section card">
 
-    <h2>Recent Digits</h2>
+    <h2>
+        Recent Digits
+    </h2>
 
-    <div id="recent" class="recent"></div>
+    <div id="recent"
+         class="recent">
+    </div>
 
     <div class="note">
         Newest tick appears on the right.
@@ -439,27 +608,56 @@ button.active {
 
 <div class="section card">
 
-    <h2>Analyzer Information</h2>
+    <h2>
+        Analyzer Information
+    </h2>
+
 
     <div class="stat-row">
-        <span>Detected symbol</span>
-        <strong id="symbol">--</strong>
+
+        <span>
+            Detected symbol
+        </span>
+
+        <strong id="symbol">
+            --
+        </strong>
+
     </div>
 
-    <div class="stat-row">
-        <span>Analysis window</span>
-        <strong id="windowLabel">25 ticks</strong>
-    </div>
 
     <div class="stat-row">
-        <span>Connection</span>
-        <strong id="connection">Connecting</strong>
+
+        <span>
+            Analysis window
+        </span>
+
+        <strong id="windowLabel">
+            25 ticks
+        </strong>
+
     </div>
+
+
+    <div class="stat-row">
+
+        <span>
+            Connection
+        </span>
+
+        <strong id="connection">
+            Connecting
+        </strong>
+
+    </div>
+
 
     <div class="note">
-        This dashboard analyzes historical and live tick data.
-        Historical digit frequency does not guarantee the next digit.
-        It is an analysis tool, not a guaranteed prediction system.
+
+        This dashboard analyzes historical and live
+        tick data. Historical digit frequency does not
+        guarantee the next digit.
+
     </div>
 
 </div>
@@ -469,12 +667,23 @@ button.active {
 
 <script>
 
-const WS_URL = "wss://ws.binaryws.com/websockets/v3";
+
+/* =========================================
+   DERIV CONNECTION
+========================================= */
+
+const WS_URL =
+    "wss://ws.binaryws.com/websockets/v3";
+
 
 let socket = null;
+
 let symbol = null;
 
+let pipSize = null;
+
 let ticks = [];
+
 let digits = [];
 
 let selectedWindow = 25;
@@ -482,84 +691,175 @@ let selectedWindow = 25;
 const MAX_TICKS = 2000;
 
 
-/* -----------------------------
-   UI ELEMENTS
------------------------------ */
+/* =========================================
+   ELEMENTS
+========================================= */
 
-const quoteEl = document.getElementById("quote");
-const lastDigitEl = document.getElementById("lastDigit");
-const tickCountEl = document.getElementById("tickCount");
+const quoteEl =
+    document.getElementById("quote");
 
-const streakEl = document.getElementById("streak");
+const lastDigitEl =
+    document.getElementById("lastDigit");
 
-const statusText = document.getElementById("statusText");
-const statusDot = document.getElementById("statusDot");
+const tickCountEl =
+    document.getElementById("tickCount");
 
-const symbolEl = document.getElementById("symbol");
-const connectionEl = document.getElementById("connection");
+const streakEl =
+    document.getElementById("streak");
 
-const digitsEl = document.getElementById("digits");
+const statusText =
+    document.getElementById("statusText");
 
-const under5El = document.getElementById("under5");
-const equal5El = document.getElementById("equal5");
-const over5El = document.getElementById("over5");
+const statusDot =
+    document.getElementById("statusDot");
 
-const evenEl = document.getElementById("even");
-const oddEl = document.getElementById("odd");
+const symbolEl =
+    document.getElementById("symbol");
 
-const hotDigitsEl = document.getElementById("hotDigits");
-const coldDigitsEl = document.getElementById("coldDigits");
+const connectionEl =
+    document.getElementById("connection");
 
-const streakDigitEl = document.getElementById("streakDigit");
-const streakLengthEl = document.getElementById("streakLength");
-const longestStreakEl = document.getElementById("longestStreak");
+const digitsEl =
+    document.getElementById("digits");
 
-const recentEl = document.getElementById("recent");
+const under5El =
+    document.getElementById("under5");
 
-const windowLabelEl = document.getElementById("windowLabel");
+const equal5El =
+    document.getElementById("equal5");
+
+const over5El =
+    document.getElementById("over5");
+
+const evenEl =
+    document.getElementById("even");
+
+const oddEl =
+    document.getElementById("odd");
+
+const hotDigitsEl =
+    document.getElementById("hotDigits");
+
+const coldDigitsEl =
+    document.getElementById("coldDigits");
+
+const streakDigitEl =
+    document.getElementById("streakDigit");
+
+const streakLengthEl =
+    document.getElementById("streakLength");
+
+const longestStreakEl =
+    document.getElementById("longestStreak");
+
+const recentEl =
+    document.getElementById("recent");
+
+const windowLabelEl =
+    document.getElementById("windowLabel");
+
+const errorBox =
+    document.getElementById("errorBox");
 
 
-/* -----------------------------
+/* =========================================
+   ERROR DISPLAY
+========================================= */
+
+function showError(message) {
+
+    errorBox.style.display = "block";
+
+    errorBox.textContent =
+        message;
+
+}
+
+
+function hideError() {
+
+    errorBox.style.display = "none";
+
+}
+
+
+/* =========================================
    WINDOW BUTTONS
------------------------------ */
+========================================= */
 
-document.querySelectorAll(".window").forEach(button => {
+document
+    .querySelectorAll(".window")
+    .forEach(button => {
 
-    button.addEventListener("click", () => {
+        button.addEventListener("click", () => {
 
-        document.querySelectorAll(".window")
-            .forEach(b => b.classList.remove("active"));
+            document
+                .querySelectorAll(".window")
+                .forEach(b =>
+                    b.classList.remove("active")
+                );
 
-        button.classList.add("active");
+            button.classList.add("active");
 
-        selectedWindow = Number(button.dataset.window);
+            selectedWindow =
+                Number(button.dataset.window);
 
-        windowLabelEl.textContent =
-            selectedWindow + " ticks";
+            windowLabelEl.textContent =
+                selectedWindow + " ticks";
 
-        updateAnalyzer();
+            updateAnalyzer();
+
+        });
+
     });
 
-});
 
-
-/* -----------------------------
-   CONNECT
------------------------------ */
+/* =========================================
+   CONNECT TO DERIV
+========================================= */
 
 function connect() {
 
-    statusText.textContent = "Connecting...";
-    connectionEl.textContent = "Connecting";
+    statusText.textContent =
+        "Connecting...";
 
-    socket = new WebSocket(WS_URL);
+    connectionEl.textContent =
+        "Connecting";
+
+    statusDot.classList.remove("live");
+
+    hideError();
+
+
+    try {
+
+        socket =
+            new WebSocket(WS_URL);
+
+    } catch(error) {
+
+        showError(
+            "Could not create WebSocket connection."
+        );
+
+        scheduleReconnect();
+
+        return;
+
+    }
+
 
     socket.onopen = () => {
 
-        statusText.textContent = "Connected";
+        statusText.textContent =
+            "Connected";
+
+        connectionEl.textContent =
+            "Connected";
+
         statusDot.classList.add("live");
 
-        connectionEl.textContent = "Connected";
+        hideError();
 
         requestSymbols();
 
@@ -570,13 +870,17 @@ function connect() {
 
         try {
 
-            const data = JSON.parse(event.data);
+            const data =
+                JSON.parse(event.data);
 
             handleMessage(data);
 
         } catch(error) {
 
-            console.log("Message error:", error);
+            console.log(
+                "Message parsing error:",
+                error
+            );
 
         }
 
@@ -585,84 +889,190 @@ function connect() {
 
     socket.onerror = () => {
 
-        statusText.textContent = "Connection error";
-        connectionEl.textContent = "Error";
+        statusText.textContent =
+            "Connection error";
+
+        connectionEl.textContent =
+            "Connection error";
+
+        statusDot.classList.remove("live");
 
     };
 
 
     socket.onclose = () => {
 
-        statusText.textContent = "Disconnected";
+        statusText.textContent =
+            "Disconnected";
+
+        connectionEl.textContent =
+            "Disconnected";
+
         statusDot.classList.remove("live");
 
-        connectionEl.textContent = "Disconnected";
-
-        setTimeout(connect, 3000);
+        scheduleReconnect();
 
     };
 
 }
 
 
-/* -----------------------------
-   FIND V25 1 SECOND SYMBOL
------------------------------ */
+/* =========================================
+   RECONNECT
+========================================= */
 
-function requestSymbols() {
+let reconnectTimer = null;
 
-    socket.send(JSON.stringify({
-        active_symbols: "full",
-        product_type: "basic",
-        req_id: 1
-    }));
+
+function scheduleReconnect() {
+
+    if (reconnectTimer) return;
+
+    reconnectTimer =
+        setTimeout(() => {
+
+            reconnectTimer = null;
+
+            connect();
+
+        }, 3000);
 
 }
 
 
-/* -----------------------------
-   HANDLE API MESSAGES
------------------------------ */
+/* =========================================
+   REQUEST ACTIVE SYMBOLS
+========================================= */
+
+function requestSymbols() {
+
+    socket.send(
+        JSON.stringify({
+
+            active_symbols: "brief",
+
+            req_id: 1
+
+        })
+    );
+
+}
+
+
+/* =========================================
+   HANDLE MESSAGES
+========================================= */
 
 function handleMessage(data) {
 
+
+    /* API ERROR */
+
     if (data.error) {
 
-        console.log(data.error);
+        const message =
+            data.error.message ||
+            "Deriv API error";
+
+        showError(message);
 
         statusText.textContent =
-            data.error.message || "API error";
+            "API error";
+
+        connectionEl.textContent =
+            "API error";
+
+        console.log(
+            "Deriv error:",
+            data.error
+        );
 
         return;
+
     }
 
 
-    /* ACTIVE SYMBOLS */
+    /* =====================================
+       ACTIVE SYMBOLS
+    ===================================== */
 
     if (data.msg_type === "active_symbols") {
 
-        const symbols = data.active_symbols || [];
+        const symbols =
+            data.active_symbols || [];
 
-        let found = symbols.find(item => {
 
-            const name =
-                String(item.display_name || "");
-
-            return /Volatility\s*25\s*\(1s\)/i.test(name);
-
-        });
+        console.log(
+            "Active symbols received:",
+            symbols.length
+        );
 
 
         /*
-         Fallback for the commonly used
-         V25 1-second symbol.
+          Current Deriv API:
+          underlying_symbol
+          underlying_symbol_name
+          pip_size
+        */
+
+        let found =
+            symbols.find(item => {
+
+                const name =
+                    String(
+                        item.underlying_symbol_name ||
+                        ""
+                    );
+
+                return /Volatility\s*25\s*\(1s\)/i
+                    .test(name);
+
+            });
+
+
+        /*
+          Fallback by symbol.
         */
 
         if (!found) {
 
-            found = symbols.find(item =>
-                item.symbol === "1HZ25V"
-            );
+            found =
+                symbols.find(item => {
+
+                    const currentSymbol =
+                        String(
+                            item.underlying_symbol ||
+                            ""
+                        );
+
+                    return currentSymbol ===
+                        "1HZ25V";
+
+                });
+
+        }
+
+
+        /*
+          Compatibility fallback
+          for older responses.
+        */
+
+        if (!found) {
+
+            found =
+                symbols.find(item => {
+
+                    const name =
+                        String(
+                            item.display_name ||
+                            ""
+                        );
+
+                    return /Volatility\s*25\s*\(1s\)/i
+                        .test(name);
+
+                });
 
         }
 
@@ -670,76 +1080,194 @@ function handleMessage(data) {
         if (!found) {
 
             statusText.textContent =
-                "V25 (1s) symbol not found";
+                "V25 symbol not found";
+
+            connectionEl.textContent =
+                "Symbol not found";
+
+            showError(
+                "Deriv connected, but V25 (1s) was not found in active symbols."
+            );
+
+            console.log(
+                "Available symbols:",
+                symbols
+            );
 
             return;
 
         }
 
 
-        symbol = found.symbol;
+        /*
+          Get current symbol.
+        */
+
+        symbol =
+            found.underlying_symbol ||
+            found.symbol;
+
+
+        /*
+          Store pip size.
+        */
+
+        pipSize =
+            found.pip_size ??
+            found.pip ??
+            null;
+
+
+        /*
+          Display symbol.
+        */
 
         symbolEl.textContent =
-            found.display_name || symbol;
+            found.underlying_symbol_name ||
+            found.display_name ||
+            symbol;
+
+
+        console.log(
+            "Selected V25 symbol:",
+            symbol
+        );
+
+        console.log(
+            "Pip size:",
+            pipSize
+        );
+
+
+        statusText.textContent =
+            "V25 found";
+
+        connectionEl.textContent =
+            "Loading data";
+
 
         requestHistory();
 
         return;
+
     }
 
 
-    /* HISTORICAL TICKS */
+    /* =====================================
+       HISTORY
+    ===================================== */
 
     if (data.msg_type === "history") {
 
         const history =
             data.history || {};
 
+
         const prices =
             history.prices || [];
+
 
         const times =
             history.times || [];
 
 
-        for (let i = 0; i < prices.length; i++) {
+        ticks = [];
+
+
+        for (
+            let i = 0;
+            i < prices.length;
+            i++
+        ) {
 
             ticks.push({
+
                 quote: prices[i],
+
                 epoch: times[i]
+
             });
 
         }
 
 
-        ticks = ticks.slice(-MAX_TICKS);
+        ticks =
+            ticks.slice(-MAX_TICKS);
 
-        digits = ticks
-            .map(tick => getLastDigit(tick.quote))
-            .filter(d => d !== null);
+
+        digits =
+            ticks
+                .map(tick =>
+                    getLastDigit(
+                        tick.quote,
+                        pipSize
+                    )
+                )
+                .filter(
+                    digit =>
+                        digit !== null
+                );
+
+
+        tickCountEl.textContent =
+            digits.length;
 
 
         updateAnalyzer();
 
+
+        statusText.textContent =
+            "Live";
+
+        connectionEl.textContent =
+            "Live";
+
+        statusDot.classList.add("live");
+
+
         subscribeTicks();
 
         return;
+
     }
 
 
-    /* LIVE TICK */
+    /* =====================================
+       LIVE TICK
+    ===================================== */
 
     if (data.msg_type === "tick") {
 
-        const tick = data.tick;
+        const tick =
+            data.tick;
+
 
         if (!tick) return;
 
 
+        const quote =
+            tick.quote;
+
+
+        /*
+          Tick pip_size may be missing
+          in the current API, so use
+          the symbol's stored pip size.
+        */
+
+        const currentPipSize =
+            tick.pip_size ??
+            pipSize;
+
+
         ticks.push({
-            quote: tick.quote,
+
+            quote: quote,
+
             epoch: tick.epoch,
-            pip_size: tick.pip_size
+
+            pip_size: currentPipSize
+
         });
 
 
@@ -752,8 +1280,8 @@ function handleMessage(data) {
 
         const digit =
             getLastDigit(
-                tick.quote,
-                tick.pip_size
+                quote,
+                currentPipSize
             );
 
 
@@ -773,17 +1301,28 @@ function handleMessage(data) {
 
         quoteEl.textContent =
             formatQuote(
-                tick.quote,
-                tick.pip_size
+                quote,
+                currentPipSize
             );
 
 
         lastDigitEl.textContent =
-            digit === null ? "--" : digit;
+            digit === null
+                ? "--"
+                : digit;
 
 
         tickCountEl.textContent =
             digits.length;
+
+
+        statusText.textContent =
+            "Live";
+
+        connectionEl.textContent =
+            "Live";
+
+        statusDot.classList.add("live");
 
 
         updateAnalyzer();
@@ -793,80 +1332,157 @@ function handleMessage(data) {
 }
 
 
-/* -----------------------------
-   HISTORY
------------------------------ */
+/* =========================================
+   REQUEST HISTORY
+========================================= */
 
 function requestHistory() {
 
-    socket.send(JSON.stringify({
+    if (!symbol) {
 
-        ticks_history: symbol,
+        showError(
+            "No symbol selected."
+        );
 
-        adjust_start_time: 1,
+        return;
 
-        count: 1000,
+    }
 
-        end: "latest",
 
-        style: "ticks",
+    socket.send(
+        JSON.stringify({
 
-        req_id: 2
+            ticks_history: symbol,
 
-    }));
+            count: 1000,
+
+            end: "latest",
+
+            style: "ticks",
+
+            req_id: 2
+
+        })
+    );
 
 }
 
 
-/* -----------------------------
+/* =========================================
    LIVE SUBSCRIPTION
------------------------------ */
+========================================= */
 
 function subscribeTicks() {
 
-    socket.send(JSON.stringify({
+    if (!symbol) return;
 
-        ticks: symbol,
 
-        subscribe: 1,
+    socket.send(
+        JSON.stringify({
 
-        req_id: 3
+            ticks: symbol,
 
-    }));
+            subscribe: 1,
+
+            req_id: 3
+
+        })
+    );
 
 }
 
 
-/* -----------------------------
-   GET LAST DIGIT
------------------------------ */
+/* =========================================
+   DECIMAL PLACES
+========================================= */
 
-function getLastDigit(quote, pipSize) {
+function decimalPlacesFromPipSize(value) {
 
-    if (quote === undefined ||
-        quote === null) {
+    const pip =
+        Number(value);
+
+
+    if (!Number.isFinite(pip) ||
+        pip <= 0) {
 
         return null;
 
     }
 
 
-    let decimals;
+    /*
+      Examples:
+
+      1    -> 0 decimals
+      0.1  -> 1 decimal
+      0.01 -> 2 decimals
+      0.001 -> 3 decimals
+    */
+
+    const text =
+        pip.toString();
 
 
-    if (pipSize !== undefined &&
-        pipSize !== null &&
-        Number.isFinite(Number(pipSize))) {
+    if (text.includes("e-")) {
 
-        decimals = Number(pipSize);
+        const parts =
+            text.split("e-");
 
-    } else {
+        return Number(parts[1]);
+
+    }
+
+
+    const decimal =
+        text.split(".")[1];
+
+
+    return decimal
+        ? decimal.length
+        : 0;
+
+}
+
+
+/* =========================================
+   GET LAST DIGIT
+========================================= */
+
+function getLastDigit(
+    quote,
+    currentPipSize
+) {
+
+    if (
+        quote === undefined ||
+        quote === null
+    ) {
+
+        return null;
+
+    }
+
+
+    let decimals =
+        decimalPlacesFromPipSize(
+            currentPipSize
+        );
+
+
+    /*
+      If pip size isn't available,
+      infer decimal places from quote.
+    */
+
+    if (decimals === null) {
 
         const text =
             String(quote);
 
+
         const decimalPart =
             text.split(".")[1];
+
 
         decimals =
             decimalPart
@@ -877,51 +1493,75 @@ function getLastDigit(quote, pipSize) {
 
 
     const fixed =
-        Number(quote).toFixed(decimals);
+        Number(quote)
+            .toFixed(decimals);
 
 
-    const last =
+    const lastCharacter =
         fixed.charAt(
             fixed.length - 1
         );
 
 
-    if (!/[0-9]/.test(last)) {
+    if (
+        !/[0-9]/.test(
+            lastCharacter
+        )
+    ) {
 
         return null;
 
     }
 
 
-    return Number(last);
+    return Number(
+        lastCharacter
+    );
 
 }
 
 
-/* -----------------------------
+/* =========================================
    FORMAT QUOTE
------------------------------ */
+========================================= */
 
-function formatQuote(quote, pipSize) {
+function formatQuote(
+    quote,
+    currentPipSize
+) {
 
-    if (quote === undefined) return "--";
+    if (
+        quote === undefined ||
+        quote === null
+    ) {
 
-    if (pipSize !== undefined &&
-        pipSize !== null) {
-
-        return Number(quote)
-            .toFixed(Number(pipSize));
+        return "--";
 
     }
+
+
+    const decimals =
+        decimalPlacesFromPipSize(
+            currentPipSize
+        );
+
+
+    if (decimals !== null) {
+
+        return Number(quote)
+            .toFixed(decimals);
+
+    }
+
 
     return String(quote);
 
 }
 
 
-/* -----------------------------
+/* =========================================
    UPDATE ANALYZER
------------------------------ */
+========================================= */
 
 function updateAnalyzer() {
 
@@ -929,7 +1569,9 @@ function updateAnalyzer() {
 
 
     const data =
-        digits.slice(-selectedWindow);
+        digits.slice(
+            -selectedWindow
+        );
 
 
     const counts =
@@ -938,8 +1580,10 @@ function updateAnalyzer() {
 
     data.forEach(digit => {
 
-        if (digit >= 0 &&
-            digit <= 9) {
+        if (
+            digit >= 0 &&
+            digit <= 9
+        ) {
 
             counts[digit]++;
 
@@ -952,25 +1596,37 @@ function updateAnalyzer() {
         data.length;
 
 
-    /* DIGIT CARDS */
+    /* =====================================
+       DIGIT DISTRIBUTION
+    ===================================== */
 
     digitsEl.innerHTML = "";
 
 
-    for (let digit = 0; digit <= 9; digit++) {
+    for (
+        let digit = 0;
+        digit <= 9;
+        digit++
+    ) {
 
-        const count = counts[digit];
+        const count =
+            counts[digit];
+
 
         const percent =
             total
-            ? (count / total) * 100
-            : 0;
+                ? (count / total) * 100
+                : 0;
 
 
         const card =
-            document.createElement("div");
+            document.createElement(
+                "div"
+            );
 
-        card.className = "digit";
+
+        card.className =
+            "digit";
 
 
         card.innerHTML = `
@@ -991,7 +1647,13 @@ function updateAnalyzer() {
 
                 <div
                     class="bar"
-                    style="width:${Math.min(percent * 3,100)}%"
+                    style="
+                        width:
+                        ${Math.min(
+                            percent * 3,
+                            100
+                        )}%
+                    "
                 ></div>
 
             </div>
@@ -999,64 +1661,109 @@ function updateAnalyzer() {
         `;
 
 
-        digitsEl.appendChild(card);
+        digitsEl.appendChild(
+            card
+        );
 
     }
 
 
-    /* OVER / UNDER */
+    /* =====================================
+       OVER / UNDER
+    ===================================== */
 
     const under5 =
-        data.filter(d => d < 5).length;
+        data.filter(
+            digit => digit < 5
+        ).length;
+
 
     const equal5 =
-        data.filter(d => d === 5).length;
+        data.filter(
+            digit => digit === 5
+        ).length;
+
 
     const over5 =
-        data.filter(d => d > 5).length;
+        data.filter(
+            digit => digit > 5
+        ).length;
 
 
     under5El.textContent =
-        percentage(under5, total);
+        percentage(
+            under5,
+            total
+        );
+
 
     equal5El.textContent =
-        percentage(equal5, total);
+        percentage(
+            equal5,
+            total
+        );
+
 
     over5El.textContent =
-        percentage(over5, total);
+        percentage(
+            over5,
+            total
+        );
 
 
-    /* EVEN / ODD */
+    /* =====================================
+       EVEN / ODD
+    ===================================== */
 
     const even =
-        data.filter(d => d % 2 === 0).length;
+        data.filter(
+            digit =>
+                digit % 2 === 0
+        ).length;
+
 
     const odd =
-        data.filter(d => d % 2 !== 0).length;
+        data.filter(
+            digit =>
+                digit % 2 !== 0
+        ).length;
 
 
     evenEl.textContent =
-        percentage(even, total);
+        percentage(
+            even,
+            total
+        );
+
 
     oddEl.textContent =
-        percentage(odd, total);
+        percentage(
+            odd,
+            total
+        );
 
 
-    /* HOT / COLD */
+    /* =====================================
+       HOT / COLD
+    ===================================== */
 
     const sorted =
         counts
-        .map((count, digit) => ({
-            digit,
-            count
-        }))
-        .sort((a,b) =>
-            b.count - a.count
-        );
+            .map(
+                (count, digit) => ({
+                    digit: digit,
+                    count: count
+                })
+            )
+            .sort(
+                (a, b) =>
+                    b.count - a.count
+            );
 
 
     const highest =
         sorted[0].count;
+
 
     const lowest =
         sorted[sorted.length - 1].count;
@@ -1064,14 +1771,26 @@ function updateAnalyzer() {
 
     const hot =
         sorted
-        .filter(x => x.count === highest)
-        .map(x => x.digit);
+            .filter(
+                item =>
+                    item.count === highest
+            )
+            .map(
+                item =>
+                    item.digit
+            );
 
 
     const cold =
         sorted
-        .filter(x => x.count === lowest)
-        .map(x => x.digit);
+            .filter(
+                item =>
+                    item.count === lowest
+            )
+            .map(
+                item =>
+                    item.digit
+            );
 
 
     hotDigitsEl.textContent =
@@ -1082,32 +1801,46 @@ function updateAnalyzer() {
         cold.join(", ");
 
 
-    /* STREAK */
+    /* =====================================
+       STREAK
+    ===================================== */
 
     updateStreak(data);
 
-    /* RECENT DIGITS */
+
+    /* =====================================
+       RECENT DIGITS
+    ===================================== */
 
     recentEl.innerHTML = "";
 
 
-    data.slice(-30).forEach(digit => {
+    data
+        .slice(-30)
+        .forEach(digit => {
 
-        const span =
-            document.createElement("span");
+            const span =
+                document.createElement(
+                    "span"
+                );
 
-        span.textContent = digit;
 
-        recentEl.appendChild(span);
+            span.textContent =
+                digit;
 
-    });
+
+            recentEl.appendChild(
+                span
+            );
+
+        });
 
 }
 
 
-/* -----------------------------
+/* =========================================
    STREAK ANALYSIS
------------------------------ */
+========================================= */
 
 function updateStreak(data) {
 
@@ -1127,7 +1860,9 @@ function updateStreak(data) {
         i--
     ) {
 
-        if (data[i] === current) {
+        if (
+            data[i] === current
+        ) {
 
             currentLength++;
 
@@ -1141,12 +1876,20 @@ function updateStreak(data) {
 
 
     let longest = 1;
+
     let running = 1;
 
 
-    for (let i = 1; i < data.length; i++) {
+    for (
+        let i = 1;
+        i < data.length;
+        i++
+    ) {
 
-        if (data[i] === data[i - 1]) {
+        if (
+            data[i] ===
+            data[i - 1]
+        ) {
 
             running++;
 
@@ -1157,9 +1900,12 @@ function updateStreak(data) {
         }
 
 
-        if (running > longest) {
+        if (
+            running > longest
+        ) {
 
-            longest = running;
+            longest =
+                running;
 
         }
 
@@ -1169,26 +1915,38 @@ function updateStreak(data) {
     streakDigitEl.textContent =
         current;
 
+
     streakLengthEl.textContent =
         currentLength;
+
 
     longestStreakEl.textContent =
         longest;
 
 
     streakEl.textContent =
-        current + " × " + currentLength;
+        current +
+        " × " +
+        currentLength;
 
 }
 
 
-/* -----------------------------
+/* =========================================
    PERCENTAGE
------------------------------ */
+========================================= */
 
-function percentage(value, total) {
+function percentage(
+    value,
+    total
+) {
 
-    if (!total) return "0.0%";
+    if (!total) {
+
+        return "0.0%";
+
+    }
+
 
     return (
         (value / total) * 100
@@ -1197,9 +1955,9 @@ function percentage(value, total) {
 }
 
 
-/* -----------------------------
+/* =========================================
    START
------------------------------ */
+========================================= */
 
 connect();
 
