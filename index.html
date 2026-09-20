@@ -1,27 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
   <title>V25 Digit Analyzer</title>
 
   <style>
+
     * {
       box-sizing: border-box;
     }
 
     body {
       margin: 0;
+      background: #080d19;
+      color: #ffffff;
       font-family: Arial, sans-serif;
-      background: #0b1020;
-      color: white;
     }
 
     .container {
       max-width: 1100px;
       margin: auto;
-      padding: 20px;
+      padding: 18px;
     }
 
     header {
@@ -30,12 +37,13 @@
     }
 
     h1 {
-      margin-bottom: 6px;
+      margin: 0;
       font-size: 28px;
     }
 
     .subtitle {
       color: #9ca3af;
+      margin-top: 7px;
       font-size: 14px;
     }
 
@@ -45,79 +53,84 @@
       padding: 7px 14px;
       border-radius: 20px;
       background: #374151;
+      color: #e5e7eb;
       font-size: 13px;
     }
 
-    .status.connected {
+    .connected {
       background: #14532d;
       color: #86efac;
     }
 
-    .status.error {
+    .error {
       background: #7f1d1d;
       color: #fecaca;
     }
 
+    .warning {
+      background: #78350f;
+      color: #fde68a;
+    }
+
     .error-box {
       display: none;
-      background: #3f1212;
-      border: 1px solid #7f1d1d;
-      color: #fecaca;
+      margin-bottom: 15px;
       padding: 12px;
       border-radius: 10px;
-      margin-bottom: 15px;
+      background: #351010;
+      border: 1px solid #7f1d1d;
+      color: #fecaca;
       font-size: 13px;
       word-break: break-word;
-    }
-
-    .top-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin-bottom: 15px;
-    }
-
-    .card {
-      background: #151b2f;
-      border: 1px solid #27304a;
-      border-radius: 14px;
-      padding: 16px;
-    }
-
-    .card-title {
-      color: #9ca3af;
-      font-size: 13px;
-      margin-bottom: 8px;
-    }
-
-    .big-value {
-      font-size: 27px;
-      font-weight: bold;
     }
 
     .grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 15px;
+      gap: 14px;
+    }
+
+    .top-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    .card {
+      background: #121a2b;
+      border: 1px solid #27324a;
+      border-radius: 14px;
+      padding: 16px;
     }
 
     .full {
       grid-column: 1 / -1;
     }
 
+    .label {
+      color: #9ca3af;
+      font-size: 13px;
+      margin-bottom: 8px;
+    }
+
+    .big {
+      font-size: 27px;
+      font-weight: bold;
+    }
+
     .digits {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
       gap: 8px;
-      margin-top: 10px;
     }
 
     .digit {
-      background: #0e1426;
-      border: 1px solid #28324d;
-      border-radius: 10px;
-      padding: 10px;
       text-align: center;
+      background: #0b1220;
+      border: 1px solid #27324a;
+      border-radius: 10px;
+      padding: 12px 5px;
     }
 
     .digit-number {
@@ -131,24 +144,16 @@
       margin-top: 4px;
     }
 
-    .hot {
-      border-color: #f59e0b;
-    }
-
-    .cold {
-      border-color: #3b82f6;
-    }
-
-    .stats-grid {
+    .stats {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 10px;
     }
 
     .stat {
-      background: #0e1426;
-      padding: 12px;
+      background: #0b1220;
       border-radius: 10px;
+      padding: 12px;
     }
 
     .stat-label {
@@ -157,35 +162,28 @@
     }
 
     .stat-value {
+      font-size: 20px;
+      font-weight: bold;
       margin-top: 5px;
+    }
+
+    .signal {
+      background: #0b1220;
+      border-radius: 10px;
+      padding: 15px;
       font-size: 20px;
       font-weight: bold;
     }
 
-    .signal {
-      font-size: 22px;
-      font-weight: bold;
-      padding: 14px;
-      background: #0e1426;
-      border-radius: 10px;
-      margin-top: 10px;
-    }
-
-    .warning {
-      color: #fbbf24;
-      font-size: 12px;
-      line-height: 1.5;
-      margin-top: 10px;
-    }
-
-    .debug {
+    .small {
       color: #9ca3af;
-      font-size: 11px;
+      font-size: 12px;
       margin-top: 10px;
-      word-break: break-word;
+      line-height: 1.5;
     }
 
-    @media (max-width: 700px) {
+    @media(max-width:700px) {
+
       .top-grid {
         grid-template-columns: 1fr;
       }
@@ -194,1164 +192,1479 @@
         grid-template-columns: 1fr;
       }
 
-      .digits {
-        grid-template-columns: repeat(5, 1fr);
+      .full {
+        grid-column: auto;
       }
 
       h1 {
         font-size: 23px;
       }
+
     }
+
   </style>
+
 </head>
+
 
 <body>
 
 <div class="container">
 
+
   <header>
-    <h1>V25 (1s) Digit Analyzer</h1>
+
+    <h1>
+      V25 (1s) Digit Analyzer
+    </h1>
+
     <div class="subtitle">
       Live tick analysis for Volatility 25 (1s)
     </div>
 
-    <div id="status" class="status">
-      Connecting...
+    <div
+      id="status"
+      class="status"
+    >
+      Connecting to Deriv...
     </div>
+
   </header>
 
-  <div id="errorBox" class="error-box"></div>
+
+  <div
+    id="errorBox"
+    class="error-box"
+  ></div>
+
+
+  <!-- TOP -->
 
   <div class="top-grid">
 
-    <div class="card">
-      <div class="card-title">Current Quote</div>
-      <div id="quote" class="big-value">--</div>
-    </div>
 
     <div class="card">
-      <div class="card-title">Last Digit</div>
-      <div id="lastDigit" class="big-value">--</div>
+
+      <div class="label">
+        Current Quote
+      </div>
+
+      <div
+        id="quote"
+        class="big"
+      >
+        --
+      </div>
+
     </div>
 
+
     <div class="card">
-      <div class="card-title">Ticks Analyzed</div>
-      <div id="tickCount" class="big-value">0</div>
+
+      <div class="label">
+        Last Digit
+      </div>
+
+      <div
+        id="lastDigit"
+        class="big"
+      >
+        --
+      </div>
+
     </div>
+
+
+    <div class="card">
+
+      <div class="label">
+        Ticks Analyzed
+      </div>
+
+      <div
+        id="tickCount"
+        class="big"
+      >
+        0
+      </div>
+
+    </div>
+
 
   </div>
+
 
   <div class="grid">
 
+
+    <!-- DIGITS -->
+
     <div class="card full">
 
-      <div class="card-title">
-        Digit Frequency
+      <div class="label">
+        Digit Frequency — Latest 1000 Ticks
       </div>
 
-      <div id="digits" class="digits"></div>
+      <div
+        id="digits"
+        class="digits"
+      ></div>
 
     </div>
 
+
+    <!-- OVER UNDER -->
+
     <div class="card">
 
-      <div class="card-title">
+      <div class="label">
         Over / Under 5
       </div>
 
-      <div class="stats-grid">
+      <div class="stats">
+
 
         <div class="stat">
-          <div class="stat-label">Under 5 (0–4)</div>
-          <div id="under5" class="stat-value">--</div>
+
+          <div class="stat-label">
+            Under 5
+          </div>
+
+          <div
+            id="under5"
+            class="stat-value"
+          >
+            --
+          </div>
+
         </div>
 
-        <div class="stat">
-          <div class="stat-label">Exactly 5</div>
-          <div id="equal5" class="stat-value">--</div>
-        </div>
 
         <div class="stat">
-          <div class="stat-label">Over 5 (6–9)</div>
-          <div id="over5" class="stat-value">--</div>
+
+          <div class="stat-label">
+            Exactly 5
+          </div>
+
+          <div
+            id="equal5"
+            class="stat-value"
+          >
+            --
+          </div>
+
         </div>
 
+
         <div class="stat">
-          <div class="stat-label">Under + Over</div>
-          <div id="underOver" class="stat-value">--</div>
+
+          <div class="stat-label">
+            Over 5
+          </div>
+
+          <div
+            id="over5"
+            class="stat-value"
+          >
+            --
+          </div>
+
         </div>
+
+
+        <div class="stat">
+
+          <div class="stat-label">
+            Under + Over
+          </div>
+
+          <div
+            id="underOver"
+            class="stat-value"
+          >
+            --
+          </div>
+
+        </div>
+
 
       </div>
 
     </div>
 
+
+    <!-- EVEN ODD -->
+
     <div class="card">
 
-      <div class="card-title">
+      <div class="label">
         Even / Odd
       </div>
 
-      <div class="stats-grid">
+      <div class="stats">
+
 
         <div class="stat">
-          <div class="stat-label">Even</div>
-          <div id="even" class="stat-value">--</div>
+
+          <div class="stat-label">
+            Even
+          </div>
+
+          <div
+            id="even"
+            class="stat-value"
+          >
+            --
+          </div>
+
         </div>
 
+
         <div class="stat">
-          <div class="stat-label">Odd</div>
-          <div id="odd" class="stat-value">--</div>
+
+          <div class="stat-label">
+            Odd
+          </div>
+
+          <div
+            id="odd"
+            class="stat-value"
+          >
+            --
+          </div>
+
         </div>
+
 
       </div>
 
     </div>
+
+
+    <!-- HOT COLD -->
 
     <div class="card">
 
-      <div class="card-title">
-        Hot / Cold Digits
+      <div class="label">
+        Hot / Cold
       </div>
 
-      <div class="stats-grid">
+      <div class="stats">
+
 
         <div class="stat">
-          <div class="stat-label">Hot Digit</div>
-          <div id="hotDigit" class="stat-value">--</div>
+
+          <div class="stat-label">
+            Hot Digit
+          </div>
+
+          <div
+            id="hotDigit"
+            class="stat-value"
+          >
+            --
+          </div>
+
         </div>
 
+
         <div class="stat">
-          <div class="stat-label">Cold Digit</div>
-          <div id="coldDigit" class="stat-value">--</div>
+
+          <div class="stat-label">
+            Cold Digit
+          </div>
+
+          <div
+            id="coldDigit"
+            class="stat-value"
+          >
+            --
+          </div>
+
         </div>
+
 
       </div>
 
     </div>
+
+
+    <!-- SYMBOL -->
 
     <div class="card">
 
-      <div class="card-title">
-        Current Symbol
+      <div class="label">
+        Connected Symbol
       </div>
 
-      <div class="stats-grid">
-
-        <div class="stat">
-          <div class="stat-label">Symbol</div>
-          <div id="symbol" class="stat-value">--</div>
-        </div>
-
-        <div class="stat">
-          <div class="stat-label">Window</div>
-          <div id="window" class="stat-value">1000</div>
-        </div>
-
+      <div
+        id="symbol"
+        class="stat-value"
+      >
+        Searching...
       </div>
 
     </div>
+
+
+    <!-- SIGNAL -->
 
     <div class="card full">
 
-      <div class="card-title">
-        Analyzer Signal
+      <div class="label">
+        Statistical Analysis
       </div>
 
-      <div id="signal" class="signal">
-        Waiting for data...
+      <div
+        id="signal"
+        class="signal"
+      >
+        Waiting for live data...
       </div>
 
-      <div class="warning">
-        ⚠️ This analyzer describes historical tick statistics.
-        It does not guarantee the next digit and should not be treated as a guaranteed prediction.
+      <div class="small">
+        This is statistical information from previous ticks,
+        not a guaranteed prediction of the next digit.
       </div>
-
-      <div id="debug" class="debug"></div>
 
     </div>
 
+
+    <!-- DEBUG -->
+
+    <div class="card full">
+
+      <div class="label">
+        Connection Information
+      </div>
+
+      <div
+        id="debug"
+        class="small"
+      >
+        Waiting...
+      </div>
+
+    </div>
+
+
   </div>
+
 
 </div>
 
 
 <script>
 
-  /*
-    ==========================================
-    V25 DIGIT ANALYZER
-    ==========================================
-  */
 
-  const WS_URL =
-    "wss://ws.binaryws.com/websockets/v3?app_id=1089";
-
-  // Known symbol for Volatility 25 (1s)
-  const TARGET_SYMBOL = "1HZ25V";
-
-  const HISTORY_COUNT = 1000;
-
-  let socket = null;
-
-  let symbol = null;
-
-  let pipSize = null;
-
-  let ticks = [];
-
-  let connected = false;
-
-  let dataStarted = false;
+/* =====================================================
+   DERIV CONNECTION
+   ===================================================== */
 
 
-  /*
-    ==========================================
-    ELEMENTS
-    ==========================================
-  */
+/*
+  IMPORTANT:
 
-  const statusEl =
-    document.getElementById("status");
+  We are intentionally NOT using:
 
-  const errorBox =
-    document.getElementById("errorBox");
+  ?app_id=1089
 
-  const quoteEl =
-    document.getElementById("quote");
+  The public market-data WebSocket does not
+  require authentication.
+*/
 
-  const lastDigitEl =
-    document.getElementById("lastDigit");
-
-  const tickCountEl =
-    document.getElementById("tickCount");
-
-  const digitsEl =
-    document.getElementById("digits");
-
-  const under5El =
-    document.getElementById("under5");
-
-  const equal5El =
-    document.getElementById("equal5");
-
-  const over5El =
-    document.getElementById("over5");
-
-  const underOverEl =
-    document.getElementById("underOver");
-
-  const evenEl =
-    document.getElementById("even");
-
-  const oddEl =
-    document.getElementById("odd");
-
-  const hotDigitEl =
-    document.getElementById("hotDigit");
-
-  const coldDigitEl =
-    document.getElementById("coldDigit");
-
-  const symbolEl =
-    document.getElementById("symbol");
-
-  const signalEl =
-    document.getElementById("signal");
-
-  const debugEl =
-    document.getElementById("debug");
+const WS_URL =
+  "wss://ws.binaryws.com/websockets/v3";
 
 
-  /*
-    ==========================================
-    UI HELPERS
-    ==========================================
-  */
+/*
+  We are NOT going to blindly send 1HZ25V.
 
-  function setStatus(text, type = "") {
+  First we ask Deriv for the current active
+  symbol list.
 
-    statusEl.textContent = text;
+  Then we find V25 from that response.
+*/
 
-    statusEl.className = "status";
 
-    if (type) {
-      statusEl.classList.add(type);
-    }
+let socket = null;
 
+let selectedSymbol = null;
+
+let pipSize = null;
+
+let ticks = [];
+
+let reconnectTimer = null;
+
+let hasReceivedLiveTick = false;
+
+
+/* =====================================================
+   ELEMENTS
+   ===================================================== */
+
+const status =
+  document.getElementById("status");
+
+const errorBox =
+  document.getElementById("errorBox");
+
+const quote =
+  document.getElementById("quote");
+
+const lastDigit =
+  document.getElementById("lastDigit");
+
+const tickCount =
+  document.getElementById("tickCount");
+
+const digits =
+  document.getElementById("digits");
+
+const under5 =
+  document.getElementById("under5");
+
+const equal5 =
+  document.getElementById("equal5");
+
+const over5 =
+  document.getElementById("over5");
+
+const underOver =
+  document.getElementById("underOver");
+
+const even =
+  document.getElementById("even");
+
+const odd =
+  document.getElementById("odd");
+
+const hotDigit =
+  document.getElementById("hotDigit");
+
+const coldDigit =
+  document.getElementById("coldDigit");
+
+const symbol =
+  document.getElementById("symbol");
+
+const signal =
+  document.getElementById("signal");
+
+const debug =
+  document.getElementById("debug");
+
+
+/* =====================================================
+   STATUS
+   ===================================================== */
+
+function setStatus(text, type = "") {
+
+  status.textContent = text;
+
+  status.className = "status";
+
+  if (type) {
+    status.classList.add(type);
   }
 
-
-  function showError(message) {
-
-    errorBox.style.display = "block";
-
-    errorBox.textContent =
-      "Deriv error: " + message;
-
-  }
+}
 
 
-  function clearError() {
+/* =====================================================
+   ERROR
+   ===================================================== */
 
-    errorBox.style.display = "none";
+function showError(message) {
 
-    errorBox.textContent = "";
+  errorBox.style.display = "block";
 
-  }
+  errorBox.textContent =
+    "Deriv error: " + message;
 
-
-  function setText(element, value) {
-
-    if (element) {
-      element.textContent = value;
-    }
-
-  }
+}
 
 
-  /*
-    ==========================================
-    DECIMAL PLACES
-    ==========================================
-  */
+function clearError() {
 
-  function getDecimalPlaces(value) {
+  errorBox.style.display = "none";
 
-    const number = Number(value);
+  errorBox.textContent = "";
 
-    if (!Number.isFinite(number) || number <= 0) {
-      return null;
-    }
+}
 
-    let decimals = 0;
 
-    let temp = number;
+/* =====================================================
+   FIND V25
+   ===================================================== */
 
-    while (
-      decimals < 10 &&
-      Math.abs(temp - Math.round(temp)) > 1e-10
-    ) {
+function findV25(list) {
 
-      temp *= 10;
-
-      decimals++;
-
-    }
-
-    return decimals;
-
+  if (!Array.isArray(list)) {
+    return null;
   }
 
 
   /*
-    ==========================================
-    FORMAT QUOTE
-    ==========================================
+    FIRST:
+    exact known symbol.
   */
 
-  function formatQuote(quote) {
-
-    const number = Number(quote);
-
-    if (!Number.isFinite(number)) {
-      return String(quote);
-    }
-
-    let decimals =
-      getDecimalPlaces(pipSize);
-
-    if (decimals === null) {
-
-      const text =
-        String(quote);
-
-      if (text.includes(".")) {
-
-        decimals =
-          text.split(".")[1].length;
-
-      } else {
-
-        decimals = 0;
-
-      }
-
-    }
-
-    return number.toFixed(decimals);
-
-  }
-
-
-  /*
-    ==========================================
-    GET LAST DIGIT
-    ==========================================
-  */
-
-  function getLastDigit(quote) {
-
-    const formatted =
-      formatQuote(quote);
-
-    const clean =
-      formatted.replace(/[^0-9]/g, "");
-
-    if (!clean.length) {
-      return null;
-    }
-
-    return Number(
-      clean.charAt(clean.length - 1)
-    );
-
-  }
-
-
-  /*
-    ==========================================
-    FIND V25 SYMBOL
-    ==========================================
-  */
-
-  function findV25Symbol(list) {
-
-    if (!Array.isArray(list)) {
-      return null;
-    }
-
-
-    /*
-      STEP 1
-      Look for the exact known symbol.
-    */
-
-    let found =
-      list.find(item => {
-
-        const current =
-          String(
-            item.underlying_symbol ??
-            item.symbol ??
-            ""
-          ).trim().toUpperCase();
-
-        return current === TARGET_SYMBOL;
-
-      });
-
-    if (found) {
-      return found;
-    }
-
-
-    /*
-      STEP 2
-      Look through the new Deriv
-      display-name field.
-    */
-
-    found =
-      list.find(item => {
-
-        const names = [
-
-          item.underlying_symbol_name,
-
-          item.display_name,
-
-          item.market_display_name,
-
-          item.submarket_display_name,
-
-          item.subgroup_display_name
-
-        ]
-        .filter(Boolean)
-        .map(x =>
-          String(x).toLowerCase()
-        );
-
-        return names.some(name => {
-
-          return (
-            name.includes("volatility 25") &&
-            name.includes("1s")
-          );
-
-        });
-
-      });
-
-    if (found) {
-      return found;
-    }
-
-
-    /*
-      STEP 3
-      Very loose fallback search.
-    */
-
-    found =
-      list.find(item => {
-
-        const text =
-          JSON.stringify(item)
-            .toLowerCase();
-
-        return (
-
-          text.includes("1hz25v") ||
-
-          (
-            text.includes("volatility 25") &&
-            text.includes("1s")
-          )
-
-        );
-
-      });
-
-    return found || null;
-
-  }
-
-
-  /*
-    ==========================================
-    REQUEST V25 DATA
-    ==========================================
-  */
-
-  function requestV25Data() {
-
-    if (!socket ||
-        socket.readyState !== WebSocket.OPEN) {
-
-      return;
-
-    }
-
-    if (!symbol) {
-      symbol = TARGET_SYMBOL;
-    }
-
-
-    setText(
-      symbolEl,
-      symbol
-    );
-
-
-    setStatus(
-      "Loading V25 data..."
-    );
-
-
-    /*
-      Request 1000 historical ticks.
-    */
-
-    socket.send(
-      JSON.stringify({
-
-        ticks_history: symbol,
-
-        count: HISTORY_COUNT,
-
-        end: "latest",
-
-        style: "ticks",
-
-        req_id: 2
-
-      })
-    );
-
-
-    /*
-      Subscribe to live ticks.
-    */
-
-    socket.send(
-      JSON.stringify({
-
-        ticks: symbol,
-
-        subscribe: 1,
-
-        req_id: 3
-
-      })
-    );
-
-  }
-
-
-  /*
-    ==========================================
-    PROCESS HISTORICAL DATA
-    ==========================================
-  */
-
-  function processHistory(history) {
-
-    if (!history) {
-      return;
-    }
-
-    const prices =
-      Array.isArray(history.prices)
-        ? history.prices
-        : [];
-
-    if (!prices.length) {
-      return;
-    }
-
-
-    ticks = prices
-      .map(Number)
-      .filter(Number.isFinite)
-      .slice(-HISTORY_COUNT);
-
-
-    dataStarted = true;
-
-    render();
-
-  }
-
-
-  /*
-    ==========================================
-    PROCESS LIVE TICK
-    ==========================================
-  */
-
-  function processTick(tick) {
-
-    if (!tick) {
-      return;
-    }
-
-    const quote =
-      Number(tick.quote);
-
-    if (!Number.isFinite(quote)) {
-      return;
-    }
-
-
-    /*
-      If Deriv supplies pip_size
-      in the tick response, use it.
-    */
-
-    if (
-      tick.pip_size !== undefined &&
-      tick.pip_size !== null
-    ) {
-
-      pipSize =
-        Number(tick.pip_size);
-
-    }
-
-
-    ticks.push(quote);
-
-
-    /*
-      Keep only latest 1000 ticks.
-    */
-
-    if (ticks.length > HISTORY_COUNT) {
-
-      ticks =
-        ticks.slice(-HISTORY_COUNT);
-
-    }
-
-
-    dataStarted = true;
-
-    render();
-
-  }
-
-
-  /*
-    ==========================================
-    CALCULATE STATISTICS
-    ==========================================
-  */
-
-  function calculateStats() {
-
-    const counts =
-      Array(10).fill(0);
-
-    let under5 = 0;
-
-    let equal5 = 0;
-
-    let over5 = 0;
-
-    let even = 0;
-
-    let odd = 0;
-
-
-    ticks.forEach(quote => {
-
-      const digit =
-        getLastDigit(quote);
-
-      if (digit === null) {
-        return;
-      }
-
-
-      counts[digit]++;
-
-
-      if (digit < 5) {
-
-        under5++;
-
-      } else if (digit === 5) {
-
-        equal5++;
-
-      } else {
-
-        over5++;
-
-      }
-
-
-      if (digit % 2 === 0) {
-
-        even++;
-
-      } else {
-
-        odd++;
-
-      }
+  let found =
+    list.find(item => {
+
+      const s =
+        String(
+          item.symbol ??
+          item.underlying_symbol ??
+          ""
+        ).trim().toUpperCase();
+
+      return s === "1HZ25V";
 
     });
 
 
-    return {
-
-      counts,
-
-      under5,
-
-      equal5,
-
-      over5,
-
-      even,
-
-      odd
-
-    };
-
+  if (found) {
+    return found;
   }
 
 
   /*
-    ==========================================
-    RENDER DIGITS
-    ==========================================
+    SECOND:
+    search names.
+
+    We support both old and new
+    Deriv response fields.
   */
 
-  function renderDigits(stats) {
+  found =
+    list.find(item => {
 
-    digitsEl.innerHTML = "";
+      const names = [
 
+        item.display_name,
 
-    const total =
-      ticks.length;
+        item.underlying_symbol_name,
 
+        item.market_display_name,
 
-    stats.counts.forEach(
-      (count, digit) => {
+        item.submarket_display_name,
 
-        const percent =
-          total > 0
-            ? (count / total) * 100
-            : 0;
+        item.subgroup_display_name
 
-
-        const div =
-          document.createElement("div");
-
-
-        div.className = "digit";
+      ]
+      .filter(Boolean)
+      .map(x =>
+        String(x).toLowerCase()
+      );
 
 
-        div.innerHTML = `
+      return names.some(name =>
 
-          <div class="digit-number">
-            ${digit}
-          </div>
+        (
+          name.includes("volatility 25") &&
+          name.includes("1s")
+        )
 
-          <div class="digit-percent">
-            ${percent.toFixed(1)}%
-          </div>
+      );
 
-        `;
+    });
 
 
-        digitsEl.appendChild(div);
+  if (found) {
+    return found;
+  }
 
-      }
+
+  /*
+    THIRD:
+    search the entire object.
+  */
+
+  found =
+    list.find(item => {
+
+      const text =
+        JSON.stringify(item)
+          .toLowerCase();
+
+      return (
+
+        text.includes("1hz25v") ||
+
+        (
+          text.includes("volatility 25") &&
+          text.includes("1s")
+        )
+
+      );
+
+    });
+
+
+  return found || null;
+
+}
+
+
+/* =====================================================
+   GET DECIMAL PLACES
+   ===================================================== */
+
+function decimalPlaces(value) {
+
+  const number =
+    Number(value);
+
+  if (
+    !Number.isFinite(number) ||
+    number <= 0
+  ) {
+    return null;
+  }
+
+
+  let places = 0;
+
+  let temp = number;
+
+
+  while (
+    places < 10 &&
+    Math.abs(
+      temp - Math.round(temp)
+    ) > 0.000000001
+  ) {
+
+    temp *= 10;
+
+    places++;
+
+  }
+
+
+  return places;
+
+}
+
+
+/* =====================================================
+   FORMAT PRICE
+   ===================================================== */
+
+function formatPrice(value) {
+
+  const number =
+    Number(value);
+
+  if (!Number.isFinite(number)) {
+    return "--";
+  }
+
+
+  let places =
+    decimalPlaces(pipSize);
+
+
+  /*
+    If pip_size isn't available,
+    preserve the decimals supplied
+    by the quote itself.
+  */
+
+  if (places === null) {
+
+    const text =
+      String(value);
+
+    if (text.includes(".")) {
+
+      places =
+        text.split(".")[1].length;
+
+    } else {
+
+      places = 0;
+
+    }
+
+  }
+
+
+  return number.toFixed(places);
+
+}
+
+
+/* =====================================================
+   LAST DIGIT
+   ===================================================== */
+
+function getLastDigit(value) {
+
+  const formatted =
+    formatPrice(value);
+
+
+  const digitsOnly =
+    formatted.replace(
+      /[^0-9]/g,
+      ""
     );
 
+
+  if (!digitsOnly) {
+    return null;
+  }
+
+
+  return Number(
+    digitsOnly[
+      digitsOnly.length - 1
+    ]
+  );
+
+}
+
+
+/* =====================================================
+   REQUEST HISTORY + LIVE STREAM
+   ===================================================== */
+
+function startV25() {
+
+  if (!socket) {
+    return;
+  }
+
+
+  if (
+    socket.readyState !==
+    WebSocket.OPEN
+  ) {
+    return;
+  }
+
+
+  if (!selectedSymbol) {
+
+    setStatus(
+      "V25 symbol not found",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  clearError();
+
+
+  /*
+    HISTORY
+  */
+
+  socket.send(
+    JSON.stringify({
+
+      ticks_history:
+        selectedSymbol,
+
+      count: 1000,
+
+      end: "latest",
+
+      style: "ticks",
+
+      req_id: 100
+
+    })
+  );
+
+
+  /*
+    LIVE STREAM
+
+    This is the important part.
+  */
+
+  socket.send(
+    JSON.stringify({
+
+      ticks:
+        selectedSymbol,
+
+      subscribe: 1,
+
+      req_id: 101
+
+    })
+  );
+
+
+  setStatus(
+    "Connecting live tick stream..."
+  );
+
+
+  debug.textContent =
+    "Requested live stream for " +
+    selectedSymbol;
+
+}
+
+
+/* =====================================================
+   HISTORY
+   ===================================================== */
+
+function handleHistory(history) {
+
+  if (!history) {
+    return;
+  }
+
+
+  const prices =
+    Array.isArray(history.prices)
+      ? history.prices
+      : [];
+
+
+  if (!prices.length) {
+
+    debug.textContent =
+      "Deriv returned no historical ticks.";
+
+    return;
+
+  }
+
+
+  ticks =
+    prices
+      .map(Number)
+      .filter(Number.isFinite)
+      .slice(-1000);
+
+
+  render();
+
+
+  debug.textContent =
+    "Historical data loaded: " +
+    ticks.length +
+    " ticks. Waiting for live stream...";
+
+}
+
+
+/* =====================================================
+   LIVE TICK
+   ===================================================== */
+
+function handleTick(tick) {
+
+  if (!tick) {
+    return;
+  }
+
+
+  const price =
+    Number(tick.quote);
+
+
+  if (!Number.isFinite(price)) {
+    return;
   }
 
 
   /*
-    ==========================================
-    FIND HOT / COLD
-    ==========================================
+    Get pip size from tick if supplied.
   */
 
-  function getHotDigit(counts) {
+  if (
+    tick.pip_size !== undefined &&
+    tick.pip_size !== null
+  ) {
 
-    let index = 0;
-
-    for (
-      let i = 1;
-      i < counts.length;
-      i++
-    ) {
-
-      if (counts[i] > counts[index]) {
-        index = i;
-      }
-
-    }
-
-    return index;
-
-  }
-
-
-  function getColdDigit(counts) {
-
-    let index = 0;
-
-    for (
-      let i = 1;
-      i < counts.length;
-      i++
-    ) {
-
-      if (counts[i] < counts[index]) {
-        index = i;
-      }
-
-    }
-
-    return index;
+    pipSize =
+      Number(tick.pip_size);
 
   }
 
 
   /*
-    ==========================================
-    SIMPLE SIGNAL ENGINE
-    ==========================================
+    Add new tick.
   */
 
-  function calculateSignal(stats) {
-
-    const total =
-      ticks.length;
+  ticks.push(price);
 
 
-    if (total < 100) {
+  /*
+    Keep latest 1000.
+  */
 
-      return "Collecting more data...";
+  if (ticks.length > 1000) {
 
-    }
-
-
-    const underPercent =
-      (stats.under5 / total) * 100;
-
-    const overPercent =
-      (stats.over5 / total) * 100;
-
-    const evenPercent =
-      (stats.even / total) * 100;
-
-    const oddPercent =
-      (stats.odd / total) * 100;
-
-
-    /*
-      This is NOT a prediction.
-      It simply describes which
-      historical side has been larger.
-    */
-
-    if (underPercent >= 55) {
-
-      return `
-        Historical bias: UNDER 5
-        (${underPercent.toFixed(1)}%)
-      `;
-
-    }
-
-
-    if (overPercent >= 55) {
-
-      return `
-        Historical bias: OVER 5
-        (${overPercent.toFixed(1)}%)
-      `;
-
-    }
-
-
-    if (evenPercent >= 55) {
-
-      return `
-        Historical bias: EVEN
-        (${evenPercent.toFixed(1)}%)
-      `;
-
-    }
-
-
-    if (oddPercent >= 55) {
-
-      return `
-        Historical bias: ODD
-        (${oddPercent.toFixed(1)}%)
-      `;
-
-    }
-
-
-    return "No strong historical bias";
+    ticks =
+      ticks.slice(-1000);
 
   }
 
 
-  /*
-    ==========================================
-    MAIN RENDER
-    ==========================================
-  */
+  hasReceivedLiveTick = true;
 
-  function render() {
 
-    if (!ticks.length) {
+  setStatus(
+    "LIVE • V25 (1s)",
+    "connected"
+  );
+
+
+  render();
+
+
+  debug.textContent =
+    "LIVE STREAM ACTIVE • " +
+    selectedSymbol +
+    " • New tick received.";
+
+}
+
+
+/* =====================================================
+   CALCULATE
+   ===================================================== */
+
+function calculate() {
+
+  const counts =
+    Array(10).fill(0);
+
+  let under = 0;
+
+  let equal = 0;
+
+  let over = 0;
+
+  let evens = 0;
+
+  let odds = 0;
+
+
+  ticks.forEach(price => {
+
+    const digit =
+      getLastDigit(price);
+
+
+    if (digit === null) {
       return;
     }
 
 
-    const stats =
-      calculateStats();
+    counts[digit]++;
 
 
-    const latest =
-      ticks[ticks.length - 1];
+    if (digit < 5) {
+
+      under++;
+
+    }
+
+    else if (digit === 5) {
+
+      equal++;
+
+    }
+
+    else {
+
+      over++;
+
+    }
 
 
-    const digit =
-      getLastDigit(latest);
+    if (digit % 2 === 0) {
+
+      evens++;
+
+    }
+
+    else {
+
+      odds++;
+
+    }
+
+  });
 
 
-    /*
-      Quote
-    */
+  return {
 
-    setText(
-      quoteEl,
-      formatQuote(latest)
-    );
+    counts,
 
+    under,
 
-    /*
-      Last digit
-    */
+    equal,
 
-    setText(
-      lastDigitEl,
-      digit === null
-        ? "--"
-        : digit
-    );
+    over,
+
+    evens,
+
+    odds
+
+  };
+
+}
 
 
-    /*
-      Tick count
-    */
+/* =====================================================
+   RENDER DIGITS
+   ===================================================== */
 
-    setText(
-      tickCountEl,
-      ticks.length
-    );
+function renderDigits(stats) {
 
-
-    /*
-      Digit percentages
-    */
-
-    renderDigits(stats);
+  digits.innerHTML = "";
 
 
-    /*
-      Under / Over
-    */
-
-    const total =
-      ticks.length;
+  const total =
+    ticks.length;
 
 
-    const underPercent =
-      (stats.under5 / total) * 100;
+  for (
+    let i = 0;
+    i <= 9;
+    i++
+  ) {
 
-    const equalPercent =
-      (stats.equal5 / total) * 100;
-
-    const overPercent =
-      (stats.over5 / total) * 100;
-
-
-    setText(
-      under5El,
-      underPercent.toFixed(1) + "%"
-    );
-
-
-    setText(
-      equal5El,
-      equalPercent.toFixed(1) + "%"
-    );
+    const percentage =
+      total > 0
+        ? (
+            stats.counts[i] /
+            total
+          ) * 100
+        : 0;
 
 
-    setText(
-      over5El,
-      overPercent.toFixed(1) + "%"
-    );
+    const box =
+      document.createElement("div");
 
 
-    setText(
-      underOverEl,
-      (
-        underPercent +
-        overPercent
-      ).toFixed(1) + "%"
-    );
+    box.className =
+      "digit";
 
 
-    /*
-      Even / Odd
-    */
+    box.innerHTML = `
 
-    setText(
-      evenEl,
-      (
-        stats.even / total * 100
-      ).toFixed(1) + "%"
-    );
+      <div class="digit-number">
+        ${i}
+      </div>
 
+      <div class="digit-percent">
+        ${percentage.toFixed(1)}%
+      </div>
 
-    setText(
-      oddEl,
-      (
-        stats.odd / total * 100
-      ).toFixed(1) + "%"
-    );
+    `;
 
 
-    /*
-      Hot / Cold
-    */
+    digits.appendChild(box);
 
-    setText(
-      hotDigitEl,
-      getHotDigit(stats.counts)
-    );
+  }
+
+}
 
 
-    setText(
-      coldDigitEl,
-      getColdDigit(stats.counts)
-    );
+/* =====================================================
+   HOT / COLD
+   ===================================================== */
+
+function getHot(counts) {
+
+  let index = 0;
 
 
-    /*
-      Signal
-    */
+  for (
+    let i = 1;
+    i < counts.length;
+    i++
+  ) {
 
-    setText(
-      signalEl,
-      calculateSignal(stats)
-    );
+    if (
+      counts[i] >
+      counts[index]
+    ) {
 
-
-    /*
-      Debug information
-    */
-
-    setText(
-      debugEl,
-      `Live symbol: ${symbol || TARGET_SYMBOL}`
-    );
-
-
-    if (connected) {
-
-      setStatus(
-        "Live • V25 (1s)",
-        "connected"
-      );
+      index = i;
 
     }
 
   }
 
 
+  return index;
+
+}
+
+
+function getCold(counts) {
+
+  let index = 0;
+
+
+  for (
+    let i = 1;
+    i < counts.length;
+    i++
+  ) {
+
+    if (
+      counts[i] <
+      counts[index]
+    ) {
+
+      index = i;
+
+    }
+
+  }
+
+
+  return index;
+
+}
+
+
+/* =====================================================
+   RENDER EVERYTHING
+   ===================================================== */
+
+function render() {
+
+  if (!ticks.length) {
+    return;
+  }
+
+
+  const stats =
+    calculate();
+
+
+  const latest =
+    ticks[ticks.length - 1];
+
+
+  const digit =
+    getLastDigit(latest);
+
+
+  const total =
+    ticks.length;
+
+
   /*
-    ==========================================
-    CONNECT TO DERIV
-    ==========================================
+    Current price
   */
 
-  function connect() {
+  quote.textContent =
+    formatPrice(latest);
 
-    clearError();
 
-    setStatus("Connecting...");
+  /*
+    Last digit
+  */
+
+  lastDigit.textContent =
+    digit === null
+      ? "--"
+      : digit;
+
+
+  /*
+    Tick count
+  */
+
+  tickCount.textContent =
+    total;
+
+
+  /*
+    Symbol
+  */
+
+  symbol.textContent =
+    selectedSymbol || "--";
+
+
+  /*
+    Digits
+  */
+
+  renderDigits(stats);
+
+
+  /*
+    Over / Under
+  */
+
+  under5.textContent =
+    (
+      stats.under /
+      total *
+      100
+    ).toFixed(1) + "%";
+
+
+  equal5.textContent =
+    (
+      stats.equal /
+      total *
+      100
+    ).toFixed(1) + "%";
+
+
+  over5.textContent =
+    (
+      stats.over /
+      total *
+      100
+    ).toFixed(1) + "%";
+
+
+  underOver.textContent =
+    (
+      (
+        stats.under +
+        stats.over
+      ) /
+      total *
+      100
+    ).toFixed(1) + "%";
+
+
+  /*
+    Even / Odd
+  */
+
+  even.textContent =
+    (
+      stats.evens /
+      total *
+      100
+    ).toFixed(1) + "%";
+
+
+  odd.textContent =
+    (
+      stats.odds /
+      total *
+      100
+    ).toFixed(1) + "%";
+
+
+  /*
+    Hot / Cold
+  */
+
+  hotDigit.textContent =
+    getHot(stats.counts);
+
+
+  coldDigit.textContent =
+    getCold(stats.counts);
+
+
+  /*
+    Basic statistical description.
+  */
+
+  const underPercent =
+    stats.under /
+    total *
+    100;
+
+
+  const overPercent =
+    stats.over /
+    total *
+    100;
+
+
+  if (total < 100) {
+
+    signal.textContent =
+      "Collecting more data...";
+
+  }
+
+  else if (
+    underPercent >= 55
+  ) {
+
+    signal.textContent =
+      "Historical Under 5 bias: " +
+      underPercent.toFixed(1) +
+      "%";
+
+  }
+
+  else if (
+    overPercent >= 55
+  ) {
+
+    signal.textContent =
+      "Historical Over 5 bias: " +
+      overPercent.toFixed(1) +
+      "%";
+
+  }
+
+  else {
+
+    signal.textContent =
+      "No strong Over/Under bias";
+
+  }
+
+}
+
+
+/* =====================================================
+   CONNECT
+   ===================================================== */
+
+function connect() {
+
+  clearError();
+
+  hasReceivedLiveTick =
+    false;
+
+
+  setStatus(
+    "Connecting to Deriv..."
+  );
+
+
+  debug.textContent =
+    "Opening public market-data connection...";
+
+
+  try {
+
+    socket =
+      new WebSocket(WS_URL);
+
+  }
+
+  catch (e) {
+
+    showError(
+      "Could not create WebSocket."
+    );
+
+    setStatus(
+      "Connection failed",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  /*
+    OPEN
+  */
+
+  socket.onopen = () => {
+
+    setStatus(
+      "Connected • Finding V25..."
+    );
+
+
+    debug.textContent =
+      "Connected. Asking Deriv for active symbols...";
+
+
+    /*
+      IMPORTANT:
+
+      No product_type.
+      No hardcoded symbol.
+    */
+
+    socket.send(
+      JSON.stringify({
+
+        active_symbols: "brief",
+
+        req_id: 1
+
+      })
+    );
+
+  };
+
+
+  /*
+    MESSAGE
+  */
+
+  socket.onmessage = event => {
+
+    let data;
 
 
     try {
 
-      socket =
-        new WebSocket(WS_URL);
+      data =
+        JSON.parse(event.data);
 
-    } catch (error) {
+    }
+
+    catch (e) {
+
+      return;
+
+    }
+
+
+    console.log(
+      "DERIV:",
+      data
+    );
+
+
+    /*
+      ERROR
+    */
+
+    if (data.error) {
 
       showError(
-        "Could not create WebSocket connection."
+        data.error.message ||
+        "Unknown Deriv error"
       );
 
+
       setStatus(
-        "Connection failed",
+        "Deriv rejected request",
         "error"
       );
+
+
+      debug.textContent =
+        JSON.stringify(
+          data.error
+        );
+
 
       return;
 
@@ -1359,103 +1672,70 @@
 
 
     /*
-      CONNECTION OPEN
+      ACTIVE SYMBOLS
     */
 
-    socket.onopen = () => {
+    if (
+      data.msg_type ===
+      "active_symbols"
+    ) {
 
-      connected = true;
+      const list =
+        data.active_symbols || [];
 
-      setStatus(
-        "Connected • Finding V25..."
+
+      console.log(
+        "ACTIVE SYMBOLS:",
+        list
       );
 
 
-      /*
-        Ask Deriv for active symbols.
-
-        IMPORTANT:
-        Do NOT use product_type here.
-        The current Deriv API documentation
-        says that parameter was removed from
-        the newer active_symbols request.
-      */
-
-      socket.send(
-        JSON.stringify({
-
-          active_symbols: "brief",
-
-          req_id: 1
-
-        })
-      );
-
-    };
+      const found =
+        findV25(list);
 
 
-    /*
-      MESSAGE RECEIVED
-    */
+      if (!found) {
 
-    socket.onmessage = event => {
+        /*
+          Don't fake a connection.
 
-      let data;
+          Show the actual candidates
+          containing "25" so we can see
+          what Deriv is returning.
+        */
 
-      try {
+        const candidates =
+          list
+            .filter(item => {
 
-        data =
-          JSON.parse(event.data);
+              const text =
+                JSON.stringify(item)
+                  .toLowerCase();
 
-      } catch (error) {
+              return (
+                text.includes("25") ||
+                text.includes("1hz")
+              );
 
-        return;
+            })
+            .slice(0, 20);
 
-      }
 
-
-      /*
-        ======================================
-        API ERROR
-        ======================================
-      */
-
-      if (data.error) {
-
-        console.error(
-          "Deriv API error:",
-          data.error
+        setStatus(
+          "V25 not returned by Deriv",
+          "error"
         );
 
 
         showError(
-          data.error.message ||
-          "Unknown Deriv API error"
+          "V25 was not found in Deriv's active symbol list."
         );
 
 
-        /*
-          If the error happens while
-          searching active symbols,
-          try the known V25 symbol anyway.
-        */
+        debug.textContent =
+          "Candidates returned by Deriv: " +
+          JSON.stringify(candidates);
 
-        if (
-          !symbol &&
-          !dataStarted
-        ) {
-
-          symbol =
-            TARGET_SYMBOL;
-
-          setText(
-            symbolEl,
-            symbol
-          );
-
-          requestV25Data();
-
-        }
 
         return;
 
@@ -1463,187 +1743,142 @@
 
 
       /*
-        ======================================
-        ACTIVE SYMBOLS
-        ======================================
+        Get the REAL symbol from Deriv.
       */
 
-      if (
-        data.msg_type ===
-        "active_symbols"
-      ) {
-
-        const list =
-          data.active_symbols || [];
-
-
-        console.log(
-          "Deriv active symbols:",
-          list
-        );
-
-
-        const found =
-          findV25Symbol(list);
-
-
-        if (found) {
-
-          symbol =
-            found.underlying_symbol ||
-            found.symbol ||
-            TARGET_SYMBOL;
-
-
-          pipSize =
-            Number(
-              found.pip_size ??
-              found.pip
-            ) || null;
-
-
-          setText(
-            symbolEl,
-            symbol
-          );
-
-
-          setText(
-            debugEl,
-            `V25 found: ${symbol}`
-          );
-
-
-          requestV25Data();
-
-        } else {
-
-          /*
-            IMPORTANT FALLBACK
-
-            If Deriv's active-symbol
-            response does not expose V25
-            under the expected name,
-            try the known V25 symbol.
-          */
-
-          symbol =
-            TARGET_SYMBOL;
-
-
-          setText(
-            symbolEl,
-            symbol
-          );
-
-
-          setText(
-            debugEl,
-            "V25 not listed by active_symbols — using known V25 symbol 1HZ25V"
-          );
-
-
-          requestV25Data();
-
-        }
-
-      }
+      selectedSymbol =
+        found.symbol ||
+        found.underlying_symbol;
 
 
       /*
-        ======================================
-        HISTORY
-        ======================================
+        Get pip size.
       */
 
-      if (
-        data.msg_type ===
-        "history"
-      ) {
-
-        processHistory(
-          data.history
-        );
-
-      }
+      pipSize =
+        Number(
+          found.pip_size ??
+          found.pip
+        ) || null;
 
 
-      /*
-        ======================================
-        LIVE TICK
-        ======================================
-      */
-
-      if (
-        data.msg_type ===
-        "tick"
-      ) {
-
-        processTick(
-          data.tick
-        );
-
-      }
-
-    };
+      symbol.textContent =
+        selectedSymbol;
 
 
-    /*
-      ======================================
-      SOCKET ERROR
-      ======================================
-    */
+      debug.textContent =
+        "V25 found. Symbol confirmed by Deriv: " +
+        selectedSymbol;
 
-    socket.onerror = () => {
-
-      connected = false;
 
       setStatus(
-        "Connection error",
-        "error"
-      );
-
-    };
-
-
-    /*
-      ======================================
-      SOCKET CLOSED
-      ======================================
-    */
-
-    socket.onclose = () => {
-
-      connected = false;
-
-      setStatus(
-        "Disconnected"
+        "V25 found • Starting live stream..."
       );
 
 
       /*
-        Automatically reconnect.
+        NOW start history + live ticks.
       */
 
+      startV25();
+
+    }
+
+
+    /*
+      HISTORY
+    */
+
+    if (
+      data.msg_type ===
+      "history"
+    ) {
+
+      handleHistory(
+        data.history
+      );
+
+    }
+
+
+    /*
+      LIVE TICK
+    */
+
+    if (
+      data.msg_type ===
+      "tick"
+    ) {
+
+      handleTick(
+        data.tick
+      );
+
+    }
+
+  };
+
+
+  /*
+    SOCKET ERROR
+  */
+
+  socket.onerror = () => {
+
+    setStatus(
+      "WebSocket error",
+      "error"
+    );
+
+
+    debug.textContent =
+      "The browser could not maintain the Deriv WebSocket connection.";
+
+  };
+
+
+  /*
+    SOCKET CLOSED
+  */
+
+  socket.onclose = () => {
+
+    setStatus(
+      "Disconnected"
+    );
+
+
+    if (
+      reconnectTimer
+    ) {
+
+      clearTimeout(
+        reconnectTimer
+      );
+
+    }
+
+
+    reconnectTimer =
       setTimeout(
         connect,
         3000
       );
 
-    };
+  };
 
-  }
+}
 
 
-  /*
-    ==========================================
-    START
-    ==========================================
-  */
+/* =====================================================
+   START
+   ===================================================== */
 
-  connect();
+connect();
+
 
 </script>
 
 </body>
+
 </html>
