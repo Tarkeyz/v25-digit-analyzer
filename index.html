@@ -1,1965 +1,1332 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<meta charset="UTF-8">
+  <title>V25 Digit Analyzer</title>
 
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0">
-
-<title>V25 (1s) Digit Analyzer</title>
-
-<style>
-
-* {
-    box-sizing: border-box;
-}
-
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: #0b1020;
-    color: #f5f7ff;
-}
-
-.container {
-    width: 100%;
-    max-width: 1100px;
-    margin: auto;
-    padding: 18px;
-}
-
-header {
-    margin-bottom: 18px;
-}
-
-h1 {
-    margin: 0;
-    font-size: 27px;
-}
-
-.subtitle {
-    color: #9da7bd;
-    margin-top: 7px;
-}
-
-.status {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    margin-top: 12px;
-    padding: 7px 12px;
-    border-radius: 20px;
-    background: #18213a;
-    color: #9da7bd;
-    font-size: 13px;
-}
-
-.dot {
-    width: 9px;
-    height: 9px;
-    border-radius: 50%;
-    background: #777;
-}
-
-.dot.live {
-    background: #35d07f;
-}
-
-.grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
-}
-
-.card {
-    background: #131a2d;
-    border: 1px solid #27304a;
-    border-radius: 14px;
-    padding: 15px;
-}
-
-.card-title {
-    color: #8994ad;
-    font-size: 13px;
-    margin-bottom: 8px;
-}
-
-.big {
-    font-size: 29px;
-    font-weight: bold;
-}
-
-.value {
-    font-size: 19px;
-    font-weight: bold;
-}
-
-.controls {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin: 18px 0;
-}
-
-button {
-    border: 1px solid #35405e;
-    background: #172039;
-    color: white;
-    padding: 9px 14px;
-    border-radius: 9px;
-    cursor: pointer;
-}
-
-button.active {
-    background: #315fdc;
-    border-color: #4774ee;
-}
-
-.section {
-    margin-top: 18px;
-}
-
-.section h2 {
-    font-size: 19px;
-    margin-bottom: 12px;
-}
-
-.digits {
-    display: grid;
-    grid-template-columns: repeat(10, 1fr);
-    gap: 7px;
-}
-
-.digit {
-    background: #151d33;
-    border: 1px solid #293450;
-    border-radius: 10px;
-    padding: 10px 4px;
-    text-align: center;
-}
-
-.digit-number {
-    font-size: 18px;
-    font-weight: bold;
-}
-
-.digit-percent {
-    color: #8f9ab3;
-    font-size: 12px;
-    margin-top: 4px;
-}
-
-.bar-container {
-    height: 6px;
-    background: #293149;
-    border-radius: 5px;
-    margin-top: 7px;
-    overflow: hidden;
-}
-
-.bar {
-    height: 100%;
-    background: #4b79ff;
-    width: 0%;
-}
-
-.two {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-}
-
-.stat-row {
-    display: flex;
-    justify-content: space-between;
-    padding: 9px 0;
-    border-bottom: 1px solid #252d43;
-}
-
-.stat-row:last-child {
-    border-bottom: none;
-}
-
-.green {
-    color: #39d98a;
-}
-
-.red {
-    color: #ff647c;
-}
-
-.yellow {
-    color: #ffd166;
-}
-
-.recent {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 5px;
-}
-
-.recent span {
-    width: 30px;
-    height: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #1a2440;
-    border-radius: 7px;
-    font-weight: bold;
-}
-
-.note {
-    color: #8f9ab3;
-    font-size: 12px;
-    line-height: 1.5;
-    margin-top: 12px;
-}
-
-.error-box {
-    display: none;
-    margin-top: 15px;
-    padding: 12px;
-    border-radius: 10px;
-    background: #321725;
-    border: 1px solid #6b2940;
-    color: #ff9aaa;
-    font-size: 13px;
-}
-
-@media(max-width: 800px) {
-
-    .grid {
-        grid-template-columns: repeat(2, 1fr);
+  <style>
+    * {
+      box-sizing: border-box;
     }
 
-    .digits {
-        grid-template-columns: repeat(5, 1fr);
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0b1220;
+      color: #ffffff;
     }
-
-    .two {
-        grid-template-columns: 1fr;
-    }
-
-}
-
-@media(max-width: 450px) {
 
     .container {
-        padding: 12px;
+      width: 100%;
+      max-width: 1100px;
+      margin: auto;
+      padding: 18px;
     }
 
     h1 {
-        font-size: 23px;
+      margin: 0;
+      font-size: 28px;
+    }
+
+    .subtitle {
+      color: #9ca3af;
+      margin-top: 6px;
+      margin-bottom: 20px;
+    }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 20px;
+      background: #374151;
+      color: #d1d5db;
+      font-size: 14px;
+      margin-bottom: 18px;
+    }
+
+    .dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #9ca3af;
+    }
+
+    .connected {
+      background: #064e3b;
+      color: #a7f3d0;
+    }
+
+    .connected .dot {
+      background: #10b981;
+    }
+
+    .error {
+      background: #7f1d1d;
+      color: #fecaca;
+    }
+
+    .error .dot {
+      background: #ef4444;
     }
 
     .grid {
-        gap: 8px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
     }
 
     .card {
-        padding: 12px;
+      background: #111827;
+      border: 1px solid #1f2937;
+      border-radius: 14px;
+      padding: 16px;
+    }
+
+    .card h2 {
+      font-size: 15px;
+      color: #9ca3af;
+      margin: 0 0 10px;
+      font-weight: normal;
     }
 
     .big {
-        font-size: 24px;
+      font-size: 34px;
+      font-weight: bold;
     }
 
-}
+    .small {
+      font-size: 13px;
+      color: #9ca3af;
+      margin-top: 5px;
+    }
 
-</style>
+    .digits {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      margin-top: 10px;
+    }
 
+    .digit {
+      background: #1f2937;
+      border-radius: 10px;
+      padding: 10px 4px;
+      text-align: center;
+    }
+
+    .digit-number {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .digit-percent {
+      font-size: 12px;
+      color: #9ca3af;
+      margin-top: 4px;
+    }
+
+    .bar {
+      height: 5px;
+      background: #374151;
+      border-radius: 10px;
+      margin-top: 7px;
+      overflow: hidden;
+    }
+
+    .bar-inner {
+      height: 100%;
+      width: 0%;
+      background: #60a5fa;
+    }
+
+    .stat-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid #1f2937;
+    }
+
+    .stat-row:last-child {
+      border-bottom: none;
+    }
+
+    .label {
+      color: #9ca3af;
+    }
+
+    .value {
+      font-weight: bold;
+    }
+
+    .signal {
+      text-align: center;
+      padding: 18px;
+      border-radius: 12px;
+      background: #1f2937;
+    }
+
+    .signal-title {
+      font-size: 13px;
+      color: #9ca3af;
+      margin-bottom: 7px;
+    }
+
+    .signal-value {
+      font-size: 25px;
+      font-weight: bold;
+    }
+
+    .warning {
+      margin-top: 16px;
+      padding: 12px;
+      border-radius: 10px;
+      background: #3f2f0a;
+      color: #fde68a;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 25px;
+      color: #6b7280;
+      font-size: 12px;
+    }
+
+    @media (max-width: 700px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: 23px;
+      }
+
+      .digits {
+        grid-template-columns: repeat(5, 1fr);
+      }
+    }
+  </style>
 </head>
 
 <body>
 
 <div class="container">
 
-<header>
+  <h1>V25 (1s) Digit Analyzer</h1>
 
-    <h1>V25 (1s) Digit Analyzer</h1>
+  <div class="subtitle">
+    Live tick analysis for Volatility 25 (1s)
+  </div>
 
-    <div class="subtitle">
-        Live tick analysis for Volatility 25 (1s)
+  <div id="status" class="status">
+    <span class="dot"></span>
+    <span id="statusText">Connecting...</span>
+  </div>
+
+  <div class="grid">
+
+    <!-- CURRENT TICK -->
+    <div class="card">
+      <h2>Current Quote</h2>
+      <div id="quote" class="big">--</div>
+      <div class="small">
+        Last digit:
+        <strong id="lastDigit">--</strong>
+      </div>
     </div>
 
-    <div class="status">
-
-        <span id="statusDot" class="dot"></span>
-
-        <span id="statusText">
-            Connecting...
-        </span>
-
+    <!-- TICK COUNT -->
+    <div class="card">
+      <h2>Ticks Analyzed</h2>
+      <div id="tickCount" class="big">0</div>
+      <div class="small">
+        Symbol: <span id="symbol">1HZ25V</span>
+      </div>
     </div>
 
-    <div id="errorBox" class="error-box"></div>
+    <!-- DIGIT FREQUENCY -->
+    <div class="card" style="grid-column: 1 / -1;">
 
-</header>
+      <h2>Digit Frequency</h2>
 
+      <div id="digits" class="digits">
 
-<!-- TOP CARDS -->
+        <div class="digit">
+          <div class="digit-number">0</div>
+          <div id="p0" class="digit-percent">0%</div>
+          <div class="bar">
+            <div id="b0" class="bar-inner"></div>
+          </div>
+        </div>
 
-<div class="grid">
+        <div class="digit">
+          <div class="digit-number">1</div>
+          <div id="p1" class="digit-percent">0%</div>
+          <div class="bar">
+            <div id="b1" class="bar-inner"></div>
+          </div>
+        </div>
+
+        <div class="digit">
+          <div class="digit-number">2</div>
+          <div id="p2" class="digit-percent">0%</div>
+          <div class="bar">
+            <div id="b2" class="bar-inner"></div>
+          </div>
+        </div>
+
+        <div class="digit">
+          <div class="digit-number">3</div>
+          <div id="p3" class="digit-percent">0%</div>
+          <div class="bar">
+            <div id="b3" class="bar-inner"></div>
+          </div>
+        </div>
+
+        <div class="digit">
+          <div class="digit-number">4</div>
+          <div id="p4" class="digit-percent">0%</div>
+          <div class="bar">
+            <div id="b4" class="bar-inner"></div>
+          </div>
+        </div>
+
+        <div class="digit">
+          <div class="digit-number">5</div>
+          <div id="p5" class="digit-percent">0%</div>
+          <div class="bar">
+            <div id="b5" class="bar-inner"></div>
+          </div>
+        </div>
+
+        <div class="digit">
+          <div class="digit-number">6</div>
+          <div id="p6" class="digit-percent">0%</div>
+          <div class="bar">
+            <div id="b6" class="bar-inner"></div>
+          </div>
+        </div>
+
+        <div class="digit">
+          <div class="digit-number">7</div>
+          <div id="p7" class="digit-percent">0%</div>
+          <div class="bar">
+            <div id="b7" class="bar-inner"></div>
+          </div>
+        </div>
+
+        <div class="digit">
+          <div class="digit-number">8</div>
+          <div id="p8" class="digit-percent">0%</div>
+          <div class="bar">
+            <div id="b8" class="bar-inner"></div>
+          </div>
+        </div>
+
+        <div class="digit">
+          <div class="digit-number">9</div>
+          <div id="p9" class="digit-percent">0%</div>
+          <div class="bar">
+            <div id="b9" class="bar-inner"></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- HOT / COLD -->
+    <div class="card">
+      <h2>Hot Digit</h2>
+      <div id="hotDigit" class="big">--</div>
+      <div id="hotPercent" class="small">--</div>
+    </div>
 
     <div class="card">
-
-        <div class="card-title">
-            CURRENT QUOTE
-        </div>
-
-        <div id="quote" class="big">
-            --
-        </div>
-
+      <h2>Cold Digit</h2>
+      <div id="coldDigit" class="big">--</div>
+      <div id="coldPercent" class="small">--</div>
     </div>
 
-
+    <!-- OVER UNDER -->
     <div class="card">
 
-        <div class="card-title">
-            LAST DIGIT
-        </div>
+      <h2>Over / Under 5</h2>
 
-        <div id="lastDigit" class="big">
-            --
-        </div>
+      <div class="stat-row">
+        <span class="label">Under 5</span>
+        <span id="under5" class="value">--</span>
+      </div>
+
+      <div class="stat-row">
+        <span class="label">Digit 5</span>
+        <span id="digit5" class="value">--</span>
+      </div>
+
+      <div class="stat-row">
+        <span class="label">Over 5</span>
+        <span id="over5" class="value">--</span>
+      </div>
 
     </div>
 
-
+    <!-- EVEN ODD -->
     <div class="card">
 
-        <div class="card-title">
-            TICKS ANALYZED
-        </div>
+      <h2>Even / Odd</h2>
 
-        <div id="tickCount" class="big">
-            0
-        </div>
+      <div class="stat-row">
+        <span class="label">Even</span>
+        <span id="even" class="value">--</span>
+      </div>
+
+      <div class="stat-row">
+        <span class="label">Odd</span>
+        <span id="odd" class="value">--</span>
+      </div>
 
     </div>
 
-
+    <!-- STREAK -->
     <div class="card">
 
-        <div class="card-title">
-            CURRENT STREAK
-        </div>
+      <h2>Current Streak</h2>
 
-        <div id="streak" class="big">
-            --
-        </div>
+      <div class="signal">
+        <div class="signal-title">Latest pattern</div>
+        <div id="streakType" class="signal-value">--</div>
+        <div id="streakCount" class="small">--</div>
+      </div>
 
     </div>
 
-</div>
-
-
-<!-- WINDOWS -->
-
-<div class="controls">
-
-    <button class="window active"
-            data-window="25">
-        25
-    </button>
-
-    <button class="window"
-            data-window="50">
-        50
-    </button>
-
-    <button class="window"
-            data-window="100">
-        100
-    </button>
-
-    <button class="window"
-            data-window="500">
-        500
-    </button>
-
-    <button class="window"
-            data-window="1000">
-        1000
-    </button>
-
-</div>
-
-
-<!-- DIGITS -->
-
-<div class="section">
-
-    <h2>
-        Digit Distribution
-    </h2>
-
-    <div id="digits"
-         class="digits">
-    </div>
-
-</div>
-
-
-<!-- OVER UNDER / EVEN ODD -->
-
-<div class="section two">
-
-
+    <!-- WINDOWS -->
     <div class="card">
 
-        <h2>
-            Over / Under 5
-        </h2>
+      <h2>Rolling Windows</h2>
 
-        <div class="stat-row">
+      <div class="stat-row">
+        <span class="label">Last 25</span>
+        <span id="window25" class="value">--</span>
+      </div>
 
-            <span>
-                Under 5 (0–4)
-            </span>
+      <div class="stat-row">
+        <span class="label">Last 50</span>
+        <span id="window50" class="value">--</span>
+      </div>
 
-            <strong id="under5">
-                --
-            </strong>
+      <div class="stat-row">
+        <span class="label">Last 100</span>
+        <span id="window100" class="value">--</span>
+      </div>
 
-        </div>
-
-
-        <div class="stat-row">
-
-            <span>
-                Exactly 5
-            </span>
-
-            <strong id="equal5">
-                --
-            </strong>
-
-        </div>
-
-
-        <div class="stat-row">
-
-            <span>
-                Over 5 (6–9)
-            </span>
-
-            <strong id="over5">
-                --
-            </strong>
-
-        </div>
+      <div class="stat-row">
+        <span class="label">Last 500</span>
+        <span id="window500" class="value">--</span>
+      </div>
 
     </div>
 
-
-    <div class="card">
-
-        <h2>
-            Even / Odd
-        </h2>
-
-        <div class="stat-row">
-
-            <span>
-                Even
-            </span>
-
-            <strong id="even">
-                --
-            </strong>
-
-        </div>
-
-
-        <div class="stat-row">
-
-            <span>
-                Odd
-            </span>
-
-            <strong id="odd">
-                --
-            </strong>
-
-        </div>
-
-    </div>
-
-</div>
-
-
-<!-- HOT / COLD -->
-
-<div class="section two">
-
-
-    <div class="card">
-
-        <h2>
-            Hot Digits
-        </h2>
-
-        <div id="hotDigits"
-             class="value green">
-            --
-        </div>
-
-        <div class="note">
-            Highest frequency within the selected window.
-        </div>
-
-    </div>
-
-
-    <div class="card">
-
-        <h2>
-            Cold Digits
-        </h2>
-
-        <div id="coldDigits"
-             class="value red">
-            --
-        </div>
-
-        <div class="note">
-            Lowest frequency within the selected window.
-        </div>
-
-    </div>
-
-</div>
-
-
-<!-- STREAK -->
-
-<div class="section card">
-
-    <h2>
-        Digit Streak
-    </h2>
-
-
-    <div class="stat-row">
-
-        <span>
-            Current digit
-        </span>
-
-        <strong id="streakDigit">
-            --
-        </strong>
-
-    </div>
-
-
-    <div class="stat-row">
-
-        <span>
-            Consecutive appearances
-        </span>
-
-        <strong id="streakLength">
-            --
-        </strong>
-
-    </div>
-
-
-    <div class="stat-row">
-
-        <span>
-            Longest streak
-        </span>
-
-        <strong id="longestStreak">
-            --
-        </strong>
-
-    </div>
-
-</div>
-
-
-<!-- RECENT -->
-
-<div class="section card">
-
-    <h2>
-        Recent Digits
-    </h2>
-
-    <div id="recent"
-         class="recent">
-    </div>
-
-    <div class="note">
-        Newest tick appears on the right.
-    </div>
-
-</div>
-
-
-<!-- INFORMATION -->
-
-<div class="section card">
-
-    <h2>
-        Analyzer Information
-    </h2>
-
-
-    <div class="stat-row">
-
-        <span>
-            Detected symbol
-        </span>
-
-        <strong id="symbol">
-            --
-        </strong>
-
-    </div>
-
-
-    <div class="stat-row">
-
-        <span>
-            Analysis window
-        </span>
-
-        <strong id="windowLabel">
-            25 ticks
-        </strong>
-
-    </div>
-
-
-    <div class="stat-row">
-
-        <span>
-            Connection
-        </span>
-
-        <strong id="connection">
-            Connecting
-        </strong>
-
-    </div>
-
-
-    <div class="note">
-
-        This dashboard analyzes historical and live
-        tick data. Historical digit frequency does not
-        guarantee the next digit.
-
-    </div>
-
-</div>
+  </div>
+
+  <div class="warning">
+    ⚠️ This analyzer shows historical tick statistics. A hot digit,
+    cold digit, streak, or frequency does NOT guarantee the next digit.
+    Use the statistics as information, not as a guaranteed prediction.
+  </div>
+
+  <div class="footer">
+    V25 Digit Analyzer • Market data only
+  </div>
 
 </div>
 
 
 <script>
 
+  /*
+   * ==========================================
+   * SETTINGS
+   * ==========================================
+   */
 
-/* =========================================
-   DERIV CONNECTION
-========================================= */
+  const WS_URL =
+    "wss://ws.binaryws.com/websockets/v3?app_id=1089";
 
-const WS_URL =
-    "wss://ws.binaryws.com/websockets/v3";
+  const SYMBOL = "1HZ25V";
 
+  const HISTORY_COUNT = 1000;
 
-let socket = null;
+  let socket = null;
 
-let symbol = null;
+  let reconnectTimer = null;
 
-let pipSize = null;
+  let reconnectAttempts = 0;
 
-let ticks = [];
+  let prices = [];
 
-let digits = [];
+  let digits = [];
 
-let selectedWindow = 25;
+  let pipSize = null;
 
-const MAX_TICKS = 2000;
 
+  /*
+   * ==========================================
+   * UI HELPERS
+   * ==========================================
+   */
 
-/* =========================================
-   ELEMENTS
-========================================= */
+  function setStatus(message, type = "normal") {
 
-const quoteEl =
-    document.getElementById("quote");
+    const status = document.getElementById("status");
 
-const lastDigitEl =
-    document.getElementById("lastDigit");
+    const text = document.getElementById("statusText");
 
-const tickCountEl =
-    document.getElementById("tickCount");
+    status.className = "status";
 
-const streakEl =
-    document.getElementById("streak");
-
-const statusText =
-    document.getElementById("statusText");
-
-const statusDot =
-    document.getElementById("statusDot");
-
-const symbolEl =
-    document.getElementById("symbol");
-
-const connectionEl =
-    document.getElementById("connection");
-
-const digitsEl =
-    document.getElementById("digits");
-
-const under5El =
-    document.getElementById("under5");
-
-const equal5El =
-    document.getElementById("equal5");
-
-const over5El =
-    document.getElementById("over5");
-
-const evenEl =
-    document.getElementById("even");
-
-const oddEl =
-    document.getElementById("odd");
-
-const hotDigitsEl =
-    document.getElementById("hotDigits");
-
-const coldDigitsEl =
-    document.getElementById("coldDigits");
-
-const streakDigitEl =
-    document.getElementById("streakDigit");
-
-const streakLengthEl =
-    document.getElementById("streakLength");
-
-const longestStreakEl =
-    document.getElementById("longestStreak");
-
-const recentEl =
-    document.getElementById("recent");
-
-const windowLabelEl =
-    document.getElementById("windowLabel");
-
-const errorBox =
-    document.getElementById("errorBox");
-
-
-/* =========================================
-   ERROR DISPLAY
-========================================= */
-
-function showError(message) {
-
-    errorBox.style.display = "block";
-
-    errorBox.textContent =
-        message;
-
-}
-
-
-function hideError() {
-
-    errorBox.style.display = "none";
-
-}
-
-
-/* =========================================
-   WINDOW BUTTONS
-========================================= */
-
-document
-    .querySelectorAll(".window")
-    .forEach(button => {
-
-        button.addEventListener("click", () => {
-
-            document
-                .querySelectorAll(".window")
-                .forEach(b =>
-                    b.classList.remove("active")
-                );
-
-            button.classList.add("active");
-
-            selectedWindow =
-                Number(button.dataset.window);
-
-            windowLabelEl.textContent =
-                selectedWindow + " ticks";
-
-            updateAnalyzer();
-
-        });
-
-    });
-
-
-/* =========================================
-   CONNECT TO DERIV
-========================================= */
-
-function connect() {
-
-    statusText.textContent =
-        "Connecting...";
-
-    connectionEl.textContent =
-        "Connecting";
-
-    statusDot.classList.remove("live");
-
-    hideError();
-
-
-    try {
-
-        socket =
-            new WebSocket(WS_URL);
-
-    } catch(error) {
-
-        showError(
-            "Could not create WebSocket connection."
-        );
-
-        scheduleReconnect();
-
-        return;
-
+    if (type === "connected") {
+      status.classList.add("connected");
     }
 
-
-    socket.onopen = () => {
-
-        statusText.textContent =
-            "Connected";
-
-        connectionEl.textContent =
-            "Connected";
-
-        statusDot.classList.add("live");
-
-        hideError();
-
-        requestSymbols();
-
-    };
-
-
-    socket.onmessage = event => {
-
-        try {
-
-            const data =
-                JSON.parse(event.data);
-
-            handleMessage(data);
-
-        } catch(error) {
-
-            console.log(
-                "Message parsing error:",
-                error
-            );
-
-        }
-
-    };
-
-
-    socket.onerror = () => {
-
-        statusText.textContent =
-            "Connection error";
-
-        connectionEl.textContent =
-            "Connection error";
-
-        statusDot.classList.remove("live");
-
-    };
-
-
-    socket.onclose = () => {
-
-        statusText.textContent =
-            "Disconnected";
-
-        connectionEl.textContent =
-            "Disconnected";
-
-        statusDot.classList.remove("live");
-
-        scheduleReconnect();
-
-    };
-
-}
-
-
-/* =========================================
-   RECONNECT
-========================================= */
-
-let reconnectTimer = null;
-
-
-function scheduleReconnect() {
-
-    if (reconnectTimer) return;
-
-    reconnectTimer =
-        setTimeout(() => {
-
-            reconnectTimer = null;
-
-            connect();
-
-        }, 3000);
-
-}
-
-
-/* =========================================
-   REQUEST ACTIVE SYMBOLS
-========================================= */
-
-function requestSymbols() {
-
-    socket.send(
-        JSON.stringify({
-
-            active_symbols: "brief",
-
-            req_id: 1
-
-        })
-    );
-
-}
-
-
-/* =========================================
-   HANDLE MESSAGES
-========================================= */
-
-function handleMessage(data) {
-
-
-    /* API ERROR */
-
-    if (data.error) {
-
-        const message =
-            data.error.message ||
-            "Deriv API error";
-
-        showError(message);
-
-        statusText.textContent =
-            "API error";
-
-        connectionEl.textContent =
-            "API error";
-
-        console.log(
-            "Deriv error:",
-            data.error
-        );
-
-        return;
-
+    if (type === "error") {
+      status.classList.add("error");
     }
 
-
-    /* =====================================
-       ACTIVE SYMBOLS
-    ===================================== */
-
-    if (data.msg_type === "active_symbols") {
-
-        const symbols =
-            data.active_symbols || [];
+    text.textContent = message;
+  }
 
 
-        console.log(
-            "Active symbols received:",
-            symbols.length
-        );
+  function setText(id, value) {
 
+    const element = document.getElementById(id);
 
-        /*
-          Current Deriv API:
-          underlying_symbol
-          underlying_symbol_name
-          pip_size
-        */
-
-        let found =
-            symbols.find(item => {
-
-                const name =
-                    String(
-                        item.underlying_symbol_name ||
-                        ""
-                    );
-
-                return /Volatility\s*25\s*\(1s\)/i
-                    .test(name);
-
-            });
-
-
-        /*
-          Fallback by symbol.
-        */
-
-        if (!found) {
-
-            found =
-                symbols.find(item => {
-
-                    const currentSymbol =
-                        String(
-                            item.underlying_symbol ||
-                            ""
-                        );
-
-                    return currentSymbol ===
-                        "1HZ25V";
-
-                });
-
-        }
-
-
-        /*
-          Compatibility fallback
-          for older responses.
-        */
-
-        if (!found) {
-
-            found =
-                symbols.find(item => {
-
-                    const name =
-                        String(
-                            item.display_name ||
-                            ""
-                        );
-
-                    return /Volatility\s*25\s*\(1s\)/i
-                        .test(name);
-
-                });
-
-        }
-
-
-        if (!found) {
-
-            statusText.textContent =
-                "V25 symbol not found";
-
-            connectionEl.textContent =
-                "Symbol not found";
-
-            showError(
-                "Deriv connected, but V25 (1s) was not found in active symbols."
-            );
-
-            console.log(
-                "Available symbols:",
-                symbols
-            );
-
-            return;
-
-        }
-
-
-        /*
-          Get current symbol.
-        */
-
-        symbol =
-            found.underlying_symbol ||
-            found.symbol;
-
-
-        /*
-          Store pip size.
-        */
-
-        pipSize =
-            found.pip_size ??
-            found.pip ??
-            null;
-
-
-        /*
-          Display symbol.
-        */
-
-        symbolEl.textContent =
-            found.underlying_symbol_name ||
-            found.display_name ||
-            symbol;
-
-
-        console.log(
-            "Selected V25 symbol:",
-            symbol
-        );
-
-        console.log(
-            "Pip size:",
-            pipSize
-        );
-
-
-        statusText.textContent =
-            "V25 found";
-
-        connectionEl.textContent =
-            "Loading data";
-
-
-        requestHistory();
-
-        return;
-
+    if (element) {
+      element.textContent = value;
     }
 
-
-    /* =====================================
-       HISTORY
-    ===================================== */
-
-    if (data.msg_type === "history") {
-
-        const history =
-            data.history || {};
+  }
 
 
-        const prices =
-            history.prices || [];
+  /*
+   * ==========================================
+   * DECIMAL / LAST DIGIT HANDLING
+   * ==========================================
+   */
 
+  function decimalsFromPipSize(value) {
 
-        const times =
-            history.times || [];
-
-
-        ticks = [];
-
-
-        for (
-            let i = 0;
-            i < prices.length;
-            i++
-        ) {
-
-            ticks.push({
-
-                quote: prices[i],
-
-                epoch: times[i]
-
-            });
-
-        }
-
-
-        ticks =
-            ticks.slice(-MAX_TICKS);
-
-
-        digits =
-            ticks
-                .map(tick =>
-                    getLastDigit(
-                        tick.quote,
-                        pipSize
-                    )
-                )
-                .filter(
-                    digit =>
-                        digit !== null
-                );
-
-
-        tickCountEl.textContent =
-            digits.length;
-
-
-        updateAnalyzer();
-
-
-        statusText.textContent =
-            "Live";
-
-        connectionEl.textContent =
-            "Live";
-
-        statusDot.classList.add("live");
-
-
-        subscribeTicks();
-
-        return;
-
+    if (!value || value <= 0) {
+      return null;
     }
 
-
-    /* =====================================
-       LIVE TICK
-    ===================================== */
-
-    if (data.msg_type === "tick") {
-
-        const tick =
-            data.tick;
-
-
-        if (!tick) return;
-
-
-        const quote =
-            tick.quote;
-
-
-        /*
-          Tick pip_size may be missing
-          in the current API, so use
-          the symbol's stored pip size.
-        */
-
-        const currentPipSize =
-            tick.pip_size ??
-            pipSize;
-
-
-        ticks.push({
-
-            quote: quote,
-
-            epoch: tick.epoch,
-
-            pip_size: currentPipSize
-
-        });
-
-
-        if (ticks.length > MAX_TICKS) {
-
-            ticks.shift();
-
-        }
-
-
-        const digit =
-            getLastDigit(
-                quote,
-                currentPipSize
-            );
-
-
-        if (digit !== null) {
-
-            digits.push(digit);
-
-        }
-
-
-        if (digits.length > MAX_TICKS) {
-
-            digits.shift();
-
-        }
-
-
-        quoteEl.textContent =
-            formatQuote(
-                quote,
-                currentPipSize
-            );
-
-
-        lastDigitEl.textContent =
-            digit === null
-                ? "--"
-                : digit;
-
-
-        tickCountEl.textContent =
-            digits.length;
-
-
-        statusText.textContent =
-            "Live";
-
-        connectionEl.textContent =
-            "Live";
-
-        statusDot.classList.add("live");
-
-
-        updateAnalyzer();
-
-    }
-
-}
-
-
-/* =========================================
-   REQUEST HISTORY
-========================================= */
-
-function requestHistory() {
-
-    if (!symbol) {
-
-        showError(
-            "No symbol selected."
-        );
-
-        return;
-
-    }
-
-
-    socket.send(
-        JSON.stringify({
-
-            ticks_history: symbol,
-
-            count: 1000,
-
-            end: "latest",
-
-            style: "ticks",
-
-            req_id: 2
-
-        })
-    );
-
-}
-
-
-/* =========================================
-   LIVE SUBSCRIPTION
-========================================= */
-
-function subscribeTicks() {
-
-    if (!symbol) return;
-
-
-    socket.send(
-        JSON.stringify({
-
-            ticks: symbol,
-
-            subscribe: 1,
-
-            req_id: 3
-
-        })
-    );
-
-}
-
-
-/* =========================================
-   DECIMAL PLACES
-========================================= */
-
-function decimalPlacesFromPipSize(value) {
-
-    const pip =
-        Number(value);
-
-
-    if (!Number.isFinite(pip) ||
-        pip <= 0) {
-
-        return null;
-
-    }
-
-
-    /*
-      Examples:
-
-      1    -> 0 decimals
-      0.1  -> 1 decimal
-      0.01 -> 2 decimals
-      0.001 -> 3 decimals
-    */
-
-    const text =
-        pip.toString();
-
+    const text = String(value);
 
     if (text.includes("e-")) {
 
-        const parts =
-            text.split("e-");
+      const parts = text.split("e-");
 
-        return Number(parts[1]);
-
-    }
-
-
-    const decimal =
-        text.split(".")[1];
-
-
-    return decimal
-        ? decimal.length
-        : 0;
-
-}
-
-
-/* =========================================
-   GET LAST DIGIT
-========================================= */
-
-function getLastDigit(
-    quote,
-    currentPipSize
-) {
-
-    if (
-        quote === undefined ||
-        quote === null
-    ) {
-
-        return null;
+      return Number(parts[1]);
 
     }
 
+    if (text.includes(".")) {
 
-    let decimals =
-        decimalPlacesFromPipSize(
-            currentPipSize
-        );
+      return text.split(".")[1]
+        .replace(/0+$/, "")
+        .length;
 
+    }
+
+    return 0;
+  }
+
+
+  function getLastDigit(quote) {
+
+    let decimals = decimalsFromPipSize(pipSize);
 
     /*
-      If pip size isn't available,
-      infer decimal places from quote.
-    */
+     * If pip_size is unavailable, determine the
+     * number of decimal places from the quote.
+     */
 
     if (decimals === null) {
 
-        const text =
-            String(quote);
+      const text = String(quote);
 
-
-        const decimalPart =
-            text.split(".")[1];
-
-
-        decimals =
-            decimalPart
-                ? decimalPart.length
-                : 0;
+      if (text.includes(".")) {
+        decimals = text.split(".")[1].length;
+      } else {
+        decimals = 0;
+      }
 
     }
 
+    const formatted = Number(quote).toFixed(decimals);
 
-    const fixed =
-        Number(quote)
-            .toFixed(decimals);
-
+    const clean = formatted.replace(".", "");
 
     const lastCharacter =
-        fixed.charAt(
-            fixed.length - 1
-        );
+      clean.charAt(clean.length - 1);
+
+    const digit = Number(lastCharacter);
+
+    if (Number.isInteger(digit)) {
+      return digit;
+    }
+
+    return null;
+  }
 
 
-    if (
-        !/[0-9]/.test(
-            lastCharacter
-        )
-    ) {
+  /*
+   * ==========================================
+   * ADD DIGIT
+   * ==========================================
+   */
 
-        return null;
+  function addDigit(digit, quote) {
+
+    if (digit === null || digit === undefined) {
+      return;
+    }
+
+    digits.push(digit);
+
+    prices.push(Number(quote));
+
+    /*
+     * Keep memory reasonable.
+     */
+
+    if (digits.length > 5000) {
+      digits.shift();
+      prices.shift();
+    }
+
+    updateAnalyzer();
+
+  }
+
+
+  /*
+   * ==========================================
+   * LOAD HISTORICAL DATA
+   * ==========================================
+   */
+
+  function processHistory(history) {
+
+    if (!history) {
+      return;
+    }
+
+    const pricesArray = history.prices || [];
+
+    digits = [];
+
+    prices = [];
+
+    for (let i = 0; i < pricesArray.length; i++) {
+
+      const quote = Number(pricesArray[i]);
+
+      const digit = getLastDigit(quote);
+
+      if (digit !== null) {
+
+        prices.push(quote);
+
+        digits.push(digit);
+
+      }
 
     }
 
+    updateAnalyzer();
 
-    return Number(
-        lastCharacter
+  }
+
+
+  /*
+   * ==========================================
+   * UPDATE ANALYZER
+   * ==========================================
+   */
+
+  function updateAnalyzer() {
+
+    const total = digits.length;
+
+    setText("tickCount", total);
+
+    if (total === 0) {
+      return;
+    }
+
+    /*
+     * Current digit
+     */
+
+    const latestDigit =
+      digits[digits.length - 1];
+
+    const latestPrice =
+      prices[prices.length - 1];
+
+    setText(
+      "quote",
+      latestPrice !== undefined
+        ? latestPrice
+        : "--"
     );
 
-}
+    setText(
+      "lastDigit",
+      latestDigit
+    );
 
 
-/* =========================================
-   FORMAT QUOTE
-========================================= */
+    /*
+     * Digit counts
+     */
 
-function formatQuote(
-    quote,
-    currentPipSize
-) {
+    const counts = Array(10).fill(0);
 
-    if (
-        quote === undefined ||
-        quote === null
-    ) {
+    for (const digit of digits) {
+      counts[digit]++;
+    }
 
-        return "--";
+
+    /*
+     * Percentages
+     */
+
+    const percentages = counts.map(count =>
+      (count / total) * 100
+    );
+
+
+    /*
+     * Display 0-9
+     */
+
+    for (let i = 0; i <= 9; i++) {
+
+      const percent =
+        percentages[i];
+
+      setText(
+        "p" + i,
+        percent.toFixed(1) + "%"
+      );
+
+      const bar =
+        document.getElementById("b" + i);
+
+      if (bar) {
+        bar.style.width =
+          Math.min(percent, 100) + "%";
+      }
 
     }
 
 
-    const decimals =
-        decimalPlacesFromPipSize(
-            currentPipSize
-        );
+    /*
+     * Hot digit
+     */
 
+    let hotDigit = 0;
 
-    if (decimals !== null) {
+    for (let i = 1; i <= 9; i++) {
 
-        return Number(quote)
-            .toFixed(decimals);
+      if (counts[i] > counts[hotDigit]) {
+        hotDigit = i;
+      }
 
     }
 
+    setText("hotDigit", hotDigit);
 
-    return String(quote);
-
-}
-
-
-/* =========================================
-   UPDATE ANALYZER
-========================================= */
-
-function updateAnalyzer() {
-
-    if (!digits.length) return;
+    setText(
+      "hotPercent",
+      percentages[hotDigit].toFixed(1) +
+      "% of analyzed ticks"
+    );
 
 
-    const data =
-        digits.slice(
-            -selectedWindow
-        );
+    /*
+     * Cold digit
+     */
 
+    let coldDigit = 0;
+
+    for (let i = 1; i <= 9; i++) {
+
+      if (counts[i] < counts[coldDigit]) {
+        coldDigit = i;
+      }
+
+    }
+
+    setText("coldDigit", coldDigit);
+
+    setText(
+      "coldPercent",
+      percentages[coldDigit].toFixed(1) +
+      "% of analyzed ticks"
+    );
+
+
+    /*
+     * Over / Under 5
+     */
+
+    let under5Count = 0;
+
+    let over5Count = 0;
+
+    let digit5Count = counts[5];
+
+    for (let i = 0; i < 5; i++) {
+      under5Count += counts[i];
+    }
+
+    for (let i = 6; i <= 9; i++) {
+      over5Count += counts[i];
+    }
+
+    setText(
+      "under5",
+      ((under5Count / total) * 100).toFixed(1) + "%"
+    );
+
+    setText(
+      "digit5",
+      ((digit5Count / total) * 100).toFixed(1) + "%"
+    );
+
+    setText(
+      "over5",
+      ((over5Count / total) * 100).toFixed(1) + "%"
+    );
+
+
+    /*
+     * Even / Odd
+     */
+
+    let evenCount = 0;
+
+    let oddCount = 0;
+
+    for (const digit of digits) {
+
+      if (digit % 2 === 0) {
+        evenCount++;
+      } else {
+        oddCount++;
+      }
+
+    }
+
+    setText(
+      "even",
+      ((evenCount / total) * 100).toFixed(1) + "%"
+    );
+
+    setText(
+      "odd",
+      ((oddCount / total) * 100).toFixed(1) + "%"
+    );
+
+
+    /*
+     * Current streak
+     */
+
+    calculateStreak();
+
+
+    /*
+     * Rolling windows
+     */
+
+    setText(
+      "window25",
+      getWindowSummary(25)
+    );
+
+    setText(
+      "window50",
+      getWindowSummary(50)
+    );
+
+    setText(
+      "window100",
+      getWindowSummary(100)
+    );
+
+    setText(
+      "window500",
+      getWindowSummary(500)
+    );
+
+  }
+
+
+  /*
+   * ==========================================
+   * ROLLING WINDOW SUMMARY
+   * ==========================================
+   */
+
+  function getWindowSummary(size) {
+
+    if (digits.length === 0) {
+      return "--";
+    }
+
+    const start =
+      Math.max(0, digits.length - size);
+
+    const window =
+      digits.slice(start);
 
     const counts =
-        Array(10).fill(0);
+      Array(10).fill(0);
 
+    for (const digit of window) {
+      counts[digit]++;
+    }
 
-    data.forEach(digit => {
+    let highest = 0;
 
-        if (
-            digit >= 0 &&
-            digit <= 9
-        ) {
+    for (let i = 1; i <= 9; i++) {
 
-            counts[digit]++;
-
-        }
-
-    });
-
-
-    const total =
-        data.length;
-
-
-    /* =====================================
-       DIGIT DISTRIBUTION
-    ===================================== */
-
-    digitsEl.innerHTML = "";
-
-
-    for (
-        let digit = 0;
-        digit <= 9;
-        digit++
-    ) {
-
-        const count =
-            counts[digit];
-
-
-        const percent =
-            total
-                ? (count / total) * 100
-                : 0;
-
-
-        const card =
-            document.createElement(
-                "div"
-            );
-
-
-        card.className =
-            "digit";
-
-
-        card.innerHTML = `
-
-            <div class="digit-number">
-                ${digit}
-            </div>
-
-            <div class="digit-percent">
-                ${percent.toFixed(1)}%
-            </div>
-
-            <div class="digit-percent">
-                ${count} hits
-            </div>
-
-            <div class="bar-container">
-
-                <div
-                    class="bar"
-                    style="
-                        width:
-                        ${Math.min(
-                            percent * 3,
-                            100
-                        )}%
-                    "
-                ></div>
-
-            </div>
-
-        `;
-
-
-        digitsEl.appendChild(
-            card
-        );
+      if (counts[i] > counts[highest]) {
+        highest = i;
+      }
 
     }
 
-
-    /* =====================================
-       OVER / UNDER
-    ===================================== */
-
-    const under5 =
-        data.filter(
-            digit => digit < 5
-        ).length;
-
-
-    const equal5 =
-        data.filter(
-            digit => digit === 5
-        ).length;
-
-
-    const over5 =
-        data.filter(
-            digit => digit > 5
-        ).length;
-
-
-    under5El.textContent =
-        percentage(
-            under5,
-            total
-        );
-
-
-    equal5El.textContent =
-        percentage(
-            equal5,
-            total
-        );
-
-
-    over5El.textContent =
-        percentage(
-            over5,
-            total
-        );
-
-
-    /* =====================================
-       EVEN / ODD
-    ===================================== */
-
-    const even =
-        data.filter(
-            digit =>
-                digit % 2 === 0
-        ).length;
-
-
-    const odd =
-        data.filter(
-            digit =>
-                digit % 2 !== 0
-        ).length;
-
-
-    evenEl.textContent =
-        percentage(
-            even,
-            total
-        );
-
-
-    oddEl.textContent =
-        percentage(
-            odd,
-            total
-        );
-
-
-    /* =====================================
-       HOT / COLD
-    ===================================== */
-
-    const sorted =
-        counts
-            .map(
-                (count, digit) => ({
-                    digit: digit,
-                    count: count
-                })
-            )
-            .sort(
-                (a, b) =>
-                    b.count - a.count
-            );
-
-
-    const highest =
-        sorted[0].count;
-
-
-    const lowest =
-        sorted[sorted.length - 1].count;
-
-
-    const hot =
-        sorted
-            .filter(
-                item =>
-                    item.count === highest
-            )
-            .map(
-                item =>
-                    item.digit
-            );
-
-
-    const cold =
-        sorted
-            .filter(
-                item =>
-                    item.count === lowest
-            )
-            .map(
-                item =>
-                    item.digit
-            );
-
-
-    hotDigitsEl.textContent =
-        hot.join(", ");
-
-
-    coldDigitsEl.textContent =
-        cold.join(", ");
-
-
-    /* =====================================
-       STREAK
-    ===================================== */
-
-    updateStreak(data);
-
-
-    /* =====================================
-       RECENT DIGITS
-    ===================================== */
-
-    recentEl.innerHTML = "";
-
-
-    data
-        .slice(-30)
-        .forEach(digit => {
-
-            const span =
-                document.createElement(
-                    "span"
-                );
-
-
-            span.textContent =
-                digit;
-
-
-            recentEl.appendChild(
-                span
-            );
-
-        });
-
-}
-
-
-/* =========================================
-   STREAK ANALYSIS
-========================================= */
-
-function updateStreak(data) {
-
-    if (!data.length) return;
-
-
-    const current =
-        data[data.length - 1];
-
-
-    let currentLength = 0;
-
-
-    for (
-        let i = data.length - 1;
-        i >= 0;
-        i--
-    ) {
-
-        if (
-            data[i] === current
-        ) {
-
-            currentLength++;
-
-        } else {
-
-            break;
-
-        }
-
-    }
-
-
-    let longest = 1;
-
-    let running = 1;
-
-
-    for (
-        let i = 1;
-        i < data.length;
-        i++
-    ) {
-
-        if (
-            data[i] ===
-            data[i - 1]
-        ) {
-
-            running++;
-
-        } else {
-
-            running = 1;
-
-        }
-
-
-        if (
-            running > longest
-        ) {
-
-            longest =
-                running;
-
-        }
-
-    }
-
-
-    streakDigitEl.textContent =
-        current;
-
-
-    streakLengthEl.textContent =
-        currentLength;
-
-
-    longestStreakEl.textContent =
-        longest;
-
-
-    streakEl.textContent =
-        current +
-        " × " +
-        currentLength;
-
-}
-
-
-/* =========================================
-   PERCENTAGE
-========================================= */
-
-function percentage(
-    value,
-    total
-) {
-
-    if (!total) {
-
-        return "0.0%";
-
-    }
-
+    const percentage =
+      (counts[highest] / window.length) * 100;
 
     return (
-        (value / total) * 100
-    ).toFixed(1) + "%";
+      "Hot " +
+      highest +
+      " (" +
+      percentage.toFixed(1) +
+      "%)"
+    );
 
-}
+  }
 
 
-/* =========================================
-   START
-========================================= */
+  /*
+   * ==========================================
+   * STREAK ANALYSIS
+   * ==========================================
+   */
 
-connect();
+  function calculateStreak() {
+
+    if (digits.length === 0) {
+      return;
+    }
+
+    const latest =
+      digits[digits.length - 1];
+
+    let count = 1;
+
+    for (
+      let i = digits.length - 2;
+      i >= 0;
+      i--
+    ) {
+
+      if (digits[i] === latest) {
+        count++;
+      } else {
+        break;
+      }
+
+    }
+
+    setText(
+      "streakType",
+      "Digit " + latest
+    );
+
+    setText(
+      "streakCount",
+      count + " consecutive occurrence" +
+      (count === 1 ? "" : "s")
+    );
+
+  }
+
+
+  /*
+   * ==========================================
+   * WEBSOCKET CONNECTION
+   * ==========================================
+   */
+
+  function connect() {
+
+    clearTimeout(reconnectTimer);
+
+    setStatus(
+      "Connecting to Deriv..."
+    );
+
+    try {
+
+      socket = new WebSocket(WS_URL);
+
+    } catch (error) {
+
+      setStatus(
+        "WebSocket could not start",
+        "error"
+      );
+
+      scheduleReconnect();
+
+      return;
+
+    }
+
+
+    /*
+     * OPEN
+     */
+
+    socket.onopen = function() {
+
+      reconnectAttempts = 0;
+
+      setStatus(
+        "Connected",
+        "connected"
+      );
+
+
+      /*
+       * Request active symbols.
+       */
+
+      socket.send(JSON.stringify({
+
+        active_symbols: "brief",
+
+        product_type: "basic",
+
+        req_id: 1
+
+      }));
+
+
+      /*
+       * Request historical ticks.
+       */
+
+      socket.send(JSON.stringify({
+
+        ticks_history: SYMBOL,
+
+        count: HISTORY_COUNT,
+
+        end: "latest",
+
+        style: "ticks",
+
+        req_id: 2
+
+      }));
+
+
+      /*
+       * Subscribe to live ticks.
+       */
+
+      socket.send(JSON.stringify({
+
+        ticks: SYMBOL,
+
+        subscribe: 1,
+
+        req_id: 3
+
+      }));
+
+    };
+
+
+    /*
+     * MESSAGE
+     */
+
+    socket.onmessage = function(event) {
+
+      let data;
+
+      try {
+
+        data = JSON.parse(event.data);
+
+      } catch (error) {
+
+        console.log(
+          "Invalid WebSocket message:",
+          event.data
+        );
+
+        return;
+
+      }
+
+
+      /*
+       * API error
+       */
+
+      if (data.error) {
+
+        console.error(
+          "Deriv API error:",
+          data.error
+        );
+
+        setStatus(
+          "Deriv error: " +
+          (data.error.message || "Unknown error"),
+          "error"
+        );
+
+        return;
+
+      }
+
+
+      /*
+       * Active symbols
+       */
+
+      if (
+        data.msg_type ===
+        "active_symbols"
+      ) {
+
+        const symbols =
+          data.active_symbols || [];
+
+        const found =
+          symbols.find(item => {
+
+            const name =
+              String(
+                item.underlying_symbol_name ||
+                item.display_name ||
+                ""
+              );
+
+            return /Volatility\s*25\s*\(1s\)/i
+              .test(name);
+
+          });
+
+        if (found) {
+
+          const detectedSymbol =
+            found.underlying_symbol ||
+            found.symbol;
+
+          if (detectedSymbol) {
+
+            setText(
+              "symbol",
+              detectedSymbol
+            );
+
+            console.log(
+              "V25 symbol detected:",
+              detectedSymbol
+            );
+
+          }
+
+          if (
+            found.pip_size !== undefined
+          ) {
+
+            pipSize =
+              Number(found.pip_size);
+
+          }
+
+        }
+
+      }
+
+
+      /*
+       * History
+       */
+
+      if (
+        data.msg_type === "history"
+      ) {
+
+        if (
+          data.pip_size !== undefined
+        ) {
+
+          pipSize =
+            Number(data.pip_size);
+
+        }
+
+        processHistory(
+          data.history
+        );
+
+      }
+
+
+      /*
+       * Live tick
+       */
+
+      if (
+        data.msg_type === "tick"
+      ) {
+
+        if (
+          data.tick &&
+          data.tick.quote !== undefined
+        ) {
+
+          const quote =
+            Number(data.tick.quote);
+
+          if (
+            data.tick.pip_size !== undefined
+          ) {
+
+            pipSize =
+              Number(data.tick.pip_size);
+
+          }
+
+          const digit =
+            getLastDigit(quote);
+
+          addDigit(
+            digit,
+            quote
+          );
+
+        }
+
+      }
+
+    };
+
+
+    /*
+     * ERROR
+     */
+
+    socket.onerror = function(error) {
+
+      console.error(
+        "WebSocket error:",
+        error
+      );
+
+      setStatus(
+        "WebSocket connection error",
+        "error"
+      );
+
+    };
+
+
+    /*
+     * CLOSED
+     */
+
+    socket.onclose = function(event) {
+
+      console.log(
+        "WebSocket closed:",
+        event.code,
+        event.reason
+      );
+
+      setStatus(
+        "Disconnected - reconnecting...",
+        "error"
+      );
+
+      scheduleReconnect();
+
+    };
+
+  }
+
+
+  /*
+   * ==========================================
+   * RECONNECT
+   * ==========================================
+   */
+
+  function scheduleReconnect() {
+
+    reconnectAttempts++;
+
+    const delay =
+      Math.min(
+        1000 * Math.pow(2, reconnectAttempts),
+        30000
+      );
+
+    console.log(
+      "Reconnecting in",
+      delay,
+      "ms"
+    );
+
+    reconnectTimer =
+      setTimeout(
+        connect,
+        delay
+      );
+
+  }
+
+
+  /*
+   * ==========================================
+   * START
+   * ==========================================
+   */
+
+  setText(
+    "symbol",
+    SYMBOL
+  );
+
+  connect();
 
 </script>
 
