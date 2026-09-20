@@ -4,9 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>V25 (1s) Digit Analyzer V2</title>
+<title>V25 (1s) Digit Analyzer V3</title>
 
 <style>
+
 * {
   box-sizing: border-box;
 }
@@ -77,7 +78,8 @@ h1 {
   gap: 8px;
 }
 
-.window-buttons button {
+.window-buttons button,
+.backtest-buttons button {
   border: 1px solid #344159;
   background: #1a2539;
   color: white;
@@ -86,7 +88,8 @@ h1 {
   cursor: pointer;
 }
 
-.window-buttons button.active {
+.window-buttons button.active,
+.backtest-buttons button.active {
   background: #2563eb;
   border-color: #3b82f6;
 }
@@ -172,14 +175,6 @@ h1 {
   border-radius: 5px;
 }
 
-.hot {
-  border: 1px solid #e08b32;
-}
-
-.cold {
-  border: 1px solid #4d607e;
-}
-
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -207,7 +202,6 @@ h1 {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
-  line-height: 1;
 }
 
 .stream-digit {
@@ -223,6 +217,65 @@ h1 {
 
 .streak {
   font-size: 18px;
+}
+
+.backtest-controls {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 15px;
+}
+
+.control-box {
+  background: #19243a;
+  padding: 14px;
+  border-radius: 10px;
+}
+
+.control-box label {
+  display: block;
+  color: #9facbf;
+  font-size: 13px;
+  margin-bottom: 8px;
+}
+
+select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #344159;
+  background: #101a2d;
+  color: white;
+}
+
+.backtest-result {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+}
+
+.result-box {
+  background: #19243a;
+  padding: 14px;
+  border-radius: 10px;
+}
+
+.result-label {
+  color: #8997ac;
+  font-size: 12px;
+}
+
+.result-value {
+  font-size: 21px;
+  font-weight: bold;
+  margin-top: 6px;
+}
+
+.backtest-note {
+  color: #8997ac;
+  font-size: 12px;
+  line-height: 1.5;
+  margin-top: 14px;
 }
 
 .warning {
@@ -242,6 +295,7 @@ h1 {
 }
 
 @media (max-width: 800px) {
+
   .cards {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -249,9 +303,15 @@ h1 {
   .stats-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+
+  .backtest-result {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
 }
 
 @media (max-width: 500px) {
+
   .container {
     padding: 12px;
   }
@@ -284,7 +344,13 @@ h1 {
   .card-value {
     font-size: 21px;
   }
+
+  .backtest-controls {
+    grid-template-columns: 1fr;
+  }
+
 }
+
 </style>
 </head>
 
@@ -293,191 +359,486 @@ h1 {
 <div class="container">
 
 <header>
-  <h1>V25 (1s) Digit Analyzer</h1>
-  <div class="subtitle">
-    Live statistical analysis for Volatility 25 (1s)
-  </div>
 
-  <div id="status" class="status">
-    Connecting...
-  </div>
+<h1>V25 (1s) Digit Analyzer</h1>
+
+<div class="subtitle">
+Live statistical analysis for Volatility 25 (1s)
+</div>
+
+<div id="status" class="status">
+Connecting...
+</div>
+
 </header>
+
 
 <div id="errorBox" class="error-box"></div>
 
+
+<!-- ANALYSIS WINDOW -->
+
 <div class="controls">
 
-  <div class="controls-title">
-    Analysis Window
-  </div>
+<div class="controls-title">
+Analysis Window
+</div>
 
-  <div class="window-buttons">
+<div class="window-buttons">
 
-    <button data-window="25">25</button>
-    <button data-window="50">50</button>
-    <button data-window="100" class="active">100</button>
-    <button data-window="500">500</button>
-    <button data-window="1000">1000</button>
+<button data-window="25">25</button>
 
-  </div>
+<button data-window="50">50</button>
+
+<button data-window="100" class="active">
+100
+</button>
+
+<button data-window="500">500</button>
+
+<button data-window="1000">1000</button>
 
 </div>
+
+</div>
+
+
+<!-- MAIN CARDS -->
 
 <div class="cards">
 
-  <div class="card">
-    <div class="card-title">Current Quote</div>
-    <div id="quote" class="card-value">--</div>
-  </div>
+<div class="card">
 
-  <div class="card">
-    <div class="card-title">Last Digit</div>
-    <div id="lastDigit" class="card-value">--</div>
-  </div>
+<div class="card-title">
+Current Quote
+</div>
 
-  <div class="card">
-    <div class="card-title">Ticks Analyzed</div>
-    <div id="tickCount" class="card-value">0</div>
-  </div>
-
-  <div class="card">
-    <div class="card-title">Window</div>
-    <div id="windowDisplay" class="card-value">100</div>
-  </div>
+<div id="quote" class="card-value">
+--
+</div>
 
 </div>
+
+
+<div class="card">
+
+<div class="card-title">
+Last Digit
+</div>
+
+<div id="lastDigit" class="card-value">
+--
+</div>
+
+</div>
+
+
+<div class="card">
+
+<div class="card-title">
+Ticks Analyzed
+</div>
+
+<div id="tickCount" class="card-value">
+0
+</div>
+
+</div>
+
+
+<div class="card">
+
+<div class="card-title">
+Window
+</div>
+
+<div id="windowDisplay" class="card-value">
+100
+</div>
+
+</div>
+
+</div>
+
+
+<!-- DIGIT FREQUENCY -->
 
 <div class="section">
 
-  <h2>🔥 Digit Frequency</h2>
+<h2>🔥 Digit Frequency</h2>
 
-  <div id="digitGrid" class="digit-grid"></div>
+<div id="digitGrid" class="digit-grid"></div>
 
 </div>
+
+
+<!-- OVER UNDER -->
 
 <div class="section">
 
-  <h2>📊 Over / Under 5</h2>
+<h2>📊 Over / Under 5</h2>
 
-  <div class="stats-grid">
+<div class="stats-grid">
 
-    <div class="stat-box">
-      <div class="stat-label">Under 5</div>
-      <div id="under5" class="stat-value">--</div>
-    </div>
+<div class="stat-box">
 
-    <div class="stat-box">
-      <div class="stat-label">Over 5</div>
-      <div id="over5" class="stat-value">--</div>
-    </div>
+<div class="stat-label">
+Under 5
+</div>
 
-    <div class="stat-box">
-      <div class="stat-label">Digit 5</div>
-      <div id="digit5" class="stat-value">--</div>
-    </div>
-
-    <div class="stat-box">
-      <div class="stat-label">Total</div>
-      <div id="ouTotal" class="stat-value">0</div>
-    </div>
-
-  </div>
+<div id="under5" class="stat-value">
+--
+</div>
 
 </div>
+
+
+<div class="stat-box">
+
+<div class="stat-label">
+Over 5
+</div>
+
+<div id="over5" class="stat-value">
+--
+</div>
+
+</div>
+
+
+<div class="stat-box">
+
+<div class="stat-label">
+Digit 5
+</div>
+
+<div id="digit5" class="stat-value">
+--
+</div>
+
+</div>
+
+
+<div class="stat-box">
+
+<div class="stat-label">
+Total
+</div>
+
+<div id="ouTotal" class="stat-value">
+0
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- EVEN ODD -->
 
 <div class="section">
 
-  <h2>⚖️ Even / Odd</h2>
+<h2>⚖️ Even / Odd</h2>
 
-  <div class="stats-grid">
+<div class="stats-grid">
 
-    <div class="stat-box">
-      <div class="stat-label">Even</div>
-      <div id="even" class="stat-value">--</div>
-    </div>
+<div class="stat-box">
 
-    <div class="stat-box">
-      <div class="stat-label">Odd</div>
-      <div id="odd" class="stat-value">--</div>
-    </div>
+<div class="stat-label">
+Even
+</div>
 
-  </div>
+<div id="even" class="stat-value">
+--
+</div>
 
 </div>
+
+
+<div class="stat-box">
+
+<div class="stat-label">
+Odd
+</div>
+
+<div id="odd" class="stat-value">
+--
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- HOT COLD -->
 
 <div class="section">
 
-  <h2>🔥 Hot / 🧊 Cold</h2>
+<h2>🔥 Hot / 🧊 Cold</h2>
 
-  <div class="stats-grid">
+<div class="stats-grid">
 
-    <div class="stat-box">
-      <div class="stat-label">Hot Digit</div>
-      <div id="hotDigit" class="stat-value">--</div>
-    </div>
+<div class="stat-box">
 
-    <div class="stat-box">
-      <div class="stat-label">Hot Frequency</div>
-      <div id="hotFrequency" class="stat-value">--</div>
-    </div>
+<div class="stat-label">
+Hot Digit
+</div>
 
-    <div class="stat-box">
-      <div class="stat-label">Cold Digit</div>
-      <div id="coldDigit" class="stat-value">--</div>
-    </div>
-
-    <div class="stat-box">
-      <div class="stat-label">Cold Frequency</div>
-      <div id="coldFrequency" class="stat-value">--</div>
-    </div>
-
-  </div>
+<div id="hotDigit" class="stat-value">
+--
+</div>
 
 </div>
+
+
+<div class="stat-box">
+
+<div class="stat-label">
+Hot Frequency
+</div>
+
+<div id="hotFrequency" class="stat-value">
+--
+</div>
+
+</div>
+
+
+<div class="stat-box">
+
+<div class="stat-label">
+Cold Digit
+</div>
+
+<div id="coldDigit" class="stat-value">
+--
+</div>
+
+</div>
+
+
+<div class="stat-box">
+
+<div class="stat-label">
+Cold Frequency
+</div>
+
+<div id="coldFrequency" class="stat-value">
+--
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- STREAK -->
 
 <div class="section">
 
-  <h2>📌 Current Streak</h2>
+<h2>📌 Current Streak</h2>
 
-  <div id="streak" class="streak">
-    Waiting for ticks...
-  </div>
+<div id="streak" class="streak">
+Waiting for ticks...
+</div>
 
 </div>
+
+
+<!-- LIVE DIGITS -->
 
 <div class="section">
 
-  <h2>📡 Live Last Digits</h2>
+<h2>📡 Live Last Digits</h2>
 
-  <div id="stream" class="stream">
-    Waiting for live data...
-  </div>
+<div id="stream" class="stream">
+Waiting for live data...
+</div>
 
 </div>
+
+
+<!-- =========================
+     BACKTESTER
+========================= -->
 
 <div class="section">
 
-  <h2>ℹ️ Analyzer Information</h2>
+<h2>🧪 Historical Backtester</h2>
 
-  <div class="warning">
-    The percentages shown are historical frequencies from the selected
-    number of ticks. They do not guarantee what the next digit will be.
-    Use the statistics for analysis and backtesting rather than treating
-    them as guaranteed predictions.
-  </div>
+<div class="backtest-controls">
+
+
+<div class="control-box">
+
+<label>
+Strategy
+</label>
+
+<select id="strategySelect">
+
+<option value="majorityOU">
+Majority Over / Under 5
+</option>
+
+<option value="majorityEO">
+Majority Even / Odd
+</option>
+
+</select>
+
+</div>
+
+
+<div class="control-box">
+
+<label>
+Lookback
+</label>
+
+<select id="backtestLookback">
+
+<option value="25">
+25 ticks
+</option>
+
+<option value="50">
+50 ticks
+</option>
+
+<option value="100" selected>
+100 ticks
+</option>
+
+</select>
 
 </div>
 
 </div>
+
+
+<div class="backtest-result">
+
+
+<div class="result-box">
+
+<div class="result-label">
+Signals Tested
+</div>
+
+<div id="btSignals" class="result-value">
+--
+</div>
+
+</div>
+
+
+<div class="result-box">
+
+<div class="result-label">
+Wins
+</div>
+
+<div id="btWins" class="result-value">
+--
+</div>
+
+</div>
+
+
+<div class="result-box">
+
+<div class="result-label">
+Losses
+</div>
+
+<div id="btLosses" class="result-value">
+--
+</div>
+
+</div>
+
+
+<div class="result-box">
+
+<div class="result-label">
+No Signal
+</div>
+
+<div id="btNoSignal" class="result-value">
+--
+</div>
+
+</div>
+
+
+<div class="result-box">
+
+<div class="result-label">
+Hit Rate
+</div>
+
+<div id="btHitRate" class="result-value">
+--
+</div>
+
+</div>
+
+</div>
+
+
+<div class="backtest-note">
+
+The backtester uses previous ticks to create a signal and then checks
+the following tick. It does not use the result of that future tick to
+create the signal.
+
+</div>
+
+</div>
+
+
+<!-- INFORMATION -->
+
+<div class="section">
+
+<h2>ℹ️ Important</h2>
+
+<div class="warning">
+
+Historical hit rate is only a measurement of past data.
+It is not a guarantee that the same rule will work on future ticks.
+A high historical hit rate can occur by chance, especially with a
+small sample size.
+
+</div>
+
+</div>
+
+</div>
+
 
 <script>
 
+
+/* =====================================
+   CONNECTION
+===================================== */
+
 const WS_URL =
-  "wss://api.derivws.com/trading/v1/options/ws/public";
+"wss://api.derivws.com/trading/v1/options/ws/public";
 
-const SYMBOL = "1HZ25V";
+const SYMBOL =
+"1HZ25V";
 
-const HISTORY_COUNT = 1000;
+const HISTORY_COUNT =
+1000;
 
 let socket = null;
 
@@ -488,755 +849,1313 @@ let selectedWindow = 100;
 let decimalPlaces = 2;
 
 
-/* =========================
-   CONNECTION
-========================= */
+/* =====================================
+   CONNECT
+===================================== */
 
 function connect() {
 
-  setStatus("Connecting...", "");
+setStatus(
+"Connecting...",
+""
+);
 
-  socket = new WebSocket(WS_URL);
-
-  socket.onopen = function() {
-
-    setStatus("Connected", "connected");
-
-    hideError();
-
-    requestHistory();
-
-  };
+socket =
+new WebSocket(WS_URL);
 
 
-  socket.onmessage = function(event) {
+socket.onopen =
+function() {
 
-    try {
+setStatus(
+"Connected",
+"connected"
+);
 
-      const data = JSON.parse(event.data);
+hideError();
 
-      handleMessage(data);
+requestHistory();
 
-    } catch (error) {
-
-      showError("Could not read Deriv response.");
-
-    }
-
-  };
+};
 
 
-  socket.onerror = function() {
+socket.onmessage =
+function(event) {
 
-    setStatus("Connection error", "error");
+try {
 
-  };
+const data =
+JSON.parse(event.data);
+
+handleMessage(data);
+
+}
+
+catch(error) {
+
+showError(
+"Could not read Deriv response."
+);
+
+}
+
+};
 
 
-  socket.onclose = function() {
+socket.onerror =
+function() {
 
-    setStatus("Disconnected", "");
+setStatus(
+"Connection error",
+"error"
+);
 
-    setTimeout(connect, 3000);
+};
 
-  };
+
+socket.onclose =
+function() {
+
+setStatus(
+"Disconnected",
+""
+);
+
+setTimeout(
+connect,
+3000
+);
+
+};
 
 }
 
 
-/* =========================
-   REQUEST HISTORY
-========================= */
+/* =====================================
+   HISTORY REQUEST
+===================================== */
 
 function requestHistory() {
 
-  socket.send(JSON.stringify({
+socket.send(
+JSON.stringify({
 
-    ticks_history: SYMBOL,
+ticks_history: SYMBOL,
 
-    count: HISTORY_COUNT,
+count: HISTORY_COUNT,
 
-    end: "latest",
+end: "latest",
 
-    style: "ticks",
+style: "ticks",
 
-    req_id: 1
+req_id: 1
 
-  }));
+})
+);
 
 
-  socket.send(JSON.stringify({
+socket.send(
+JSON.stringify({
 
-    ticks: SYMBOL,
+ticks: SYMBOL,
 
-    subscribe: 1,
+subscribe: 1,
 
-    req_id: 2
+req_id: 2
 
-  }));
+})
+);
 
 }
 
 
-/* =========================
-   HANDLE DATA
-========================= */
+/* =====================================
+   HANDLE MESSAGE
+===================================== */
 
 function handleMessage(data) {
 
-  if (data.error) {
+if (data.error) {
 
-    showError(
-      "Deriv error: " +
-      (data.error.message || "Unknown error")
-    );
+showError(
+"Deriv error: " +
+(data.error.message ||
+"Unknown error")
+);
 
-    return;
-
-  }
-
-
-  if (data.history) {
-
-    processHistory(data.history);
-
-    return;
-
-  }
-
-
-  if (data.tick) {
-
-    processLiveTick(data.tick);
-
-    return;
-
-  }
+return;
 
 }
 
 
-/* =========================
+if (data.history) {
+
+processHistory(
+data.history
+);
+
+return;
+
+}
+
+
+if (data.tick) {
+
+processLiveTick(
+data.tick
+);
+
+return;
+
+}
+
+}
+
+
+/* =====================================
    HISTORY
-========================= */
+===================================== */
 
 function processHistory(history) {
 
-  allDigits = [];
+allDigits = [];
 
-  const prices = history.prices || [];
-
-  const times = history.times || [];
-
-
-  for (let i = 0; i < prices.length; i++) {
-
-    const quote = Number(prices[i]);
-
-    if (!Number.isFinite(quote)) continue;
-
-    const digit = extractLastDigit(quote);
-
-    allDigits.push(digit);
-
-  }
+const prices =
+history.prices || [];
 
 
-  if (prices.length > 0) {
+for (
+let i = 0;
+i < prices.length;
+i++
+) {
 
-    const lastQuote =
-      Number(prices[prices.length - 1]);
+const quote =
+Number(prices[i]);
 
-    updateQuote(lastQuote);
+if (
+!Number.isFinite(quote)
+) continue;
 
-    updateLastDigit(
-      extractLastDigit(lastQuote)
-    );
+const digit =
+extractLastDigit(
+quote
+);
 
-  }
-
-
-  render();
+allDigits.push(
+digit
+);
 
 }
 
 
-/* =========================
+if (
+prices.length > 0
+) {
+
+const lastQuote =
+Number(
+prices[prices.length - 1]
+);
+
+updateQuote(
+lastQuote
+);
+
+updateLastDigit(
+extractLastDigit(
+lastQuote
+)
+);
+
+}
+
+
+render();
+
+}
+
+
+/* =====================================
    LIVE TICK
-========================= */
+===================================== */
 
 function processLiveTick(tick) {
 
-  const quote = Number(tick.quote);
+const quote =
+Number(tick.quote);
 
-  if (!Number.isFinite(quote)) return;
-
-
-  const digit = extractLastDigit(quote);
-
-
-  allDigits.push(digit);
+if (
+!Number.isFinite(quote)
+) return;
 
 
-  if (allDigits.length > HISTORY_COUNT) {
-
-    allDigits =
-      allDigits.slice(-HISTORY_COUNT);
-
-  }
+const digit =
+extractLastDigit(
+quote
+);
 
 
-  updateQuote(quote);
+allDigits.push(
+digit
+);
 
-  updateLastDigit(digit);
 
-  render();
+if (
+allDigits.length >
+HISTORY_COUNT
+) {
+
+allDigits =
+allDigits.slice(
+-HISTORY_COUNT
+);
 
 }
 
 
-/* =========================
+updateQuote(
+quote
+);
+
+updateLastDigit(
+digit
+);
+
+render();
+
+}
+
+
+/* =====================================
    DIGIT EXTRACTION
-========================= */
+===================================== */
 
-function extractLastDigit(quote) {
+function extractLastDigit(
+quote
+) {
 
-  const text =
-    Number(quote).toFixed(decimalPlaces);
+const text =
+Number(quote)
+.toFixed(decimalPlaces);
 
-  const digitsOnly =
-    text.replace(/\D/g, "");
+const digitsOnly =
+text.replace(
+/\D/g,
+""
+);
 
-  return Number(
-    digitsOnly.charAt(
-      digitsOnly.length - 1
-    )
-  );
+return Number(
+digitsOnly.charAt(
+digitsOnly.length - 1
+)
+);
 
 }
 
 
-/* =========================
+/* =====================================
    CURRENT WINDOW
-========================= */
+===================================== */
 
 function getWindowDigits() {
 
-  if (allDigits.length <= selectedWindow) {
+if (
+allDigits.length <=
+selectedWindow
+) {
 
-    return allDigits.slice();
+return allDigits.slice();
 
-  }
+}
 
-  return allDigits.slice(
-    -selectedWindow
-  );
+return allDigits.slice(
+-selectedWindow
+);
 
 }
 
 
-/* =========================
-   RENDER EVERYTHING
-========================= */
+/* =====================================
+   RENDER
+===================================== */
 
 function render() {
 
-  const digits =
-    getWindowDigits();
+const digits =
+getWindowDigits();
 
 
-  if (!digits.length) return;
+if (
+!digits.length
+) return;
 
 
-  document.getElementById(
-    "tickCount"
-  ).textContent = allDigits.length;
+document.getElementById(
+"tickCount"
+).textContent =
+allDigits.length;
 
 
-  document.getElementById(
-    "windowDisplay"
-  ).textContent = selectedWindow;
+document.getElementById(
+"windowDisplay"
+).textContent =
+selectedWindow;
 
 
-  renderDigitFrequency(digits);
+renderDigitFrequency(
+digits
+);
 
-  renderOverUnder(digits);
+renderOverUnder(
+digits
+);
 
-  renderEvenOdd(digits);
+renderEvenOdd(
+digits
+);
 
-  renderHotCold(digits);
+renderHotCold(
+digits
+);
 
-  renderStreak(digits);
+renderStreak(
+digits
+);
 
-  renderStream();
+renderStream();
 
 }
 
 
-/* =========================
+/* =====================================
    DIGIT FREQUENCY
-========================= */
+===================================== */
 
-function renderDigitFrequency(digits) {
+function renderDigitFrequency(
+digits
+) {
 
-  const counts =
-    Array(10).fill(0);
-
-
-  digits.forEach(digit => {
-
-    counts[digit]++;
-
-  });
+const counts =
+Array(10).fill(0);
 
 
-  const total = digits.length;
+digits.forEach(
+digit => {
+
+counts[digit]++;
+
+}
+);
 
 
-  const grid =
-    document.getElementById(
-      "digitGrid"
-    );
+const total =
+digits.length;
 
 
-  grid.innerHTML = "";
+const grid =
+document.getElementById(
+"digitGrid"
+);
 
 
-  for (let digit = 0; digit <= 9; digit++) {
-
-    const percentage =
-      (counts[digit] / total) * 100;
+grid.innerHTML = "";
 
 
-    const box =
-      document.createElement("div");
+for (
+let digit = 0;
+digit <= 9;
+digit++
+) {
+
+const percentage =
+(counts[digit] /
+total) * 100;
 
 
-    box.className = "digit-box";
+const box =
+document.createElement(
+"div"
+);
 
 
-    box.innerHTML = `
-
-      <div class="digit-number">
-        ${digit}
-      </div>
-
-      <div class="digit-percent">
-        ${percentage.toFixed(1)}%
-      </div>
-
-      <div class="bar">
-        <div
-          class="bar-fill"
-          style="width:${Math.min(percentage * 5,100)}%"
-        ></div>
-      </div>
-
-      <div class="card-small">
-        ${counts[digit]} hits
-      </div>
-
-    `;
+box.className =
+"digit-box";
 
 
-    grid.appendChild(box);
+box.innerHTML = `
 
-  }
+<div class="digit-number">
+${digit}
+</div>
+
+<div class="digit-percent">
+${percentage.toFixed(1)}%
+</div>
+
+<div class="bar">
+
+<div
+class="bar-fill"
+style="width:${Math.min(
+percentage * 5,
+100
+)}%"
+></div>
+
+</div>
+
+<div class="card-small">
+${counts[digit]} hits
+</div>
+
+`;
+
+
+grid.appendChild(
+box
+);
+
+}
 
 }
 
 
-/* =========================
-   OVER / UNDER
-========================= */
+/* =====================================
+   OVER UNDER
+===================================== */
 
-function renderOverUnder(digits) {
+function renderOverUnder(
+digits
+) {
 
-  let under = 0;
+let under = 0;
 
-  let over = 0;
+let over = 0;
 
-  let five = 0;
-
-
-  digits.forEach(digit => {
-
-    if (digit < 5) under++;
-
-    else if (digit > 5) over++;
-
-    else five++;
-
-  });
+let five = 0;
 
 
-  const total = digits.length;
+digits.forEach(
+digit => {
+
+if (
+digit < 5
+) {
+
+under++;
+
+}
+
+else if (
+digit > 5
+) {
+
+over++;
+
+}
+
+else {
+
+five++;
+
+}
+
+}
+);
 
 
-  document.getElementById(
-    "under5"
-  ).textContent =
-    ((under / total) * 100).toFixed(1)
-    + "%";
+const total =
+digits.length;
 
 
-  document.getElementById(
-    "over5"
-  ).textContent =
-    ((over / total) * 100).toFixed(1)
-    + "%";
+document.getElementById(
+"under5"
+).textContent =
+(
+under / total * 100
+).toFixed(1)
++ "%";
 
 
-  document.getElementById(
-    "digit5"
-  ).textContent =
-    ((five / total) * 100).toFixed(1)
-    + "%";
+document.getElementById(
+"over5"
+).textContent =
+(
+over / total * 100
+).toFixed(1)
++ "%";
 
 
-  document.getElementById(
-    "ouTotal"
-  ).textContent =
-    total;
+document.getElementById(
+"digit5"
+).textContent =
+(
+five / total * 100
+).toFixed(1)
++ "%";
+
+
+document.getElementById(
+"ouTotal"
+).textContent =
+total;
 
 }
 
 
-/* =========================
-   EVEN / ODD
-========================= */
+/* =====================================
+   EVEN ODD
+===================================== */
 
-function renderEvenOdd(digits) {
+function renderEvenOdd(
+digits
+) {
 
-  let even = 0;
+let even = 0;
 
-  let odd = 0;
-
-
-  digits.forEach(digit => {
-
-    if (digit % 2 === 0) {
-
-      even++;
-
-    } else {
-
-      odd++;
-
-    }
-
-  });
+let odd = 0;
 
 
-  const total = digits.length;
+digits.forEach(
+digit => {
+
+if (
+digit % 2 === 0
+) {
+
+even++;
+
+}
+
+else {
+
+odd++;
+
+}
+
+}
+);
 
 
-  document.getElementById(
-    "even"
-  ).textContent =
-    ((even / total) * 100).toFixed(1)
-    + "%";
+const total =
+digits.length;
 
 
-  document.getElementById(
-    "odd"
-  ).textContent =
-    ((odd / total) * 100).toFixed(1)
-    + "%";
+document.getElementById(
+"even"
+).textContent =
+(
+even / total * 100
+).toFixed(1)
++ "%";
+
+
+document.getElementById(
+"odd"
+).textContent =
+(
+odd / total * 100
+).toFixed(1)
++ "%";
 
 }
 
 
-/* =========================
-   HOT / COLD
-========================= */
+/* =====================================
+   HOT COLD
+===================================== */
 
-function renderHotCold(digits) {
+function renderHotCold(
+digits
+) {
 
-  const counts =
-    Array(10).fill(0);
-
-
-  digits.forEach(digit => {
-
-    counts[digit]++;
-
-  });
+const counts =
+Array(10).fill(0);
 
 
-  let hot = 0;
+digits.forEach(
+digit => {
 
-  let cold = 0;
+counts[digit]++;
 
-
-  for (let i = 1; i < 10; i++) {
-
-    if (counts[i] > counts[hot]) {
-
-      hot = i;
-
-    }
-
-    if (counts[i] < counts[cold]) {
-
-      cold = i;
-
-    }
-
-  }
+}
+);
 
 
-  const total = digits.length;
+let hot = 0;
+
+let cold = 0;
 
 
-  document.getElementById(
-    "hotDigit"
-  ).textContent = hot;
+for (
+let i = 1;
+i < 10;
+i++
+) {
 
+if (
+counts[i] >
+counts[hot]
+) {
 
-  document.getElementById(
-    "hotFrequency"
-  ).textContent =
-    ((counts[hot] / total) * 100)
-      .toFixed(1) + "%";
-
-
-  document.getElementById(
-    "coldDigit"
-  ).textContent = cold;
-
-
-  document.getElementById(
-    "coldFrequency"
-  ).textContent =
-    ((counts[cold] / total) * 100)
-      .toFixed(1) + "%";
+hot = i;
 
 }
 
 
-/* =========================
+if (
+counts[i] <
+counts[cold]
+) {
+
+cold = i;
+
+}
+
+}
+
+
+const total =
+digits.length;
+
+
+document.getElementById(
+"hotDigit"
+).textContent =
+hot;
+
+
+document.getElementById(
+"hotFrequency"
+).textContent =
+(
+counts[hot] /
+total * 100
+).toFixed(1)
++ "%";
+
+
+document.getElementById(
+"coldDigit"
+).textContent =
+cold;
+
+
+document.getElementById(
+"coldFrequency"
+).textContent =
+(
+counts[cold] /
+total * 100
+).toFixed(1)
++ "%";
+
+}
+
+
+/* =====================================
    STREAK
-========================= */
+===================================== */
 
-function renderStreak(digits) {
+function renderStreak(
+digits
+) {
 
-  if (!digits.length) return;
-
-
-  const last =
-    digits[digits.length - 1];
-
-
-  let count = 0;
+if (
+!digits.length
+) return;
 
 
-  for (
-    let i = digits.length - 1;
-    i >= 0;
-    i--
-  ) {
-
-    if (digits[i] === last) {
-
-      count++;
-
-    } else {
-
-      break;
-
-    }
-
-  }
+const last =
+digits[
+digits.length - 1
+];
 
 
-  document.getElementById(
-    "streak"
-  ).innerHTML =
+let count = 0;
 
-    `Digit <strong>${last}</strong>
-     has appeared
-     <strong>${count}</strong>
-     time${count === 1 ? "" : "s"}
-     consecutively.`;
+
+for (
+let i =
+digits.length - 1;
+i >= 0;
+i--
+) {
+
+if (
+digits[i] === last
+) {
+
+count++;
+
+}
+
+else {
+
+break;
+
+}
 
 }
 
 
-/* =========================
-   LIVE STREAM
-========================= */
+document.getElementById(
+"streak"
+).innerHTML =
+
+`Digit <strong>${last}</strong>
+has appeared
+<strong>${count}</strong>
+time${count === 1 ? "" : "s"}
+consecutively.`;
+
+}
+
+
+/* =====================================
+   STREAM
+===================================== */
 
 function renderStream() {
 
-  const stream =
-    document.getElementById(
-      "stream"
-    );
+const stream =
+document.getElementById(
+"stream"
+);
 
 
-  const latest =
-    allDigits.slice(-50);
+const latest =
+allDigits.slice(
+-50
+);
 
 
-  stream.innerHTML = "";
+stream.innerHTML = "";
 
 
-  latest.forEach(digit => {
+latest.forEach(
+digit => {
 
-    const item =
-      document.createElement("div");
-
-
-    item.className =
-      "stream-digit";
-
-
-    item.textContent =
-      digit;
+const item =
+document.createElement(
+"div"
+);
 
 
-    stream.appendChild(item);
+item.className =
+"stream-digit";
 
-  });
+
+item.textContent =
+digit;
+
+
+stream.appendChild(
+item
+);
+
+});
 
 }
 
 
-/* =========================
+/* =====================================
    QUOTE
-========================= */
+===================================== */
 
-function updateQuote(quote) {
-
-  document.getElementById(
-    "quote"
-  ).textContent =
-    Number(quote).toFixed(2);
-
-}
-
-
-/* =========================
-   LAST DIGIT
-========================= */
-
-function updateLastDigit(digit) {
-
-  document.getElementById(
-    "lastDigit"
-  ).textContent =
-    digit;
-
-}
-
-
-/* =========================
-   WINDOW BUTTONS
-========================= */
-
-document
-  .querySelectorAll(
-    ".window-buttons button"
-  )
-  .forEach(button => {
-
-    button.addEventListener(
-      "click",
-      function() {
-
-        selectedWindow =
-          Number(
-            this.dataset.window
-          );
-
-
-        document
-          .querySelectorAll(
-            ".window-buttons button"
-          )
-          .forEach(btn => {
-
-            btn.classList.remove(
-              "active"
-            );
-
-          });
-
-
-        this.classList.add(
-          "active"
-        );
-
-
-        render();
-
-      }
-    );
-
-  });
-
-
-/* =========================
-   STATUS
-========================= */
-
-function setStatus(
-  text,
-  type
+function updateQuote(
+quote
 ) {
 
-  const status =
-    document.getElementById(
-      "status"
-    );
-
-
-  status.textContent = text;
-
-  status.className =
-    "status " + type;
+document.getElementById(
+"quote"
+).textContent =
+Number(quote)
+.toFixed(2);
 
 }
 
 
-/* =========================
+/* =====================================
+   LAST DIGIT
+===================================== */
+
+function updateLastDigit(
+digit
+) {
+
+document.getElementById(
+"lastDigit"
+).textContent =
+digit;
+
+}
+
+
+/* =====================================
+   ANALYSIS WINDOW BUTTONS
+===================================== */
+
+document
+.querySelectorAll(
+".window-buttons button"
+)
+.forEach(
+button => {
+
+button.addEventListener(
+"click",
+function() {
+
+selectedWindow =
+Number(
+this.dataset.window
+);
+
+
+document
+.querySelectorAll(
+".window-buttons button"
+)
+.forEach(
+btn => {
+
+btn.classList.remove(
+"active"
+);
+
+}
+);
+
+
+this.classList.add(
+"active"
+);
+
+
+render();
+
+}
+);
+
+}
+);
+
+
+/* =====================================
+   BACKTESTER
+===================================== */
+
+function runBacktest() {
+
+const strategy =
+document.getElementById(
+"strategySelect"
+).value;
+
+
+const lookback =
+Number(
+document.getElementById(
+"backtestLookback"
+).value
+);
+
+
+if (
+allDigits.length <=
+lookback + 1
+) {
+
+return;
+
+}
+
+
+let wins = 0;
+
+let losses = 0;
+
+let noSignal = 0;
+
+let signals = 0;
+
+
+/*
+We start at "lookback".
+
+The ticks BEFORE the current tick
+are used to make the prediction.
+
+The current tick is then used
+to determine whether that prediction
+was correct.
+*/
+
+for (
+let i = lookback;
+i < allDigits.length;
+i++
+) {
+
+const previous =
+allDigits.slice(
+i - lookback,
+i
+);
+
+
+const actual =
+allDigits[i];
+
+
+let prediction =
+null;
+
+
+/* -------------------------
+   OVER / UNDER
+------------------------- */
+
+if (
+strategy ===
+"majorityOU"
+) {
+
+let under = 0;
+
+let over = 0;
+
+
+previous.forEach(
+digit => {
+
+if (
+digit < 5
+) {
+
+under++;
+
+}
+
+else if (
+digit > 5
+) {
+
+over++;
+
+}
+
+}
+);
+
+
+if (
+under > over
+) {
+
+prediction =
+"UNDER";
+
+}
+
+else if (
+over > under
+) {
+
+prediction =
+"OVER";
+
+}
+
+}
+
+
+/* -------------------------
+   EVEN / ODD
+------------------------- */
+
+if (
+strategy ===
+"majorityEO"
+) {
+
+let even = 0;
+
+let odd = 0;
+
+
+previous.forEach(
+digit => {
+
+if (
+digit % 2 === 0
+) {
+
+even++;
+
+}
+
+else {
+
+odd++;
+
+}
+
+}
+);
+
+
+if (
+even > odd
+) {
+
+prediction =
+"EVEN";
+
+}
+
+else if (
+odd > even
+) {
+
+prediction =
+"ODD";
+
+}
+
+}
+
+
+/* -------------------------
+   NO SIGNAL
+------------------------- */
+
+if (
+prediction === null
+) {
+
+noSignal++;
+
+continue;
+
+}
+
+
+signals++;
+
+
+/* -------------------------
+   CHECK RESULT
+------------------------- */
+
+let correct = false;
+
+
+if (
+prediction ===
+"UNDER"
+) {
+
+correct =
+actual < 5;
+
+}
+
+else if (
+prediction ===
+"OVER"
+) {
+
+correct =
+actual > 5;
+
+}
+
+else if (
+prediction ===
+"EVEN"
+) {
+
+correct =
+actual % 2 === 0;
+
+}
+
+else if (
+prediction ===
+"ODD"
+) {
+
+correct =
+actual % 2 !== 0;
+
+}
+
+
+if (
+correct
+) {
+
+wins++;
+
+}
+
+else {
+
+losses++;
+
+}
+
+}
+
+
+/* =================================
+   RESULTS
+================================= */
+
+const hitRate =
+signals > 0
+?
+(
+wins / signals * 100
+).toFixed(2) + "%"
+:
+"--";
+
+
+document.getElementById(
+"btSignals"
+).textContent =
+signals;
+
+
+document.getElementById(
+"btWins"
+).textContent =
+wins;
+
+
+document.getElementById(
+"btLosses"
+).textContent =
+losses;
+
+
+document.getElementById(
+"btNoSignal"
+).textContent =
+noSignal;
+
+
+document.getElementById(
+"btHitRate"
+).textContent =
+hitRate;
+
+}
+
+
+/* =====================================
+   BACKTEST CONTROLS
+===================================== */
+
+document.getElementById(
+"strategySelect"
+).addEventListener(
+"change",
+runBacktest
+);
+
+
+document.getElementById(
+"backtestLookback"
+).addEventListener(
+"change",
+runBacktest
+);
+
+
+/* =====================================
+   STATUS
+===================================== */
+
+function setStatus(
+text,
+type
+) {
+
+const status =
+document.getElementById(
+"status"
+);
+
+
+status.textContent =
+text;
+
+
+status.className =
+"status " + type;
+
+}
+
+
+/* =====================================
    ERROR
-========================= */
+===================================== */
 
-function showError(message) {
+function showError(
+message
+) {
 
-  const box =
-    document.getElementById(
-      "errorBox"
-    );
+const box =
+document.getElementById(
+"errorBox"
+);
 
 
-  box.style.display = "block";
+box.style.display =
+"block";
 
-  box.textContent = message;
+
+box.textContent =
+message;
 
 }
 
 
 function hideError() {
 
-  const box =
-    document.getElementById(
-      "errorBox"
-    );
+const box =
+document.getElementById(
+"errorBox"
+);
 
 
-  box.style.display = "none";
+box.style.display =
+"none";
 
 }
 
 
-/* =========================
+/* =====================================
    START
-========================= */
+===================================== */
 
 connect();
+
+
+/*
+Run the backtester periodically
+so new live ticks are included.
+*/
+
+setInterval(
+runBacktest,
+1000
+);
 
 </script>
 
