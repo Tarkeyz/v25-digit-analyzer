@@ -1,1826 +1,1212 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>V25 Digit Analyzer V5.1</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>V25 1s Digit Analyzer V5.2</title>
 
 <style>
 *{box-sizing:border-box}
-body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#07111f;color:#fff}
-.container{width:94%;max-width:1250px;margin:auto;padding:20px 0 60px}
-.header{text-align:center;margin-bottom:20px}
-.header h1{margin:0;font-size:30px}
-.header p{color:#8ea4bd}
-.status{padding:10px;border-radius:10px;text-align:center;background:#102238;color:#9fc3e8}
-.status.connected{color:#67f39a}
-.status.error{color:#ff7777}
-.section{margin-top:20px}
-.section-title{font-size:20px;margin-bottom:12px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}
-.card{background:#0d1b2d;border:1px solid #1c334d;border-radius:14px;padding:16px}
-.card h3{margin:0 0 8px;font-size:13px;color:#8ea4bd}
-.value{font-size:25px;font-weight:bold}
-.controls{display:flex;flex-wrap:wrap;gap:8px}
-button,select,input{border:1px solid #294765;background:#102238;color:white;padding:10px 13px;border-radius:9px}
-button{cursor:pointer}
-button:hover{background:#18304a}
-button.active{background:#1769aa}
-.digits{display:grid;grid-template-columns:repeat(10,1fr);gap:7px}
-.digit{background:#102238;border-radius:9px;padding:10px 4px;text-align:center}
-.digit.hot{border:1px solid #d89028}
-.digit.cold{border:1px solid #50657b}
-.digit-number{font-weight:bold}
-.digit-count{color:#8ea4bd;font-size:12px;margin-top:5px}
-.bar-wrap{height:7px;background:#1b2c40;border-radius:10px;overflow:hidden;margin-top:7px}
-.bar{height:100%;background:#36a3ff}
-.stream{display:flex;flex-wrap:wrap;gap:6px}
-.stream span{width:29px;height:29px;border-radius:50%;background:#142b44;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:bold}
-.signal-box{padding:25px;background:#0d1b2d;border:1px solid #294765;border-radius:15px;text-align:center}
-.signal{font-size:30px;font-weight:bold}
-.signal-sub{margin-top:8px;color:#8ea4bd;line-height:1.5}
-.confidence{margin:15px auto;max-width:500px;height:10px;background:#1b2c40;border-radius:20px;overflow:hidden}
-.confidence-bar{height:100%;width:0%;background:#36a3ff}
-.result-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}
-.result{background:#102238;padding:13px;border-radius:10px}
-.result-label{color:#8ea4bd;font-size:12px}
-.result-value{font-size:21px;font-weight:bold;margin-top:5px}
-.good{color:#65ef95}
-.bad{color:#ff7070}
-.neutral{color:#ffd166}
-.live-good{border-color:#256b49}
-.live-bad{border-color:#71323a}
-table{width:100%;border-collapse:collapse}
-th,td{padding:10px 7px;border-bottom:1px solid #20364d;text-align:left;font-size:13px}
-th{color:#8ea4bd}
-.warning{margin-top:15px;background:#241b0c;border:1px solid #6b4d17;color:#eacb82;padding:13px;border-radius:10px;line-height:1.5}
-.history{max-height:350px;overflow:auto}
-.history-item{display:grid;grid-template-columns:80px 1fr 80px 80px 80px;gap:8px;padding:9px 5px;border-bottom:1px solid #20364d;font-size:12px}
-.locked{background:#132a42;border:1px solid #24547b;padding:10px;border-radius:9px;margin-top:12px}
-.status-pill{display:inline-block;padding:7px 10px;border-radius:8px;background:#142b44}
-.status-pill.stable{color:#65ef95}
-.status-pill.caution{color:#ffb36b}
-.status-pill.mixed{color:#ffd166}
-
-@media(max-width:650px){
-.digits{grid-template-columns:repeat(5,1fr)}
-.header h1{font-size:24px}
-.value{font-size:21px}
-.history-item{grid-template-columns:60px 1fr 55px 55px 55px;font-size:10px}
-th,td{font-size:10px}
+body{
+  margin:0;
+  background:#07111f;
+  color:#e8eef7;
+  font:14px Arial
+}
+.w{
+  max-width:1150px;
+  margin:auto;
+  padding:14px
+}
+.top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap
+}
+h1{
+  font-size:23px;
+  margin:0
+}
+.sub,.small{
+  color:#91a4bc;
+  font-size:12px
+}
+.st{
+  background:#14263a;
+  padding:8px 12px;
+  border-radius:18px;
+  color:#9ee7b2
+}
+.c{
+  background:#0d1a2b;
+  border:1px solid #1c3048;
+  border-radius:12px;
+  padding:13px;
+  margin-top:12px
+}
+h2{
+  font-size:16px;
+  margin:0 0 10px
+}
+.g{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(145px,1fr));
+  gap:8px
+}
+.m{
+  background:#091524;
+  border-radius:8px;
+  padding:11px
+}
+.l{
+  font-size:11px;
+  color:#8195ad
+}
+.v{
+  font-size:22px;
+  font-weight:bold;
+  margin-top:4px
+}
+.btn{
+  display:flex;
+  gap:6px;
+  flex-wrap:wrap
+}
+.btn button{
+  background:#12243a;
+  color:#fff;
+  border:1px solid #29425f;
+  padding:7px 11px;
+  border-radius:7px
+}
+.btn .on{
+  background:#245a85
+}
+.bars{
+  height:135px;
+  display:grid;
+  grid-template-columns:repeat(10,1fr);
+  gap:5px;
+  align-items:end
+}
+.bw{
+  height:100%;
+  display:flex;
+  flex-direction:column;
+  justify-content:end;
+  text-align:center
+}
+.bar{
+  background:#3180b8;
+  border-radius:4px 4px 0 0
+}
+.bp,.bd{
+  font-size:9px;
+  color:#91a4bc
+}
+.bd{
+  font-size:12px;
+  color:#fff
+}
+.sig{
+  font-size:28px;
+  font-weight:bold
+}
+.over{
+  color:#58d68d
+}
+.under{
+  color:#ffbd59
+}
+.none{
+  color:#94a7bd
+}
+table{
+  width:100%;
+  border-collapse:collapse;
+  font-size:12px
+}
+th,td{
+  padding:7px;
+  border-bottom:1px solid #1b2b3e;
+  text-align:left
+}
+th{
+  color:#91a4bc
+}
+.win{
+  color:#7af0ad
+}
+.loss{
+  color:#ff8e99
+}
+.stream{
+  font-family:monospace;
+  word-break:break-all;
+  line-height:1.8
+}
+@media(max-width:600px){
+  .w{padding:9px}
+  h1{font-size:19px}
 }
 </style>
 </head>
 
 <body>
 
-<div class="container">
+<div class="w">
 
-<div class="header">
-<h1>⚡ V25 (1s) Digit Analyzer V5.1</h1>
-<p>Statistical research • Backtesting • Live signal accuracy</p>
-</div>
+<div class="top">
+  <div>
+    <h1>V25 (1s) Digit Analyzer — V5.2</h1>
+    <div class="sub">
+      Advanced signal engine • performance testing • live data
+    </div>
+  </div>
 
-<div id="status" class="status">
-Connecting to Deriv...
+  <div id="st" class="st">
+    CONNECTING…
+  </div>
 </div>
 
-<div class="section">
-<div class="section-title">📊 Live Analysis</div>
 
-<div class="grid">
-
-<div class="card">
-<h3>Current Quote</h3>
-<div id="quote" class="value">--</div>
+<!-- ANALYSIS WINDOW -->
+<div class="c">
+  <h2>Analysis Window</h2>
+  <div id="wb" class="btn"></div>
 </div>
 
-<div class="card">
-<h3>Last Digit</h3>
-<div id="lastDigit" class="value">--</div>
-</div>
 
-<div class="card">
-<h3>Ticks Loaded</h3>
-<div id="tickCount" class="value">0</div>
-</div>
+<!-- LIVE ANALYSIS -->
+<div class="c">
+  <h2>Live Analysis</h2>
 
-<div class="card">
-<h3>Analysis Window</h3>
-<div id="windowDisplay" class="value">100</div>
-</div>
+  <div class="g">
 
-<div class="card">
-<h3>Hot Digit</h3>
-<div id="hotDigit" class="value">--</div>
-</div>
+    <div class="m">
+      <div class="l">Current Quote</div>
+      <div id="q" class="v">—</div>
+    </div>
 
-<div class="card">
-<h3>Cold Digit</h3>
-<div id="coldDigit" class="value">--</div>
-</div>
+    <div class="m">
+      <div class="l">Last Digit</div>
+      <div id="d" class="v">—</div>
+    </div>
 
-</div>
-</div>
+    <div class="m">
+      <div class="l">Ticks Analyzed</div>
+      <div id="n" class="v">0</div>
+    </div>
 
-<div class="section">
-<div class="section-title">Analysis Window</div>
+    <div class="m">
+      <div class="l">Window</div>
+      <div id="wn" class="v">100</div>
+    </div>
 
-<div class="controls">
+  </div>
+</div>
 
-<button data-window="25">25</button>
-<button data-window="50">50</button>
-<button data-window="100" class="active">100</button>
-<button data-window="500">500</button>
-<button data-window="1000">1000</button>
 
+<!-- DIGIT FREQUENCY -->
+<div class="c">
+  <h2>Digit Frequency</h2>
+  <div id="bars" class="bars"></div>
 </div>
-</div>
 
-<div class="section">
-<div class="section-title">🔢 Digit Frequency</div>
-<div id="digits" class="digits"></div>
-</div>
 
-<div class="section">
-<div class="section-title">📈 Distribution</div>
+<!-- DISTRIBUTION -->
+<div class="c">
+  <h2>Distribution</h2>
 
-<div class="grid">
+  <div class="g">
 
-<div class="card">
-<h3>Over 5</h3>
-<div id="overPercent" class="value">--%</div>
-</div>
+    <div class="m">
+      <div class="l">OVER 5 (6–9)</div>
+      <div id="ov" class="v">—</div>
+    </div>
 
-<div class="card">
-<h3>Under 5</h3>
-<div id="underPercent" class="value">--%</div>
-</div>
+    <div class="m">
+      <div class="l">UNDER 5 (0–4)</div>
+      <div id="un" class="v">—</div>
+    </div>
 
-<div class="card">
-<h3>Even</h3>
-<div id="evenPercent" class="value">--%</div>
-</div>
+    <div class="m">
+      <div class="l">EVEN</div>
+      <div id="ev" class="v">—</div>
+    </div>
 
-<div class="card">
-<h3>Odd</h3>
-<div id="oddPercent" class="value">--%</div>
-</div>
+    <div class="m">
+      <div class="l">ODD</div>
+      <div id="od" class="v">—</div>
+    </div>
 
-</div>
+  </div>
 </div>
 
-<div class="section">
-<div class="section-title">🔥 Streaks</div>
 
-<div class="grid">
+<!-- HOT COLD -->
+<div class="c">
+  <h2>Hot / Cold & Streaks</h2>
 
-<div class="card">
-<h3>Digit Streak</h3>
-<div id="digitStreak" class="value">--</div>
-</div>
-
-<div class="card">
-<h3>Over / Under Streak</h3>
-<div id="ouStreak" class="value">--</div>
-</div>
+  <div class="g">
 
-<div class="card">
-<h3>Even / Odd Streak</h3>
-<div id="eoStreak" class="value">--</div>
-</div>
+    <div class="m">
+      <div class="l">Hot Digit</div>
+      <div id="hot" class="v">—</div>
+    </div>
 
-</div>
-</div>
+    <div class="m">
+      <div class="l">Cold Digit</div>
+      <div id="cold" class="v">—</div>
+    </div>
 
-<div class="section">
-<div class="section-title">📡 Live Digits</div>
-<div id="stream" class="stream"></div>
-</div>
+    <div class="m">
+      <div class="l">Current Streak</div>
+      <div id="str" class="v">—</div>
+    </div>
 
-<div class="section">
+    <div class="m">
+      <div class="l">Regime</div>
+      <div id="reg" class="v">—</div>
+    </div>
 
-<div class="section-title">
-🎯 Signal Engine 2.0
+  </div>
 </div>
 
-<div class="signal-box">
 
-<div id="signal" class="signal neutral">
-NO SIGNAL
-</div>
-
-<div class="confidence">
-<div id="confidenceBar" class="confidence-bar"></div>
-</div>
+<!-- SIGNAL ENGINE -->
+<div class="c">
 
-<div id="confidenceText" class="signal-sub">
-Waiting for enough data...
-</div>
+<h2>🎯 V5.2 Advanced Signal Engine</h2>
 
-<div id="pendingBox" class="locked" style="display:none"></div>
+<div class="g">
 
+<div class="m">
+<div class="l">Current Signal</div>
+<div id="sig" class="sig none">NO SIGNAL</div>
+<div id="cf" class="small">
+Conditions not strong enough
 </div>
 </div>
 
-<div class="section">
-
-<div class="section-title">
-🧠 Signal Components
+<div class="m">
+<div class="l">Distribution Score</div>
+<div id="ds" class="v">—</div>
 </div>
 
-<div class="grid">
-
-<div class="card">
-<h3>Distribution Score</h3>
-<div id="distributionScore" class="value">--</div>
+<div class="m">
+<div class="l">Momentum Score</div>
+<div id="ms" class="v">—</div>
 </div>
 
-<div class="card">
-<h3>Momentum Score</h3>
-<div id="momentumScore" class="value">--</div>
+<div class="m">
+<div class="l">Consistency</div>
+<div id="cs" class="v">—</div>
 </div>
 
-<div class="card">
-<h3>Consistency</h3>
-<div id="consistencyScore" class="value">--</div>
+<div class="m">
+<div class="l">Validation</div>
+<div id="vs" class="v">—</div>
 </div>
 
-<div class="card">
-<h3>Validation Hit Rate</h3>
-<div id="validationRate" class="value">--%</div>
+<div class="m">
+<div class="l">Agreement</div>
+<div id="ag" class="v">—</div>
 </div>
 
-</div>
 </div>
 
-<div class="section">
+<p class="small">
+Signals are statistical tests, not guarantees.
+NO SIGNAL is allowed.
+</p>
 
-<div class="section-title">
-🎯 Live Signal Accuracy Tracker
 </div>
 
-<div class="card">
 
-<div class="result-grid">
+<!-- LIVE ACCURACY -->
+<div class="c">
 
-<div class="result">
-<div class="result-label">Live Accuracy</div>
-<div id="liveAccuracy" class="result-value">--%</div>
-</div>
+<h2>📊 Live Signal Accuracy Tracker</h2>
 
-<div class="result">
-<div class="result-label">Signals Tracked</div>
-<div id="liveSignals" class="result-value">0</div>
-</div>
+<div class="g">
 
-<div class="result">
-<div class="result-label">Wins</div>
-<div id="liveWins" class="result-value good">0</div>
+<div class="m">
+<div class="l">Overall</div>
+<div id="acc" class="v">—</div>
 </div>
 
-<div class="result">
-<div class="result-label">Losses</div>
-<div id="liveLosses" class="result-value bad">0</div>
+<div class="m">
+<div class="l">Last 10</div>
+<div id="a10" class="v">—</div>
 </div>
 
-<div class="result">
-<div class="result-label">Current Streak</div>
-<div id="liveStreak" class="result-value">--</div>
+<div class="m">
+<div class="l">Last 25</div>
+<div id="a25" class="v">—</div>
 </div>
 
-<div class="result">
-<div class="result-label">Max Losing Streak</div>
-<div id="maxLossStreak" class="result-value bad">0</div>
+<div class="m">
+<div class="l">Last 50</div>
+<div id="a50" class="v">—</div>
 </div>
 
+<div class="m">
+<div class="l">Result Streak</div>
+<div id="rs" class="v">—</div>
 </div>
-
-<div class="section">
-
-<div class="result-grid">
 
-<div class="result">
-<div class="result-label">Last 10</div>
-<div id="last10" class="result-value">--</div>
+<div class="m">
+<div class="l">Max Losing Streak</div>
+<div id="ml" class="v">0</div>
 </div>
 
-<div class="result">
-<div class="result-label">Last 25</div>
-<div id="last25" class="result-value">--</div>
 </div>
 
-<div class="result">
-<div class="result-label">Last 50</div>
-<div id="last50" class="result-value">--</div>
+<div id="state" class="small">
+Waiting for completed signals…
 </div>
 
 </div>
-</div>
 
-<div class="section">
 
-<span id="liveStatus" class="status-pill">
-WAITING
-</span>
+<!-- STRATEGY LAB -->
+<div class="c">
 
-<div id="liveStatusText" class="signal-sub">
-A signal is locked first; the following tick is used to score it.
-NO SIGNAL is not counted.
-</div>
+<h2>🧪 Strategy Performance Lab</h2>
 
-</div>
+<div class="g">
 
+<div class="m">
+<div class="l">Baseline Signals</div>
+<div id="bs" class="v">—</div>
 </div>
-</div>
-
-<div class="section">
 
-<div class="section-title">
-📜 Signal History
+<div class="m">
+<div class="l">Wins</div>
+<div id="bw" class="v win">—</div>
 </div>
 
-<div class="card">
-
-<div class="history" id="signalHistory">
-No signals recorded yet.
+<div class="m">
+<div class="l">Losses</div>
+<div id="bl" class="v loss">—</div>
 </div>
 
+<div class="m">
+<div class="l">Hit Rate</div>
+<div id="bh" class="v">—</div>
 </div>
+
 </div>
 
-<div class="section">
+<div style="overflow:auto">
 
-<div class="section-title">
-🧪 V5 Backtest
-</div>
+<table>
 
-<div class="card">
+<thead>
+<tr>
+<th>Strategy</th>
+<th>Signals</th>
+<th>Wins</th>
+<th>Losses</th>
+<th>Hit Rate</th>
+</tr>
+</thead>
 
-<div class="controls">
+<tbody id="tab"></tbody>
 
-<select id="lookback">
-<option value="25">25 tick lookback</option>
-<option value="50">50 tick lookback</option>
-<option value="100" selected>100 tick lookback</option>
-<option value="250">250 tick lookback</option>
-</select>
+</table>
 
-<select id="sampleSize">
-<option value="250">250 ticks</option>
-<option value="500">500 ticks</option>
-<option value="1000" selected>1000 ticks</option>
-</select>
+</div>
 
 </div>
 
-<br>
 
-<div class="result-grid">
+<!-- CONFIDENCE -->
+<div class="c">
 
-<div class="result">
-<div class="result-label">Signals</div>
-<div id="btSignals" class="result-value">--</div>
-</div>
+<h2>📈 Performance by Confidence</h2>
 
-<div class="result">
-<div class="result-label">Wins</div>
-<div id="btWins" class="result-value good">--</div>
-</div>
+<table>
 
-<div class="result">
-<div class="result-label">Losses</div>
-<div id="btLosses" class="result-value bad">--</div>
-</div>
+<thead>
+<tr>
+<th>Confidence</th>
+<th>Signals</th>
+<th>Wins</th>
+<th>Hit Rate</th>
+</tr>
+</thead>
 
-<div class="result">
-<div class="result-label">Hit Rate</div>
-<div id="btRate" class="result-value">--%</div>
-</div>
+<tbody id="ct"></tbody>
 
-</div>
+</table>
 
 </div>
-</div>
 
-<div class="section">
 
-<div class="section-title">
-🔬 Out-of-Sample Validation
-</div>
+<!-- SIGNAL HISTORY -->
+<div class="c">
 
-<div class="card">
+<h2>📜 Signal History</h2>
 
-<div class="result-grid">
+<div style="overflow:auto">
 
-<div class="result">
-<div class="result-label">Training Signals</div>
-<div id="trainSignals" class="result-value">--</div>
-</div>
+<table>
 
-<div class="result">
-<div class="result-label">Training Hit Rate</div>
-<div id="trainRate" class="result-value">--%</div>
-</div>
+<thead>
+<tr>
+<th>Time</th>
+<th>Signal</th>
+<th>Confidence</th>
+<th>Next Digit</th>
+<th>Result</th>
+</tr>
+</thead>
 
-<div class="result">
-<div class="result-label">Validation Signals</div>
-<div id="validSignals" class="result-value">--</div>
-</div>
+<tbody id="hist"></tbody>
 
-<div class="result">
-<div class="result-label">Validation Hit Rate</div>
-<div id="validRate" class="result-value">--%</div>
-</div>
+</table>
 
 </div>
 
 </div>
-</div>
 
-<div class="section">
 
-<div class="section-title">
-💰 Payout / Break-even Calculator
-</div>
+<!-- PAYOUT -->
+<div class="c">
 
-<div class="card">
+<h2>💰 Payout / Break-even</h2>
 
-<div class="controls">
+<div class="btn">
 
-<label>
-Payout %
-<br>
 <input
-id="payoutInput"
+id="pay"
 type="number"
 value="20"
-min="1"
-step="0.1">
-</label>
+min="0"
+style="width:100px;padding:8px;background:#091524;color:#fff;border:1px solid #29425f;border-radius:7px"
+>
+
+<button onclick="calc()">
+Calculate
+</button>
 
 </div>
 
-<br>
+<div id="payr" class="small"></div>
 
-<div class="result-grid">
-
-<div class="result">
-<div class="result-label">Payout</div>
-<div id="payoutDisplay" class="result-value">20.0%</div>
 </div>
 
-<div class="result">
-<div class="result-label">Break-even Hit Rate</div>
-<div id="breakEven" class="result-value">83.3%</div>
-</div>
 
-<div class="result">
-<div class="result-label">Validation Rate</div>
-<div id="payoutValidation" class="result-value">--%</div>
+<!-- LIVE DIGITS -->
+<div class="c">
+
+<h2>Live Last Digits</h2>
+
+<div id="stream" class="stream">
+Waiting…
 </div>
 
 </div>
 
-</div>
-</div>
 
-<div class="warning">
+<div class="c">
 
-⚠️ Historical statistics and signal accuracy are research tools,
-not guarantees of the next tick. Digit outcomes can change rapidly.
-A signal engine can output NO SIGNAL and should not be treated as
-a guaranteed trading system.
+<div class="small">
+Historical frequencies, backtests and hit rates do not guarantee future ticks.
+Test with a large sample and the actual contract payout before risking money.
+</div>
 
 </div>
 
 </div>
+
 
 <script>
 
-const $ = id => document.getElementById(id);
-
-const WS_URL =
+const WS =
 "wss://api.derivws.com/trading/v1/options/ws/public";
 
-const SYMBOL =
-"1HZ25V";
+const SYM = "1HZ25V";
 
-const MAX_TICKS = 2000;
+const $ = x => document.getElementById(x);
+
+const W = [25,50,100,500,1000];
 
 let ws;
-let reconnectTimer;
 
 let ticks = [];
 
-let currentWindow = 100;
+let win = 100;
 
-let pendingSignal = null;
+let pending = null;
 
-let lastSignalKey = null;
+let results = [];
 
-let liveResults = [];
-
-let signalHistory = [];
+let hist = [];
 
 
-function setStatus(text,type=""){
-
-const s=$("status");
-
-s.textContent=text;
-
-s.className="status "+type;
-
-}
+const pct = (a,b) =>
+b ? (a/b*100).toFixed(1)+"%" : "—";
 
 
-function pct(a,b){
-
-return b ? ((a/b)*100).toFixed(1) : "0.0";
-
-}
+const num = (a,b) =>
+b ? a/b*100 : 0;
 
 
-function extractDigit(quote){
+function digit(q){
 
 return Number(
-Number(quote)
-.toFixed(2)
-.slice(-1)
+String(
+Number(q).toFixed(2)
+).slice(-1)
 );
 
 }
 
 
-function connect(){
+function D(a){
 
-clearTimeout(reconnectTimer);
-
-setStatus(
-"Connecting to Deriv..."
-);
-
-ws = new WebSocket(WS_URL);
-
-
-ws.onopen = () => {
-
-setStatus(
-"Connected to Deriv • V25 (1s)",
-"connected"
-);
-
-ws.send(JSON.stringify({
-
-ticks_history: SYMBOL,
-
-count: 1000,
-
-end: "latest",
-
-style: "ticks",
-
-req_id: 1
-
-}));
-
-ws.send(JSON.stringify({
-
-ticks: SYMBOL,
-
-subscribe: 1,
-
-req_id: 2
-
-}));
-
-};
-
-
-ws.onerror = () => {
-
-setStatus(
-"Connection error",
-"error"
-);
-
-};
-
-
-ws.onclose = () => {
-
-setStatus(
-"Disconnected • reconnecting...",
-"error"
-);
-
-reconnectTimer =
-setTimeout(connect,3000);
-
-};
-
-
-ws.onmessage = event => {
-
-try{
-
-const data =
-JSON.parse(event.data);
-
-
-if(data.history){
-
-ticks=[];
-
-data.history.prices.forEach(
-quote => {
-
-ticks.push({
-
-quote:Number(quote),
-
-digit:extractDigit(Number(quote))
-
-});
-
-});
-
-render();
-
-}
-
-
-if(data.tick &&
-data.tick.quote !== undefined){
-
-processTick(
-Number(data.tick.quote)
+return a.map(
+x => digit(x.quote)
 );
 
 }
 
-}catch(err){
 
-console.error(err);
+function S(a){
+
+let c = Array(10).fill(0);
+
+a.forEach(x => c[x]++);
+
+let o = a.filter(x => x>5).length;
+
+let u = a.filter(x => x<5).length;
+
+let e = a.filter(x => x%2===0).length;
+
+let h=0,l=0;
+
+for(let i=1;i<10;i++){
+
+if(c[i]>c[h]) h=i;
+
+if(c[i]<c[l]) l=i;
 
 }
 
+return {
+c,o,u,e,h,l
 };
 
 }
 
 
-function processTick(quote){
+function engine(a){
 
-const newDigit =
-extractDigit(quote);
-
-$("quote").textContent =
-quote.toFixed(2);
-
-$("lastDigit").textContent =
-newDigit;
-
-
-/* Evaluate the previous locked signal */
-
-if(pendingSignal){
-
-const won =
-pendingSignal.direction === "OVER"
-? newDigit > 5
-: newDigit < 5;
-
-pendingSignal.nextDigit =
-newDigit;
-
-pendingSignal.result =
-won ? "WIN" : "LOSS";
-
-liveResults.push(won);
-
-signalHistory.unshift({
-...pendingSignal
-});
-
-if(signalHistory.length > 50){
-
-signalHistory.pop();
-
-}
-
-pendingSignal = null;
-
-}
-
-
-ticks.push({
-
-quote,
-
-digit:newDigit
-
-});
-
-
-if(ticks.length > MAX_TICKS){
-
-ticks.shift();
-
-}
-
-
-render();
-
-
-/* Lock a new signal for the NEXT tick */
-
-const sig =
-getQualifiedSignal();
-
-
-if(sig){
-
-const key =
-sig.direction + "-" + sig.score;
-
-
-if(
-key !== lastSignalKey &&
-!pendingSignal
-){
-
-pendingSignal = {
-
-direction:sig.direction,
-
-confidence:sig.score,
-
-createdAt:
-new Date().toLocaleTimeString(),
-
-nextDigit:null,
-
-result:"PENDING"
-
-};
-
-lastSignalKey = key;
-
-}
-
-}else{
-
-lastSignalKey = null;
-
-}
-
-
-renderLiveTracker();
-
-renderHistory();
-
-updatePendingBox();
-
-}
-
-
-function getDigits(size=currentWindow){
-
-return ticks
-.slice(-size)
-.map(t=>t.digit);
-
-}
-
-
-function digitCounts(data){
-
-const c =
-Array(10).fill(0);
-
-data.forEach(
-d => c[d]++
-);
-
-return c;
-
-}
-
-
-function majority(data){
-
-if(!data.length)
+if(a.length<100)
 return null;
 
 
-let over =
-data.filter(d=>d>5).length;
+let z = a.slice(-100);
 
-let under =
-data.filter(d=>d<5).length;
+let r = a.slice(-25);
+
+let p = a.slice(-50,-25);
 
 
-return {
+let o =
+z.filter(x=>x>5).length;
 
-ou:
-over>under
+let u =
+z.filter(x=>x<5).length;
+
+
+let dir =
+o>u*1.1
 ? "OVER"
-: under>over
+:
+u>o*1.1
 ? "UNDER"
-: null,
-
-over,
-
-under
-
-};
-
-}
+:
+null;
 
 
-function calculateComponents(){
-
-const data =
-ticks
-.slice(-100)
-.map(t=>t.digit);
+let dist =
+Math.abs(o-u);
 
 
-if(data.length<100)
-return null;
-
-
-const over =
-data.filter(d=>d>5).length;
-
-const under =
-data.filter(d=>d<5).length;
-
-
-const overRate =
-over/100;
-
-const underRate =
-under/100;
-
-
-const distributionScore =
-Math.abs(overRate-underRate)*200;
-
-
-const recent =
-data.slice(-25);
-
-const previous =
-data.slice(-50,-25);
-
-
-const momentumScore =
-Math.abs(
-recent.filter(d=>d>5).length/25 -
-previous.filter(d=>d>5).length/25
-)*200;
-
-
-let votes=[];
-
-
-for(let i=0;i<4;i++){
-
-const seg =
-data.slice(
--25*(i+1),
-i===0 ? undefined : -25*i
+let momRaw =
+num(
+r.filter(x=>x>5).length,
+25
+)
+-
+num(
+p.filter(x=>x>5).length,
+25
 );
 
-const m =
-majority(seg);
 
-if(m.ou)
-votes.push(m.ou);
-
-}
-
-
-let consistency=0;
-
-
-if(votes.length){
-
-const a =
-votes.filter(
-x=>x==="OVER"
-).length;
-
-const b =
-votes.filter(
-x=>x==="UNDER"
-).length;
-
-consistency =
-Math.max(a,b) /
-votes.length * 100;
-
-}
-
-
-return {
-
-data,
-
-overRate,
-
-underRate,
-
-distributionScore,
-
-momentumScore,
-
-consistency
-
-};
-
-}
-
-
-function testDataset(data,lookback){
-
-let signals=0;
-
-let wins=0;
-
-
-for(
-let i=lookback;
-i<data.length;
-i++
-){
-
-const h =
-data.slice(
-i-lookback,
-i
-);
-
-const p =
-majority(h);
-
-
-if(
-!p ||
-!p.ou ||
-Math.max(
-p.over,
-p.under
-) /
-Math.max(
-1,
+let mom =
 Math.min(
-p.over,
-p.under
-)
-) < 1.10
-){
-
-continue;
-
-}
-
-
-signals++;
-
-
-const won =
-p.ou==="OVER"
-? data[i]>5
-: data[i]<5;
-
-
-if(won)
-wins++;
-
-}
-
-
-return {
-
-signals,
-
-wins,
-
-rate:
-signals
-? wins/signals*100
-: 0
-
-};
-
-}
-
-
-function validation(){
-
-const all =
-ticks.map(
-t=>t.digit
+20,
+Math.abs(momRaw)*2
 );
 
 
-if(all.length<200)
-return null;
+let parts=[];
 
 
-const split =
-Math.floor(
-all.length*.7
+for(let j=0;j<4;j++){
+
+let x =
+a.slice(
+-25*(j+1),
+j ? -25*j : undefined
 );
 
+let xo =
+x.filter(q=>q>5).length;
 
-const look =
-Number(
-$("lookback").value
-);
-
-
-const tr =
-testDataset(
-all.slice(0,split),
-look
-);
+let xu =
+x.filter(q=>q<5).length;
 
 
-const va =
-testDataset(
-all.slice(split),
-look
-);
-
-
-return {
-
-tr,
-
-va
-
-};
-
-}
-
-
-function getQualifiedSignal(){
-
-const c =
-calculateComponents();
-
-
-if(!c)
-return null;
-
-
-const v =
-validation();
-
-
-const vr =
-v ? v.va.rate : 0;
-
-
-let direction =
-c.overRate > c.underRate
+parts.push(
+xo>xu
 ? "OVER"
-: c.underRate > c.overRate
+:
+xu>xo
 ? "UNDER"
-: null;
-
-
-let score=0;
-
-
-if(
-c.distributionScore>=8
-)
-score+=25;
-
-
-if(
-c.momentumScore>=5
-)
-score+=20;
-
-
-if(
-c.consistency>=75
-)
-score+=30;
-
-
-if(
-vr>=52
-)
-score+=25;
-
-
-if(
-!direction ||
-score<75 ||
-c.distributionScore<8 ||
-c.consistency<75
-){
-
-return null;
-
-}
-
-
-return {
-
-direction,
-
-score
-
-};
-
-}
-
-
-function runSignalEngine(){
-
-const c =
-calculateComponents();
-
-
-if(!c){
-
-setSignal(
-"NO SIGNAL",
-"Waiting for at least 100 ticks.",
-0
+:
+"NONE"
 );
 
+}
+
+
+let v =
+parts.filter(x=>x!="NONE");
+
+
+let agree =
+v.length
+?
+Math.max(
+v.filter(x=>x=="OVER").length,
+v.filter(x=>x=="UNDER").length
+)/v.length*100
+:
+0;
+
+
+let sp =
+Math.floor(a.length*.7);
+
+let tr =
+a.slice(0,sp);
+
+let va =
+a.slice(sp);
+
+
+let to =
+tr.filter(x=>x>5).length;
+
+let tu =
+tr.filter(x=>x<5).length;
+
+
+let vd =
+to>=tu
+? "OVER"
+: "UNDER";
+
+
+let vw=0;
+
+let vn=0;
+
+
+va.forEach(x=>{
+
+if(x===5)
 return;
 
-}
-
-
-const v =
-validation();
-
-const vr =
-v ? v.va.rate : 0;
-
-
-let direction =
-c.overRate > c.underRate
-? "OVER"
-: c.underRate > c.overRate
-? "UNDER"
-: null;
-
-
-let score=0;
-
+vn++;
 
 if(
-c.distributionScore>=8
+(vd=="OVER" && x>5) ||
+(vd=="UNDER" && x<5)
 )
-score+=25;
+vw++;
+
+});
 
 
-if(
-c.momentumScore>=5
+let val =
+num(vw,vn);
+
+
+let score =
+Math.min(
+100,
+Math.round(
+Math.min(30,dist*1.5)
++
+mom
++
+agree*.25
++
+val*.25
 )
-score+=20;
-
-
-if(
-c.consistency>=75
-)
-score+=30;
-
-
-if(
-vr>=52
-)
-score+=25;
-
-
-$("distributionScore")
-.textContent =
-c.distributionScore.toFixed(1);
-
-
-$("momentumScore")
-.textContent =
-c.momentumScore.toFixed(1);
-
-
-$("consistencyScore")
-.textContent =
-c.consistency.toFixed(0)+"%";
-
-
-$("validationRate")
-.textContent =
-vr.toFixed(1)+"%";
-
-
-if(
-!direction ||
-score<75 ||
-c.distributionScore<8 ||
-c.consistency<75
-){
-
-setSignal(
-"NO SIGNAL",
-`Evidence score ${score}/100. Conditions are not sufficiently aligned.`,
-score
 );
 
-}else{
 
-setSignal(
-direction,
-`Evidence score ${score}/100. Historical validation: ${vr.toFixed(1)}%.`,
-score
-);
+return {
 
-}
+direction:dir,
 
-}
+dist,
 
+mom,
 
-function setSignal(name,text,score){
+agree,
 
-$("signal").textContent =
-name;
+val,
 
-$("confidenceText").textContent =
-text;
+score,
 
-$("confidenceBar").style.width =
-Math.min(score,100)+"%";
+strong:
+!!dir &&
+dist>=8 &&
+agree>=75 &&
+val>=52 &&
+score>=75
 
-$("signal").className =
-"signal "+
-(
-name==="NO SIGNAL"
-? "neutral"
-: "good"
-);
-
-updatePendingBox();
+};
 
 }
 
 
-function updatePendingBox(){
+function qualified(a){
 
-const b =
-$("pendingBox");
+let e=engine(a);
 
-
-if(!pendingSignal){
-
-b.style.display="none";
-
-return;
-
+return e && e.strong
+?
+{
+direction:e.direction,
+score:e.score
 }
-
-
-b.style.display="block";
-
-
-b.innerHTML =
-`🔒 <b>${pendingSignal.direction}</b>
-signal locked at
-<b>${pendingSignal.confidence}%</b>
-• waiting for next tick to score it.`;
+:
+null;
 
 }
 
 
 function render(){
 
-if(!ticks.length)
-return;
+let a =
+D(
+ticks.slice(-win)
+);
+
+let s =
+S(a);
 
 
-const latest =
-ticks[ticks.length-1];
+$("q").textContent =
+ticks.at(-1)?.quote ?? "—";
 
+$("d").textContent =
+a.at(-1) ?? "—";
 
-$("quote").textContent =
-latest.quote.toFixed(2);
-
-
-$("lastDigit").textContent =
-latest.digit;
-
-
-$("tickCount").textContent =
+$("n").textContent =
 ticks.length;
 
-
-$("windowDisplay").textContent =
-currentWindow;
-
-
-const data =
-getDigits();
+$("wn").textContent =
+win;
 
 
-renderDigits(data);
+$("ov").textContent =
+pct(s.o,a.length);
 
-renderDistribution(data);
+$("un").textContent =
+pct(s.u,a.length);
 
-renderStreaks();
+$("ev").textContent =
+pct(s.e,a.length);
 
-renderStream();
+$("od").textContent =
+pct(a.length-s.e,a.length);
 
-runBacktest();
 
-runValidation();
+$("hot").textContent =
+a.length ? s.h : "—";
 
-runSignalEngine();
+$("cold").textContent =
+a.length ? s.l : "—";
 
-updatePayout();
 
-renderLiveTracker();
+let sd =
+a.at(-1);
 
-renderHistory();
+let sn=0;
 
-updatePendingBox();
+
+if(a.length){
+
+for(
+let i=a.length-1;
+i>=0 && a[i]===sd;
+i--
+)
+sn++;
 
 }
 
 
-function renderDigits(data){
-
-const c =
-digitCounts(data);
+$("str").textContent =
+sn ? sd+" × "+sn : "—";
 
 
-const max =
-Math.max(...c);
+let rr =
+a.slice(-25);
 
-
-const hot =
-c.indexOf(max);
-
-
-const cold =
-c.indexOf(
-Math.min(...c)
+let rrr =
+num(
+rr.filter(x=>x>5).length,
+Math.max(1,rr.length)
 );
 
 
-$("hotDigit").textContent =
-hot;
-
-$("coldDigit").textContent =
-cold;
-
-
-const box =
-$("digits");
-
-
-box.innerHTML="";
+$("reg").textContent =
+rrr>.58
+? "OVER"
+:
+rrr<.42
+? "UNDER"
+:
+"MIXED";
 
 
-c.forEach(
-(n,d)=>{
-
-const div =
-document.createElement("div");
+let mx =
+Math.max(...s.c,1);
 
 
-div.className =
-"digit"+
-(
-d===hot
-? " hot"
-: ""
-)+
-(
-d===cold
-? " cold"
-: ""
-);
+$("bars").innerHTML =
+s.c.map(
+(n,i)=>
+`
+<div class="bw">
 
-
-div.innerHTML = `
-
-<div class="digit-number">
-${d}
+<div class="bp">
+${pct(n,a.length)}
 </div>
-
-<div class="digit-count">
-${n} • ${pct(n,data.length)}%
-</div>
-
-<div class="bar-wrap">
 
 <div
 class="bar"
-style="width:${
-max
-? n/max*100
-: 0
-}%">
+style="height:${Math.max(2,n/mx*105)}px">
+</div>
+
+<div class="bd">
+${i}
 </div>
 
 </div>
-
-`;
-
-
-box.appendChild(div);
-
-});
-
-}
+`
+).join("");
 
 
-function renderDistribution(data){
-
-let o=0;
-
-let u=0;
-
-let e=0;
-
-
-data.forEach(d=>{
-
-if(d>5)o++;
-
-if(d<5)u++;
-
-if(d%2===0)e++;
-
-});
+let e =
+engine(
+D(
+ticks.slice(-200)
+)
+);
 
 
-$("overPercent").textContent =
-pct(o,data.length)+"%";
+if(e){
+
+$("ds").textContent =
+e.dist.toFixed(1);
+
+$("ms").textContent =
+e.mom.toFixed(1);
+
+$("cs").textContent =
+e.agree.toFixed(0)+"%";
+
+$("vs").textContent =
+e.val.toFixed(1)+"%";
+
+$("ag").textContent =
+e.agree.toFixed(0)+"%";
 
 
-$("underPercent").textContent =
-pct(u,data.length)+"%";
+let q =
+e.strong ? e : null;
 
 
-$("evenPercent").textContent =
-pct(e,data.length)+"%";
+$("sig").textContent =
+q ? q.direction : "NO SIGNAL";
 
 
-$("oddPercent").textContent =
-pct(
-data.length-e,
-data.length
-)+"%";
-
-}
-
-
-function renderStreaks(){
-
-const latest =
-ticks[ticks.length-1].digit;
+$("sig").className =
+"sig "+
+(
+q
+?
+(q.direction=="OVER"
+?"over"
+:"under")
+:
+"none"
+);
 
 
-let ds=0;
+$("cf").textContent =
+q
+?
+"Confidence "+q.score+"%"
+:
+"Conditions not strong enough";
 
-
-for(
-let i=ticks.length-1;
-i>=0 &&
-ticks[i].digit===latest;
-i--
-){
-
-ds++;
-
-}
-
-
-const type =
-latest>5
-? "over"
-: latest<5
-? "under"
-: "five";
-
-
-let os=0;
-
-
-if(type!=="five"){
-
-for(
-let i=ticks.length-1;
-i>=0;
-i--
-){
-
-const d =
-ticks[i].digit;
-
-
-if(
-type==="over" && d>5 ||
-type==="under" && d<5
-){
-
-os++;
 
 }else{
 
-break;
+$("sig").textContent =
+"NO SIGNAL";
 
-}
+$("sig").className =
+"sig none";
 
-}
+$("cf").textContent =
+"Need more data";
 
-}
-
-
-const parity =
-latest%2===0
-? "even"
-: "odd";
-
-
-let es=0;
-
-
-for(
-let i=ticks.length-1;
-i>=0;
-i--
-){
-
-const d =
-ticks[i].digit;
-
-
-if(
-parity==="even" &&
-d%2===0 ||
-parity==="odd" &&
-d%2!==0
-){
-
-es++;
-
-}else{
-
-break;
-
-}
+[
+"ds",
+"ms",
+"cs",
+"vs",
+"ag"
+].forEach(
+x=>$(
+x
+).textContent="—"
+);
 
 }
 
 
-$("digitStreak").textContent =
-ds;
+live();
 
+lab(a);
 
-$("ouStreak").textContent =
-type==="five"
-? "5"
-: os;
-
-
-$("eoStreak").textContent =
-es;
+renderHist();
 
 }
 
 
-function renderStream(){
+function onTick(x){
 
-const box =
-$("stream");
+/*
+Evaluate the previous locked signal
+against the new tick.
+*/
+
+if(pending){
+
+let d =
+digit(x.quote);
 
 
-box.innerHTML="";
+let ok =
+(
+pending.direction=="OVER" &&
+d>5
+)
+||
+(
+pending.direction=="UNDER" &&
+d<5
+);
 
 
-ticks
-.slice(-60)
-.reverse()
-.forEach(t=>{
+let r =
+ok ? "WIN" : "LOSS";
 
-const s =
-document.createElement("span");
 
-s.textContent =
-t.digit;
+results.push(r);
 
-box.appendChild(s);
+
+if(results.length>500)
+results.shift();
+
+
+hist.unshift({
+
+time:
+new Date().toLocaleTimeString(),
+
+signal:
+pending.direction,
+
+confidence:
+pending.score,
+
+digit:d,
+
+result:r
 
 });
 
+
+if(hist.length>100)
+hist.pop();
+
+
+pending=null;
+
 }
 
 
-function runBacktest(){
+ticks.push(x);
 
-const look =
-Number(
-$("lookback").value
+
+if(ticks.length>1500)
+ticks.shift();
+
+
+render();
+
+
+/*
+Lock the current signal so
+the NEXT tick evaluates it.
+*/
+
+let q =
+qualified(
+D(
+ticks.slice(-200)
+)
 );
 
 
-const sample =
-Number(
-$("sampleSize").value
-);
-
-
-if(
-ticks.length<
-look+10
-)
-return;
-
-
-const d =
-ticks
-.slice(
--Math.min(
-sample+look,
-ticks.length
-)
-)
-.map(t=>t.digit);
-
-
-const r =
-testDataset(
-d,
-look
-);
-
-
-$("btSignals").textContent =
-r.signals;
-
-
-$("btWins").textContent =
-r.wins;
-
-
-$("btLosses").textContent =
-r.signals-r.wins;
-
-
-$("btRate").textContent =
-r.rate.toFixed(1)+"%";
+if(q)
+pending=q;
 
 }
 
 
-function runValidation(){
+function live(){
 
-const v =
-validation();
-
-
-if(!v)
-return;
-
-
-$("trainSignals").textContent =
-v.tr.signals;
-
-
-$("trainRate").textContent =
-v.tr.rate.toFixed(1)+"%";
+let rate =
+results.length
+?
+num(
+results.filter(x=>x=="WIN").length,
+results.length
+)
+:
+0;
 
 
-$("validSignals").textContent =
-v.va.signals;
+let last =
+n=>{
+
+let a =
+results.slice(-n);
+
+return a.length
+?
+num(
+a.filter(x=>x=="WIN").length,
+a.length
+)
+:
+NaN;
+
+};
 
 
-$("validRate").textContent =
-v.va.rate.toFixed(1)+"%";
-
-}
-
-
-function perf(n){
-
-const a =
-liveResults.slice(-n);
+$("acc").textContent =
+results.length
+?
+rate.toFixed(1)+"%"
+:
+"—";
 
 
-if(!a.length)
-return "—";
+$("a10").textContent =
+isNaN(last(10))
+?
+"—"
+:
+last(10).toFixed(1)+"%";
 
 
-const w =
-a.filter(Boolean).length;
+$("a25").textContent =
+isNaN(last(25))
+?
+"—"
+:
+last(25).toFixed(1)+"%";
 
 
-return `${w}/${a.length} (${pct(w,a.length)}%)`;
-
-}
-
-
-function renderLiveTracker(){
-
-const n =
-liveResults.length;
-
-const w =
-liveResults.filter(Boolean).length;
+$("a50").textContent =
+isNaN(last(50))
+?
+"—"
+:
+last(50).toFixed(1)+"%";
 
 
-$("liveSignals").textContent =
-n;
+let n=0;
 
 
-$("liveWins").textContent =
-w;
+if(results.length){
 
-
-$("liveLosses").textContent =
-n-w;
-
-
-$("liveAccuracy").textContent =
-n
-? pct(w,n)+"%"
-: "--%";
-
-
-$("last10").textContent =
-perf(10);
-
-
-$("last25").textContent =
-perf(25);
-
-
-$("last50").textContent =
-perf(50);
-
-
-let type=null;
-
-let streak=0;
+let z =
+results.at(-1);
 
 
 for(
-let i=liveResults.length-1;
-i>=0;
+let i=results.length-1;
+i>=0 && results[i]==z;
 i--
-){
-
-const t =
-liveResults[i]
-? "W"
-: "L";
+)
+n++;
 
 
-if(type===null)
-type=t;
+$("rs").textContent =
+z+" × "+n;
 
+}else{
 
-if(t!==type)
-break;
-
-
-streak++;
+$("rs").textContent="—";
 
 }
 
-
-$("liveStreak").textContent =
-type
-? `${streak} ${type==="W" ? "wins" : "losses"}`
-: "--";
-
-
-let max=0;
 
 let run=0;
 
+let m=0;
 
-liveResults.forEach(x=>{
 
-if(!x){
+results.forEach(x=>{
+
+if(x=="LOSS"){
 
 run++;
 
-max =
-Math.max(max,run);
+m=Math.max(m,run);
 
 }else{
 
@@ -1831,201 +1217,443 @@ run=0;
 });
 
 
-$("maxLossStreak").textContent =
-max;
+$("ml").textContent=m;
 
 
-const r =
-liveResults.slice(-25);
-
-
-let status="WAITING";
-
-
-if(r.length>=5){
-
-const rate =
-r.filter(Boolean).length /
-r.length * 100;
-
-
-status =
+$("state").textContent =
+!results.length
+?
+"Waiting for completed signals…"
+:
 rate>=55
-? "STABLE"
-: rate<50
-? "CAUTION"
-: "MIXED";
+?
+"🟢 STABLE"
+:
+rate<50
+?
+"🟠 CAUTION"
+:
+"🟡 MIXED";
 
 }
 
 
-$("liveStatus").textContent =
-status;
+function test(a,type){
+
+let sg=0;
+
+let w=0;
+
+let l=0;
 
 
-$("liveStatus").className =
-"status-pill "+
-status.toLowerCase();
+for(
+let i=25;
+i<a.length;
+i++
+){
+
+let p =
+a.slice(i-25,i);
+
+let d =
+a[i];
+
+let s=null;
 
 
-$("liveStatusText").textContent =
-pendingSignal
-? `Signal locked: ${pendingSignal.direction} at ${pendingSignal.confidence}%. The next tick is the only tick used to score this signal.`
-: "No active signal is waiting for a result. NO SIGNAL is not counted.";
+if(type=="OVER/UNDER"){
+
+let o =
+p.filter(x=>x>5).length;
+
+let u =
+p.filter(x=>x<5).length;
+
+
+if(o>u*1.1)
+s="OVER";
+
+else if(u>o*1.1)
+s="UNDER";
+
+
+}else if(type=="EVEN/ODD"){
+
+let e =
+p.filter(x=>x%2===0).length;
+
+let o =
+p.length-e;
+
+
+if(e>o*1.1)
+s="EVEN";
+
+else if(o>e*1.1)
+s="ODD";
+
+
+}else{
+
+let c =
+Array(10).fill(0);
+
+p.forEach(
+x=>c[x]++
+);
+
+
+s=String(
+type=="HOT DIGIT"
+?
+c.indexOf(Math.max(...c))
+:
+c.indexOf(Math.min(...c))
+);
 
 }
 
 
-function renderHistory(){
-
-const box =
-$("signalHistory");
+if(!s)
+continue;
 
 
-if(!signalHistory.length){
+sg++;
 
-box.textContent =
-"No signals recorded yet.";
 
-return;
+let ok =
+type=="OVER/UNDER"
+?
+(s=="OVER"?d>5:d<5)
+:
+type=="EVEN/ODD"
+?
+(s=="EVEN"?d%2===0:d%2!==0)
+:
+Number(s)===d;
+
+
+ok ? w++ : l++;
 
 }
 
 
-box.innerHTML="";
+return {
+sg,
+w,
+l
+};
+
+}
 
 
-signalHistory.forEach(x=>{
+function lab(a){
 
-const d =
-document.createElement("div");
+let ns=[
+"OVER/UNDER",
+"EVEN/ODD",
+"HOT DIGIT",
+"COLD DIGIT"
+];
 
 
-d.className =
-"history-item";
+let rs =
+ns.map(
+name=>({
+...test(a,name),
+name
+})
+);
 
 
-d.innerHTML = `
+$("tab").innerHTML =
+rs.map(
+r=>
+`
+<tr>
 
-<div>
-${x.createdAt}
-</div>
+<td>${r.name}</td>
+<td>${r.sg}</td>
+<td>${r.w}</td>
+<td>${r.l}</td>
+<td>${pct(r.w,r.sg)}</td>
 
-<div>
-<b>${x.direction}</b>
-</div>
+</tr>
+`
+).join("");
 
-<div>
-${x.confidence}%
-</div>
 
-<div>
-${x.nextDigit}
-</div>
+let b =
+rs[0];
 
-<div class="${
-x.result==="WIN"
-? "good"
-: "bad"
-}">
 
-<b>
-${x.result}
-</b>
+$("bs").textContent=b.sg;
 
-</div>
+$("bw").textContent=b.w;
 
+$("bl").textContent=b.l;
+
+$("bh").textContent=
+pct(b.w,b.sg);
+
+
+let bins=[
+[50,59],
+[60,69],
+[70,79],
+[80,89],
+[90,100]
+];
+
+
+$("ct").innerHTML =
+bins.map(
+([lo,hi])=>{
+
+let x =
+hist.filter(
+r =>
+r.confidence>=lo &&
+r.confidence<=hi
+);
+
+let w =
+x.filter(
+r=>r.result=="WIN"
+).length;
+
+
+return `
+<tr>
+
+<td>${lo}–${hi}%</td>
+
+<td>${x.length}</td>
+
+<td>${w}</td>
+
+<td>${pct(w,x.length)}</td>
+
+</tr>
 `;
 
-
-box.appendChild(d);
-
-});
+}
+).join("");
 
 }
 
 
-function updatePayout(){
+function renderHist(){
 
-const p =
+$("hist").innerHTML =
+hist.slice(0,50).map(
+r=>
+`
+<tr>
+
+<td>${r.time}</td>
+
+<td>${r.signal}</td>
+
+<td>${r.confidence}%</td>
+
+<td>${r.digit}</td>
+
+<td class="${r.result=="WIN"?"win":"loss"}">
+${r.result}
+</td>
+
+</tr>
+`
+).join("");
+
+
+$("stream").innerHTML =
+D(
+ticks.slice(-60)
+).map(
+x =>
+`<span style="margin-right:6px">${x}</span>`
+).join("");
+
+}
+
+
+function calc(){
+
+let p =
 Number(
-$("payoutInput").value
+$("pay").value
 );
 
 
-if(!p || p<=0)
-return;
+let be =
+100/(100+p);
 
 
-$("payoutDisplay").textContent =
-p.toFixed(1)+"%";
-
-
-$("breakEven").textContent =
-(
-100/(100+p)*100
-).toFixed(1)+"%";
-
-
-$("payoutValidation").textContent =
-$("validRate").textContent;
+$("payr").innerHTML =
+`
+Break-even hit rate:
+<b>${(be*100).toFixed(2)}%</b>.
+Compare it with measured performance;
+accuracy alone does not establish profitability.
+`;
 
 }
 
 
-$("payoutInput")
-.addEventListener(
-"input",
-updatePayout
-);
+W.forEach(x=>{
 
+let b =
+document.createElement("button");
 
-$("lookback")
-.addEventListener(
-"change",
-render
-);
+b.textContent=x;
 
-
-$("sampleSize")
-.addEventListener(
-"change",
-render
-);
-
-
-document
-.querySelectorAll(
-"[data-window]"
-)
-.forEach(b=>{
 
 b.onclick=()=>{
 
+win=x;
+
 document
-.querySelectorAll(
-"[data-window]"
-)
-.forEach(x=>
-x.classList.remove("active")
+.querySelectorAll("#wb button")
+.forEach(
+q=>q.classList.remove("on")
 );
 
-
-b.classList.add("active");
-
-
-currentWindow =
-Number(
-b.dataset.window
-);
-
+b.classList.add("on");
 
 render();
 
 };
 
+
+$("wb").appendChild(b);
+
+
+if(x==100)
+b.classList.add("on");
+
 });
 
+
+function connect(){
+
+ws =
+new WebSocket(WS);
+
+
+ws.onopen=()=>{
+
+$("st").textContent =
+"CONNECTED • V25 1s";
+
+
+ws.send(
+JSON.stringify({
+
+ticks_history:SYM,
+
+count:1000,
+
+end:"latest",
+
+style:"ticks",
+
+req_id:1
+
+})
+);
+
+
+ws.send(
+JSON.stringify({
+
+ticks:SYM,
+
+subscribe:1,
+
+req_id:2
+
+})
+);
+
+};
+
+
+ws.onmessage=e=>{
+
+try{
+
+let m =
+JSON.parse(e.data);
+
+
+if(
+m.history &&
+m.history.prices
+){
+
+m.history.prices.forEach(
+p =>
+ticks.push({
+quote:Number(p)
+})
+);
+
+
+ticks =
+ticks.slice(-1000);
+
+
+render();
+
+}
+
+
+if(m.tick){
+
+onTick({
+
+quote:Number(
+m.tick.quote
+),
+
+epoch:m.tick.epoch
+
+});
+
+}
+
+}catch(_){}
+
+};
+
+
+ws.onclose=()=>{
+
+$("st").textContent =
+"DISCONNECTED — RECONNECTING";
+
+setTimeout(
+connect,
+2000
+);
+
+};
+
+
+ws.onerror=()=>{
+
+$("st").textContent =
+"CONNECTION ERROR";
+
+};
+
+}
+
+
+calc();
 
 connect();
 
