@@ -1,332 +1,714 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>V25 (1s) Digit Analyzer — V6</title>
+
+<meta
+  name="viewport"
+  content="width=device-width,initial-scale=1.0"
+>
+
+<title>V25 (1s) Digit Analyzer — V6.1</title>
+
 
 <style>
-*{box-sizing:border-box}
+
+*{
+  box-sizing:border-box;
+}
 
 body{
+
   margin:0;
-  font-family:Arial,Helvetica,sans-serif;
+
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+
   background:#07111f;
+
   color:#e8eef7;
+
 }
+
 
 .container{
+
   max-width:1200px;
+
   margin:auto;
+
   padding:18px;
+
 }
+
 
 h1{
+
   margin:0 0 6px;
+
   font-size:25px;
+
 }
+
 
 h2{
+
   margin:0 0 12px;
+
   font-size:18px;
+
 }
+
+
+h3{
+
+  margin-top:0;
+
+}
+
 
 p{
+
   color:#9fb0c5;
+
 }
+
 
 .card{
+
   background:#0d1a2b;
+
   border:1px solid #1b3048;
+
   border-radius:14px;
+
   padding:16px;
+
   margin-bottom:15px;
+
 }
+
 
 .status{
+
   color:#55e38a;
+
   font-weight:bold;
+
 }
+
 
 .grid{
+
   display:grid;
-  grid-template-columns:repeat(4,1fr);
+
+  grid-template-columns:
+    repeat(4,1fr);
+
   gap:12px;
+
 }
+
 
 @media(max-width:800px){
+
   .grid{
-    grid-template-columns:repeat(2,1fr);
+
+    grid-template-columns:
+      repeat(2,1fr);
+
   }
+
 }
+
 
 @media(max-width:500px){
+
   .grid{
+
     grid-template-columns:1fr;
+
   }
+
 }
+
 
 .stat{
+
   background:#091625;
+
   border-radius:10px;
+
   padding:14px;
+
 }
+
 
 .label{
+
   color:#8ea2b9;
+
   font-size:12px;
+
   margin-bottom:7px;
+
 }
+
 
 .value{
+
   font-size:23px;
+
   font-weight:bold;
+
 }
+
 
 button{
+
   background:#12263d;
+
   color:#dbe8f6;
+
   border:1px solid #294563;
+
   border-radius:8px;
+
   padding:9px 15px;
+
   margin:3px;
+
   cursor:pointer;
+
 }
+
 
 button.on{
+
   background:#1d5d9b;
+
   border-color:#3b8bd0;
+
 }
+
 
 .signalBox{
+
   text-align:center;
+
   padding:22px;
+
   border-radius:12px;
+
   margin-bottom:15px;
+
   background:#091625;
+
 }
+
 
 .signal{
+
   font-size:34px;
+
   font-weight:bold;
+
   margin:8px 0;
+
 }
+
 
 .over{
+
   color:#4db8ff;
+
 }
+
 
 .under{
+
   color:#ffb454;
+
 }
+
 
 .wait{
+
   color:#a7b4c5;
+
 }
+
 
 .entry{
+
   font-size:17px;
+
   font-weight:bold;
+
 }
+
 
 .good{
+
   color:#57df8c;
+
 }
+
 
 .warn{
+
   color:#ffd166;
+
 }
+
 
 .bad{
+
   color:#ff6b6b;
+
 }
+
 
 .bars{
+
   display:flex;
+
   align-items:flex-end;
+
   gap:8px;
+
   height:160px;
+
   padding:10px 5px;
+
 }
+
 
 .bw{
+
   flex:1;
+
   text-align:center;
+
 }
+
 
 .bar{
+
   min-height:2px;
+
   background:#3986c9;
-  border-radius:5px 5px 0 0;
+
+  border-radius:
+    5px 5px 0 0;
+
 }
+
 
 .bd{
+
   margin-top:5px;
+
   font-weight:bold;
+
 }
+
 
 .bp{
+
   font-size:11px;
+
   color:#9fb0c5;
+
   margin-bottom:4px;
+
 }
+
 
 table{
+
   width:100%;
+
   border-collapse:collapse;
+
 }
 
-th,td{
+
+th,
+td{
+
   padding:9px;
-  border-bottom:1px solid #1b3048;
+
+  border-bottom:
+    1px solid #1b3048;
+
   text-align:center;
+
 }
+
 
 th{
+
   color:#9fb0c5;
+
   font-size:12px;
+
 }
+
 
 .stream{
+
   word-break:break-all;
+
   line-height:2;
+
   color:#91c9ff;
+
 }
+
 
 .small{
+
   font-size:12px;
+
   color:#8194aa;
+
 }
 
-.progress{
-  height:10px;
-  background:#15263a;
-  border-radius:20px;
-  overflow:hidden;
-  margin-top:5px;
-}
-
-.progress div{
-  height:100%;
-  background:#3986c9;
-}
 
 .entryGrid{
+
   display:grid;
-  grid-template-columns:1fr 1fr;
+
+  grid-template-columns:
+    1fr 1fr;
+
   gap:15px;
+
 }
+
 
 @media(max-width:700px){
+
   .entryGrid{
-    grid-template-columns:1fr;
+
+    grid-template-columns:
+      1fr;
+
   }
+
 }
+
 
 .entryCard{
+
   background:#091625;
+
   padding:18px;
+
   border-radius:12px;
+
   border:1px solid #1c344d;
+
 }
 
-.entryCard h3{
-  margin-top:0;
-}
 
 input{
+
   width:100%;
+
   padding:10px;
+
   border-radius:8px;
+
   border:1px solid #294563;
+
   background:#081422;
+
   color:white;
+
 }
 
+
 .warning{
+
   font-size:12px;
+
   color:#9fb0c5;
+
   line-height:1.5;
+
 }
+
+
+.scoreGrid{
+
+  display:grid;
+
+  grid-template-columns:
+    1fr 1fr;
+
+  gap:12px;
+
+}
+
+
+@media(max-width:600px){
+
+  .scoreGrid{
+
+    grid-template-columns:
+      1fr;
+
+  }
+
+}
+
+
+.progress{
+
+  height:10px;
+
+  background:#15263a;
+
+  border-radius:20px;
+
+  overflow:hidden;
+
+  margin-top:5px;
+
+}
+
+
+.progress div{
+
+  height:100%;
+
+  background:#3986c9;
+
+}
+
+
 </style>
+
 </head>
+
 
 <body>
 
+
 <div class="container">
 
-<h1>V25 (1s) Digit Analyzer — V6</h1>
+
+<h1>
+  V25 (1s) Digit Analyzer — V6.1
+</h1>
+
+
 <p>
+
   Frequency + Entry Point Analyzer
-  <span id="st" class="status">CONNECTING...</span>
+
+  <span
+    id="st"
+    class="status"
+  >
+    CONNECTING...
+  </span>
+
 </p>
 
-<div class="card">
-  <h2>Analysis Window</h2>
-  <div id="wb"></div>
-</div>
+
+<!-- ANALYSIS WINDOW -->
 
 <div class="card">
-  <div class="grid">
 
-    <div class="stat">
-      <div class="label">CURRENT QUOTE</div>
-      <div class="value" id="q">—</div>
-    </div>
+<h2>
+  📊 Analysis Window
+</h2>
 
-    <div class="stat">
-      <div class="label">LAST DIGIT</div>
-      <div class="value" id="d">—</div>
-    </div>
+<div id="wb"></div>
 
-    <div class="stat">
-      <div class="label">TICKS ANALYZED</div>
-      <div class="value" id="n">0</div>
-    </div>
-
-    <div class="stat">
-      <div class="label">WINDOW</div>
-      <div class="value" id="wn">100</div>
-    </div>
-
-  </div>
 </div>
+
+
+<!-- LIVE MARKET -->
+
+<div class="card">
+
+<div class="grid">
+
+
+<div class="stat">
+
+<div class="label">
+CURRENT QUOTE
+</div>
+
+<div
+  class="value"
+  id="q"
+>
+—
+</div>
+
+</div>
+
+
+<div class="stat">
+
+<div class="label">
+LAST DIGIT
+</div>
+
+<div
+  class="value"
+  id="d"
+>
+—
+</div>
+
+</div>
+
+
+<div class="stat">
+
+<div class="label">
+TICKS ANALYZED
+</div>
+
+<div
+  class="value"
+  id="n"
+>
+0
+</div>
+
+</div>
+
+
+<div class="stat">
+
+<div class="label">
+WINDOW
+</div>
+
+<div
+  class="value"
+  id="wn"
+>
+100
+</div>
+
+</div>
+
+
+</div>
+
+</div>
+
 
 <!-- EXACT CONTRACT FREQUENCY -->
 
 <div class="card">
-<h2>🎯 Exact Contract Frequency</h2>
+
+<h2>
+  🎯 Exact Contract Frequency
+</h2>
+
 
 <div class="grid">
 
-  <div class="stat">
-    <div class="label">OVER 3 — 4 to 9</div>
-    <div class="value over" id="over3">—</div>
-  </div>
 
-  <div class="stat">
-    <div class="label">UNDER 7 — 0 to 6</div>
-    <div class="value under" id="under7">—</div>
-  </div>
+<div class="stat">
 
-  <div class="stat">
-    <div class="label">OVER 3 EXCLUSIVE — 7 to 9</div>
-    <div class="value" id="exclusiveOver">—</div>
-  </div>
+<div class="label">
+OVER 3 — 4 TO 9
+</div>
 
-  <div class="stat">
-    <div class="label">UNDER 7 EXCLUSIVE — 0 to 3</div>
-    <div class="value" id="exclusiveUnder">—</div>
-  </div>
+<div
+  class="value over"
+  id="over3"
+>
+—
+</div>
 
 </div>
+
+
+<div class="stat">
+
+<div class="label">
+UNDER 7 — 0 TO 6
+</div>
+
+<div
+  class="value under"
+  id="under7"
+>
+—
+</div>
+
+</div>
+
+
+<div class="stat">
+
+<div class="label">
+OVER 3 EXCLUSIVE — 7 TO 9
+</div>
+
+<div
+  class="value"
+  id="exclusiveOver"
+>
+—
+</div>
+
+</div>
+
+
+<div class="stat">
+
+<div class="label">
+UNDER 7 EXCLUSIVE — 0 TO 3
+</div>
+
+<div
+  class="value"
+  id="exclusiveUnder"
+>
+—
+</div>
+
+</div>
+
+
+</div>
+
 
 <br>
 
+
 <div class="stat">
-  <div class="label">OVERLAP — 4, 5, 6</div>
-  <div class="value" id="overlap">—</div>
+
+<div class="label">
+OVERLAP — 4, 5, 6
 </div>
+
+<div
+  class="value"
+  id="overlap"
+>
+—
+</div>
+
+</div>
+
 
 </div>
 
@@ -335,20 +717,43 @@ input{
 
 <div class="card">
 
-<h2>📊 Digit Frequency</h2>
+<h2>
+  📈 Digit Frequency
+</h2>
 
-<div id="bars" class="bars"></div>
+
+<div
+  id="bars"
+  class="bars"
+></div>
+
 
 <table>
+
 <thead>
+
 <tr>
-<th>Digit</th>
-<th>Count</th>
-<th>Frequency</th>
+
+<th>
+Digit
+</th>
+
+<th>
+Count
+</th>
+
+<th>
+Frequency
+</th>
+
 </tr>
+
 </thead>
 
-<tbody id="freqTable"></tbody>
+
+<tbody
+  id="freqTable"
+></tbody>
 
 </table>
 
@@ -359,39 +764,141 @@ input{
 
 <div class="card">
 
-<h2>⚡ Recent Frequency Pressure</h2>
+<h2>
+  ⚡ Recent Frequency Pressure
+</h2>
+
 
 <div class="grid">
 
-<div class="stat">
-<div class="label">LAST 10 — OVER 3</div>
-<div class="value" id="r10o">—</div>
-</div>
 
 <div class="stat">
-<div class="label">LAST 10 — UNDER 7</div>
-<div class="value" id="r10u">—</div>
+
+<div class="label">
+LAST 10 — OVER 3
 </div>
 
-<div class="stat">
-<div class="label">LAST 25 — OVER 3</div>
-<div class="value" id="r25o">—</div>
+<div
+  class="value"
+  id="r10o"
+>
+—
 </div>
 
-<div class="stat">
-<div class="label">LAST 25 — UNDER 7</div>
-<div class="value" id="r25u">—</div>
 </div>
 
-<div class="stat">
-<div class="label">LAST 50 — OVER 3</div>
-<div class="value" id="r50o">—</div>
-</div>
 
 <div class="stat">
-<div class="label">LAST 50 — UNDER 7</div>
-<div class="value" id="r50u">—</div>
+
+<div class="label">
+LAST 10 — UNDER 7
 </div>
+
+<div
+  class="value"
+  id="r10u"
+>
+—
+</div>
+
+</div>
+
+
+<div class="stat">
+
+<div class="label">
+LAST 25 — OVER 3
+</div>
+
+<div
+  class="value"
+  id="r25o"
+>
+—
+</div>
+
+</div>
+
+
+<div class="stat">
+
+<div class="label">
+LAST 25 — UNDER 7
+</div>
+
+<div
+  class="value"
+  id="r25u"
+>
+—
+</div>
+
+</div>
+
+
+<div class="stat">
+
+<div class="label">
+LAST 50 — OVER 3
+</div>
+
+<div
+  class="value"
+  id="r50o"
+>
+—
+</div>
+
+</div>
+
+
+<div class="stat">
+
+<div class="label">
+LAST 50 — UNDER 7
+</div>
+
+<div
+  class="value"
+  id="r50u"
+>
+—
+</div>
+
+</div>
+
+
+<div class="stat">
+
+<div class="label">
+LAST 100 — OVER 3
+</div>
+
+<div
+  class="value"
+  id="r100o"
+>
+—
+</div>
+
+</div>
+
+
+<div class="stat">
+
+<div class="label">
+LAST 100 — UNDER 7
+</div>
+
+<div
+  class="value"
+  id="r100u"
+>
+—
+</div>
+
+</div>
+
 
 </div>
 
@@ -402,143 +909,495 @@ input{
 
 <div class="card">
 
-<h2>🚦 Entry Point Engine</h2>
+<h2>
+  🚦 Entry Point Engine
+</h2>
+
 
 <div class="entryGrid">
 
-<div class="entryCard">
 
-<h3 class="over">OVER 3 ENTRY</h3>
-
-<div class="stat">
-<div class="label">Frequency</div>
-<div class="value" id="oeFreq">—</div>
-</div>
-
-<br>
-
-<div class="stat">
-<div class="label">Recent Pressure</div>
-<div class="value" id="oeRecent">—</div>
-</div>
-
-<br>
-
-<div class="stat">
-<div class="label">Exclusive 7–9 Pressure</div>
-<div class="value" id="oeExclusive">—</div>
-</div>
-
-<br>
-
-<div class="entry" id="oeStatus">
-WAIT
-</div>
-
-</div>
-
+<!-- OVER -->
 
 <div class="entryCard">
 
-<h3 class="under">UNDER 7 ENTRY</h3>
+<h3 class="over">
+  OVER 3
+</h3>
+
 
 <div class="stat">
-<div class="label">Frequency</div>
-<div class="value" id="ueFreq">—</div>
+
+<div class="label">
+100-TICK FREQUENCY
 </div>
+
+<div
+  class="value"
+  id="oeFreq"
+>
+—
+</div>
+
+</div>
+
 
 <br>
 
+
 <div class="stat">
-<div class="label">Recent Pressure</div>
-<div class="value" id="ueRecent">—</div>
+
+<div class="label">
+RECENT 25-TICK PRESSURE
 </div>
+
+<div
+  class="value"
+  id="oeRecent"
+>
+—
+</div>
+
+</div>
+
 
 <br>
 
+
 <div class="stat">
-<div class="label">Exclusive 0–3 Pressure</div>
-<div class="value" id="ueExclusive">—</div>
+
+<div class="label">
+EXCLUSIVE 7–9 PRESSURE
 </div>
+
+<div
+  class="value"
+  id="oeExclusive"
+>
+—
+</div>
+
+</div>
+
 
 <br>
 
-<div class="entry" id="ueStatus">
+
+<div class="stat">
+
+<div class="label">
+MOMENTUM
+</div>
+
+<div
+  class="value"
+  id="oeMomentum"
+>
+—
+</div>
+
+</div>
+
+
+<br>
+
+
+<div
+  class="entry"
+  id="oeStatus"
+>
 WAIT
 </div>
 
+
+</div>
+
+
+<!-- UNDER -->
+
+<div class="entryCard">
+
+<h3 class="under">
+  UNDER 7
+</h3>
+
+
+<div class="stat">
+
+<div class="label">
+100-TICK FREQUENCY
+</div>
+
+<div
+  class="value"
+  id="ueFreq"
+>
+—
 </div>
 
 </div>
 
+
+<br>
+
+
+<div class="stat">
+
+<div class="label">
+RECENT 25-TICK PRESSURE
+</div>
+
+<div
+  class="value"
+  id="ueRecent"
+>
+—
+</div>
+
 </div>
 
 
-<!-- MAIN SIGNAL -->
+<br>
+
+
+<div class="stat">
+
+<div class="label">
+EXCLUSIVE 0–3 PRESSURE
+</div>
+
+<div
+  class="value"
+  id="ueExclusive"
+>
+—
+</div>
+
+</div>
+
+
+<br>
+
+
+<div class="stat">
+
+<div class="label">
+MOMENTUM
+</div>
+
+<div
+  class="value"
+  id="ueMomentum"
+>
+—
+</div>
+
+</div>
+
+
+<br>
+
+
+<div
+  class="entry"
+  id="ueStatus"
+>
+WAIT
+</div>
+
+
+</div>
+
+
+</div>
+
+</div>
+
+
+<!-- SIGNAL -->
 
 <div class="card">
 
-<h2>📡 Current Entry Signal</h2>
+<h2>
+  📡 Current Entry Signal
+</h2>
+
 
 <div class="signalBox">
 
-<div id="signal" class="signal wait">
+
+<div
+  id="signal"
+  class="signal wait"
+>
 WAIT
 </div>
+
 
 <div id="signalReason">
 Waiting for enough frequency data...
 </div>
 
+
 <br>
 
+
+<div class="scoreGrid">
+
+
+<div class="stat">
+
+<div class="label">
+OVER 3 SCORE
+</div>
+
+<div
+  class="value over"
+  id="overScore"
+>
+—
+</div>
+
+</div>
+
+
+<div class="stat">
+
+<div class="label">
+UNDER 7 SCORE
+</div>
+
+<div
+  class="value under"
+  id="underScore"
+>
+—
+</div>
+
+</div>
+
+
+<div class="stat">
+
+<div class="label">
+SCORE DIFFERENCE
+</div>
+
+<div
+  class="value"
+  id="scoreDifference"
+>
+—
+</div>
+
+</div>
+
+
+<div class="stat">
+
+<div class="label">
+CONFIDENCE
+</div>
+
+<div
+  class="value"
+  id="confidence"
+>
+—
+</div>
+
+</div>
+
+
+</div>
+
+
+<br>
+
+
 <div class="small">
-The signal is based on historical frequency and recent pressure.
-It does not guarantee the next tick.
+
+Signal is generated from historical frequency,
+recent pressure, exclusive-zone pressure and momentum.
+
+It does NOT guarantee the next tick.
+
+</div>
+
+
 </div>
 
 </div>
 
-</div>
 
-
-<!-- SIGNAL TRACKER -->
+<!-- LIVE ACCURACY -->
 
 <div class="card">
 
-<h2>🎯 Live Signal Accuracy</h2>
+<h2>
+  🎯 Live Signal Accuracy
+</h2>
+
 
 <div class="grid">
 
-<div class="stat">
-<div class="label">COMPLETED SIGNALS</div>
-<div class="value" id="totalSignals">0</div>
-</div>
 
 <div class="stat">
-<div class="label">WINS</div>
-<div class="value good" id="wins">0</div>
+
+<div class="label">
+COMPLETED SIGNALS
 </div>
 
-<div class="stat">
-<div class="label">LOSSES</div>
-<div class="value bad" id="losses">0</div>
-</div>
-
-<div class="stat">
-<div class="label">HIT RATE</div>
-<div class="value" id="accuracy">—</div>
+<div
+  class="value"
+  id="totalSignals"
+>
+0
 </div>
 
 </div>
+
+
+<div class="stat">
+
+<div class="label">
+WINS
+</div>
+
+<div
+  class="value good"
+  id="wins"
+>
+0
+</div>
+
+</div>
+
+
+<div class="stat">
+
+<div class="label">
+LOSSES
+</div>
+
+<div
+  class="value bad"
+  id="losses"
+>
+0
+</div>
+
+</div>
+
+
+<div class="stat">
+
+<div class="label">
+HIT RATE
+</div>
+
+<div
+  class="value"
+  id="accuracy"
+>
+—
+</div>
+
+</div>
+
+
+</div>
+
 
 <br>
 
+
+<div class="grid">
+
+
 <div class="stat">
-<div class="label">STATUS</div>
-<div class="value" id="trackerStatus">
+
+<div class="label">
+LAST 10
+</div>
+
+<div
+  class="value"
+  id="last10Accuracy"
+>
+—
+</div>
+
+</div>
+
+
+<div class="stat">
+
+<div class="label">
+LAST 25
+</div>
+
+<div
+  class="value"
+  id="last25Accuracy"
+>
+—
+</div>
+
+</div>
+
+
+<div class="stat">
+
+<div class="label">
+LAST 50
+</div>
+
+<div
+  class="value"
+  id="last50Accuracy"
+>
+—
+</div>
+
+</div>
+
+
+<div class="stat">
+
+<div class="label">
+CURRENT STREAK
+</div>
+
+<div
+  class="value"
+  id="resultStreak"
+>
+—
+</div>
+
+</div>
+
+
+</div>
+
+
+<br>
+
+
+<div class="stat">
+
+<div class="label">
+STATUS
+</div>
+
+<div
+  class="value"
+  id="trackerStatus"
+>
 WAITING
 </div>
+
 </div>
 
 </div>
@@ -548,21 +1407,54 @@ WAITING
 
 <div class="card">
 
-<h2>🧪 Exact Contract Backtest</h2>
+<h2>
+  🧪 Exact Contract Backtest
+</h2>
+
+
+<p class="small">
+
+The backtest uses the SAME entry engine as the
+live signal engine. Each historical tick is tested
+using only information available before that tick.
+
+</p>
+
 
 <table>
 
 <thead>
+
 <tr>
-<th>Strategy</th>
-<th>Signals</th>
-<th>Wins</th>
-<th>Losses</th>
-<th>Hit Rate</th>
+
+<th>
+Strategy
+</th>
+
+<th>
+Signals
+</th>
+
+<th>
+Wins
+</th>
+
+<th>
+Losses
+</th>
+
+<th>
+Hit Rate
+</th>
+
 </tr>
+
 </thead>
 
-<tbody id="backtest"></tbody>
+
+<tbody
+  id="backtest"
+></tbody>
 
 </table>
 
@@ -573,21 +1465,45 @@ WAITING
 
 <div class="card">
 
-<h2>📜 Signal History</h2>
+<h2>
+  📜 Signal History
+</h2>
+
 
 <table>
 
 <thead>
+
 <tr>
-<th>Time</th>
-<th>Signal</th>
-<th>Confidence</th>
-<th>Next Digit</th>
-<th>Result</th>
+
+<th>
+Time
+</th>
+
+<th>
+Signal
+</th>
+
+<th>
+Confidence
+</th>
+
+<th>
+Next Digit
+</th>
+
+<th>
+Result
+</th>
+
 </tr>
+
 </thead>
 
-<tbody id="history"></tbody>
+
+<tbody
+  id="history"
+></tbody>
 
 </table>
 
@@ -598,9 +1514,15 @@ WAITING
 
 <div class="card">
 
-<h2>🔢 Live Last Digits</h2>
+<h2>
+  🔢 Live Last Digits
+</h2>
 
-<div id="stream" class="stream">
+
+<div
+  id="stream"
+  class="stream"
+>
 —
 </div>
 
@@ -611,49 +1533,104 @@ WAITING
 
 <div class="card">
 
-<h2>💰 Payout Break-even</h2>
+<h2>
+  💰 Payout Break-even
+</h2>
+
 
 <p class="small">
+
 Enter the percentage profit offered by your contract.
+
 </p>
 
-<input id="pay" type="number" value="20" min="1">
 
-<br><br>
+<input
+  id="pay"
+  type="number"
+  value="20"
+  min="1"
+>
 
-<button onclick="calc()">Calculate</button>
 
-<div id="payr" style="margin-top:12px"></div>
+<br>
+<br>
+
+
+<button onclick="calc()">
+Calculate
+</button>
+
+
+<div
+  id="payr"
+  style="margin-top:12px"
+></div>
 
 </div>
 
+
+<!-- WARNING -->
 
 <div class="card">
 
 <p class="warning">
-⚠️ IMPORTANT: Frequency is historical information, not a guarantee
-of the next digit. OVER 3 includes 4–9 and UNDER 7 includes 0–6.
-Digits 4, 5 and 6 belong to both contracts. The analyzer therefore
-looks at the exclusive zones (7–9 versus 0–3) when deciding whether
-there is enough pressure for an entry. WAIT means the conditions are
-not strong enough.
+
+⚠️ IMPORTANT:
+
+OVER 3 means digits 4,5,6,7,8,9.
+
+UNDER 7 means digits 0,1,2,3,4,5,6.
+
+Digits 4,5,6 overlap and therefore qualify for
+both contracts.
+
+The analyzer uses historical frequency and recent
+pressure. Historical frequency does not guarantee
+the next digit.
+
+A signal should be treated as a measured strategy
+output, not as a guaranteed prediction.
+
 </p>
 
 </div>
+
 
 </div>
 
 
 <script>
 
+
+/* =====================================================
+   CONNECTION
+===================================================== */
+
+
 const WS =
 "wss://api.derivws.com/trading/v1/options/ws/public";
 
-const SYM = "1HZ25V";
 
-const $ = id => document.getElementById(id);
+const SYM =
+"1HZ25V";
 
-const WINDOWS = [25,50,100,250,500,1000];
+
+const $ =
+id =>
+document.getElementById(id);
+
+
+const WINDOWS =
+[
+  25,
+  50,
+  100,
+  250,
+  500,
+  1000
+];
+
 
 let ws;
 
@@ -668,80 +1645,140 @@ let results = [];
 let history = [];
 
 
-/* =========================
-   DIGIT
-========================= */
+/* =====================================================
+   DIGIT EXTRACTION
+===================================================== */
+
 
 function digit(q){
 
   return Number(
-    String(Number(q).toFixed(2)).slice(-1)
+
+    String(
+      Number(q).toFixed(2)
+    ).slice(-1)
+
   );
 
 }
 
 
-/* =========================
-   DIGIT ARRAY
-========================= */
+/* =====================================================
+   CONVERT TICKS TO DIGITS
+===================================================== */
+
 
 function digits(arr){
 
-  return arr.map(x => digit(x.quote));
+  return arr.map(
+    x => digit(x.quote)
+  );
 
 }
 
 
-/* =========================
-   PERCENT
-========================= */
+/* =====================================================
+   PERCENTAGE
+===================================================== */
+
 
 function pct(a,b){
 
   return b
-    ? (a/b*100).toFixed(1)+"%"
+    ? (a / b * 100).toFixed(1) + "%"
     : "—";
 
 }
 
 
-/* =========================
+/* =====================================================
    FREQUENCY
-========================= */
+===================================================== */
+
 
 function frequency(a){
 
-  let c = Array(10).fill(0);
+  const c =
+    Array(10).fill(0);
 
-  a.forEach(x => c[x]++);
+
+  a.forEach(
+    x => c[x]++
+  );
+
 
   return c;
 
 }
 
 
-/* =========================
-   CONTRACT ANALYSIS
-========================= */
+/* =====================================================
+   CONTRACT STATISTICS
+===================================================== */
+
 
 function contractStats(a){
 
-  const total = a.length || 1;
+  const total =
+    a.length || 1;
+
+
+  /*
+    OVER 3
+    4,5,6,7,8,9
+  */
 
   const over3 =
-    a.filter(x => x >= 4).length;
+    a.filter(
+      x => x >= 4
+    ).length;
+
+
+  /*
+    UNDER 7
+    0,1,2,3,4,5,6
+  */
 
   const under7 =
-    a.filter(x => x <= 6).length;
+    a.filter(
+      x => x <= 6
+    ).length;
+
+
+  /*
+    OVER 3 exclusive
+    7,8,9
+  */
 
   const exclusiveOver =
-    a.filter(x => x >= 7).length;
+    a.filter(
+      x => x >= 7
+    ).length;
+
+
+  /*
+    UNDER 7 exclusive
+    0,1,2,3
+  */
 
   const exclusiveUnder =
-    a.filter(x => x <= 3).length;
+    a.filter(
+      x => x <= 3
+    ).length;
+
+
+  /*
+    Overlap
+    4,5,6
+  */
 
   const overlap =
-    a.filter(x => x >= 4 && x <= 6).length;
+    a.filter(
+      x =>
+        x >= 4 &&
+        x <= 6
+    ).length;
+
 
   return {
 
@@ -755,42 +1792,60 @@ function contractStats(a){
 
     overlap,
 
-    overPct: over3/total*100,
+    overPct:
+      over3 / total * 100,
 
-    underPct: under7/total*100,
+    underPct:
+      under7 / total * 100,
 
     exclusiveOverPct:
-      exclusiveOver/total*100,
+      exclusiveOver / total * 100,
 
     exclusiveUnderPct:
-      exclusiveUnder/total*100,
+      exclusiveUnder / total * 100,
 
     overlapPct:
-      overlap/total*100
+      overlap / total * 100
 
   };
 
 }
 
 
-/* =========================
-   RECENT STATS
-========================= */
+/* =====================================================
+   RECENT STATISTICS
+===================================================== */
+
 
 function recentStats(a,n){
 
-  const z = a.slice(-n);
-
-  return contractStats(z);
+  return contractStats(
+    a.slice(-n)
+  );
 
 }
 
 
-/* =========================
+/* =====================================================
    ENTRY ENGINE
-========================= */
+=====================================================
+
+   SAME ENGINE IS USED BY:
+
+   1. LIVE SIGNALS
+   2. HISTORICAL BACKTEST
+
+   This fixes the previous mismatch.
+===================================================== */
+
 
 function entryEngine(a){
+
+
+  /*
+    Need at least 100 historical
+    ticks before calculating.
+  */
 
   if(a.length < 100){
 
@@ -800,204 +1855,314 @@ function entryEngine(a){
 
       confidence:0,
 
-      reason:"Need at least 100 ticks."
+      reason:
+        "Need at least 100 ticks."
 
     };
 
   }
 
 
-  const all = contractStats(a.slice(-100));
+  /*
+    Main analysis window.
+  */
 
-  const r25 = recentStats(a,25);
-
-  const r10 = recentStats(a,10);
-
-  const r50 = recentStats(a,50);
+  const all =
+    contractStats(
+      a.slice(-100)
+    );
 
 
   /*
-    OVER 3:
-    Base frequency = 4–9
-    Exclusive pressure = 7–9
+    Recent windows.
   */
 
-  const overBase = all.overPct;
+  const r10 =
+    recentStats(a,10);
 
-  const overRecent = r25.overPct;
 
-  const overExclusive =
-    all.exclusiveOverPct;
+  const r25 =
+    recentStats(a,25);
+
+
+  const r50 =
+    recentStats(a,50);
 
 
   /*
-    UNDER 7:
-    Base frequency = 0–6
-    Exclusive pressure = 0–3
+    Previous 10 ticks.
+
+    Used for momentum.
   */
 
-  const underBase = all.underPct;
+  const recent10 =
+    a.slice(-10);
 
-  const underRecent = r25.underPct;
-
-  const underExclusive =
-    all.exclusiveUnderPct;
-
-
-  /*
-    Recent direction.
-    Compare last 10 against previous 10.
-  */
-
-  const recent10 = a.slice(-10);
 
   const previous10 =
     a.slice(-20,-10);
 
 
+  /*
+    OVER 3 momentum.
+  */
+
   const recentOver =
-    recent10.filter(x => x >= 4).length;
+    recent10.filter(
+      x => x >= 4
+    ).length;
+
 
   const previousOver =
-    previous10.filter(x => x >= 4).length;
-
-
-  const recentUnder =
-    recent10.filter(x => x <= 6).length;
-
-  const previousUnder =
-    previous10.filter(x => x <= 6).length;
+    previous10.filter(
+      x => x >= 4
+    ).length;
 
 
   const overMomentum =
-    recentOver - previousOver;
-
-  const underMomentum =
-    recentUnder - previousUnder;
+    recentOver -
+    previousOver;
 
 
   /*
-    Scores are deliberately moderate.
-    We don't want a single unusual
-    frequency spike to create a signal.
+    UNDER 7 momentum.
   */
+
+  const recentUnder =
+    recent10.filter(
+      x => x <= 6
+    ).length;
+
+
+  const previousUnder =
+    previous10.filter(
+      x => x <= 6
+    ).length;
+
+
+  const underMomentum =
+    recentUnder -
+    previousUnder;
+
+
+  /* ===================================================
+     SCORES
+  =================================================== */
+
 
   let overScore = 0;
 
   let underScore = 0;
 
 
-  /* Base frequency */
+  /* ===================================================
+     OVER 3 BASE FREQUENCY
+  =================================================== */
 
-  if(overBase >= 57)
+
+  if(all.overPct >= 57){
+
     overScore += 30;
 
-  else if(overBase >= 54)
+  }
+
+  else if(all.overPct >= 54){
+
     overScore += 20;
 
-  else if(overBase >= 52)
+  }
+
+  else if(all.overPct >= 52){
+
     overScore += 10;
 
+  }
 
-  if(underBase >= 57)
+
+  /* ===================================================
+     UNDER 7 BASE FREQUENCY
+  =================================================== */
+
+
+  if(all.underPct >= 57){
+
     underScore += 30;
 
-  else if(underBase >= 54)
+  }
+
+  else if(all.underPct >= 54){
+
     underScore += 20;
 
-  else if(underBase >= 52)
+  }
+
+  else if(all.underPct >= 52){
+
     underScore += 10;
 
+  }
 
-  /* Recent frequency */
 
-  if(overRecent >= 58)
+  /* ===================================================
+     OVER 3 RECENT 25
+  =================================================== */
+
+
+  if(r25.overPct >= 58){
+
     overScore += 25;
 
-  else if(overRecent >= 55)
+  }
+
+  else if(r25.overPct >= 55){
+
     overScore += 15;
 
-  else if(overRecent >= 52)
+  }
+
+  else if(r25.overPct >= 52){
+
     overScore += 8;
 
+  }
 
-  if(underRecent >= 58)
+
+  /* ===================================================
+     UNDER 7 RECENT 25
+  =================================================== */
+
+
+  if(r25.underPct >= 58){
+
     underScore += 25;
 
-  else if(underRecent >= 55)
+  }
+
+  else if(r25.underPct >= 55){
+
     underScore += 15;
 
-  else if(underRecent >= 52)
+  }
+
+  else if(r25.underPct >= 52){
+
     underScore += 8;
 
+  }
 
-  /* Exclusive pressure */
 
-  if(overExclusive >= 31)
+  /* ===================================================
+     OVER 3 EXCLUSIVE 7–9
+  =================================================== */
+
+
+  if(all.exclusiveOverPct >= 31){
+
     overScore += 25;
 
-  else if(overExclusive >= 27)
+  }
+
+  else if(all.exclusiveOverPct >= 27){
+
     overScore += 15;
 
-  else if(overExclusive >= 23)
+  }
+
+  else if(all.exclusiveOverPct >= 23){
+
     overScore += 8;
 
+  }
 
-  if(underExclusive >= 31)
+
+  /* ===================================================
+     UNDER 7 EXCLUSIVE 0–3
+  =================================================== */
+
+
+  if(all.exclusiveUnderPct >= 31){
+
     underScore += 25;
 
-  else if(underExclusive >= 27)
+  }
+
+  else if(all.exclusiveUnderPct >= 27){
+
     underScore += 15;
 
-  else if(underExclusive >= 23)
+  }
+
+  else if(all.exclusiveUnderPct >= 23){
+
     underScore += 8;
 
+  }
 
-  /* Momentum */
 
-  if(overMomentum >= 2)
+  /* ===================================================
+     OVER MOMENTUM
+  =================================================== */
+
+
+  if(overMomentum >= 2){
+
     overScore += 20;
 
-  else if(overMomentum >= 1)
+  }
+
+  else if(overMomentum >= 1){
+
     overScore += 10;
 
+  }
 
-  if(underMomentum >= 2)
+
+  /* ===================================================
+     UNDER MOMENTUM
+  =================================================== */
+
+
+  if(underMomentum >= 2){
+
     underScore += 20;
 
-  else if(underMomentum >= 1)
+  }
+
+  else if(underMomentum >= 1){
+
     underScore += 10;
 
+  }
 
-  /*
-    Select strongest direction.
-  */
 
-  let direction =
+  /* ===================================================
+     DETERMINE STRONGER SIDE
+  =================================================== */
+
+
+  const direction =
     overScore >= underScore
       ? "OVER 3"
       : "UNDER 7";
 
 
-  let score =
+  const score =
     direction === "OVER 3"
       ? overScore
       : underScore;
 
 
   const difference =
-    Math.abs(overScore-underScore);
+    Math.abs(
+      overScore -
+      underScore
+    );
 
 
-  /*
-    Entry requirements.
+  /* ===================================================
+     QUALIFICATION
+  =================================================== */
 
-    We require:
-    - score >= 55
-    - difference >= 10
-    - recent frequency agrees
-    - exclusive zone provides pressure
-  */
 
   let qualified = false;
 
@@ -1005,10 +2170,14 @@ function entryEngine(a){
   if(direction === "OVER 3"){
 
     qualified =
+
       score >= 55 &&
+
       difference >= 10 &&
-      overRecent >= 52 &&
-      overExclusive >= 23;
+
+      r25.overPct >= 52 &&
+
+      all.exclusiveOverPct >= 23;
 
   }
 
@@ -1016,23 +2185,31 @@ function entryEngine(a){
   if(direction === "UNDER 7"){
 
     qualified =
+
       score >= 55 &&
+
       difference >= 10 &&
-      underRecent >= 52 &&
-      underExclusive >= 23;
+
+      r25.underPct >= 52 &&
+
+      all.exclusiveUnderPct >= 23;
 
   }
 
 
   /*
-    Avoid entering when both contracts
-    are extremely strong because of overlap.
+    If both contracts look strong because of
+    their overlap, don't force an entry.
   */
 
   if(
-    overBase >= 54 &&
-    underBase >= 54 &&
+
+    all.overPct >= 54 &&
+
+    all.underPct >= 54 &&
+
     difference < 15
+
   ){
 
     qualified = false;
@@ -1042,12 +2219,18 @@ function entryEngine(a){
 
   return {
 
-    signal: qualified
-      ? direction
-      : "WAIT",
+    signal:
+      qualified
+        ? direction
+        : "WAIT",
+
 
     confidence:
-      Math.min(95,score),
+      Math.min(
+        95,
+        score
+      ),
+
 
     overScore,
 
@@ -1055,46 +2238,65 @@ function entryEngine(a){
 
     difference,
 
-    overBase,
 
-    underBase,
+    overBase:
+      all.overPct,
 
-    overRecent,
 
-    underRecent,
+    underBase:
+      all.underPct,
 
-    overExclusive,
 
-    underExclusive,
+    overRecent:
+      r25.overPct,
+
+
+    underRecent:
+      r25.underPct,
+
+
+    overExclusive:
+      all.exclusiveOverPct,
+
+
+    underExclusive:
+      all.exclusiveUnderPct,
+
 
     overMomentum,
 
     underMomentum,
 
+
     reason:
+
       qualified
 
-      ? direction === "OVER 3"
+        ? direction === "OVER 3"
 
-        ? "OVER 3 frequency + recent pressure + 7–9 exclusive pressure agree."
+          ? "OVER 3 frequency + recent pressure + 7–9 exclusive pressure agree."
 
-        : "UNDER 7 frequency + recent pressure + 0–3 exclusive pressure agree."
+          : "UNDER 7 frequency + recent pressure + 0–3 exclusive pressure agree."
 
-      : "Frequency conditions are not strong enough for a clean entry."
+        : "Frequency conditions are not strong enough for a clean entry."
 
   };
 
 }
 
 
-/* =========================
-   RENDER
-========================= */
+/* =====================================================
+   RENDER MAIN DASHBOARD
+===================================================== */
+
 
 function render(){
 
+
   const a =
-    digits(ticks.slice(-win));
+    digits(
+      ticks.slice(-win)
+    );
 
 
   $("q").textContent =
@@ -1113,169 +2315,242 @@ function render(){
     win;
 
 
-  if(!a.length) return;
+  if(!a.length)
+    return;
 
 
   const s =
     contractStats(a);
 
 
+  /* ===================================================
+     CONTRACT FREQUENCIES
+  =================================================== */
+
+
   $("over3").textContent =
-    s.overPct.toFixed(1)+"%";
+    s.overPct.toFixed(1) + "%";
 
 
   $("under7").textContent =
-    s.underPct.toFixed(1)+"%";
+    s.underPct.toFixed(1) + "%";
 
 
   $("exclusiveOver").textContent =
-    s.exclusiveOverPct.toFixed(1)+"%";
+    s.exclusiveOverPct.toFixed(1) + "%";
 
 
   $("exclusiveUnder").textContent =
-    s.exclusiveUnderPct.toFixed(1)+"%";
+    s.exclusiveUnderPct.toFixed(1) + "%";
 
 
   $("overlap").textContent =
-    s.overlapPct.toFixed(1)+"%";
+    s.overlapPct.toFixed(1) + "%";
 
 
-  /* =========================
-     BARS
-  ========================= */
+  /* ===================================================
+     DIGIT BARS
+  =================================================== */
+
 
   const c =
     frequency(a);
 
 
   const max =
-    Math.max(...c,1);
+    Math.max(
+      ...c,
+      1
+    );
 
 
   $("bars").innerHTML =
-    c.map((n,i)=>`
 
-      <div class="bw">
+    c.map(
+      (n,i) => `
 
-        <div class="bp">
-          ${pct(n,a.length)}
+        <div class="bw">
+
+          <div class="bp">
+            ${pct(n,a.length)}
+          </div>
+
+          <div
+            class="bar"
+            style="
+              height:${Math.max(
+                3,
+                n/max*110
+              )}px
+            "
+          ></div>
+
+          <div class="bd">
+            ${i}
+          </div>
+
         </div>
 
-        <div
-          class="bar"
-          style="height:${Math.max(
-            3,
-            n/max*110
-          )}px">
-        </div>
+      `
+    ).join("");
 
-        <div class="bd">
-          ${i}
-        </div>
 
-      </div>
-
-    `).join("");
+  /* ===================================================
+     FREQUENCY TABLE
+  =================================================== */
 
 
   $("freqTable").innerHTML =
-    c.map((n,i)=>`
 
-      <tr>
+    c.map(
+      (n,i) => `
 
-        <td>${i}</td>
+        <tr>
 
-        <td>${n}</td>
+          <td>${i}</td>
 
-        <td>${pct(n,a.length)}</td>
+          <td>${n}</td>
 
-      </tr>
+          <td>
+            ${pct(n,a.length)}
+          </td>
 
-    `).join("");
+        </tr>
+
+      `
+    ).join("");
 
 
-  /* =========================
-     RECENT
-  ========================= */
+  /* ===================================================
+     RECENT PRESSURE
+  =================================================== */
+
 
   const r10 =
     recentStats(a,10);
 
+
   const r25 =
     recentStats(a,25);
+
 
   const r50 =
     recentStats(a,50);
 
 
+  const r100 =
+    recentStats(a,100);
+
+
   $("r10o").textContent =
-    r10.overPct.toFixed(1)+"%";
+    r10.overPct.toFixed(1) + "%";
 
 
   $("r10u").textContent =
-    r10.underPct.toFixed(1)+"%";
+    r10.underPct.toFixed(1) + "%";
 
 
   $("r25o").textContent =
-    r25.overPct.toFixed(1)+"%";
+    r25.overPct.toFixed(1) + "%";
 
 
   $("r25u").textContent =
-    r25.underPct.toFixed(1)+"%";
+    r25.underPct.toFixed(1) + "%";
 
 
   $("r50o").textContent =
-    r50.overPct.toFixed(1)+"%";
+    r50.overPct.toFixed(1) + "%";
 
 
   $("r50u").textContent =
-    r50.underPct.toFixed(1)+"%";
+    r50.underPct.toFixed(1) + "%";
 
 
-  /* =========================
+  $("r100o").textContent =
+    r100.overPct.toFixed(1) + "%";
+
+
+  $("r100u").textContent =
+    r100.underPct.toFixed(1) + "%";
+
+
+  /* ===================================================
      ENGINE
-  ========================= */
+  =================================================== */
+
 
   const e =
     entryEngine(
-      digits(ticks.slice(-500))
+      digits(
+        ticks.slice(-500)
+      )
     );
 
 
+  if(!e){
+
+    return;
+
+  }
+
+
   $("oeFreq").textContent =
-    e.overBase
-      ? e.overBase.toFixed(1)+"%"
-      : "—";
+    e.overBase.toFixed(1) + "%";
 
 
   $("ueFreq").textContent =
-    e.underBase
-      ? e.underBase.toFixed(1)+"%"
-      : "—";
+    e.underBase.toFixed(1) + "%";
 
 
   $("oeRecent").textContent =
-    e.overRecent
-      ? e.overRecent.toFixed(1)+"%"
-      : "—";
+    e.overRecent.toFixed(1) + "%";
 
 
   $("ueRecent").textContent =
-    e.underRecent
-      ? e.underRecent.toFixed(1)+"%"
-      : "—";
+    e.underRecent.toFixed(1) + "%";
 
 
   $("oeExclusive").textContent =
-    e.overExclusive
-      ? e.overExclusive.toFixed(1)+"%"
-      : "—";
+    e.overExclusive.toFixed(1) + "%";
 
 
   $("ueExclusive").textContent =
-    e.underExclusive
-      ? e.underExclusive.toFixed(1)+"%"
-      : "—";
+    e.underExclusive.toFixed(1) + "%";
+
+
+  $("oeMomentum").textContent =
+    e.overMomentum >= 0
+      ? "+" + e.overMomentum
+      : e.overMomentum;
+
+
+  $("ueMomentum").textContent =
+    e.underMomentum >= 0
+      ? "+" + e.underMomentum
+      : e.underMomentum;
+
+
+  $("overScore").textContent =
+    e.overScore;
+
+
+  $("underScore").textContent =
+    e.underScore;
+
+
+  $("scoreDifference").textContent =
+    e.difference;
+
+
+  $("confidence").textContent =
+    e.signal === "WAIT"
+      ? "—"
+      : e.confidence + "%";
+
+
+  /* ===================================================
+     ENTRY STATUS
+  =================================================== */
 
 
   if(e.signal === "OVER 3"){
@@ -1320,55 +2595,91 @@ function render(){
   }
 
 
+  /* ===================================================
+     MAIN SIGNAL
+  =================================================== */
+
+
   $("signal").textContent =
     e.signal;
 
 
   $("signal").className =
-    "signal "+
+
+    "signal " +
+
     (
-      e.signal==="OVER 3"
+
+      e.signal === "OVER 3"
+
         ? "over"
-        : e.signal==="UNDER 7"
-        ? "under"
-        : "wait"
+
+        : e.signal === "UNDER 7"
+
+          ? "under"
+
+          : "wait"
+
     );
 
 
   $("signalReason").textContent =
+
     e.signal === "WAIT"
 
       ? e.reason
 
-      : e.reason+
-        " Confidence: "+
-        e.confidence+"%";
+      : e.reason +
+        " Confidence: " +
+        e.confidence +
+        "%";
 
 
   liveTracker();
 
+
+  /*
+    IMPORTANT:
+    Backtest uses the same engine.
+  */
+
   backtest(a);
+
 
   renderHistory();
 
 }
 
 
-/* =========================
-   LIVE SIGNAL
-========================= */
+/* =====================================================
+   CHECK NEXT SIGNAL
+===================================================== */
+
 
 function checkSignal(){
 
-  const e =
-    entryEngine(
-      digits(ticks.slice(-500))
+
+  /*
+    Use exactly the same 500-tick
+    data source as live rendering.
+  */
+
+  const data =
+    digits(
+      ticks.slice(-500)
     );
 
 
+  const e =
+    entryEngine(data);
+
+
   if(
+
     e.signal === "WAIT" ||
+
     pending
+
   ){
 
     return;
@@ -1378,36 +2689,54 @@ function checkSignal(){
 
   pending = {
 
-    signal:e.signal,
+    signal:
+      e.signal,
 
-    confidence:e.confidence
+    confidence:
+      e.confidence
 
   };
 
 }
 
 
-/* =========================
-   TICK
-========================= */
+/* =====================================================
+   PROCESS LIVE TICK
+===================================================== */
+
 
 function onTick(x){
 
+
   /*
-    First resolve the previous
-    locked signal using this tick.
+    Resolve previous signal FIRST.
+
+    This means:
+
+    SIGNAL
+       ↓
+    NEXT TICK
+       ↓
+    WIN / LOSS
   */
 
+
   if(pending){
+
 
     const d =
       digit(x.quote);
 
 
-    let winResult = false;
+    let winResult =
+      false;
 
 
-    if(pending.signal === "OVER 3"){
+    /* OVER 3 = 4,5,6,7,8,9 */
+
+    if(
+      pending.signal === "OVER 3"
+    ){
 
       winResult =
         d >= 4;
@@ -1415,7 +2744,11 @@ function onTick(x){
     }
 
 
-    if(pending.signal === "UNDER 7"){
+    /* UNDER 7 = 0,1,2,3,4,5,6 */
+
+    if(
+      pending.signal === "UNDER 7"
+    ){
 
       winResult =
         d <= 6;
@@ -1429,11 +2762,18 @@ function onTick(x){
         : "LOSS";
 
 
-    results.push(result);
+    results.push(
+      result
+    );
 
 
-    if(results.length > 500)
+    if(
+      results.length > 500
+    ){
+
       results.shift();
+
+    }
 
 
     history.unshift({
@@ -1448,35 +2788,57 @@ function onTick(x){
       confidence:
         pending.confidence,
 
-      digit:d,
+      digit:
+        d,
 
-      result
+      result:
+        result
 
     });
 
 
-    if(history.length > 100)
+    if(
+      history.length > 100
+    ){
+
       history.pop();
 
+    }
 
-    pending = null;
+
+    pending =
+      null;
 
   }
 
 
+  /*
+    Add new tick.
+  */
+
   ticks.push(x);
 
 
-  if(ticks.length > 1500)
+  if(
+    ticks.length > 1500
+  ){
+
     ticks.shift();
 
+  }
+
+
+  /*
+    Render current state.
+  */
 
   render();
 
 
   /*
-    Lock the next entry only after
-    the current tick has completed.
+    Only after the new tick has
+    completed do we calculate
+    the next signal.
   */
 
   checkSignal();
@@ -1484,11 +2846,13 @@ function onTick(x){
 }
 
 
-/* =========================
+/* =====================================================
    LIVE TRACKER
-========================= */
+===================================================== */
+
 
 function liveTracker(){
+
 
   const total =
     results.length;
@@ -1496,14 +2860,20 @@ function liveTracker(){
 
   const wins =
     results.filter(
-      x=>x==="WIN"
+      x => x === "WIN"
     ).length;
 
 
   const losses =
     results.filter(
-      x=>x==="LOSS"
+      x => x === "LOSS"
     ).length;
+
+
+  const accuracy =
+    total
+      ? wins / total * 100
+      : 0;
 
 
   $("totalSignals").textContent =
@@ -1518,17 +2888,108 @@ function liveTracker(){
     losses;
 
 
-  const accuracy =
-    total
-      ? wins/total*100
-      : 0;
-
-
   $("accuracy").textContent =
+
     total
-      ? accuracy.toFixed(1)+"%"
+      ? accuracy.toFixed(1) + "%"
       : "—";
 
+
+  /*
+    Last N completed signals.
+  */
+
+  function recentAccuracy(n){
+
+    const a =
+      results.slice(-n);
+
+
+    if(!a.length)
+      return "—";
+
+
+    const w =
+      a.filter(
+        x => x === "WIN"
+      ).length;
+
+
+    return (
+      w / a.length * 100
+    ).toFixed(1) + "%";
+
+  }
+
+
+  $("last10Accuracy").textContent =
+    recentAccuracy(10);
+
+
+  $("last25Accuracy").textContent =
+    recentAccuracy(25);
+
+
+  $("last50Accuracy").textContent =
+    recentAccuracy(50);
+
+
+  /*
+    Current WIN/LOSS streak.
+  */
+
+  if(results.length){
+
+    const last =
+      results.at(-1);
+
+
+    let count = 0;
+
+
+    for(
+      let i = results.length - 1;
+      i >= 0;
+      i--
+    ){
+
+      if(
+        results[i] === last
+      ){
+
+        count++;
+
+      }
+
+      else{
+
+        break;
+
+      }
+
+    }
+
+
+    $("resultStreak").textContent =
+      last + " × " + count;
+
+  }
+
+  else{
+
+    $("resultStreak").textContent =
+      "—";
+
+  }
+
+
+  /*
+    Status.
+
+    We deliberately show the
+    sample size instead of saying
+    simply "stable".
+  */
 
   if(!total){
 
@@ -1537,232 +2998,453 @@ function liveTracker(){
 
   }
 
+  else if(total < 25){
+
+    $("trackerStatus").textContent =
+
+      accuracy.toFixed(1) +
+      "% • SMALL SAMPLE (" +
+      total +
+      ")";
+
+  }
+
+  else if(total < 100){
+
+    $("trackerStatus").textContent =
+
+      accuracy.toFixed(1) +
+      "% • DEVELOPING SAMPLE (" +
+      total +
+      ")";
+
+  }
+
   else if(accuracy >= 55){
 
     $("trackerStatus").textContent =
-      "🟢 CURRENT SAMPLE ≥ 55%";
+
+      accuracy.toFixed(1) +
+      "% • " +
+      total +
+      " COMPLETED SIGNALS";
 
   }
 
   else if(accuracy >= 50){
 
     $("trackerStatus").textContent =
-      "🟡 MIXED SAMPLE";
+
+      accuracy.toFixed(1) +
+      "% • MIXED • " +
+      total +
+      " SIGNALS";
 
   }
 
   else{
 
     $("trackerStatus").textContent =
-      "🔴 BELOW 50%";
+
+      accuracy.toFixed(1) +
+      "% • BELOW 50% • " +
+      total +
+      " SIGNALS";
 
   }
 
 }
 
 
-/* =========================
-   BACKTEST
-========================= */
+/* =====================================================
+   EXACT SAME ENGINE BACKTEST
+===================================================== */
+
 
 function backtest(a){
 
-  const strategies =
-    [
-      "OVER 3",
-      "UNDER 7"
-    ];
+
+  let overSignals =
+    0;
 
 
-  const rows =
-    strategies.map(strategy=>{
-
-      let signals = 0;
-
-      let wins = 0;
-
-      let losses = 0;
+  let overWins =
+    0;
 
 
-      /*
-        Use preceding 25 ticks
-        to determine frequency pressure.
-      */
+  let overLosses =
+    0;
 
-      for(
-        let i=25;
-        i<a.length;
-        i++
+
+  let underSignals =
+    0;
+
+
+  let underWins =
+    0;
+
+
+  let underLosses =
+    0;
+
+
+  /*
+    IMPORTANT:
+
+    At tick i, the engine only sees:
+
+    a.slice(0,i)
+
+    It does NOT see a[i].
+
+    Therefore there is no look-ahead
+    into the result tick.
+  */
+
+
+  for(
+    let i = 100;
+    i < a.length;
+    i++
+  ){
+
+
+    const previous =
+      a.slice(0,i);
+
+
+    const actual =
+      a[i];
+
+
+    /*
+      SAME ENGINE AS LIVE.
+    */
+
+    const e =
+      entryEngine(
+        previous
+      );
+
+
+    if(
+      !e ||
+      e.signal === "WAIT"
+    ){
+
+      continue;
+
+    }
+
+
+    /* ===============================================
+       OVER 3
+    =============================================== */
+
+
+    if(
+      e.signal === "OVER 3"
+    ){
+
+      overSignals++;
+
+
+      if(
+        actual >= 4
       ){
 
-        const p =
-          a.slice(i-25,i);
-
-
-        const over =
-          p.filter(x=>x>=4).length;
-
-
-        const under =
-          p.filter(x=>x<=6).length;
-
-
-        let signal = null;
-
-
-        /*
-          Require a 10% relative
-          difference before entering.
-        */
-
-        if(
-          strategy === "OVER 3" &&
-          over > under*1.10
-        ){
-
-          signal =
-            "OVER 3";
-
-        }
-
-
-        if(
-          strategy === "UNDER 7" &&
-          under > over*1.10
-        ){
-
-          signal =
-            "UNDER 7";
-
-        }
-
-
-        if(!signal)
-          continue;
-
-
-        signals++;
-
-
-        const actual =
-          a[i];
-
-
-        const ok =
-          signal==="OVER 3"
-            ? actual>=4
-            : actual<=6;
-
-
-        if(ok)
-          wins++;
-
-        else
-          losses++;
+        overWins++;
 
       }
 
+      else{
 
-      return {
+        overLosses++;
 
-        strategy,
+      }
 
-        signals,
-
-        wins,
-
-        losses,
-
-        hit:
-          signals
-            ? wins/signals*100
-            : 0
-
-      };
-
-    });
+    }
 
 
-  $("backtest").innerHTML =
-    rows.map(r=>`
+    /* ===============================================
+       UNDER 7
+    =============================================== */
 
-      <tr>
 
-        <td>${r.strategy}</td>
+    if(
+      e.signal === "UNDER 7"
+    ){
 
-        <td>${r.signals}</td>
+      underSignals++;
 
-        <td>${r.wins}</td>
 
-        <td>${r.losses}</td>
+      if(
+        actual <= 6
+      ){
 
-        <td>
-          ${r.signals
-            ? r.hit.toFixed(1)+"%"
-            : "—"}
-        </td>
+        underWins++;
 
-      </tr>
+      }
 
-    `).join("");
+      else{
+
+        underLosses++;
+
+      }
+
+    }
+
+  }
+
+
+  /* ===================================================
+     RATES
+  =================================================== */
+
+
+  const overRate =
+
+    overSignals
+
+      ? overWins /
+        overSignals *
+        100
+
+      : 0;
+
+
+  const underRate =
+
+    underSignals
+
+      ? underWins /
+        underSignals *
+        100
+
+      : 0;
+
+
+  const totalSignals =
+    overSignals +
+    underSignals;
+
+
+  const totalWins =
+    overWins +
+    underWins;
+
+
+  const totalLosses =
+    overLosses +
+    underLosses;
+
+
+  const totalRate =
+
+    totalSignals
+
+      ? totalWins /
+        totalSignals *
+        100
+
+      : 0;
+
+
+  /* ===================================================
+     TABLE
+  =================================================== */
+
+
+  $("backtest").innerHTML = `
+
+
+    <tr>
+
+      <td>
+        OVER 3
+      </td>
+
+      <td>
+        ${overSignals}
+      </td>
+
+      <td>
+        ${overWins}
+      </td>
+
+      <td>
+        ${overLosses}
+      </td>
+
+      <td>
+
+        ${
+          overSignals
+
+            ? overRate.toFixed(1) + "%"
+
+            : "—"
+        }
+
+      </td>
+
+    </tr>
+
+
+    <tr>
+
+      <td>
+        UNDER 7
+      </td>
+
+      <td>
+        ${underSignals}
+      </td>
+
+      <td>
+        ${underWins}
+      </td>
+
+      <td>
+        ${underLosses}
+      </td>
+
+      <td>
+
+        ${
+          underSignals
+
+            ? underRate.toFixed(1) + "%"
+
+            : "—"
+        }
+
+      </td>
+
+    </tr>
+
+
+    <tr
+      style="
+        font-weight:bold
+      "
+    >
+
+      <td>
+        COMBINED
+      </td>
+
+      <td>
+        ${totalSignals}
+      </td>
+
+      <td>
+        ${totalWins}
+      </td>
+
+      <td>
+        ${totalLosses}
+      </td>
+
+      <td>
+
+        ${
+          totalSignals
+
+            ? totalRate.toFixed(1) + "%"
+
+            : "—"
+        }
+
+      </td>
+
+    </tr>
+
+  `;
 
 }
 
 
-/* =========================
-   HISTORY
-========================= */
+/* =====================================================
+   SIGNAL HISTORY
+===================================================== */
+
 
 function renderHistory(){
 
+
   $("history").innerHTML =
-    history.slice(0,50)
-      .map(r=>`
 
-        <tr>
+    history
+      .slice(0,50)
+      .map(
+        r => `
 
-          <td>${r.time}</td>
+          <tr>
 
-          <td>${r.signal}</td>
+            <td>
+              ${r.time}
+            </td>
 
-          <td>${r.confidence}%</td>
+            <td>
+              ${r.signal}
+            </td>
 
-          <td>${r.digit}</td>
+            <td>
+              ${r.confidence}%
+            </td>
 
-          <td class="${
-            r.result==="WIN"
-              ? "good"
-              : "bad"
-          }">
-            ${r.result}
-          </td>
+            <td>
+              ${r.digit}
+            </td>
 
-        </tr>
+            <td
+              class="${
+                r.result === "WIN"
+                  ? "good"
+                  : "bad"
+              }"
+            >
+              ${r.result}
+            </td>
 
-      `).join("");
+          </tr>
+
+        `
+      )
+      .join("");
 
 
   $("stream").innerHTML =
+
     digits(
       ticks.slice(-60)
     )
-    .map(x=>`
+    .map(
+      x => `
 
-      <span style="margin-right:7px">
-        ${x}
-      </span>
+        <span
+          style="
+            margin-right:7px
+          "
+        >
+          ${x}
+        </span>
 
-    `)
+      `
+    )
     .join("");
 
 }
 
 
-/* =========================
-   PAYOUT
-========================= */
+/* =====================================================
+   PAYOUT CALCULATOR
+===================================================== */
+
 
 function calc(){
+
 
   const p =
     Number(
@@ -1770,7 +3452,10 @@ function calc(){
     );
 
 
-  if(!p || p<=0){
+  if(
+    !p ||
+    p <= 0
+  ){
 
     $("payr").textContent =
       "Enter a valid payout.";
@@ -1781,107 +3466,162 @@ function calc(){
 
 
   const be =
-    100/(100+p);
+    100 /
+    (100 + p);
 
 
   $("payr").innerHTML =
+
     `
+
       Break-even hit rate:
-      <b>${(be*100).toFixed(2)}%</b>
+
+      <b>
+        ${(be * 100).toFixed(2)}%
+      </b>
+
       <br><br>
-      Example: at a 20% payout,
-      you need about 83.33% wins
-      just to break even before
-      considering other factors.
+
+      Example:
+
+      At a 20% payout, the mathematical
+      break-even hit rate is 83.33%.
+
+      This does not mean a strategy is
+      profitable just because its historical
+      hit rate is above that number.
+
     `;
 
 }
 
 
-/* =========================
-   WINDOWS
-========================= */
-
-WINDOWS.forEach(x=>{
-
-  const b =
-    document.createElement("button");
+/* =====================================================
+   ANALYSIS WINDOW BUTTONS
+===================================================== */
 
 
-  b.textContent =
-    x;
+WINDOWS.forEach(
+  x => {
 
-
-  b.onclick = ()=>{
-
-    win=x;
-
-
-    document
-      .querySelectorAll("#wb button")
-      .forEach(q=>
-        q.classList.remove("on")
+    const b =
+      document.createElement(
+        "button"
       );
 
 
-    b.classList.add("on");
+    b.textContent =
+      x;
 
 
-    render();
-
-  };
+    b.onclick = () => {
 
 
-  $("wb").appendChild(b);
+      win =
+        x;
 
 
-  if(x===100)
-    b.classList.add("on");
+      document
+        .querySelectorAll(
+          "#wb button"
+        )
+        .forEach(
+          q =>
+            q.classList.remove(
+              "on"
+            )
+        );
 
-});
+
+      b.classList.add(
+        "on"
+      );
 
 
-/* =========================
-   CONNECTION
-========================= */
+      render();
+
+    };
+
+
+    $("wb").appendChild(
+      b
+    );
+
+
+    if(x === 100){
+
+      b.classList.add(
+        "on"
+      );
+
+    }
+
+  }
+);
+
+
+/* =====================================================
+   CONNECT TO DERIV
+===================================================== */
+
 
 function connect(){
 
+
   ws =
-    new WebSocket(WS);
+    new WebSocket(
+      WS
+    );
 
 
-  ws.onopen = ()=>{
+  ws.onopen = () => {
+
 
     $("st").textContent =
       "CONNECTED • V25 1s";
 
 
+    /*
+      Download historical ticks.
+    */
+
     ws.send(
       JSON.stringify({
 
-        ticks_history:SYM,
+        ticks_history:
+          SYM,
 
-        count:1000,
+        count:
+          1000,
 
-        end:"latest",
+        end:
+          "latest",
 
-        style:"ticks",
+        style:
+          "ticks",
 
-        req_id:1
+        req_id:
+          1
 
       })
     );
 
 
+    /*
+      Subscribe to live ticks.
+    */
+
     ws.send(
       JSON.stringify({
 
-        ticks:SYM,
+        ticks:
+          SYM,
 
-        subscribe:1,
+        subscribe:
+          1,
 
-        req_id:2
+        req_id:
+          2
 
       })
     );
@@ -1889,68 +3629,95 @@ function connect(){
   };
 
 
-  ws.onmessage = e=>{
-
-    try{
-
-      const m =
-        JSON.parse(e.data);
+  ws.onmessage =
+    e => {
 
 
-      if(
-        m.history &&
-        m.history.prices
-      ){
+      try{
 
-        m.history.prices
-          .forEach(p=>{
 
-            ticks.push({
+        const m =
+          JSON.parse(
+            e.data
+          );
 
-              quote:Number(p)
 
-            });
+        /*
+          Historical data.
+        */
+
+        if(
+
+          m.history &&
+
+          m.history.prices
+
+        ){
+
+
+          m.history.prices
+            .forEach(
+              p => {
+
+                ticks.push({
+
+                  quote:
+                    Number(p)
+
+                });
+
+              }
+            );
+
+
+          ticks =
+            ticks.slice(
+              -1000
+            );
+
+
+          render();
+
+        }
+
+
+        /*
+          Live tick.
+        */
+
+        if(m.tick){
+
+          onTick({
+
+            quote:
+              Number(
+                m.tick.quote
+              ),
+
+            epoch:
+              m.tick.epoch
 
           });
 
+        }
 
-        ticks =
-          ticks.slice(-1000);
-
-
-        render();
 
       }
 
+      catch(err){
 
-      if(m.tick){
-
-        onTick({
-
-          quote:
-            Number(
-              m.tick.quote
-            ),
-
-          epoch:
-            m.tick.epoch
-
-        });
+        console.log(
+          "Data error:",
+          err
+        );
 
       }
 
-    }
-
-    catch(err){
-
-      console.log(err);
-
-    }
-
-  };
+    };
 
 
-  ws.onclose = ()=>{
+  ws.onclose = () => {
+
 
     $("st").textContent =
       "DISCONNECTED — RECONNECTING";
@@ -1964,7 +3731,7 @@ function connect(){
   };
 
 
-  ws.onerror = ()=>{
+  ws.onerror = () => {
 
     $("st").textContent =
       "CONNECTION ERROR";
@@ -1974,15 +3741,19 @@ function connect(){
 }
 
 
-/* =========================
+/* =====================================================
    START
-========================= */
+===================================================== */
+
 
 calc();
 
 connect();
 
+
 </script>
 
+
 </body>
+
 </html>
