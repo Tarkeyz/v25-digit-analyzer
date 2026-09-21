@@ -2,250 +2,556 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>V25 (1s) Digit Analyzer — V5.4</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>V25 (1s) Digit Analyzer — V6</title>
+
 <style>
 *{box-sizing:border-box}
-body{margin:0;font-family:Arial,sans-serif;background:#0b1020;color:#eaf0ff}
-.wrap{max-width:1150px;margin:auto;padding:18px}
-.top{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}
-h1{font-size:25px;margin:0}
-.status{padding:8px 12px;border-radius:10px;background:#17213b;color:#8ff0b0;font-size:13px}
-.card{background:#121a2d;border:1px solid #253251;border-radius:14px;padding:16px;margin:14px 0}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
-.k{font-size:12px;color:#91a0c0}
-.v{font-size:24px;font-weight:700;margin-top:5px}
-button{border:1px solid #354463;background:#18233d;color:#eaf0ff;padding:8px 13px;border-radius:9px;cursor:pointer;margin:3px}
-button.on{background:#315b9d}
-.bars{display:flex;align-items:end;height:145px;gap:7px}
-.bw{flex:1;text-align:center}
-.bar{background:#4e78c7;border-radius:5px 5px 0 0;min-height:2px}
-.bp,.bd{font-size:11px;color:#aeb9d2;margin:3px}
-.sig{font-size:30px;font-weight:800;text-align:center;padding:14px;border-radius:12px;margin:10px 0}
-.over{background:#183d35;color:#74efb5}
-.under{background:#3d2530;color:#ff9aaa}
-.none{background:#20283c;color:#aeb9d2}
-table{width:100%;border-collapse:collapse;font-size:13px}
-th,td{padding:8px;border-bottom:1px solid #26334f;text-align:left}
-th{color:#91a0c0}
-.win{color:#74efb5;font-weight:700}
-.loss{color:#ff8f9d;font-weight:700}
-.note{font-size:12px;color:#94a1bd;line-height:1.5}
-.warn{color:#ffd27d}
-.stream{line-height:2;font-family:monospace;word-break:break-word}
-input{background:#0d1528;color:#fff;border:1px solid #34415e;border-radius:8px;padding:8px;width:100px}
+
+body{
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  background:#07111f;
+  color:#e8eef7;
+}
+
+.container{
+  max-width:1200px;
+  margin:auto;
+  padding:18px;
+}
+
+h1{
+  margin:0 0 6px;
+  font-size:25px;
+}
+
+h2{
+  margin:0 0 12px;
+  font-size:18px;
+}
+
+p{
+  color:#9fb0c5;
+}
+
+.card{
+  background:#0d1a2b;
+  border:1px solid #1b3048;
+  border-radius:14px;
+  padding:16px;
+  margin-bottom:15px;
+}
+
+.status{
+  color:#55e38a;
+  font-weight:bold;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:12px;
+}
+
+@media(max-width:800px){
+  .grid{
+    grid-template-columns:repeat(2,1fr);
+  }
+}
+
+@media(max-width:500px){
+  .grid{
+    grid-template-columns:1fr;
+  }
+}
+
+.stat{
+  background:#091625;
+  border-radius:10px;
+  padding:14px;
+}
+
+.label{
+  color:#8ea2b9;
+  font-size:12px;
+  margin-bottom:7px;
+}
+
+.value{
+  font-size:23px;
+  font-weight:bold;
+}
+
+button{
+  background:#12263d;
+  color:#dbe8f6;
+  border:1px solid #294563;
+  border-radius:8px;
+  padding:9px 15px;
+  margin:3px;
+  cursor:pointer;
+}
+
+button.on{
+  background:#1d5d9b;
+  border-color:#3b8bd0;
+}
+
+.signalBox{
+  text-align:center;
+  padding:22px;
+  border-radius:12px;
+  margin-bottom:15px;
+  background:#091625;
+}
+
+.signal{
+  font-size:34px;
+  font-weight:bold;
+  margin:8px 0;
+}
+
+.over{
+  color:#4db8ff;
+}
+
+.under{
+  color:#ffb454;
+}
+
+.wait{
+  color:#a7b4c5;
+}
+
+.entry{
+  font-size:17px;
+  font-weight:bold;
+}
+
+.good{
+  color:#57df8c;
+}
+
+.warn{
+  color:#ffd166;
+}
+
+.bad{
+  color:#ff6b6b;
+}
+
+.bars{
+  display:flex;
+  align-items:flex-end;
+  gap:8px;
+  height:160px;
+  padding:10px 5px;
+}
+
+.bw{
+  flex:1;
+  text-align:center;
+}
+
+.bar{
+  min-height:2px;
+  background:#3986c9;
+  border-radius:5px 5px 0 0;
+}
+
+.bd{
+  margin-top:5px;
+  font-weight:bold;
+}
+
+.bp{
+  font-size:11px;
+  color:#9fb0c5;
+  margin-bottom:4px;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+}
+
+th,td{
+  padding:9px;
+  border-bottom:1px solid #1b3048;
+  text-align:center;
+}
+
+th{
+  color:#9fb0c5;
+  font-size:12px;
+}
+
+.stream{
+  word-break:break-all;
+  line-height:2;
+  color:#91c9ff;
+}
+
+.small{
+  font-size:12px;
+  color:#8194aa;
+}
+
+.progress{
+  height:10px;
+  background:#15263a;
+  border-radius:20px;
+  overflow:hidden;
+  margin-top:5px;
+}
+
+.progress div{
+  height:100%;
+  background:#3986c9;
+}
+
+.entryGrid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:15px;
+}
+
+@media(max-width:700px){
+  .entryGrid{
+    grid-template-columns:1fr;
+  }
+}
+
+.entryCard{
+  background:#091625;
+  padding:18px;
+  border-radius:12px;
+  border:1px solid #1c344d;
+}
+
+.entryCard h3{
+  margin-top:0;
+}
+
+input{
+  width:100%;
+  padding:10px;
+  border-radius:8px;
+  border:1px solid #294563;
+  background:#081422;
+  color:white;
+}
+
+.warning{
+  font-size:12px;
+  color:#9fb0c5;
+  line-height:1.5;
+}
 </style>
 </head>
 
 <body>
-<div class="wrap">
 
-<div class="top">
-<h1>V25 (1s) Digit Analyzer — V5.4</h1>
-<div id="st" class="status">CONNECTING…</div>
-</div>
+<div class="container">
 
-<div class="card">
-<h3>Analysis Window</h3>
-<div id="wb"></div>
-
-<div class="grid">
-<div>
-<div class="k">Current Quote</div>
-<div id="q" class="v">—</div>
-</div>
-
-<div>
-<div class="k">Last Digit</div>
-<div id="d" class="v">—</div>
-</div>
-
-<div>
-<div class="k">Ticks Analyzed</div>
-<div id="n" class="v">0</div>
-</div>
-
-<div>
-<div class="k">Window</div>
-<div id="wn" class="v">100</div>
-</div>
-</div>
-</div>
-
-
-<div class="card">
-<h3>Digit Frequency</h3>
-<div id="bars" class="bars"></div>
-</div>
-
-
-<div class="card">
-<h3>Distribution</h3>
-
-<div class="grid">
-
-<div>
-<div class="k">OVER 5</div>
-<div id="ov" class="v">—</div>
-</div>
-
-<div>
-<div class="k">UNDER 5</div>
-<div id="un" class="v">—</div>
-</div>
-
-<div>
-<div class="k">EVEN</div>
-<div id="ev" class="v">—</div>
-</div>
-
-<div>
-<div class="k">ODD</div>
-<div id="od" class="v">—</div>
-</div>
-
-<div>
-<div class="k">HOT DIGIT</div>
-<div id="hot" class="v">—</div>
-</div>
-
-<div>
-<div class="k">COLD DIGIT</div>
-<div id="cold" class="v">—</div>
-</div>
-
-<div>
-<div class="k">CURRENT STREAK</div>
-<div id="str" class="v">—</div>
-</div>
-
-<div>
-<div class="k">REGIME</div>
-<div id="reg" class="v">—</div>
-</div>
-
-</div>
-</div>
-
-
-<div class="card">
-
-<h3>V5.4 Multi-Confirmation Signal Engine</h3>
-
-<div id="sig" class="sig none">NO SIGNAL</div>
-
-<div id="cf" style="text-align:center;color:#b9c5dc">
-Waiting for data…
-</div>
-
-<div class="grid" style="margin-top:14px">
-
-<div>
-<div class="k">Edge</div>
-<div id="ds" class="v">—</div>
-</div>
-
-<div>
-<div class="k">Momentum</div>
-<div id="ms" class="v">—</div>
-</div>
-
-<div>
-<div class="k">Window Agreement</div>
-<div id="cs" class="v">—</div>
-</div>
-
-<div>
-<div class="k">Validation</div>
-<div id="vs" class="v">—</div>
-</div>
-
-<div>
-<div class="k">Separation</div>
-<div id="sep" class="v">—</div>
-</div>
-
-<div>
-<div class="k">OVER Score</div>
-<div id="os" class="v">—</div>
-</div>
-
-<div>
-<div class="k">UNDER Score</div>
-<div id="us" class="v">—</div>
-</div>
-
-<div>
-<div class="k">Confidence</div>
-<div id="conf" class="v">—</div>
-</div>
-
-</div>
-
-<p class="note">
-A signal requires agreement across multiple windows, meaningful edge,
-recent momentum, out-of-sample validation, and separation between OVER
-and UNDER. If the conditions disagree, the engine stays at NO SIGNAL.
+<h1>V25 (1s) Digit Analyzer — V6</h1>
+<p>
+  Frequency + Entry Point Analyzer
+  <span id="st" class="status">CONNECTING...</span>
 </p>
 
+<div class="card">
+  <h2>Analysis Window</h2>
+  <div id="wb"></div>
 </div>
 
+<div class="card">
+  <div class="grid">
+
+    <div class="stat">
+      <div class="label">CURRENT QUOTE</div>
+      <div class="value" id="q">—</div>
+    </div>
+
+    <div class="stat">
+      <div class="label">LAST DIGIT</div>
+      <div class="value" id="d">—</div>
+    </div>
+
+    <div class="stat">
+      <div class="label">TICKS ANALYZED</div>
+      <div class="value" id="n">0</div>
+    </div>
+
+    <div class="stat">
+      <div class="label">WINDOW</div>
+      <div class="value" id="wn">100</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- EXACT CONTRACT FREQUENCY -->
 
 <div class="card">
-
-<h3>🎯 Live Signal Accuracy Tracker</h3>
+<h2>🎯 Exact Contract Frequency</h2>
 
 <div class="grid">
 
-<div>
-<div class="k">Overall</div>
-<div id="acc" class="v">—</div>
+  <div class="stat">
+    <div class="label">OVER 3 — 4 to 9</div>
+    <div class="value over" id="over3">—</div>
+  </div>
+
+  <div class="stat">
+    <div class="label">UNDER 7 — 0 to 6</div>
+    <div class="value under" id="under7">—</div>
+  </div>
+
+  <div class="stat">
+    <div class="label">OVER 3 EXCLUSIVE — 7 to 9</div>
+    <div class="value" id="exclusiveOver">—</div>
+  </div>
+
+  <div class="stat">
+    <div class="label">UNDER 7 EXCLUSIVE — 0 to 3</div>
+    <div class="value" id="exclusiveUnder">—</div>
+  </div>
+
 </div>
 
-<div>
-<div class="k">Last 10</div>
-<div id="a10" class="v">—</div>
-</div>
+<br>
 
-<div>
-<div class="k">Last 25</div>
-<div id="a25" class="v">—</div>
-</div>
-
-<div>
-<div class="k">Last 50</div>
-<div id="a50" class="v">—</div>
-</div>
-
-<div>
-<div class="k">Result Streak</div>
-<div id="rs" class="v">—</div>
-</div>
-
-<div>
-<div class="k">Max Losing Streak</div>
-<div id="ml" class="v">0</div>
-</div>
-
-<div>
-<div class="k">Status</div>
-<div id="state" class="v">Waiting…</div>
-</div>
-
-<div>
-<div class="k">Completed Signals</div>
-<div id="cnt" class="v">0</div>
+<div class="stat">
+  <div class="label">OVERLAP — 4, 5, 6</div>
+  <div class="value" id="overlap">—</div>
 </div>
 
 </div>
-</div>
 
+
+<!-- DIGIT FREQUENCY -->
 
 <div class="card">
 
-<h3>Strategy Performance Lab</h3>
+<h2>📊 Digit Frequency</h2>
+
+<div id="bars" class="bars"></div>
 
 <table>
+<thead>
+<tr>
+<th>Digit</th>
+<th>Count</th>
+<th>Frequency</th>
+</tr>
+</thead>
+
+<tbody id="freqTable"></tbody>
+
+</table>
+
+</div>
+
+
+<!-- RECENT PRESSURE -->
+
+<div class="card">
+
+<h2>⚡ Recent Frequency Pressure</h2>
+
+<div class="grid">
+
+<div class="stat">
+<div class="label">LAST 10 — OVER 3</div>
+<div class="value" id="r10o">—</div>
+</div>
+
+<div class="stat">
+<div class="label">LAST 10 — UNDER 7</div>
+<div class="value" id="r10u">—</div>
+</div>
+
+<div class="stat">
+<div class="label">LAST 25 — OVER 3</div>
+<div class="value" id="r25o">—</div>
+</div>
+
+<div class="stat">
+<div class="label">LAST 25 — UNDER 7</div>
+<div class="value" id="r25u">—</div>
+</div>
+
+<div class="stat">
+<div class="label">LAST 50 — OVER 3</div>
+<div class="value" id="r50o">—</div>
+</div>
+
+<div class="stat">
+<div class="label">LAST 50 — UNDER 7</div>
+<div class="value" id="r50u">—</div>
+</div>
+
+</div>
+
+</div>
+
+
+<!-- ENTRY ENGINE -->
+
+<div class="card">
+
+<h2>🚦 Entry Point Engine</h2>
+
+<div class="entryGrid">
+
+<div class="entryCard">
+
+<h3 class="over">OVER 3 ENTRY</h3>
+
+<div class="stat">
+<div class="label">Frequency</div>
+<div class="value" id="oeFreq">—</div>
+</div>
+
+<br>
+
+<div class="stat">
+<div class="label">Recent Pressure</div>
+<div class="value" id="oeRecent">—</div>
+</div>
+
+<br>
+
+<div class="stat">
+<div class="label">Exclusive 7–9 Pressure</div>
+<div class="value" id="oeExclusive">—</div>
+</div>
+
+<br>
+
+<div class="entry" id="oeStatus">
+WAIT
+</div>
+
+</div>
+
+
+<div class="entryCard">
+
+<h3 class="under">UNDER 7 ENTRY</h3>
+
+<div class="stat">
+<div class="label">Frequency</div>
+<div class="value" id="ueFreq">—</div>
+</div>
+
+<br>
+
+<div class="stat">
+<div class="label">Recent Pressure</div>
+<div class="value" id="ueRecent">—</div>
+</div>
+
+<br>
+
+<div class="stat">
+<div class="label">Exclusive 0–3 Pressure</div>
+<div class="value" id="ueExclusive">—</div>
+</div>
+
+<br>
+
+<div class="entry" id="ueStatus">
+WAIT
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- MAIN SIGNAL -->
+
+<div class="card">
+
+<h2>📡 Current Entry Signal</h2>
+
+<div class="signalBox">
+
+<div id="signal" class="signal wait">
+WAIT
+</div>
+
+<div id="signalReason">
+Waiting for enough frequency data...
+</div>
+
+<br>
+
+<div class="small">
+The signal is based on historical frequency and recent pressure.
+It does not guarantee the next tick.
+</div>
+
+</div>
+
+</div>
+
+
+<!-- SIGNAL TRACKER -->
+
+<div class="card">
+
+<h2>🎯 Live Signal Accuracy</h2>
+
+<div class="grid">
+
+<div class="stat">
+<div class="label">COMPLETED SIGNALS</div>
+<div class="value" id="totalSignals">0</div>
+</div>
+
+<div class="stat">
+<div class="label">WINS</div>
+<div class="value good" id="wins">0</div>
+</div>
+
+<div class="stat">
+<div class="label">LOSSES</div>
+<div class="value bad" id="losses">0</div>
+</div>
+
+<div class="stat">
+<div class="label">HIT RATE</div>
+<div class="value" id="accuracy">—</div>
+</div>
+
+</div>
+
+<br>
+
+<div class="stat">
+<div class="label">STATUS</div>
+<div class="value" id="trackerStatus">
+WAITING
+</div>
+</div>
+
+</div>
+
+
+<!-- BACKTEST -->
+
+<div class="card">
+
+<h2>🧪 Exact Contract Backtest</h2>
+
+<table>
+
 <thead>
 <tr>
 <th>Strategy</th>
@@ -256,36 +562,18 @@ and UNDER. If the conditions disagree, the engine stays at NO SIGNAL.
 </tr>
 </thead>
 
-<tbody id="tab"></tbody>
+<tbody id="backtest"></tbody>
 
 </table>
+
 </div>
 
 
-<div class="card">
-
-<h3>Performance by Confidence</h3>
-
-<table>
-
-<thead>
-<tr>
-<th>Confidence</th>
-<th>Signals</th>
-<th>Wins</th>
-<th>Hit Rate</th>
-</tr>
-</thead>
-
-<tbody id="ct"></tbody>
-
-</table>
-</div>
-
+<!-- SIGNAL HISTORY -->
 
 <div class="card">
 
-<h3>Signal History</h3>
+<h2>📜 Signal History</h2>
 
 <table>
 
@@ -299,56 +587,56 @@ and UNDER. If the conditions disagree, the engine stays at NO SIGNAL.
 </tr>
 </thead>
 
-<tbody id="hist"></tbody>
+<tbody id="history"></tbody>
 
 </table>
 
 </div>
 
 
+<!-- LIVE DIGITS -->
+
 <div class="card">
 
-<h3>Payout / Break-even</h3>
+<h2>🔢 Live Last Digits</h2>
 
-<input
-id="pay"
-type="number"
-value="20"
-min="0"
-step="1"
->
+<div id="stream" class="stream">
+—
+</div>
 
-%
+</div>
+
+
+<!-- PAYOUT -->
+
+<div class="card">
+
+<h2>💰 Payout Break-even</h2>
+
+<p class="small">
+Enter the percentage profit offered by your contract.
+</p>
+
+<input id="pay" type="number" value="20" min="1">
+
+<br><br>
 
 <button onclick="calc()">Calculate</button>
 
-<div id="payr" style="margin-top:10px"></div>
-
-<p class="note warn">
-At a fixed payout, break-even accuracy can be much higher than 50%.
-Historical accuracy does not guarantee future profitability.
-</p>
+<div id="payr" style="margin-top:12px"></div>
 
 </div>
 
 
 <div class="card">
 
-<h3>Live Last Digits</h3>
-
-<div id="stream" class="stream">—</div>
-
-</div>
-
-
-<div class="card">
-
-<p class="note">
-This analyzer uses public V25 (1s) tick data.
-It does not guarantee the next digit.
-V5.4 deliberately prefers NO SIGNAL over weak signals.
-Test with demo/small stakes and judge the engine using a meaningful sample,
-not a handful of trades.
+<p class="warning">
+⚠️ IMPORTANT: Frequency is historical information, not a guarantee
+of the next digit. OVER 3 includes 4–9 and UNDER 7 includes 0–6.
+Digits 4, 5 and 6 belong to both contracts. The analyzer therefore
+looks at the exclusive zones (7–9 versus 0–3) when deciding whether
+there is enough pressure for an entry. WAIT means the conditions are
+not strong enough.
 </p>
 
 </div>
@@ -358,1094 +646,1337 @@ not a handful of trades.
 
 <script>
 
-const WS="wss://api.derivws.com/trading/v1/options/ws/public";
-const SYM="1HZ25V";
+const WS =
+"wss://api.derivws.com/trading/v1/options/ws/public";
 
-const $=x=>document.getElementById(x);
+const SYM = "1HZ25V";
 
-const W=[25,50,100,500,1000];
+const $ = id => document.getElementById(id);
+
+const WINDOWS = [25,50,100,250,500,1000];
 
 let ws;
-let t=[];
-let win=100;
-let pending=null;
-let res=[];
-let hist=[];
-let cooldown=0;
+
+let ticks = [];
+
+let win = 100;
+
+let pending = null;
+
+let results = [];
+
+let history = [];
 
 
-const pct=(a,b)=>b?(a/b*100).toFixed(1)+"%":"—";
+/* =========================
+   DIGIT
+========================= */
 
-const num=(a,b)=>b?a/b*100:0;
+function digit(q){
 
-const digit=q=>
-Number(
-String(Number(q).toFixed(2)).slice(-1)
-);
-
-const D=a=>a.map(x=>digit(x.quote));
-
-
-function S(a){
-
-let c=Array(10).fill(0);
-
-a.forEach(x=>c[x]++);
-
-let o=a.filter(x=>x>5).length;
-
-let u=a.filter(x=>x<5).length;
-
-let e=a.filter(x=>x%2===0).length;
-
-let h=0,l=0;
-
-for(let i=1;i<10;i++){
-
-if(c[i]>c[h])h=i;
-
-if(c[i]<c[l])l=i;
-
-}
-
-return{
-c,o,u,e,h,l
-};
+  return Number(
+    String(Number(q).toFixed(2)).slice(-1)
+  );
 
 }
 
 
-/*
-V5.4 MULTI-CONFIRMATION ENGINE
+/* =========================
+   DIGIT ARRAY
+========================= */
 
-• OVER and UNDER evaluated independently
-• Digit 5 excluded from side percentages
-• 25 / 50 / 100 / 200 windows
-• Requires 3/4 directional agreement
-• Momentum confirmation
-• Out-of-sample validation
-• Meaningful edge
-• Score separation
-• Reject contradictory conditions
-• Reject extreme conditions
-*/
+function digits(arr){
 
-
-function sideRate(a,dir){
-
-const x=a.filter(v=>v!==5);
-
-if(!x.length)return 50;
-
-return x.filter(
-v=>dir==="OVER"?v>5:v<5
-).length/x.length*100;
+  return arr.map(x => digit(x.quote));
 
 }
 
 
-function engine(a){
+/* =========================
+   PERCENT
+========================= */
 
-if(a.length<220)return null;
+function pct(a,b){
 
-const windows=[25,50,100,200];
-
-const scores={};
-const details={};
-
-
-for(const dir of ["OVER","UNDER"]){
-
-const rates=windows.map(
-n=>sideRate(a.slice(-n),dir)
-);
-
-
-const agreeCount=
-rates.filter(r=>r>50).length;
-
-const agreement=
-agreeCount/4*100;
-
-
-const edge=
-Math.max(
-0,
-sideRate(a.slice(-100),dir)-50
-);
-
-
-const recent=
-sideRate(a.slice(-15),dir);
-
-const previous=
-sideRate(a.slice(-30,-15),dir);
-
-
-let momentum=
-Math.max(
--15,
-Math.min(
-15,
-(recent-previous)*0.75
-)
-);
-
-
-const trainEnd=
-Math.floor(a.length*.70);
-
-const train=
-a.slice(0,trainEnd);
-
-const valid=
-a.slice(trainEnd);
-
-
-const trainRate=
-sideRate(train,dir);
-
-const valRate=
-sideRate(valid,dir);
-
-const validation=
-valRate;
-
-
-const contradiction=
-rates.some(r=>r<48) &&
-rates.some(r=>r>55);
-
-
-const extreme=
-rates.some(
-r=>r>72 || r<28
-);
-
-
-const consistencyScore=
-agreement;
-
-
-const momentumScore=
-Math.max(0,momentum);
-
-
-const validationScore=
-Math.max(
-0,
-Math.min(
-20,
-(validation-50)*0.8
-)
-);
-
-
-const edgeScore=
-Math.min(
-25,
-edge*2.5
-);
-
-
-const score=
-Math.round(
-
-edgeScore+
-
-momentumScore+
-
-consistencyScore*.25+
-
-validationScore
-
-);
-
-
-scores[dir]=score;
-
-
-details[dir]={
-
-rates,
-edge,
-agreement,
-momentum,
-validation,
-trainRate,
-contradiction,
-extreme,
-score
-
-};
+  return b
+    ? (a/b*100).toFixed(1)+"%"
+    : "—";
 
 }
 
 
-const direction=
-scores.OVER>=scores.UNDER
-?"OVER"
-:"UNDER";
+/* =========================
+   FREQUENCY
+========================= */
 
+function frequency(a){
 
-const other=
-direction==="OVER"
-?"UNDER"
-:"OVER";
+  let c = Array(10).fill(0);
 
+  a.forEach(x => c[x]++);
 
-const e=
-details[direction];
-
-
-const separation=
-scores[direction]-
-scores[other];
-
-
-const strong=
-
-e.edge>=7 &&
-
-e.agreement>=75 &&
-
-e.validation>=51 &&
-
-e.momentum>=0 &&
-
-separation>=8 &&
-
-e.score>=58 &&
-
-!e.contradiction &&
-
-!e.extreme;
-
-
-return{
-
-direction,
-
-edge:e.edge,
-
-mom:e.momentum,
-
-agree:e.agreement,
-
-val:e.validation,
-
-separation,
-
-overScore:scores.OVER,
-
-underScore:scores.UNDER,
-
-score:e.score,
-
-strong,
-
-rates:e.rates
-
-};
+  return c;
 
 }
 
 
-function qualified(a){
+/* =========================
+   CONTRACT ANALYSIS
+========================= */
 
-if(cooldown>0)return null;
+function contractStats(a){
 
-const e=engine(a);
+  const total = a.length || 1;
 
-return e&&e.strong
-?{
-direction:e.direction,
-score:e.score
+  const over3 =
+    a.filter(x => x >= 4).length;
+
+  const under7 =
+    a.filter(x => x <= 6).length;
+
+  const exclusiveOver =
+    a.filter(x => x >= 7).length;
+
+  const exclusiveUnder =
+    a.filter(x => x <= 3).length;
+
+  const overlap =
+    a.filter(x => x >= 4 && x <= 6).length;
+
+  return {
+
+    over3,
+
+    under7,
+
+    exclusiveOver,
+
+    exclusiveUnder,
+
+    overlap,
+
+    overPct: over3/total*100,
+
+    underPct: under7/total*100,
+
+    exclusiveOverPct:
+      exclusiveOver/total*100,
+
+    exclusiveUnderPct:
+      exclusiveUnder/total*100,
+
+    overlapPct:
+      overlap/total*100
+
+  };
+
 }
-:null;
+
+
+/* =========================
+   RECENT STATS
+========================= */
+
+function recentStats(a,n){
+
+  const z = a.slice(-n);
+
+  return contractStats(z);
 
 }
 
+
+/* =========================
+   ENTRY ENGINE
+========================= */
+
+function entryEngine(a){
+
+  if(a.length < 100){
+
+    return {
+
+      signal:"WAIT",
+
+      confidence:0,
+
+      reason:"Need at least 100 ticks."
+
+    };
+
+  }
+
+
+  const all = contractStats(a.slice(-100));
+
+  const r25 = recentStats(a,25);
+
+  const r10 = recentStats(a,10);
+
+  const r50 = recentStats(a,50);
+
+
+  /*
+    OVER 3:
+    Base frequency = 4–9
+    Exclusive pressure = 7–9
+  */
+
+  const overBase = all.overPct;
+
+  const overRecent = r25.overPct;
+
+  const overExclusive =
+    all.exclusiveOverPct;
+
+
+  /*
+    UNDER 7:
+    Base frequency = 0–6
+    Exclusive pressure = 0–3
+  */
+
+  const underBase = all.underPct;
+
+  const underRecent = r25.underPct;
+
+  const underExclusive =
+    all.exclusiveUnderPct;
+
+
+  /*
+    Recent direction.
+    Compare last 10 against previous 10.
+  */
+
+  const recent10 = a.slice(-10);
+
+  const previous10 =
+    a.slice(-20,-10);
+
+
+  const recentOver =
+    recent10.filter(x => x >= 4).length;
+
+  const previousOver =
+    previous10.filter(x => x >= 4).length;
+
+
+  const recentUnder =
+    recent10.filter(x => x <= 6).length;
+
+  const previousUnder =
+    previous10.filter(x => x <= 6).length;
+
+
+  const overMomentum =
+    recentOver - previousOver;
+
+  const underMomentum =
+    recentUnder - previousUnder;
+
+
+  /*
+    Scores are deliberately moderate.
+    We don't want a single unusual
+    frequency spike to create a signal.
+  */
+
+  let overScore = 0;
+
+  let underScore = 0;
+
+
+  /* Base frequency */
+
+  if(overBase >= 57)
+    overScore += 30;
+
+  else if(overBase >= 54)
+    overScore += 20;
+
+  else if(overBase >= 52)
+    overScore += 10;
+
+
+  if(underBase >= 57)
+    underScore += 30;
+
+  else if(underBase >= 54)
+    underScore += 20;
+
+  else if(underBase >= 52)
+    underScore += 10;
+
+
+  /* Recent frequency */
+
+  if(overRecent >= 58)
+    overScore += 25;
+
+  else if(overRecent >= 55)
+    overScore += 15;
+
+  else if(overRecent >= 52)
+    overScore += 8;
+
+
+  if(underRecent >= 58)
+    underScore += 25;
+
+  else if(underRecent >= 55)
+    underScore += 15;
+
+  else if(underRecent >= 52)
+    underScore += 8;
+
+
+  /* Exclusive pressure */
+
+  if(overExclusive >= 31)
+    overScore += 25;
+
+  else if(overExclusive >= 27)
+    overScore += 15;
+
+  else if(overExclusive >= 23)
+    overScore += 8;
+
+
+  if(underExclusive >= 31)
+    underScore += 25;
+
+  else if(underExclusive >= 27)
+    underScore += 15;
+
+  else if(underExclusive >= 23)
+    underScore += 8;
+
+
+  /* Momentum */
+
+  if(overMomentum >= 2)
+    overScore += 20;
+
+  else if(overMomentum >= 1)
+    overScore += 10;
+
+
+  if(underMomentum >= 2)
+    underScore += 20;
+
+  else if(underMomentum >= 1)
+    underScore += 10;
+
+
+  /*
+    Select strongest direction.
+  */
+
+  let direction =
+    overScore >= underScore
+      ? "OVER 3"
+      : "UNDER 7";
+
+
+  let score =
+    direction === "OVER 3"
+      ? overScore
+      : underScore;
+
+
+  const difference =
+    Math.abs(overScore-underScore);
+
+
+  /*
+    Entry requirements.
+
+    We require:
+    - score >= 55
+    - difference >= 10
+    - recent frequency agrees
+    - exclusive zone provides pressure
+  */
+
+  let qualified = false;
+
+
+  if(direction === "OVER 3"){
+
+    qualified =
+      score >= 55 &&
+      difference >= 10 &&
+      overRecent >= 52 &&
+      overExclusive >= 23;
+
+  }
+
+
+  if(direction === "UNDER 7"){
+
+    qualified =
+      score >= 55 &&
+      difference >= 10 &&
+      underRecent >= 52 &&
+      underExclusive >= 23;
+
+  }
+
+
+  /*
+    Avoid entering when both contracts
+    are extremely strong because of overlap.
+  */
+
+  if(
+    overBase >= 54 &&
+    underBase >= 54 &&
+    difference < 15
+  ){
+
+    qualified = false;
+
+  }
+
+
+  return {
+
+    signal: qualified
+      ? direction
+      : "WAIT",
+
+    confidence:
+      Math.min(95,score),
+
+    overScore,
+
+    underScore,
+
+    difference,
+
+    overBase,
+
+    underBase,
+
+    overRecent,
+
+    underRecent,
+
+    overExclusive,
+
+    underExclusive,
+
+    overMomentum,
+
+    underMomentum,
+
+    reason:
+      qualified
+
+      ? direction === "OVER 3"
+
+        ? "OVER 3 frequency + recent pressure + 7–9 exclusive pressure agree."
+
+        : "UNDER 7 frequency + recent pressure + 0–3 exclusive pressure agree."
+
+      : "Frequency conditions are not strong enough for a clean entry."
+
+  };
+
+}
+
+
+/* =========================
+   RENDER
+========================= */
 
 function render(){
 
-const a=D(t.slice(-win));
-
-const s=S(a);
-
-
-$("q").textContent=
-t.at(-1)?.quote??"—";
-
-$("d").textContent=
-a.at(-1)??"—";
-
-$("n").textContent=
-t.length;
-
-$("wn").textContent=
-win;
+  const a =
+    digits(ticks.slice(-win));
 
 
-$("ov").textContent=
-pct(s.o,a.length);
-
-$("un").textContent=
-pct(s.u,a.length);
-
-$("ev").textContent=
-pct(s.e,a.length);
-
-$("od").textContent=
-pct(a.length-s.e,a.length);
+  $("q").textContent =
+    ticks.at(-1)?.quote ?? "—";
 
 
-$("hot").textContent=
-a.length?s.h:"—";
-
-$("cold").textContent=
-a.length?s.l:"—";
+  $("d").textContent =
+    a.at(-1) ?? "—";
 
 
-let sd=a.at(-1);
-
-let sn=0;
-
-if(a.length)
-
-for(
-let i=a.length-1;
-i>=0&&a[i]===sd;
-i--
-)sn++;
+  $("n").textContent =
+    ticks.length;
 
 
-$("str").textContent=
-sn?sd+" × "+sn:"—";
+  $("wn").textContent =
+    win;
 
 
-let rr=a.slice(-25);
-
-let rrr=
-num(
-rr.filter(x=>x>5).length,
-Math.max(1,rr.length)
-);
+  if(!a.length) return;
 
 
-$("reg").textContent=
-rrr>.58
-?"OVER"
-:rrr<.42
-?"UNDER"
-:"MIXED";
+  const s =
+    contractStats(a);
 
 
-let mx=
-Math.max(...s.c,1);
+  $("over3").textContent =
+    s.overPct.toFixed(1)+"%";
 
 
-$("bars").innerHTML=
-s.c.map((n,i)=>
-
-`<div class="bw">
-<div class="bp">${pct(n,a.length)}</div>
-<div class="bar"
-style="height:${Math.max(2,n/mx*105)}px">
-</div>
-<div class="bd">${i}</div>
-</div>`
-
-).join("");
+  $("under7").textContent =
+    s.underPct.toFixed(1)+"%";
 
 
-let e=
-engine(
-D(t.slice(-300))
-);
+  $("exclusiveOver").textContent =
+    s.exclusiveOverPct.toFixed(1)+"%";
 
 
-if(e){
-
-$("ds").textContent=
-e.edge.toFixed(1);
-
-$("ms").textContent=
-e.mom.toFixed(1);
-
-$("cs").textContent=
-e.agree.toFixed(0)+"%";
-
-$("vs").textContent=
-e.val.toFixed(1)+"%";
-
-$("sep").textContent=
-e.separation.toFixed(0);
-
-$("os").textContent=
-e.overScore+"%";
-
-$("us").textContent=
-e.underScore+"%";
-
-$("conf").textContent=
-e.strong
-?e.score+"%"
-:"—";
+  $("exclusiveUnder").textContent =
+    s.exclusiveUnderPct.toFixed(1)+"%";
 
 
-$("sig").textContent=
-e.strong
-?e.direction
-:"NO SIGNAL";
+  $("overlap").textContent =
+    s.overlapPct.toFixed(1)+"%";
 
 
-$("sig").className=
-"sig "+
-(
-e.strong
-?
-(e.direction==="OVER"
-?"over"
-:"under")
-:"none"
-);
+  /* =========================
+     BARS
+  ========================= */
+
+  const c =
+    frequency(a);
 
 
-$("cf").textContent=
-e.strong
-?
-"Multi-confirmation passed • next-tick signal locked when qualified"
-:
-"Conditions not strong enough — waiting for confirmation";
+  const max =
+    Math.max(...c,1);
 
-}else{
 
-$("sig").textContent=
-"NO SIGNAL";
+  $("bars").innerHTML =
+    c.map((n,i)=>`
 
-$("sig").className=
-"sig none";
+      <div class="bw">
 
-$("cf").textContent=
-"Need at least 220 ticks for full confirmation";
+        <div class="bp">
+          ${pct(n,a.length)}
+        </div>
 
-[
-"ds",
-"ms",
-"cs",
-"vs",
-"sep",
-"os",
-"us",
-"conf"
-].forEach(
-x=>$(x).textContent="—"
-);
+        <div
+          class="bar"
+          style="height:${Math.max(
+            3,
+            n/max*110
+          )}px">
+        </div>
+
+        <div class="bd">
+          ${i}
+        </div>
+
+      </div>
+
+    `).join("");
+
+
+  $("freqTable").innerHTML =
+    c.map((n,i)=>`
+
+      <tr>
+
+        <td>${i}</td>
+
+        <td>${n}</td>
+
+        <td>${pct(n,a.length)}</td>
+
+      </tr>
+
+    `).join("");
+
+
+  /* =========================
+     RECENT
+  ========================= */
+
+  const r10 =
+    recentStats(a,10);
+
+  const r25 =
+    recentStats(a,25);
+
+  const r50 =
+    recentStats(a,50);
+
+
+  $("r10o").textContent =
+    r10.overPct.toFixed(1)+"%";
+
+
+  $("r10u").textContent =
+    r10.underPct.toFixed(1)+"%";
+
+
+  $("r25o").textContent =
+    r25.overPct.toFixed(1)+"%";
+
+
+  $("r25u").textContent =
+    r25.underPct.toFixed(1)+"%";
+
+
+  $("r50o").textContent =
+    r50.overPct.toFixed(1)+"%";
+
+
+  $("r50u").textContent =
+    r50.underPct.toFixed(1)+"%";
+
+
+  /* =========================
+     ENGINE
+  ========================= */
+
+  const e =
+    entryEngine(
+      digits(ticks.slice(-500))
+    );
+
+
+  $("oeFreq").textContent =
+    e.overBase
+      ? e.overBase.toFixed(1)+"%"
+      : "—";
+
+
+  $("ueFreq").textContent =
+    e.underBase
+      ? e.underBase.toFixed(1)+"%"
+      : "—";
+
+
+  $("oeRecent").textContent =
+    e.overRecent
+      ? e.overRecent.toFixed(1)+"%"
+      : "—";
+
+
+  $("ueRecent").textContent =
+    e.underRecent
+      ? e.underRecent.toFixed(1)+"%"
+      : "—";
+
+
+  $("oeExclusive").textContent =
+    e.overExclusive
+      ? e.overExclusive.toFixed(1)+"%"
+      : "—";
+
+
+  $("ueExclusive").textContent =
+    e.underExclusive
+      ? e.underExclusive.toFixed(1)+"%"
+      : "—";
+
+
+  if(e.signal === "OVER 3"){
+
+    $("oeStatus").textContent =
+      "🟢 ENTRY CONDITION";
+
+    $("oeStatus").className =
+      "entry good";
+
+  }
+
+  else{
+
+    $("oeStatus").textContent =
+      "WAIT";
+
+    $("oeStatus").className =
+      "entry";
+
+  }
+
+
+  if(e.signal === "UNDER 7"){
+
+    $("ueStatus").textContent =
+      "🟢 ENTRY CONDITION";
+
+    $("ueStatus").className =
+      "entry good";
+
+  }
+
+  else{
+
+    $("ueStatus").textContent =
+      "WAIT";
+
+    $("ueStatus").className =
+      "entry";
+
+  }
+
+
+  $("signal").textContent =
+    e.signal;
+
+
+  $("signal").className =
+    "signal "+
+    (
+      e.signal==="OVER 3"
+        ? "over"
+        : e.signal==="UNDER 7"
+        ? "under"
+        : "wait"
+    );
+
+
+  $("signalReason").textContent =
+    e.signal === "WAIT"
+
+      ? e.reason
+
+      : e.reason+
+        " Confidence: "+
+        e.confidence+"%";
+
+
+  liveTracker();
+
+  backtest(a);
+
+  renderHistory();
 
 }
 
 
-live();
+/* =========================
+   LIVE SIGNAL
+========================= */
 
-lab(a);
+function checkSignal(){
 
-renderHist();
+  const e =
+    entryEngine(
+      digits(ticks.slice(-500))
+    );
+
+
+  if(
+    e.signal === "WAIT" ||
+    pending
+  ){
+
+    return;
+
+  }
+
+
+  pending = {
+
+    signal:e.signal,
+
+    confidence:e.confidence
+
+  };
 
 }
 
+
+/* =========================
+   TICK
+========================= */
 
 function onTick(x){
 
-if(cooldown>0)
-cooldown--;
+  /*
+    First resolve the previous
+    locked signal using this tick.
+  */
+
+  if(pending){
+
+    const d =
+      digit(x.quote);
 
 
-if(pending){
-
-let d=
-digit(x.quote);
+    let winResult = false;
 
 
-let ok=
-(
-pending.direction==="OVER"
-&&
-d>5
-)
-||
-(
-pending.direction==="UNDER"
-&&
-d<5
-);
+    if(pending.signal === "OVER 3"){
+
+      winResult =
+        d >= 4;
+
+    }
 
 
-let r=
-ok
-?"WIN"
-:"LOSS";
+    if(pending.signal === "UNDER 7"){
+
+      winResult =
+        d <= 6;
+
+    }
 
 
-res.push(r);
-
-if(res.length>500)
-res.shift();
-
-
-hist.unshift({
-
-time:new Date().toLocaleTimeString(),
-
-signal:pending.direction,
-
-confidence:pending.score,
-
-digit:d,
-
-result:r
-
-});
+    const result =
+      winResult
+        ? "WIN"
+        : "LOSS";
 
 
-if(hist.length>100)
-hist.pop();
+    results.push(result);
 
 
-pending=null;
-
-cooldown=3;
-
-}
+    if(results.length > 500)
+      results.shift();
 
 
-t.push(x);
+    history.unshift({
 
-if(t.length>2000)
-t.shift();
+      time:
+        new Date()
+          .toLocaleTimeString(),
 
+      signal:
+        pending.signal,
 
-render();
+      confidence:
+        pending.confidence,
 
+      digit:d,
 
-let q=
-qualified(
-D(t.slice(-300))
-);
+      result
 
-
-if(q)
-pending=q;
-
-}
+    });
 
 
-function live(){
-
-let rate=
-res.length
-?num(
-res.filter(x=>x==="WIN").length,
-res.length
-)
-:0;
+    if(history.length > 100)
+      history.pop();
 
 
-let last=n=>{
+    pending = null;
 
-let a=
-res.slice(-n);
-
-return a.length
-?num(
-a.filter(x=>x==="WIN").length,
-a.length
-)
-:NaN;
-
-};
+  }
 
 
-$("acc").textContent=
-res.length
-?rate.toFixed(1)+"%"
-:"—";
+  ticks.push(x);
 
 
-$("a10").textContent=
-isNaN(last(10))
-?"—"
-:last(10).toFixed(1)+"%";
+  if(ticks.length > 1500)
+    ticks.shift();
 
 
-$("a25").textContent=
-isNaN(last(25))
-?"—"
-:last(25).toFixed(1)+"%";
+  render();
 
 
-$("a50").textContent=
-isNaN(last(50))
-?"—"
-:last(50).toFixed(1)+"%";
+  /*
+    Lock the next entry only after
+    the current tick has completed.
+  */
 
-
-$("cnt").textContent=
-res.length;
-
-
-let n=0;
-
-
-if(res.length){
-
-let z=res.at(-1);
-
-for(
-let i=res.length-1;
-i>=0&&res[i]===z;
-i--
-)n++;
-
-
-$("rs").textContent=
-z+" × "+n;
-
-}else{
-
-$("rs").textContent="—";
+  checkSignal();
 
 }
 
 
-let run=0,m=0;
+/* =========================
+   LIVE TRACKER
+========================= */
+
+function liveTracker(){
+
+  const total =
+    results.length;
 
 
-res.forEach(x=>{
-
-if(x==="LOSS"){
-
-run++;
-
-m=Math.max(m,run);
-
-}else{
-
-run=0;
-
-}
-
-});
+  const wins =
+    results.filter(
+      x=>x==="WIN"
+    ).length;
 
 
-$("ml").textContent=m;
+  const losses =
+    results.filter(
+      x=>x==="LOSS"
+    ).length;
 
 
-$("state").textContent=
-!res.length
-?"Waiting for completed signals…"
-:
-rate>=55
-?"🟢 STABLE"
-:
-rate<50
-?"🟠 CAUTION"
-:"🟡 MIXED";
-
-}
+  $("totalSignals").textContent =
+    total;
 
 
-function test(a,type){
-
-let sg=0,w=0,l=0;
-
-
-for(
-let i=25;
-i<a.length;
-i++
-){
-
-let p=
-a.slice(i-25,i);
-
-let d=
-a[i];
-
-let s=null;
+  $("wins").textContent =
+    wins;
 
 
-if(type==="OVER/UNDER"){
-
-let o=
-p.filter(x=>x>5).length;
-
-let u=
-p.filter(x=>x<5).length;
+  $("losses").textContent =
+    losses;
 
 
-if(o>u*1.1)
-s="OVER";
-
-else if(u>o*1.1)
-s="UNDER";
-
-
-}else if(type==="EVEN/ODD"){
-
-let e=
-p.filter(x=>x%2===0).length;
-
-let o=
-p.length-e;
+  const accuracy =
+    total
+      ? wins/total*100
+      : 0;
 
 
-if(e>o*1.1)
-s="EVEN";
-
-else if(o>e*1.1)
-s="ODD";
-
-
-}else{
-
-let c=
-Array(10).fill(0);
-
-p.forEach(x=>c[x]++);
+  $("accuracy").textContent =
+    total
+      ? accuracy.toFixed(1)+"%"
+      : "—";
 
 
-s=String(
+  if(!total){
 
-type==="HOT DIGIT"
-?
-c.indexOf(Math.max(...c))
-:
-c.indexOf(Math.min(...c))
+    $("trackerStatus").textContent =
+      "WAITING FOR COMPLETED SIGNALS";
 
-);
+  }
+
+  else if(accuracy >= 55){
+
+    $("trackerStatus").textContent =
+      "🟢 CURRENT SAMPLE ≥ 55%";
+
+  }
+
+  else if(accuracy >= 50){
+
+    $("trackerStatus").textContent =
+      "🟡 MIXED SAMPLE";
+
+  }
+
+  else{
+
+    $("trackerStatus").textContent =
+      "🔴 BELOW 50%";
+
+  }
 
 }
 
 
-if(!s)continue;
+/* =========================
+   BACKTEST
+========================= */
+
+function backtest(a){
+
+  const strategies =
+    [
+      "OVER 3",
+      "UNDER 7"
+    ];
 
 
-sg++;
+  const rows =
+    strategies.map(strategy=>{
+
+      let signals = 0;
+
+      let wins = 0;
+
+      let losses = 0;
 
 
-let ok=
+      /*
+        Use preceding 25 ticks
+        to determine frequency pressure.
+      */
 
-type==="OVER/UNDER"
+      for(
+        let i=25;
+        i<a.length;
+        i++
+      ){
 
-?
-
-(
-s==="OVER"
-?
-d>5
-:
-d<5
-)
-
-:
-
-type==="EVEN/ODD"
-
-?
-
-(
-s==="EVEN"
-?
-d%2===0
-:
-d%2!==0
-)
-
-:
-
-Number(s)===d;
+        const p =
+          a.slice(i-25,i);
 
 
-ok?w++:l++;
+        const over =
+          p.filter(x=>x>=4).length;
+
+
+        const under =
+          p.filter(x=>x<=6).length;
+
+
+        let signal = null;
+
+
+        /*
+          Require a 10% relative
+          difference before entering.
+        */
+
+        if(
+          strategy === "OVER 3" &&
+          over > under*1.10
+        ){
+
+          signal =
+            "OVER 3";
+
+        }
+
+
+        if(
+          strategy === "UNDER 7" &&
+          under > over*1.10
+        ){
+
+          signal =
+            "UNDER 7";
+
+        }
+
+
+        if(!signal)
+          continue;
+
+
+        signals++;
+
+
+        const actual =
+          a[i];
+
+
+        const ok =
+          signal==="OVER 3"
+            ? actual>=4
+            : actual<=6;
+
+
+        if(ok)
+          wins++;
+
+        else
+          losses++;
+
+      }
+
+
+      return {
+
+        strategy,
+
+        signals,
+
+        wins,
+
+        losses,
+
+        hit:
+          signals
+            ? wins/signals*100
+            : 0
+
+      };
+
+    });
+
+
+  $("backtest").innerHTML =
+    rows.map(r=>`
+
+      <tr>
+
+        <td>${r.strategy}</td>
+
+        <td>${r.signals}</td>
+
+        <td>${r.wins}</td>
+
+        <td>${r.losses}</td>
+
+        <td>
+          ${r.signals
+            ? r.hit.toFixed(1)+"%"
+            : "—"}
+        </td>
+
+      </tr>
+
+    `).join("");
+
+}
+
+
+/* =========================
+   HISTORY
+========================= */
+
+function renderHistory(){
+
+  $("history").innerHTML =
+    history.slice(0,50)
+      .map(r=>`
+
+        <tr>
+
+          <td>${r.time}</td>
+
+          <td>${r.signal}</td>
+
+          <td>${r.confidence}%</td>
+
+          <td>${r.digit}</td>
+
+          <td class="${
+            r.result==="WIN"
+              ? "good"
+              : "bad"
+          }">
+            ${r.result}
+          </td>
+
+        </tr>
+
+      `).join("");
+
+
+  $("stream").innerHTML =
+    digits(
+      ticks.slice(-60)
+    )
+    .map(x=>`
+
+      <span style="margin-right:7px">
+        ${x}
+      </span>
+
+    `)
+    .join("");
 
 }
 
 
-return{
-sg,
-w,
-l
-};
-
-}
-
-
-function lab(a){
-
-let ns=[
-"OVER/UNDER",
-"EVEN/ODD",
-"HOT DIGIT",
-"COLD DIGIT"
-];
-
-
-let rs=
-ns.map(
-name=>({...test(a,name),name})
-);
-
-
-$("tab").innerHTML=
-rs.map(r=>
-
-`<tr>
-<td>${r.name}</td>
-<td>${r.sg}</td>
-<td>${r.w}</td>
-<td>${r.l}</td>
-<td>${pct(r.w,r.sg)}</td>
-</tr>`
-
-).join("");
-
-
-$("ct").innerHTML=
-
-[[50,59],[60,69],[70,79],[80,89],[90,100]]
-
-.map(([lo,hi])=>{
-
-let x=
-hist.filter(
-r=>
-r.confidence>=lo &&
-r.confidence<=hi
-);
-
-
-let w=
-x.filter(
-r=>r.result==="WIN"
-).length;
-
-
-return`
-
-<tr>
-<td>${lo}–${hi}%</td>
-<td>${x.length}</td>
-<td>${w}</td>
-<td>${pct(w,x.length)}</td>
-</tr>
-
-`;
-
-}).join("");
-
-}
-
-
-function renderHist(){
-
-$("hist").innerHTML=
-
-hist.slice(0,50).map(r=>
-
-`<tr>
-<td>${r.time}</td>
-<td>${r.signal}</td>
-<td>${r.confidence}%</td>
-<td>${r.digit}</td>
-<td class="${
-r.result==="WIN"
-?"win"
-:"loss"
-}">
-${r.result}
-</td>
-</tr>`
-
-).join("");
-
-
-$("stream").innerHTML=
-
-D(t.slice(-60))
-.map(
-x=>`<span style="margin-right:6px">${x}</span>`
-)
-.join("");
-
-}
-
+/* =========================
+   PAYOUT
+========================= */
 
 function calc(){
 
-let p=
-Number($("pay").value);
+  const p =
+    Number(
+      $("pay").value
+    );
 
-let be=
-100/(100+p);
+
+  if(!p || p<=0){
+
+    $("payr").textContent =
+      "Enter a valid payout.";
+
+    return;
+
+  }
 
 
-$("payr").innerHTML=
+  const be =
+    100/(100+p);
 
-`Break-even hit rate:
-<b>${(be*100).toFixed(2)}%</b>.
-Compare it with measured performance;
-accuracy alone does not establish profitability.`;
+
+  $("payr").innerHTML =
+    `
+      Break-even hit rate:
+      <b>${(be*100).toFixed(2)}%</b>
+      <br><br>
+      Example: at a 20% payout,
+      you need about 83.33% wins
+      just to break even before
+      considering other factors.
+    `;
 
 }
 
 
-W.forEach(x=>{
+/* =========================
+   WINDOWS
+========================= */
 
-let b=
-document.createElement("button");
+WINDOWS.forEach(x=>{
 
-b.textContent=x;
-
-
-b.onclick=()=>{
-
-win=x;
-
-document
-.querySelectorAll("#wb button")
-.forEach(
-q=>q.classList.remove("on")
-);
-
-b.classList.add("on");
-
-render();
-
-};
+  const b =
+    document.createElement("button");
 
 
-$("wb").appendChild(b);
+  b.textContent =
+    x;
 
 
-if(x===100)
-b.classList.add("on");
+  b.onclick = ()=>{
+
+    win=x;
+
+
+    document
+      .querySelectorAll("#wb button")
+      .forEach(q=>
+        q.classList.remove("on")
+      );
+
+
+    b.classList.add("on");
+
+
+    render();
+
+  };
+
+
+  $("wb").appendChild(b);
+
+
+  if(x===100)
+    b.classList.add("on");
 
 });
 
+
+/* =========================
+   CONNECTION
+========================= */
 
 function connect(){
 
-ws=
-new WebSocket(WS);
+  ws =
+    new WebSocket(WS);
 
 
-ws.onopen=()=>{
+  ws.onopen = ()=>{
 
-$("st").textContent=
-"CONNECTED • V25 1s";
-
-
-ws.send(
-JSON.stringify({
-
-ticks_history:SYM,
-
-count:1000,
-
-end:"latest",
-
-style:"ticks",
-
-req_id:1
-
-})
-);
+    $("st").textContent =
+      "CONNECTED • V25 1s";
 
 
-ws.send(
-JSON.stringify({
+    ws.send(
+      JSON.stringify({
 
-ticks:SYM,
+        ticks_history:SYM,
 
-subscribe:1,
+        count:1000,
 
-req_id:2
+        end:"latest",
 
-})
-);
+        style:"ticks",
 
-};
+        req_id:1
 
-
-ws.onmessage=e=>{
-
-try{
-
-let m=
-JSON.parse(e.data);
+      })
+    );
 
 
-if(
-m.history &&
-m.history.prices
-){
+    ws.send(
+      JSON.stringify({
 
-m.history.prices.forEach(
-p=>
-t.push({
-quote:Number(p)
-})
-);
+        ticks:SYM,
+
+        subscribe:1,
+
+        req_id:2
+
+      })
+    );
+
+  };
 
 
-t=
-t.slice(-1000);
+  ws.onmessage = e=>{
 
-render();
+    try{
+
+      const m =
+        JSON.parse(e.data);
+
+
+      if(
+        m.history &&
+        m.history.prices
+      ){
+
+        m.history.prices
+          .forEach(p=>{
+
+            ticks.push({
+
+              quote:Number(p)
+
+            });
+
+          });
+
+
+        ticks =
+          ticks.slice(-1000);
+
+
+        render();
+
+      }
+
+
+      if(m.tick){
+
+        onTick({
+
+          quote:
+            Number(
+              m.tick.quote
+            ),
+
+          epoch:
+            m.tick.epoch
+
+        });
+
+      }
+
+    }
+
+    catch(err){
+
+      console.log(err);
+
+    }
+
+  };
+
+
+  ws.onclose = ()=>{
+
+    $("st").textContent =
+      "DISCONNECTED — RECONNECTING";
+
+
+    setTimeout(
+      connect,
+      2000
+    );
+
+  };
+
+
+  ws.onerror = ()=>{
+
+    $("st").textContent =
+      "CONNECTION ERROR";
+
+  };
 
 }
 
 
-if(m.tick)
-
-onTick({
-
-quote:Number(m.tick.quote),
-
-epoch:m.tick.epoch
-
-});
-
-
-}catch(_){}
-
-};
-
-
-ws.onclose=()=>{
-
-$("st").textContent=
-"DISCONNECTED — RECONNECTING";
-
-
-setTimeout(
-connect,
-2000
-);
-
-};
-
-
-ws.onerror=()=>{
-
-$("st").textContent=
-"CONNECTION ERROR";
-
-};
-
-}
-
+/* =========================
+   START
+========================= */
 
 calc();
 
