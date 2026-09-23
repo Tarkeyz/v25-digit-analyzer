@@ -6,7 +6,9 @@
 <title>V8 Volatility Tested Signal Scanner</title>
 
 <style>
-*{box-sizing:border-box}
+*{
+  box-sizing:border-box;
+}
 
 body{
   margin:0;
@@ -54,11 +56,25 @@ h1{
   font-weight:bold;
 }
 
-.green{color:#49e08a}
-.red{color:#ff6677}
-.yellow{color:#ffd166}
-.blue{color:#65a9ff}
-.gray{color:#8da0b8}
+.green{
+  color:#49e08a;
+}
+
+.red{
+  color:#ff6677;
+}
+
+.yellow{
+  color:#ffd166;
+}
+
+.blue{
+  color:#65a9ff;
+}
+
+.gray{
+  color:#8da0b8;
+}
 
 .market{
   border:1px solid #203852;
@@ -71,6 +87,7 @@ h1{
   display:flex;
   justify-content:space-between;
   align-items:center;
+  gap:10px;
   margin-bottom:7px;
 }
 
@@ -85,6 +102,7 @@ h1{
   font-size:11px;
   font-weight:bold;
   background:#172a42;
+  white-space:nowrap;
 }
 
 .signal{
@@ -105,7 +123,8 @@ table{
   font-size:13px;
 }
 
-th,td{
+th,
+td{
   padding:8px 6px;
   border-bottom:1px solid #1d3047;
   text-align:left;
@@ -155,7 +174,7 @@ button:hover{
 }
 
 #scanner{
-  max-height:650px;
+  max-height:700px;
   overflow:auto;
 }
 
@@ -174,7 +193,7 @@ button:hover{
 .stat-row{
   display:flex;
   justify-content:space-between;
-  padding:5px 0;
+  padding:7px 0;
   border-bottom:1px solid #182c43;
 }
 
@@ -190,11 +209,35 @@ button:hover{
 .progress div{
   height:100%;
   background:#49e08a;
+  transition:width .3s;
+}
+
+.setup-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:8px;
+  margin-top:10px;
+}
+
+.setup-box{
+  background:#091727;
+  border-radius:9px;
+  padding:8px;
 }
 
 @media(max-width:600px){
-  .container{padding:10px}
-  h1{font-size:21px}
+
+  .container{
+    padding:10px;
+  }
+
+  h1{
+    font-size:21px;
+  }
+
+  .setup-grid{
+    grid-template-columns:1fr;
+  }
 }
 </style>
 </head>
@@ -204,39 +247,74 @@ button:hover{
 <div class="container">
 
 <h1>V8 Volatility Tested Signal Scanner</h1>
+
 <div class="subtitle">
-All Volatility markets • OVER 3 • UNDER 7 • EVEN • ODD • Recovery scanner
+All Volatility markets • OVER 3 • UNDER 7 • EVEN • ODD • Recovery Scanner
 </div>
 
 <div class="warning">
-<b>How the 80% filter works:</b>
-A signal is shown only when the exact historical setup has enough matches
-and achieved at least the configured validation rate. This is historical
-validation, not a guaranteed probability for the next tick.
+
+<b>80% filter:</b>
+A signal requires at least the configured historical hit rate
+and enough historical matching setups.
+
+This is historical validation, not a guarantee that the next
+tick has the same probability.
+
 Synthetic-index patterns can change or occur by chance.
+
 </div>
 
 <div class="controls">
-<button onclick="setThreshold(75)">75% Test</button>
-<button onclick="setThreshold(80)">80% Test</button>
-<button onclick="setThreshold(85)">85% Test</button>
-<button onclick="setThreshold(90)">90% Test</button>
-<button onclick="clearForward()">Reset Forward Test</button>
+
+<button onclick="setThreshold(75)">
+75% Test
+</button>
+
+<button onclick="setThreshold(80)">
+80% Test
+</button>
+
+<button onclick="setThreshold(85)">
+85% Test
+</button>
+
+<button onclick="setThreshold(90)">
+90% Test
+</button>
+
+<button onclick="clearForward()">
+Reset Forward Test
+</button>
+
 </div>
+
+
+<!-- ======================================================
+     TOP STATUS
+====================================================== -->
 
 <div class="grid">
 
 <div class="card">
+
 <h2>Scanner Status</h2>
 
 <div class="stat-row">
 <span>Connection</span>
-<span id="connection" class="status yellow">CONNECTING</span>
+<span id="connection" class="status yellow">
+CONNECTING
+</span>
 </div>
 
 <div class="stat-row">
-<span>Markets</span>
+<span>Markets discovered</span>
 <span id="marketCount">0</span>
+</div>
+
+<div class="stat-row">
+<span>Markets ready</span>
+<span id="readyMarkets">0</span>
 </div>
 
 <div class="stat-row">
@@ -250,13 +328,15 @@ Synthetic-index patterns can change or occur by chance.
 </div>
 
 <div class="stat-row">
-<span>Minimum historical matches</span>
+<span>Minimum matches</span>
 <span id="minMatchesText">50</span>
 </div>
 
 </div>
 
+
 <div class="card">
+
 <h2>Primary Forward Test</h2>
 
 <div class="stat-row">
@@ -285,7 +365,9 @@ Synthetic-index patterns can change or occur by chance.
 
 </div>
 
+
 <div class="card">
+
 <h2>Recovery State</h2>
 
 <div id="recoveryState" class="big gray">
@@ -293,58 +375,116 @@ NO RECOVERY
 </div>
 
 <div class="small">
-Recovery activates after a recorded loss.
-It does not automatically increase stake.
+Recovery mode activates after a recorded primary loss.
+It does not automatically increase the stake.
 </div>
 
-<div id="recoveryInfo" style="margin-top:10px"></div>
-
+<div id="recoveryInfo" style="margin-top:10px">
 </div>
 
 </div>
+
+</div>
+
 
 <br>
 
+
+<!-- ======================================================
+     QUALIFIED SIGNALS
+====================================================== -->
+
 <div class="card">
+
 <h2>🔥 Qualified Signals</h2>
+
 <div id="qualifiedSignals">
-<div class="gray">Waiting for market data...</div>
-</div>
+
+<div class="gray">
+Waiting for market data...
 </div>
 
+</div>
+
+</div>
+
+
 <br>
+
+
+<!-- ======================================================
+     MARKET SCANNER
+====================================================== -->
 
 <div class="card">
+
 <h2>📡 Volatility Market Scanner</h2>
-<div id="scanner">
-<div class="gray">Discovering Volatility markets...</div>
-</div>
+
+<div class="small" style="margin-bottom:10px">
+The scanner automatically discovers available Volatility
+markets and evaluates each one independently.
 </div>
 
+<div id="scanner">
+
+<div class="gray">
+Discovering Volatility markets...
+</div>
+
+</div>
+
+</div>
+
+
 <br>
+
+
+<!-- ======================================================
+     CURRENT DETAILS
+====================================================== -->
 
 <div class="grid">
 
 <div class="card">
+
 <h2>Current Market Details</h2>
+
 <div id="currentDetails">
+
 Select a qualified signal to inspect its setup.
+
 </div>
+
 </div>
+
 
 <div class="card">
+
 <h2>Recent Digits</h2>
-<div id="recentDigits"></div>
+
+<div id="recentDigits">
 </div>
 
 </div>
+
+</div>
+
 
 <br>
 
+
+<!-- ======================================================
+     FORWARD HISTORY
+====================================================== -->
+
 <div class="card">
+
 <h2>📊 Forward Signal History</h2>
+
 <table>
+
 <thead>
+
 <tr>
 <th>Market</th>
 <th>Contract</th>
@@ -352,86 +492,159 @@ Select a qualified signal to inspect its setup.
 <th>Result</th>
 <th>Next Digit</th>
 </tr>
+
 </thead>
-<tbody id="historyTable"></tbody>
+
+<tbody id="historyTable">
+</tbody>
+
 </table>
+
+</div>
+
+
+<br>
+
+
+<div class="card">
+
+<h2>⚠️ Important</h2>
+
+<div class="small" style="line-height:1.6">
+
+The scanner does not automatically place trades.
+
+It identifies historically validated setups.
+
+A historical 80% result does not mean the next trade
+will win.
+
+Recovery signals are also independently tested and are
+not forced after a loss.
+
+Avoid increasing stake size simply because the previous
+trade lost.
+
 </div>
 
 </div>
+
+</div>
+
 
 <script>
+
+/* =========================================================
+   CONNECTION
+========================================================= */
 
 const WS_URL =
 "wss://api.derivws.com/trading/v1/options/ws/public";
 
-let ws=null;
-
-const markets={};
-const marketList=[];
-
-let validationThreshold=80;
-let minimumMatches=50;
-
-let totalForward=0;
-let totalWins=0;
-let totalLosses=0;
-
-let recoveryActive=false;
-let recoveryLossMarket=null;
-let recoveryLossContract=null;
-
-let pendingSignals={};
-
-let historyRows=[];
-
-let globalTicks=0;
+let ws = null;
 
 
 /* =========================================================
-   CONTRACT DEFINITIONS
+   SETTINGS
 ========================================================= */
 
-const CONTRACTS={
+let validationThreshold = 80;
+
+const minimumMatches = 50;
+
+const HISTORY_COUNT = 1000;
+
+const MAX_TICKS = 1200;
+
+
+/* =========================================================
+   MARKET STORAGE
+========================================================= */
+
+const markets = {};
+
+const marketList = [];
+
+
+/* =========================================================
+   FORWARD TEST STORAGE
+========================================================= */
+
+let totalForward = 0;
+
+let totalWins = 0;
+
+let totalLosses = 0;
+
+let historyRows = [];
+
+let pendingSignals = {};
+
+let globalTicks = 0;
+
+
+/* =========================================================
+   RECOVERY STATE
+========================================================= */
+
+let recoveryActive = false;
+
+let recoveryLossMarket = null;
+
+let recoveryLossContract = null;
+
+
+/* =========================================================
+   CONTRACTS
+========================================================= */
+
+const CONTRACTS = {
 
   OVER3:{
     name:"OVER 3",
-    win:d=>d>=4,
-    trigger:d=>d<=3,
+    description:"Digits 4–9",
+    win:d => d >= 4,
+    trigger:d => d <= 3,
     group:"PRIMARY"
   },
 
   UNDER7:{
     name:"UNDER 7",
-    win:d=>d<=6,
-    trigger:d=>d>=7,
+    description:"Digits 0–6",
+    win:d => d <= 6,
+    trigger:d => d >= 7,
     group:"PRIMARY"
   },
 
   EVEN:{
     name:"EVEN",
-    win:d=>d%2===0,
-    trigger:d=>true,
+    description:"0, 2, 4, 6, 8",
+    win:d => d % 2 === 0,
+    trigger:d => true,
     group:"PRIMARY"
   },
 
   ODD:{
     name:"ODD",
-    win:d=>d%2===1,
-    trigger:d=>true,
+    description:"1, 3, 5, 7, 9",
+    win:d => d % 2 === 1,
+    trigger:d => true,
     group:"PRIMARY"
   },
 
   OVER5:{
     name:"OVER 5",
-    win:d=>d>=6,
-    trigger:d=>d<=5,
+    description:"Digits 6–9",
+    win:d => d >= 6,
+    trigger:d => d <= 5,
     group:"RECOVERY"
   },
 
   UNDER5:{
     name:"UNDER 5",
-    win:d=>d<=4,
-    trigger:d=>d>=5,
+    description:"Digits 0–4",
+    win:d => d <= 4,
+    trigger:d => d >= 5,
     group:"RECOVERY"
   }
 
@@ -439,43 +652,49 @@ const CONTRACTS={
 
 
 /* =========================================================
-   BASIC DIGIT FUNCTIONS
+   NUMBER HELPERS
 ========================================================= */
+
+function percentage(n,d){
+
+  if(!d)
+    return 0;
+
+  return n / d * 100;
+
+}
+
 
 function digitFromQuote(q,pip=2){
 
-  const n=Number(q);
+  const n = Number(q);
 
-  if(!Number.isFinite(n)) return null;
+  if(!Number.isFinite(n))
+    return null;
 
-  const fixed=n.toFixed(pip);
+  const fixed = n.toFixed(pip);
 
-  return Number(fixed.slice(-1));
+  return Number(
+    fixed.slice(-1)
+  );
+
 }
 
 
 function digitsFromTicks(ticks){
 
-  if(!ticks || !ticks.length) return [];
+  if(!ticks || !ticks.length)
+    return [];
 
   return ticks
-    .map(x=>x.digit)
-    .filter(x=>Number.isInteger(x));
-
-}
-
-
-function percentage(n,d){
-
-  if(!d) return 0;
-
-  return n/d*100;
+    .map(x => x.digit)
+    .filter(x => Number.isInteger(x));
 
 }
 
 
 /* =========================================================
-   STATISTICS
+   BASIC STATISTICS
 ========================================================= */
 
 function stats(a){
@@ -486,6 +705,8 @@ function stats(a){
       total:0,
       over3:0,
       under7:0,
+      over5:0,
+      under5:0,
       even:0,
       odd:0,
       low:0,
@@ -494,34 +715,92 @@ function stats(a){
 
   }
 
-  let over3=0;
-  let under7=0;
-  let even=0;
-  let odd=0;
-  let low=0;
-  let high=0;
+
+  let over3 = 0;
+  let under7 = 0;
+
+  let over5 = 0;
+  let under5 = 0;
+
+  let even = 0;
+  let odd = 0;
+
+  let low = 0;
+  let high = 0;
+
 
   for(const d of a){
 
-    if(d>=4) over3++;
-    if(d<=6) under7++;
+    if(d >= 4)
+      over3++;
 
-    if(d%2===0) even++;
-    else odd++;
+    if(d <= 6)
+      under7++;
 
-    if(d<=3) low++;
-    if(d>=7) high++;
+    if(d >= 6)
+      over5++;
+
+    if(d <= 4)
+      under5++;
+
+    if(d % 2 === 0)
+      even++;
+    else
+      odd++;
+
+    if(d <= 3)
+      low++;
+
+    if(d >= 7)
+      high++;
 
   }
 
+
   return {
+
     total:a.length,
-    over3:percentage(over3,a.length),
-    under7:percentage(under7,a.length),
-    even:percentage(even,a.length),
-    odd:percentage(odd,a.length),
-    low:percentage(low,a.length),
-    high:percentage(high,a.length)
+
+    over3:percentage(
+      over3,
+      a.length
+    ),
+
+    under7:percentage(
+      under7,
+      a.length
+    ),
+
+    over5:percentage(
+      over5,
+      a.length
+    ),
+
+    under5:percentage(
+      under5,
+      a.length
+    ),
+
+    even:percentage(
+      even,
+      a.length
+    ),
+
+    odd:percentage(
+      odd,
+      a.length
+    ),
+
+    low:percentage(
+      low,
+      a.length
+    ),
+
+    high:percentage(
+      high,
+      a.length
+    )
+
   };
 
 }
@@ -533,16 +812,18 @@ function stats(a){
 
 function digitFrequency(a){
 
-  const f=Array(10).fill(0);
+  const f = Array(10).fill(0);
 
   for(const d of a){
 
-    if(d>=0 && d<=9)
+    if(d >= 0 && d <= 9)
       f[d]++;
 
   }
 
-  return f.map(x=>percentage(x,a.length));
+  return f.map(
+    x => percentage(x,a.length)
+  );
 
 }
 
@@ -556,9 +837,13 @@ function windows(a){
   return {
 
     w200:a.slice(-200),
+
     w100:a.slice(-100),
+
     w50:a.slice(-50),
+
     w25:a.slice(-25),
+
     w10:a.slice(-10)
 
   };
@@ -567,237 +852,459 @@ function windows(a){
 
 
 /* =========================================================
-   SETUP SCORE
+   SETUP ENGINE
 ========================================================= */
 
 function setupScore(a,key){
 
-  if(a.length<220)
+  if(a.length < 220){
+
     return {
+
       qualified:false,
-      score:0
+      score:0,
+      current:null
+
     };
 
-  const w=windows(a);
+  }
 
-  const s200=stats(w.w200);
-  const s100=stats(w.w100);
-  const s50=stats(w.w50);
-  const s25=stats(w.w25);
-  const s10=stats(w.w10);
 
-  let score=0;
+  const w = windows(a);
 
-  if(key==="OVER3"){
 
-    if(s200.over3>=52) score++;
-    if(s100.over3>=53) score++;
-    if(s50.over3>=55) score++;
-    if(s25.over3>=56) score++;
-    if(s10.over3>=50) score++;
+  const s200 = stats(w.w200);
 
-    if(s100.low<=35) score++;
-    if(s50.low<=34) score++;
-    if(s25.low<=32) score++;
+  const s100 = stats(w.w100);
 
-    if(s25.low<=27) score++;
-    if(s10.low<=30) score++;
+  const s50 = stats(w.w50);
+
+  const s25 = stats(w.w25);
+
+  const s10 = stats(w.w10);
+
+
+  let score = 0;
+
+
+  /* =====================================================
+     OVER 3
+  ===================================================== */
+
+  if(key === "OVER3"){
+
+    if(s200.over3 >= 52) score++;
+
+    if(s100.over3 >= 53) score++;
+
+    if(s50.over3 >= 55) score++;
+
+    if(s25.over3 >= 56) score++;
+
+    if(s10.over3 >= 50) score++;
+
+
+    /*
+      Opposing digits 0–3 becoming scarce.
+    */
+
+    if(s100.low <= 35) score++;
+
+    if(s50.low <= 34) score++;
+
+    if(s25.low <= 32) score++;
+
+    if(s25.low <= 27) score++;
+
+    if(s10.low <= 30) score++;
 
   }
 
 
-  if(key==="UNDER7"){
+  /* =====================================================
+     UNDER 7
+  ===================================================== */
 
-    if(s200.under7>=52) score++;
-    if(s100.under7>=53) score++;
-    if(s50.under7>=55) score++;
-    if(s25.under7>=56) score++;
-    if(s10.under7>=50) score++;
+  if(key === "UNDER7"){
 
-    if(s100.high<=32) score++;
-    if(s50.high<=31) score++;
-    if(s25.high<=30) score++;
+    if(s200.under7 >= 52) score++;
 
-    if(s25.high<=24) score++;
-    if(s10.high<=30) score++;
+    if(s100.under7 >= 53) score++;
 
-  }
+    if(s50.under7 >= 55) score++;
+
+    if(s25.under7 >= 56) score++;
+
+    if(s10.under7 >= 50) score++;
 
 
-  if(key==="EVEN"){
+    /*
+      Opposing digits 7–9 becoming scarce.
+    */
 
-    if(s200.even>=51) score++;
-    if(s100.even>=53) score++;
-    if(s50.even>=54) score++;
-    if(s25.even>=55) score++;
-    if(s10.even>=50) score++;
+    if(s100.high <= 32) score++;
 
-    const freq=digitFrequency(w.w50);
+    if(s50.high <= 31) score++;
 
-    const evenMean=
-      (freq[0]+freq[2]+freq[4]+freq[6]+freq[8])/5;
+    if(s25.high <= 30) score++;
 
-    if(evenMean>=10) score++;
-    if(s25.even>=54) score++;
+    if(s25.high <= 24) score++;
+
+    if(s10.high <= 30) score++;
 
   }
 
 
-  if(key==="ODD"){
+  /* =====================================================
+     EVEN
+  ===================================================== */
 
-    if(s200.odd>=51) score++;
-    if(s100.odd>=53) score++;
-    if(s50.odd>=54) score++;
-    if(s25.odd>=55) score++;
-    if(s10.odd>=50) score++;
+  if(key === "EVEN"){
 
-    const freq=digitFrequency(w.w50);
+    if(s200.even >= 51) score++;
 
-    const oddMean=
-      (freq[1]+freq[3]+freq[5]+freq[7]+freq[9])/5;
+    if(s100.even >= 53) score++;
 
-    if(oddMean>=10) score++;
-    if(s25.odd>=54) score++;
+    if(s50.even >= 54) score++;
+
+    if(s25.even >= 55) score++;
+
+    if(s10.even >= 50) score++;
+
+
+    const freq =
+      digitFrequency(w.w50);
+
+
+    const evenMean =
+      (
+        freq[0] +
+        freq[2] +
+        freq[4] +
+        freq[6] +
+        freq[8]
+      ) / 5;
+
+
+    if(evenMean >= 10)
+      score++;
+
+    if(s25.even >= 54)
+      score++;
 
   }
 
 
-  const current=a[a.length-1];
+  /* =====================================================
+     ODD
+  ===================================================== */
 
-  let trigger=true;
+  if(key === "ODD"){
 
-  if(CONTRACTS[key].trigger)
-    trigger=CONTRACTS[key].trigger(current);
+    if(s200.odd >= 51) score++;
+
+    if(s100.odd >= 53) score++;
+
+    if(s50.odd >= 54) score++;
+
+    if(s25.odd >= 55) score++;
+
+    if(s10.odd >= 50) score++;
+
+
+    const freq =
+      digitFrequency(w.w50);
+
+
+    const oddMean =
+      (
+        freq[1] +
+        freq[3] +
+        freq[5] +
+        freq[7] +
+        freq[9]
+      ) / 5;
+
+
+    if(oddMean >= 10)
+      score++;
+
+    if(s25.odd >= 54)
+      score++;
+
+  }
+
+
+  /* =====================================================
+     OVER 5
+  ===================================================== */
+
+  if(key === "OVER5"){
+
+    if(s200.over5 >= 52)
+      score++;
+
+    if(s100.over5 >= 53)
+      score++;
+
+    if(s50.over5 >= 55)
+      score++;
+
+    if(s25.over5 >= 56)
+      score++;
+
+    if(s10.over5 >= 50)
+      score++;
+
+
+    /*
+      Opposing digits 0–5 becoming scarce.
+    */
+
+    if(s100.under5 <= 48)
+      score++;
+
+    if(s50.under5 <= 47)
+      score++;
+
+    if(s25.under5 <= 45)
+      score++;
+
+    if(s10.under5 <= 45)
+      score++;
+
+  }
+
+
+  /* =====================================================
+     UNDER 5
+  ===================================================== */
+
+  if(key === "UNDER5"){
+
+    if(s200.under5 >= 52)
+      score++;
+
+    if(s100.under5 >= 53)
+      score++;
+
+    if(s50.under5 >= 55)
+      score++;
+
+    if(s25.under5 >= 56)
+      score++;
+
+    if(s10.under5 >= 50)
+      score++;
+
+
+    /*
+      Opposing digits 6–9 becoming scarce.
+    */
+
+    if(s100.over5 <= 48)
+      score++;
+
+    if(s50.over5 <= 47)
+      score++;
+
+    if(s25.over5 <= 45)
+      score++;
+
+    if(s10.over5 <= 45)
+      score++;
+
+  }
+
+
+  const current =
+    a[a.length-1];
+
+
+  const contract =
+    CONTRACTS[key];
+
+
+  const trigger =
+    contract &&
+    contract.trigger
+      ? contract.trigger(current)
+      : false;
 
 
   return {
-    qualified:score>=7 && trigger,
+
+    qualified:
+      score >= 7 &&
+      trigger,
+
     score,
+
     current,
+
     s200,
+
     s100,
+
     s50,
+
     s25,
+
     s10
+
   };
 
 }
 
 
 /* =========================================================
-   HISTORICAL EXACT MATCH ENGINE
+   HISTORICAL TEST
 ========================================================= */
 
 function historicalTest(a,key){
 
-  if(a.length<350){
+  if(a.length < 350){
 
     return {
+
       n:0,
       wins:0,
       losses:0,
       rate:0
+
     };
 
   }
 
-  let wins=0;
-  let losses=0;
-  let matches=0;
+
+  let wins = 0;
+
+  let losses = 0;
+
+  let matches = 0;
+
 
   /*
-    We use historical windows and leave the next tick
-    untouched as the outcome.
+    Important:
+    We test historical setups exactly as the
+    live engine tests them.
+
+    The current tick is NOT used as the result
+    of its own setup.
   */
 
   for(let i=220;i<a.length-1;i++){
 
-    const previous=a.slice(0,i);
+    const previous =
+      a.slice(0,i);
 
-    const setup=setupScore(previous,key);
+
+    const setup =
+      setupScore(
+        previous,
+        key
+      );
+
 
     if(!setup.qualified)
       continue;
 
-    const actual=a[i];
 
-    /*
-      Exact contract result.
-    */
+    const actual =
+      a[i];
 
-    if(CONTRACTS[key].win(actual))
+
+    const contract =
+      CONTRACTS[key];
+
+
+    if(contract.win(actual))
       wins++;
     else
       losses++;
+
 
     matches++;
 
   }
 
+
   return {
+
     n:matches,
+
     wins,
+
     losses,
-    rate:percentage(wins,matches)
+
+    rate:
+      percentage(
+        wins,
+        matches
+      )
+
   };
 
 }
 
 
 /* =========================================================
-   DISTANCE / STRUCTURE SIMILARITY
-========================================================= */
-
-function structureDistance(a,b){
-
-  const n=Math.min(a.length,b.length);
-
-  if(!n)
-    return 999;
-
-  let diff=0;
-
-  for(let i=0;i<n;i++){
-
-    if(a[i]!==b[i])
-      diff++;
-
-  }
-
-  return diff/n*100;
-
-}
-
-
-/* =========================================================
-   FINAL SIGNAL ENGINE
+   CONTRACT EVALUATION
 ========================================================= */
 
 function evaluateContract(a,key){
 
-  const setup=setupScore(a,key);
+  const setup =
+    setupScore(
+      a,
+      key
+    );
+
 
   if(!setup.qualified){
 
     return {
+
       key,
+
       qualified:false,
-      setup
+
+      setup,
+
+      historical:{
+        n:0,
+        wins:0,
+        losses:0,
+        rate:0
+      }
+
     };
 
   }
 
-  const historical=historicalTest(a,key);
 
-  const qualifiedHistorical=
-    historical.n>=minimumMatches &&
-    historical.rate>=validationThreshold;
+  const historical =
+    historicalTest(
+      a,
+      key
+    );
+
+
+  const qualifiedHistorical =
+    historical.n >= minimumMatches &&
+    historical.rate >=
+      validationThreshold;
+
 
   return {
 
     key,
-    qualified:qualifiedHistorical,
+
+    qualified:
+      qualifiedHistorical,
+
     setup,
+
     historical
 
   };
@@ -811,190 +1318,278 @@ function evaluateContract(a,key){
 
 function evaluateRecovery(a){
 
-  const candidates=[
-    evaluateContract(a,"OVER5"),
-    evaluateContract(a,"UNDER5"),
-    evaluateContract(a,"EVEN"),
-    evaluateContract(a,"ODD")
+  const keys = [
+
+    "OVER5",
+
+    "UNDER5",
+
+    "EVEN",
+
+    "ODD"
+
   ];
 
-  /*
-    Only recovery contracts with enough
-    historical evidence can qualify.
-  */
+
+  const candidates =
+    keys.map(
+      key =>
+        evaluateContract(
+          a,
+          key
+        )
+    );
+
 
   return candidates
-    .filter(x=>x.qualified)
+
+    .filter(
+      x => x.qualified
+    )
+
     .sort(
-      (a,b)=>
-        b.historical.rate-a.historical.rate
+      (a,b) =>
+        b.historical.rate -
+        a.historical.rate
     );
 
 }
 
 
 /* =========================================================
-   MARKET SOCKET
+   CONNECT WEBSOCKET
 ========================================================= */
 
 function connect(){
 
-  ws=new WebSocket(WS_URL);
+  try{
 
-  ws.onopen=()=>{
+    ws =
+      new WebSocket(
+        WS_URL
+      );
 
-    document.getElementById("connection").textContent=
-      "CONNECTED";
+  }
+  catch(error){
 
-    document.getElementById("connection").className=
-      "status green";
+    showConnectionError(
+      error.message
+    );
 
-    ws.send(JSON.stringify({
-      active_symbols:"brief",
-      product_type:"basic",
-      req_id:1
-    }));
+    setTimeout(
+      connect,
+      3000
+    );
+
+    return;
+
+  }
+
+
+  ws.onopen = () => {
+
+    document
+      .getElementById(
+        "connection"
+      )
+      .textContent =
+        "CONNECTED";
+
+
+    document
+      .getElementById(
+        "connection"
+      )
+      .className =
+        "status green";
+
+
+    /*
+      IMPORTANT:
+      Do NOT send product_type.
+      Current active_symbols request only
+      needs active_symbols + req_id.
+    */
+
+    ws.send(
+      JSON.stringify({
+
+        active_symbols:"brief",
+
+        req_id:1
+
+      })
+    );
 
   };
 
 
-  ws.onmessage=event=>{
+  ws.onmessage = event => {
 
     let msg;
 
+
     try{
-      msg=JSON.parse(event.data);
+
+      msg =
+        JSON.parse(
+          event.data
+        );
+
     }
-    catch(e){
-      return;
-    }
-
-
-    /*
-      Market discovery
-    */
-
-    if(msg.msg_type==="active_symbols"){
-
-      const symbols=(msg.active_symbols||[]);
-
-      const volatility=symbols.filter(s=>{
-
-        const symbol=String(
-          s.symbol||
-          s.underlying_symbol||
-          ""
-        );
-
-        const name=String(
-          s.display_name||
-          s.name||
-          ""
-        );
-
-        return (
-          /volatility/i.test(name) ||
-          /^R_(10|15|25|30|50|75|90|100|150|250)$/.test(symbol) ||
-          /^1HZ.*V$/.test(symbol)
-        );
-
-      });
-
-
-      for(const m of volatility){
-
-        const symbol=
-          m.symbol||
-          m.underlying_symbol;
-
-        if(!symbol)
-          continue;
-
-        if(!markets[symbol]){
-
-          markets[symbol]={
-            symbol,
-            name:
-              m.display_name||
-              m.name||
-              symbol,
-            pip:
-              Number(m.pip_size)||2,
-            ticks:[],
-            ready:false,
-            lastScan:0
-          };
-
-          marketList.push(symbol);
-
-        }
-
-      }
-
-
-      document.getElementById("marketCount")
-        .textContent=marketList.length;
-
-
-      /*
-        Request history for every discovered market.
-      */
-
-      for(const symbol of marketList){
-
-        requestHistory(symbol);
-
-      }
-
-      renderScanner();
+    catch(error){
 
       return;
 
     }
 
 
-    /*
-      Historical ticks
-    */
+    /* ================================================
+       API ERROR
+    ================================================ */
 
-    if(msg.msg_type==="history"){
+    if(msg.error){
 
-      const symbol=msg.echo_req &&
+      console.error(
+        "Deriv API error:",
+        msg.error
+      );
+
+
+      document
+        .getElementById(
+          "connection"
+        )
+        .textContent =
+          "API ERROR";
+
+
+      document
+        .getElementById(
+          "connection"
+        )
+        .className =
+          "status red";
+
+
+      document
+        .getElementById(
+          "scanner"
+        )
+        .innerHTML = `
+
+          <div class="red">
+
+            API error:
+            ${
+              msg.error.message ||
+              "Unknown error"
+            }
+
+          </div>
+
+      `;
+
+
+      return;
+
+    }
+
+
+    /* ================================================
+       ACTIVE SYMBOLS
+    ================================================ */
+
+    if(
+      msg.msg_type ===
+      "active_symbols"
+    ){
+
+      discoverMarkets(
+        msg.active_symbols || []
+      );
+
+      return;
+
+    }
+
+
+    /* ================================================
+       HISTORICAL DATA
+    ================================================ */
+
+    if(
+      msg.msg_type ===
+      "history"
+    ){
+
+      const symbol =
+        msg.echo_req &&
         msg.echo_req.ticks_history;
 
-      if(!symbol || !markets[symbol])
+
+      if(
+        !symbol ||
+        !markets[symbol]
+      )
         return;
 
-      const market=markets[symbol];
 
-      const prices=msg.history &&
-        msg.history.prices||
+      const market =
+        markets[symbol];
+
+
+      const prices =
+        msg.history &&
+        msg.history.prices ||
         [];
 
-      market.ticks=[];
 
-      for(const q of prices){
+      market.ticks = [];
 
-        const d=digitFromQuote(
-          q,
-          market.pip
-        );
 
-        if(d!==null){
+      for(
+        const q of prices
+      ){
+
+        const d =
+          digitFromQuote(
+            q,
+            market.pip
+          );
+
+
+        if(
+          d !== null
+        ){
 
           market.ticks.push({
+
             digit:d,
+
             quote:Number(q),
+
             time:Date.now()
+
           });
 
         }
 
       }
 
-      market.ready=true;
 
-      subscribe(symbol);
+      market.ready =
+        market.ticks.length > 0;
+
+
+      /*
+        Subscribe to live ticks.
+      */
+
+      subscribe(
+        symbol
+      );
+
 
       renderScanner();
 
@@ -1003,85 +1598,173 @@ function connect(){
     }
 
 
-    /*
-      Live ticks
-    */
+    /* ================================================
+       LIVE TICK
+    ================================================ */
 
-    if(msg.msg_type==="tick"){
+    if(
+      msg.msg_type ===
+      "tick"
+    ){
 
-      const symbol=
+      const symbol =
         msg.tick &&
         msg.tick.symbol;
 
-      if(!symbol || !markets[symbol])
+
+      if(
+        !symbol ||
+        !markets[symbol]
+      )
         return;
 
-      const market=markets[symbol];
 
-      const quote=msg.tick.quote;
+      const market =
+        markets[symbol];
 
-      const d=digitFromQuote(
-        quote,
-        market.pip
-      );
 
-      if(d===null)
+      const quote =
+        msg.tick.quote;
+
+
+      const d =
+        digitFromQuote(
+          quote,
+          market.pip
+        );
+
+
+      if(
+        d === null
+      )
         return;
 
 
       /*
-        Resolve a previously locked signal
-        using THIS tick.
+        First resolve any pending signal.
+        This tick is the result of the
+        previous signal.
       */
 
-      resolvePending(symbol,d);
+      resolvePending(
+        symbol,
+        d
+      );
 
+
+      /*
+        Add the new tick.
+      */
 
       market.ticks.push({
+
         digit:d,
+
         quote:Number(quote),
+
         time:Date.now()
+
       });
 
 
-      if(market.ticks.length>1200)
+      /*
+        Prevent unlimited memory growth.
+      */
+
+      if(
+        market.ticks.length >
+        MAX_TICKS
+      ){
+
         market.ticks.shift();
+
+      }
 
 
       globalTicks++;
 
-      document.getElementById("ticksReceived")
-        .textContent=globalTicks;
+
+      document
+        .getElementById(
+          "ticksReceived"
+        )
+        .textContent =
+          globalTicks;
+
+
+      /*
+        Update selected market.
+      */
+
+      renderRecent(
+        symbol
+      );
 
 
       renderScanner();
+
       renderQualifiedSignals();
+
+      return;
 
     }
 
   };
 
 
-  ws.onclose=()=>{
+  ws.onerror = error => {
 
-    document.getElementById("connection")
-      .textContent="DISCONNECTED";
+    console.error(
+      "WebSocket error:",
+      error
+    );
 
-    document.getElementById("connection")
-      .className="status red";
 
-    setTimeout(connect,3000);
+    document
+      .getElementById(
+        "connection"
+      )
+      .textContent =
+        "CONNECTION ERROR";
+
+
+    document
+      .getElementById(
+        "connection"
+      )
+      .className =
+        "status red";
 
   };
 
 
-  ws.onerror=()=>{
+  ws.onclose = () => {
 
-    document.getElementById("connection")
-      .textContent="ERROR";
+    document
+      .getElementById(
+        "connection"
+      )
+      .textContent =
+        "DISCONNECTED";
 
-    document.getElementById("connection")
-      .className="status red";
+
+    document
+      .getElementById(
+        "connection"
+      )
+      .className =
+        "status red";
+
+
+    /*
+      Clear subscriptions but keep
+      statistics/history.
+    */
+
+    setTimeout(
+      connect,
+      3000
+    );
 
   };
 
@@ -1089,65 +1772,349 @@ function connect(){
 
 
 /* =========================================================
-   REQUEST HISTORY
+   DISCOVER MARKETS
 ========================================================= */
 
-function requestHistory(symbol){
+function discoverMarkets(
+  symbols
+){
 
-  if(!ws || ws.readyState!==WebSocket.OPEN)
-    return;
+  console.log(
+    "Active symbols:",
+    symbols
+  );
 
-  ws.send(JSON.stringify({
 
-    ticks_history:symbol,
-    count:1000,
-    end:"latest",
-    style:"ticks",
-    req_id:1000+
-      marketList.indexOf(symbol)
+  /*
+    Find all Volatility/Synthetic
+    markets dynamically.
 
-  }));
+    We intentionally don't rely only
+    on display_name because API versions
+    can return different naming fields.
+  */
+
+  const volatility =
+    symbols.filter(
+      s => {
+
+        const symbol =
+          String(
+            s.underlying_symbol ||
+            s.symbol ||
+            ""
+          );
+
+
+        const name =
+          String(
+            s.underlying_symbol_name ||
+            s.display_name ||
+            s.name ||
+            ""
+          );
+
+
+        const market =
+          String(
+            s.market ||
+            ""
+          ).toLowerCase();
+
+
+        /*
+          Normal Volatility symbols:
+          R_10
+          R_25
+          R_50
+          R_75
+          R_100
+          etc.
+
+          1-second:
+          1HZ10V
+          1HZ25V
+          etc.
+        */
+
+        const normalVol =
+          /^R_\d+$/i.test(
+            symbol
+          );
+
+
+        const oneSecondVol =
+          /^1HZ\d+V$/i.test(
+            symbol
+          );
+
+
+        const volatilityName =
+          /volatility/i.test(
+            name
+          );
+
+
+        const syntheticMarket =
+          market.includes(
+            "synthetic"
+          );
+
+
+        return (
+          normalVol ||
+          oneSecondVol ||
+          volatilityName ||
+          syntheticMarket
+        );
+
+      }
+    );
+
+
+  console.log(
+    "Volatility markets found:",
+    volatility
+  );
+
+
+  /*
+    Add markets.
+  */
+
+  for(
+    const m of volatility
+  ){
+
+    const symbol =
+      m.underlying_symbol ||
+      m.symbol;
+
+
+    if(!symbol)
+      continue;
+
+
+    if(
+      markets[symbol]
+    )
+      continue;
+
+
+    const name =
+      m.underlying_symbol_name ||
+      m.display_name ||
+      m.name ||
+      symbol;
+
+
+    /*
+      pip_size is the preferred field.
+      Fall back to pip if needed.
+    */
+
+    const pip =
+      Number(
+        m.pip_size
+      ) ||
+      Number(
+        m.pip
+      ) ||
+      2;
+
+
+    markets[symbol] = {
+
+      symbol,
+
+      name,
+
+      pip,
+
+      ticks:[],
+
+      ready:false,
+
+      lastScan:0
+
+    };
+
+
+    marketList.push(
+      symbol
+    );
+
+  }
+
+
+  /*
+    Sort markets naturally.
+  */
+
+  marketList.sort(
+    (a,b) =>
+      a.localeCompare(
+        b,
+        undefined,
+        {
+          numeric:true
+        }
+      )
+  );
+
+
+  document
+    .getElementById(
+      "marketCount"
+    )
+    .textContent =
+      marketList.length;
+
+
+  /*
+    Request history for EVERY
+    discovered market.
+  */
+
+  for(
+    const symbol of marketList
+  ){
+
+    requestHistory(
+      symbol
+    );
+
+  }
+
+
+  renderScanner();
 
 }
 
 
 /* =========================================================
-   SUBSCRIBE
+   REQUEST HISTORICAL TICKS
 ========================================================= */
 
-function subscribe(symbol){
+function requestHistory(
+  symbol
+){
 
-  if(!ws || ws.readyState!==WebSocket.OPEN)
+  if(
+    !ws ||
+    ws.readyState !==
+    WebSocket.OPEN
+  )
     return;
 
-  ws.send(JSON.stringify({
 
-    ticks:symbol,
-    subscribe:1,
-    req_id:5000+
-      marketList.indexOf(symbol)
+  ws.send(
+    JSON.stringify({
 
-  }));
+      ticks_history:
+        symbol,
+
+      count:
+        HISTORY_COUNT,
+
+      end:
+        "latest",
+
+      style:
+        "ticks",
+
+      req_id:
+        1000 +
+        marketList.indexOf(
+          symbol
+        )
+
+    })
+  );
 
 }
 
 
 /* =========================================================
-   SIGNAL LOCK
+   SUBSCRIBE TO LIVE TICKS
 ========================================================= */
 
-function lockSignal(symbol,result){
+function subscribe(
+  symbol
+){
 
-  if(pendingSignals[symbol])
+  if(
+    !ws ||
+    ws.readyState !==
+    WebSocket.OPEN
+  )
     return;
 
-  pendingSignals[symbol]={
+
+  ws.send(
+    JSON.stringify({
+
+      ticks:
+        symbol,
+
+      subscribe:
+        1,
+
+      req_id:
+        5000 +
+        marketList.indexOf(
+          symbol
+        )
+
+    })
+  );
+
+}
+
+
+/* =========================================================
+   LOCK SIGNAL
+========================================================= */
+
+function lockSignal(
+  symbol,
+  result
+){
+
+  /*
+    One active signal per market.
+  */
+
+  if(
+    pendingSignals[symbol]
+  )
+    return;
+
+
+  pendingSignals[symbol] = {
+
     symbol,
-    key:result.key,
-    validation:result.historical.rate,
-    matches:result.historical.n,
-    lockedAt:Date.now()
+
+    key:
+      result.key,
+
+    validation:
+      result.historical.rate,
+
+    matches:
+      result.historical.n,
+
+    lockedAt:
+      Date.now()
+
   };
+
+
+  console.log(
+    "SIGNAL LOCKED:",
+    symbol,
+    result.key
+  );
 
 }
 
@@ -1156,32 +2123,71 @@ function lockSignal(symbol,result){
    RESOLVE SIGNAL
 ========================================================= */
 
-function resolvePending(symbol,digit){
+function resolvePending(
+  symbol,
+  digit
+){
 
-  const p=pendingSignals[symbol];
+  const p =
+    pendingSignals[symbol];
+
 
   if(!p)
     return;
 
-  const contract=CONTRACTS[p.key];
 
-  const win=contract.win(digit);
+  const contract =
+    CONTRACTS[p.key];
+
+
+  if(!contract){
+
+    delete pendingSignals[symbol];
+
+    return;
+
+  }
+
+
+  const win =
+    contract.win(
+      digit
+    );
+
 
   totalForward++;
 
-  if(win)
+
+  if(win){
+
     totalWins++;
+
+  }
   else{
 
     totalLosses++;
 
+
     /*
-      Activate recovery mode ONLY after loss.
+      Activate recovery mode after
+      a primary loss.
     */
 
-    recoveryActive=true;
-    recoveryLossMarket=symbol;
-    recoveryLossContract=p.key;
+    if(
+      contract.group ===
+      "PRIMARY"
+    ){
+
+      recoveryActive =
+        true;
+
+      recoveryLossMarket =
+        symbol;
+
+      recoveryLossContract =
+        p.key;
+
+    }
 
   }
 
@@ -1189,77 +2195,146 @@ function resolvePending(symbol,digit){
   historyRows.unshift({
 
     symbol,
+
     key:p.key,
-    validation:p.validation,
-    result:win?"WIN":"LOSS",
+
+    validation:
+      p.validation,
+
+    result:
+      win
+      ? "WIN"
+      : "LOSS",
+
     digit
 
   });
 
 
-  if(historyRows.length>100)
+  if(
+    historyRows.length >
+    100
+  ){
+
     historyRows.pop();
 
+  }
 
-  delete pendingSignals[symbol];
+
+  delete pendingSignals[
+    symbol
+  ];
 
 
   renderForward();
+
   renderHistory();
+
   renderRecoveryState();
+
+
+  console.log(
+    win
+      ? "WIN"
+      : "LOSS",
+    symbol,
+    p.key,
+    "digit:",
+    digit
+  );
 
 }
 
 
 /* =========================================================
-   RENDER QUALIFIED SIGNALS
+   QUALIFIED SIGNALS
 ========================================================= */
 
 function renderQualifiedSignals(){
 
-  const box=
-    document.getElementById("qualifiedSignals");
+  const box =
+    document
+      .getElementById(
+        "qualifiedSignals"
+      );
 
-  let html="";
 
-  let count=0;
+  let html = "";
+
+  let count = 0;
+
 
   /*
-    Scan every market.
+    PRIMARY SCAN
   */
 
-  for(const symbol of marketList){
+  for(
+    const symbol of marketList
+  ){
 
-    const m=markets[symbol];
+    const m =
+      markets[symbol];
 
-    if(!m.ready || m.ticks.length<350)
+
+    if(
+      !m.ready ||
+      m.ticks.length < 350
+    )
       continue;
 
 
-    /*
-      Primary contracts.
-    */
-
-    const primary=[
-      "OVER3",
-      "UNDER7",
-      "EVEN",
-      "ODD"
-    ];
-
-    for(const key of primary){
-
-      const result=evaluateContract(
-        digitsFromTicks(m.ticks),
-        key
+    const a =
+      digitsFromTicks(
+        m.ticks
       );
 
-      if(!result.qualified)
+
+    const primaryKeys = [
+
+      "OVER3",
+
+      "UNDER7",
+
+      "EVEN",
+
+      "ODD"
+
+    ];
+
+
+    for(
+      const key of primaryKeys
+    ){
+
+      /*
+        Don't generate another signal
+        for this market while one is
+        still waiting for its result.
+      */
+
+      if(
+        pendingSignals[symbol]
+      )
+        break;
+
+
+      const result =
+        evaluateContract(
+          a,
+          key
+        );
+
+
+      if(
+        !result.qualified
+      )
         continue;
+
 
       count++;
 
-      html+=signalHTML(
+
+      html += signalHTML(
         m,
         result,
         false
@@ -1267,15 +2342,21 @@ function renderQualifiedSignals(){
 
 
       /*
-        Lock only one signal of each market
-        until its result is known.
+        Lock the signal.
       */
 
-      if(!pendingSignals[symbol]){
+      lockSignal(
+        symbol,
+        result
+      );
 
-        lockSignal(symbol,result);
 
-      }
+      /*
+        One primary signal per market
+        at a time.
+      */
+
+      break;
 
     }
 
@@ -1283,28 +2364,54 @@ function renderQualifiedSignals(){
 
 
   /*
-    Recovery scan.
+    RECOVERY SCAN
   */
 
-  if(recoveryActive){
+  if(
+    recoveryActive
+  ){
 
-    for(const symbol of marketList){
+    for(
+      const symbol of marketList
+    ){
 
-      const m=markets[symbol];
+      const m =
+        markets[symbol];
 
-      if(!m.ready || m.ticks.length<350)
+
+      if(
+        !m.ready ||
+        m.ticks.length < 350
+      )
         continue;
 
-      const recovery=
-        evaluateRecovery(
-          digitsFromTicks(m.ticks)
+
+      const a =
+        digitsFromTicks(
+          m.ticks
         );
 
-      for(const result of recovery.slice(0,2)){
+
+      const recovery =
+        evaluateRecovery(
+          a
+        );
+
+
+      /*
+        Show the strongest two recovery
+        candidates if they exist.
+      */
+
+      for(
+        const result of
+        recovery.slice(0,2)
+      ){
 
         count++;
 
-        html+=signalHTML(
+
+        html += signalHTML(
           m,
           result,
           true
@@ -1319,16 +2426,24 @@ function renderQualifiedSignals(){
 
   if(!count){
 
-    box.innerHTML=
-      `<div class="gray">
-        No ${validationThreshold}%+ qualified setup right now.
+    box.innerHTML = `
+
+      <div class="gray">
+
+        No ${validationThreshold}%+
+        qualified setup right now.
+
         Scanner is waiting.
-      </div>`;
+
+      </div>
+
+    `;
 
   }
   else{
 
-    box.innerHTML=html;
+    box.innerHTML =
+      html;
 
   }
 
@@ -1336,12 +2451,22 @@ function renderQualifiedSignals(){
 
 
 /* =========================================================
-   SIGNAL HTML
+   SIGNAL CARD
 ========================================================= */
 
-function signalHTML(m,result,recovery){
+function signalHTML(
+  m,
+  result,
+  recovery
+){
 
-  const h=result.historical;
+  const h =
+    result.historical;
+
+
+  const s =
+    result.setup;
+
 
   return `
 
@@ -1352,53 +2477,116 @@ function signalHTML(m,result,recovery){
       <div>
 
         <div class="signal-title">
-          ${recovery?"RECOVERY • ":""}
+
+          ${
+            recovery
+              ? "RECOVERY • "
+              : ""
+          }
+
           ${m.name}
+
         </div>
 
         <div class="small">
+
           ${m.symbol}
+
         </div>
 
       </div>
 
+
       <div class="badge ${
-        recovery?"yellow":"green"
+        recovery
+          ? "yellow"
+          : "green"
       }">
 
-        ${recovery?"RECOVERY":"QUALIFIED"}
+        ${
+          recovery
+            ? "RECOVERY"
+            : "QUALIFIED"
+        }
 
       </div>
 
     </div>
 
+
     <div class="big ${
-      recovery?"yellow":"green"
+      recovery
+        ? "yellow"
+        : "green"
     }">
 
-      ${CONTRACTS[result.key].name}
+      ${
+        CONTRACTS[
+          result.key
+        ].name
+      }
 
     </div>
+
 
     <div style="margin-top:8px">
 
       Historical validation:
-      <b>${h.rate.toFixed(2)}%</b>
+
+      <b>
+
+        ${h.rate.toFixed(2)}%
+
+      </b>
 
     </div>
 
+
     <div class="small">
 
-      ${h.n} matching setups •
-      ${h.wins} wins •
+      ${h.n} matching setups
+
+      •
+
+      ${h.wins} wins
+
+      •
+
       ${h.losses} losses
 
     </div>
 
-    <div class="small" style="margin-top:7px">
+
+    <div class="small"
+         style="margin-top:7px">
 
       Setup score:
-      ${result.setup.score}/10
+
+      ${s.score}/10
+
+    </div>
+
+
+    <div class="small"
+         style="margin-top:5px">
+
+      Contract:
+
+      ${
+        CONTRACTS[
+          result.key
+        ].description
+      }
+
+    </div>
+
+
+    <div class="small"
+         style="margin-top:5px">
+
+      Current digit:
+
+      ${s.current}
 
     </div>
 
@@ -1410,116 +2598,254 @@ function signalHTML(m,result,recovery){
 
 
 /* =========================================================
-   SCANNER TABLE
+   MARKET SCANNER
 ========================================================= */
 
 function renderScanner(){
 
-  const box=document.getElementById("scanner");
+  const box =
+    document
+      .getElementById(
+        "scanner"
+      );
 
-  if(!marketList.length){
 
-    box.innerHTML=
-      `<div class="gray">
-       No markets discovered yet.
-      </div>`;
+  if(
+    !marketList.length
+  ){
+
+    box.innerHTML = `
+
+      <div class="gray">
+
+        No markets discovered yet.
+
+      </div>
+
+    `;
 
     return;
 
   }
 
 
-  let html="";
+  let html = "";
 
-  for(const symbol of marketList){
+  let ready = 0;
 
-    const m=markets[symbol];
 
-    const a=digitsFromTicks(m.ticks);
+  for(
+    const symbol of marketList
+  ){
 
-    const s=stats(a);
+    const m =
+      markets[symbol];
 
-    let qualified=[];
 
-    if(a.length>=350){
+    const a =
+      digitsFromTicks(
+        m.ticks
+      );
 
-      for(const key of [
+
+    if(m.ready)
+      ready++;
+
+
+    const s =
+      stats(a);
+
+
+    let qualified = [];
+
+
+    if(
+      a.length >= 350
+    ){
+
+      const keys = [
+
         "OVER3",
+
         "UNDER7",
+
         "EVEN",
+
         "ODD"
-      ]){
 
-        const r=evaluateContract(a,key);
+      ];
 
-        if(r.qualified)
-          qualified.push(
-            CONTRACTS[key].name+
-            " "+
-            r.historical.rate.toFixed(1)+
-            "%"
+
+      for(
+        const key of keys
+      ){
+
+        const r =
+          evaluateContract(
+            a,
+            key
           );
+
+
+        if(
+          r.qualified
+        ){
+
+          qualified.push(
+
+            CONTRACTS[
+              key
+            ].name +
+
+            " " +
+
+            r.historical.rate
+              .toFixed(1) +
+
+            "%"
+
+          );
+
+        }
 
       }
 
     }
 
 
-    html+=`
+    html += `
 
     <div class="market">
 
       <div class="market-header">
 
         <div class="market-name">
+
           ${m.name}
+
         </div>
+
 
         <div class="badge">
-          ${a.length} ticks
+
+          ${
+            m.ready
+              ? a.length +
+                " ticks"
+              : "LOADING"
+          }
+
         </div>
 
       </div>
 
+
       <div class="small">
+
         ${m.symbol}
+
       </div>
+
 
       <div style="margin-top:8px">
 
-        OVER3:
-        <b>${s.over3.toFixed(1)}%</b>
+        OVER 3:
+
+        <b>
+
+          ${s.over3.toFixed(1)}%
+
+        </b>
+
         &nbsp;&nbsp;
 
-        UNDER7:
-        <b>${s.under7.toFixed(1)}%</b>
+        UNDER 7:
+
+        <b>
+
+          ${s.under7.toFixed(1)}%
+
+        </b>
 
       </div>
+
 
       <div style="margin-top:5px">
 
         EVEN:
-        <b>${s.even.toFixed(1)}%</b>
+
+        <b>
+
+          ${s.even.toFixed(1)}%
+
+        </b>
+
         &nbsp;&nbsp;
 
         ODD:
-        <b>${s.odd.toFixed(1)}%</b>
+
+        <b>
+
+          ${s.odd.toFixed(1)}%
+
+        </b>
 
       </div>
 
+
+      <div style="margin-top:5px">
+
+        OVER 5:
+
+        <b>
+
+          ${s.over5.toFixed(1)}%
+
+        </b>
+
+        &nbsp;&nbsp;
+
+        UNDER 5:
+
+        <b>
+
+          ${s.under5.toFixed(1)}%
+
+        </b>
+
+      </div>
+
+
       <div class="small"
-           style="margin-top:7px">
+           style="margin-top:8px">
 
         Qualified:
+
         ${
           qualified.length
-          ? `<span class="green">
-              ${qualified.join(" • ")}
-             </span>`
-          : `<span class="gray">None</span>`
+
+          ?
+
+          `<span class="green">
+
+            ${qualified.join(
+              " • "
+            )}
+
+          </span>`
+
+          :
+
+          `<span class="gray">
+
+            None
+
+          </span>`
+
         }
 
       </div>
+
 
     </div>
 
@@ -1527,7 +2853,17 @@ function renderScanner(){
 
   }
 
-  box.innerHTML=html;
+
+  document
+    .getElementById(
+      "readyMarkets"
+    )
+    .textContent =
+      ready;
+
+
+  box.innerHTML =
+    html;
 
 }
 
@@ -1538,32 +2874,60 @@ function renderScanner(){
 
 function renderForward(){
 
-  document.getElementById("forwardSignals")
-    .textContent=totalForward;
+  document
+    .getElementById(
+      "forwardSignals"
+    )
+    .textContent =
+      totalForward;
 
-  document.getElementById("forwardWins")
-    .textContent=totalWins;
 
-  document.getElementById("forwardLosses")
-    .textContent=totalLosses;
+  document
+    .getElementById(
+      "forwardWins"
+    )
+    .textContent =
+      totalWins;
 
-  const rate=
+
+  document
+    .getElementById(
+      "forwardLosses"
+    )
+    .textContent =
+      totalLosses;
+
+
+  const rate =
     totalForward
-    ? percentage(
-        totalWins,
-        totalForward
-      )
-    : 0;
+      ? percentage(
+          totalWins,
+          totalForward
+        )
+      : 0;
 
-  document.getElementById("forwardRate")
-    .textContent=
+
+  document
+    .getElementById(
+      "forwardRate"
+    )
+    .textContent =
       totalForward
-      ? rate.toFixed(2)+"%"
-      : "—";
+        ? rate.toFixed(2) +
+          "%"
+        : "—";
 
-  document.getElementById("forwardBar")
-    .style.width=
-      Math.min(rate,100)+"%";
+
+  document
+    .getElementById(
+      "forwardBar"
+    )
+    .style.width =
+      Math.min(
+        rate,
+        100
+      ) +
+      "%";
 
 }
 
@@ -1574,43 +2938,88 @@ function renderForward(){
 
 function renderRecoveryState(){
 
-  const state=
-    document.getElementById("recoveryState");
+  const state =
+    document
+      .getElementById(
+        "recoveryState"
+      );
 
-  const info=
-    document.getElementById("recoveryInfo");
+
+  const info =
+    document
+      .getElementById(
+        "recoveryInfo"
+      );
 
 
-  if(!recoveryActive){
+  if(
+    !recoveryActive
+  ){
 
-    state.textContent="NO RECOVERY";
-    state.className="big gray";
+    state.textContent =
+      "NO RECOVERY";
 
-    info.innerHTML=
-      `<span class="small">
-       No recovery mode active.
-      </span>`;
+
+    state.className =
+      "big gray";
+
+
+    info.innerHTML = `
+
+      <span class="small">
+
+        No recovery mode active.
+
+      </span>
+
+    `;
 
     return;
 
   }
 
 
-  state.textContent="RECOVERY SCAN";
-  state.className="big yellow";
+  state.textContent =
+    "RECOVERY SCAN";
 
-  info.innerHTML=`
+
+  state.className =
+    "big yellow";
+
+
+  info.innerHTML = `
 
     <div class="small">
+
       Previous loss:
-      <b>${recoveryLossMarket}</b>
+
+      <b>
+        ${recoveryLossMarket}
+      </b>
+
       •
+
       ${recoveryLossContract}
+
     </div>
 
-    <div class="small" style="margin-top:6px">
-      Searching OVER 5 / UNDER 5 / EVEN / ODD.
-      Only independently validated setups are accepted.
+
+    <div class="small"
+         style="margin-top:7px">
+
+      Searching:
+
+      OVER 5 • UNDER 5 • EVEN • ODD
+
+    </div>
+
+
+    <div class="small"
+         style="margin-top:7px">
+
+      A recovery signal still needs
+      independent historical validation.
+
     </div>
 
   `;
@@ -1619,40 +3028,72 @@ function renderRecoveryState(){
 
 
 /* =========================================================
-   HISTORY
+   HISTORY TABLE
 ========================================================= */
 
 function renderHistory(){
 
-  const body=
-    document.getElementById("historyTable");
+  const body =
+    document
+      .getElementById(
+        "historyTable"
+      );
 
-  body.innerHTML=
-    historyRows.map(x=>`
 
-      <tr>
+  body.innerHTML =
+    historyRows
+      .map(
+        x => `
 
-        <td>${x.symbol}</td>
+        <tr>
 
-        <td>${CONTRACTS[x.key].name}</td>
+          <td>
+            ${x.symbol}
+          </td>
 
-        <td>${Number(x.validation).toFixed(2)}%</td>
 
-        <td class="${
-          x.result==="WIN"
-          ? "green"
-          : "red"
-        }">
+          <td>
+            ${
+              CONTRACTS[
+                x.key
+              ]
+              ? CONTRACTS[
+                  x.key
+                ].name
+              : x.key
+            }
+          </td>
 
-          ${x.result}
 
-        </td>
+          <td>
 
-        <td>${x.digit}</td>
+            ${Number(
+              x.validation
+            ).toFixed(2)}%
 
-      </tr>
+          </td>
 
-    `).join("");
+
+          <td class="${
+            x.result === "WIN"
+              ? "green"
+              : "red"
+          }">
+
+            ${x.result}
+
+          </td>
+
+
+          <td>
+            ${x.digit}
+          </td>
+
+        </tr>
+
+        `
+      )
+      .join("");
 
 }
 
@@ -1661,23 +3102,42 @@ function renderHistory(){
    RECENT DIGITS
 ========================================================= */
 
-function renderRecent(symbol){
+function renderRecent(
+  symbol
+){
 
-  const m=markets[symbol];
+  const m =
+    markets[symbol];
+
 
   if(!m)
     return;
 
-  const a=digitsFromTicks(m.ticks);
 
-  const recent=a.slice(-40);
+  const a =
+    digitsFromTicks(
+      m.ticks
+    );
 
-  document.getElementById("recentDigits")
-    .innerHTML=
 
-    recent.map(d=>
-      `<span class="live-digit">${d}</span>`
-    ).join("");
+  const recent =
+    a.slice(-40);
+
+
+  document
+    .getElementById(
+      "recentDigits"
+    )
+    .innerHTML =
+
+      recent
+        .map(
+          d =>
+            `<span class="live-digit">
+              ${d}
+            </span>`
+        )
+        .join("");
 
 }
 
@@ -1686,37 +3146,102 @@ function renderRecent(symbol){
    SETTINGS
 ========================================================= */
 
-function setThreshold(x){
+function setThreshold(
+  x
+){
 
-  validationThreshold=x;
+  validationThreshold =
+    x;
 
-  document.getElementById("thresholdText")
-    .textContent=x+"%";
+
+  document
+    .getElementById(
+      "thresholdText"
+    )
+    .textContent =
+      x + "%";
+
 
   renderScanner();
+
   renderQualifiedSignals();
 
 }
 
 
+/* =========================================================
+   RESET FORWARD TEST
+========================================================= */
+
 function clearForward(){
 
-  totalForward=0;
-  totalWins=0;
-  totalLosses=0;
+  totalForward = 0;
 
-  historyRows=[];
+  totalWins = 0;
 
-  pendingSignals={};
+  totalLosses = 0;
 
-  recoveryActive=false;
+  historyRows = [];
 
-  recoveryLossMarket=null;
-  recoveryLossContract=null;
+  pendingSignals = {};
+
+  recoveryActive = false;
+
+  recoveryLossMarket =
+    null;
+
+  recoveryLossContract =
+    null;
+
 
   renderForward();
+
   renderHistory();
+
   renderRecoveryState();
+
+  renderQualifiedSignals();
+
+}
+
+
+/* =========================================================
+   CONNECTION ERROR
+========================================================= */
+
+function showConnectionError(
+  message
+){
+
+  document
+    .getElementById(
+      "connection"
+    )
+    .textContent =
+      "ERROR";
+
+
+  document
+    .getElementById(
+      "connection"
+    )
+    .className =
+      "status red";
+
+
+  document
+    .getElementById(
+      "scanner"
+    )
+    .innerHTML = `
+
+      <div class="red">
+
+        ${message || "Connection error"}
+
+      </div>
+
+    `;
 
 }
 
@@ -1725,23 +3250,45 @@ function clearForward(){
    PERIODIC RESCAN
 ========================================================= */
 
-setInterval(()=>{
+setInterval(
 
-  renderScanner();
-  renderQualifiedSignals();
+  () => {
 
-},60000);
+    renderScanner();
+
+    renderQualifiedSignals();
+
+  },
+
+  30000
+
+);
 
 
 /* =========================================================
-   INITIALIZATION
+   INITIAL UI
 ========================================================= */
 
-document.getElementById("thresholdText")
-  .textContent=validationThreshold+"%";
+document
+  .getElementById(
+    "thresholdText"
+  )
+  .textContent =
+    validationThreshold +
+    "%";
 
-document.getElementById("minMatchesText")
-  .textContent=minimumMatches;
+
+document
+  .getElementById(
+    "minMatchesText"
+  )
+  .textContent =
+    minimumMatches;
+
+
+/* =========================================================
+   START
+========================================================= */
 
 connect();
 
