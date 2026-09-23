@@ -785,9 +785,7 @@ small{
 
 </thead>
 
-<tbody id="tradeHistory">
-
-</tbody>
+<tbody id="tradeHistory"></tbody>
 
 </table>
 
@@ -907,6 +905,53 @@ let activeContracts = {};
 
 let requestId = 1000;
 
+
+/*
+  PUBLIC WS RECONNECT STATE
+*/
+
+let publicReconnectTimer = null;
+let publicPingTimer = null;
+let publicReconnectAttempts = 0;
+
+let publicRequestMap = {};
+
+let publicSubscriptions = {};
+
+let publicLastMessageAt = 0;
+let publicLastTickAt = 0;
+
+
+/*
+  ACTUAL TRADING STATS
+*/
+
+let actualWins = 0;
+let actualLosses = 0;
+
+let sessionPL = 0;
+let tradeCount = 0;
+
+
+/*
+  RECOVERY
+*/
+
+let recoveryCount = 0;
+let recoveryActive = false;
+
+
+/*
+  SIGNAL LOCKS
+*/
+
+let signalLocks = {};
+
+
+/*
+  FORWARD SIGNAL HISTORY
+*/
+
 let forwardHistory = [];
 
 let forwardStats = {
@@ -915,13 +960,13 @@ let forwardStats = {
   losses:0
 };
 
-let sessionPL = 0;
-let tradeCount = 0;
 
-let recoveryCount = 0;
-let recoveryActive = false;
+let pendingForwardSignals = {};
 
-let signalLocks = {};
+
+/*
+  REAL ACCOUNT CONFIRMATION
+*/
 
 let pendingRealAccount = null;
 
@@ -1048,12 +1093,6 @@ async function loadAccounts(){
       );
     }
 
-    /*
-      Deriv currently returns the accounts
-      in data. Handle both an array and a
-      single object defensively.
-    */
-
     let list =
       Array.isArray(data.data)
         ? data.data
@@ -1110,10 +1149,6 @@ function renderAccounts(){
 
     return;
   }
-
-  /*
-    Demo first.
-  */
 
   const sorted =
     [...discoveredAccounts]
@@ -1306,10 +1341,6 @@ async function connectSelectedAccount(account){
       );
     }
 
-    /*
-      Stop previous trading socket.
-    */
-
     if(tradeWS){
 
       try{
@@ -1355,18 +1386,8 @@ async function connectSelectedAccount(account){
       " account."
     );
 
-    /*
-      Ask Deriv for the one-time WebSocket URL.
-    */
-
     const url =
       await requestOTP(accountId);
-
-    /*
-      Safety check:
-      DEMO must return /ws/demo
-      REAL must return /ws/real
-    */
 
     if(type === "demo" &&
        !url.includes("/ws/demo")){
@@ -1482,19 +1503,11 @@ function onTradingOpen(){
     " trading connection established."
   );
 
-  /*
-    Get balance.
-  */
-
   sendTrade({
     balance:1,
     subscribe:1,
     req_id:req()
   });
-
-  /*
-    Get portfolio.
-  */
 
   sendTrade({
     portfolio:1,
@@ -1571,10 +1584,6 @@ function onTradingMessage(event){
       )
     );
 
-    /*
-      Remove pending request if possible.
-    */
-
     if(msg.echo_req?.req_id){
 
       delete pendingRequests[
@@ -1585,8 +1594,6 @@ function onTradingMessage(event){
     return;
   }
 
-
-  /* BALANCE */
 
   if(msg.balance){
 
@@ -1611,8 +1618,6 @@ function onTradingMessage(event){
   }
 
 
-  /* PROPOSAL */
-
   if(msg.proposal){
 
     handleProposal(msg);
@@ -1621,8 +1626,6 @@ function onTradingMessage(event){
   }
 
 
-  /* BUY */
-
   if(msg.buy){
 
     handleBuy(msg);
@@ -1630,8 +1633,6 @@ function onTradingMessage(event){
     return;
   }
 
-
-  /* OPEN CONTRACT */
 
   if(msg.proposal_open_contract){
 
@@ -1690,16 +1691,31 @@ function handleProposal(msg){
     return;
   }
 
+  const askPrice =
+    Number(
+      msg.proposal.ask_price
+    );
+
+  if(
+    !Number.isFinite(askPrice) ||
+    askPrice <= 0
+  ){
+
+    log(
+      "Proposal has no valid ask price. Buy cancelled."
+    );
+
+    return;
+  }
+
   log(
     "Proposal accepted: " +
     request.symbol +
     " " +
-    request.side
+    request.side +
+    " | ask $" +
+    money(askPrice)
   );
-
-  /*
-    Now buy the proposal.
-  */
 
   const buyReq =
     req();
@@ -1709,23 +1725,24 @@ function handleProposal(msg){
     proposalId
   };
 
-  sendTrade({
+  const sent =
+    sendTrade({
 
-    buy:proposalId,
+      buy:proposalId,
 
-    /*
-      Buy price is the amount returned/required
-      for the proposal.
-    */
+      price:askPrice,
 
-    price:
-      Number(
-        msg.proposal.ask_price ||
-        request.stake
-      ),
+      req_id:buyReq
+    });
 
-    req_id:buyReq
-  });
+  if(!sent){
+
+    delete pendingRequests[buyReq];
+
+    log(
+      "BUY could not be sent because trading WebSocket is not open."
+    );
+  }
 }
 
 
@@ -1739,7 +1756,6 @@ function handleBuy(msg){
     msg.buy;
 
   if(!buy){
-
     return;
   }
 
@@ -1762,7 +1778,6 @@ function handleBuy(msg){
     pendingRequests[reqId];
 
   if(reqId){
-
     delete pendingRequests[reqId];
   }
 
@@ -1774,10 +1789,6 @@ function handleBuy(msg){
 
     return;
   }
-
-  /*
-    Only one live trade per market.
-  */
 
   if(activeContracts[request.symbol]){
 
@@ -1810,18 +1821,28 @@ function handleBuy(msg){
       Date.now()
   };
 
+  /*
+    Count an actual recovery only AFTER
+    the contract has really been bought.
+  */
+
+  if(request.recovery){
+
+    recoveryCount++;
+
+    $("recoveryCount").textContent =
+      recoveryCount;
+  }
+
   log(
     "🟢 CONTRACT BOUGHT: " +
     request.symbol +
     " " +
     request.side +
     " | $" +
-    money(request.stake)
+    money(request.stake) +
+    (request.recovery ? " [RECOVERY]" : "")
   );
-
-  /*
-    Monitor the contract.
-  */
 
   sendTrade({
 
@@ -1869,10 +1890,6 @@ function handleOpenContract(contract){
 
   if(!trade)
     return;
-
-  /*
-    Wait until Deriv has finalized the contract.
-  */
 
   const finished =
     contract.is_sold === 1 ||
@@ -1947,11 +1964,37 @@ function finishActualTrade(
 
   sessionPL += profit;
 
+  if(result === "won"){
+    actualWins++;
+  }else if(result === "lost"){
+    actualLosses++;
+  }
+
   $("tradeCount").textContent =
     tradeCount;
 
   $("sessionPL").textContent =
     "$" + money(sessionPL);
+
+  $("wins").textContent =
+    actualWins;
+
+  $("losses").textContent =
+    actualLosses;
+
+  const actualTotal =
+    actualWins +
+    actualLosses;
+
+  $("hitRate").textContent =
+    actualTotal
+      ? (
+          actualWins /
+          actualTotal *
+          100
+        ).toFixed(2) +
+        "%"
+      : "0%";
 
   $("lastResult").textContent =
     result.toUpperCase();
@@ -1972,14 +2015,11 @@ function finishActualTrade(
       : "red";
 
 
+  /*
+    RECOVERY LOGIC
+  */
+
   if(result === "won"){
-
-    forwardStats.wins++;
-
-    /*
-      If recovery wins,
-      return to normal.
-    */
 
     if(trade.recovery){
 
@@ -1994,14 +2034,7 @@ function finishActualTrade(
       );
     }
 
-  }else{
-
-    forwardStats.losses++;
-
-    /*
-      Only primary losses can
-      activate recovery.
-    */
+  }else if(result === "lost"){
 
     if(
       !trade.recovery &&
@@ -2041,12 +2074,6 @@ function finishActualTrade(
     profit
   );
 
-  updateForwardStats();
-
-
-  /*
-    Update balance.
-  */
 
   sendTrade({
 
@@ -2057,10 +2084,6 @@ function finishActualTrade(
     req_id:req()
   });
 
-
-  /*
-    Session limits.
-  */
 
   if(!canTrade()){
 
@@ -2160,18 +2183,11 @@ function executeSignal(
   let recovery =
     false;
 
-  /*
-    If recovery is active,
-    use a separately qualified recovery setup.
-  */
 
   if(recoveryActive){
 
     side =
       getRecoverySide(symbol);
-
-    recovery =
-      true;
 
     if(!side){
 
@@ -2181,6 +2197,9 @@ function executeSignal(
 
       return;
     }
+
+    recovery =
+      true;
 
     if(
       recoveryCount >=
@@ -2289,7 +2308,19 @@ function requestProposal(
     stake:amount
   };
 
-  sendTrade(payload);
+  const sent =
+    sendTrade(payload);
+
+  if(!sent){
+
+    delete pendingRequests[request];
+
+    log(
+      "Proposal could not be sent — trading WebSocket is not open."
+    );
+
+    return;
+  }
 
   log(
     "Proposal requested: " +
@@ -2328,74 +2359,37 @@ function getRecoverySide(symbol){
     ticks[ticks.length - 1].digit;
 
 
-  /*
-    OVER5 recovery
-    needs supporting Over5 structure.
-  */
-
   if(
     s.over >= 55 &&
     current <= 5
   ){
 
-    recoveryCount++;
-
-    $("recoveryCount").textContent =
-      recoveryCount;
-
     return "OVER5";
   }
 
-
-  /*
-    UNDER5 recovery
-  */
 
   if(
     s.under >= 55 &&
     current >= 5
   ){
 
-    recoveryCount++;
-
-    $("recoveryCount").textContent =
-      recoveryCount;
-
     return "UNDER5";
   }
 
-
-  /*
-    EVEN recovery
-  */
 
   if(
     s.even >= 55 &&
     current % 2 === 1
   ){
 
-    recoveryCount++;
-
-    $("recoveryCount").textContent =
-      recoveryCount;
-
     return "EVEN";
   }
 
-
-  /*
-    ODD recovery
-  */
 
   if(
     s.odd >= 55 &&
     current % 2 === 0
   ){
-
-    recoveryCount++;
-
-    $("recoveryCount").textContent =
-      recoveryCount;
 
     return "ODD";
   }
@@ -2435,6 +2429,18 @@ function stopScanner(){
   scannerRunning =
     false;
 
+  if(publicReconnectTimer){
+
+    clearTimeout(
+      publicReconnectTimer
+    );
+
+    publicReconnectTimer =
+      null;
+  }
+
+  stopPublicHeartbeat();
+
   if(publicWS){
 
     try{
@@ -2458,10 +2464,137 @@ function stopScanner(){
 
 
 /* ============================================================
-   PUBLIC WEBSOCKET
+   PUBLIC WEBSOCKET HEARTBEAT
+============================================================ */
+
+function startPublicHeartbeat(){
+
+  stopPublicHeartbeat();
+
+  publicPingTimer =
+    setInterval(() => {
+
+      if(
+        publicWS &&
+        publicWS.readyState ===
+        WebSocket.OPEN
+      ){
+
+        try{
+
+          publicWS.send(
+            JSON.stringify({
+              ping:1,
+              req_id:req()
+            })
+          );
+
+        }catch(error){
+
+          log(
+            "Public heartbeat send failed: " +
+            error.message
+          );
+        }
+      }
+
+    },25000);
+}
+
+
+function stopPublicHeartbeat(){
+
+  if(publicPingTimer){
+
+    clearInterval(
+      publicPingTimer
+    );
+
+    publicPingTimer =
+      null;
+  }
+}
+
+
+/* ============================================================
+   PUBLIC RECONNECT
+============================================================ */
+
+function schedulePublicReconnect(){
+
+  if(!scannerRunning)
+    return;
+
+  if(publicReconnectTimer)
+    return;
+
+  publicReconnectAttempts++;
+
+  const delay =
+    Math.min(
+      3000 *
+      Math.pow(
+        1.5,
+        publicReconnectAttempts - 1
+      ),
+      30000
+    );
+
+  log(
+    "Public WS reconnect scheduled in " +
+    Math.round(delay / 1000) +
+    "s."
+  );
+
+  publicReconnectTimer =
+    setTimeout(() => {
+
+      publicReconnectTimer =
+        null;
+
+      if(scannerRunning){
+        connectPublic();
+      }
+
+    },delay);
+}
+
+
+/* ============================================================
+   CONNECT PUBLIC
 ============================================================ */
 
 function connectPublic(){
+
+  if(!scannerRunning)
+    return;
+
+
+  if(publicWS){
+
+    try{
+      publicWS.close();
+    }catch(e){}
+
+    publicWS =
+      null;
+  }
+
+
+  stopPublicHeartbeat();
+
+
+  $("scannerStatus").textContent =
+    "CONNECTING";
+
+  $("scannerStatus").className =
+    "yellow";
+
+
+  log(
+    "Connecting public market WebSocket..."
+  );
+
 
   try{
 
@@ -2473,14 +2606,23 @@ function connectPublic(){
   }catch(error){
 
     log(
-      "Public WebSocket failed."
+      "Public WebSocket creation failed: " +
+      error.message
     );
+
+    schedulePublicReconnect();
 
     return;
   }
 
 
   publicWS.onopen = () => {
+
+    publicReconnectAttempts =
+      0;
+
+    publicLastMessageAt =
+      Date.now();
 
     $("scannerStatus").textContent =
       "CONNECTED";
@@ -2492,18 +2634,37 @@ function connectPublic(){
       "Public market connection established."
     );
 
+
+    startPublicHeartbeat();
+
+
+    /*
+      Re-discover markets after EVERY
+      successful reconnect.
+    */
+
+    const id =
+      req();
+
+    publicRequestMap[id] = {
+      type:"active_symbols"
+    };
+
     sendPublic({
 
       active_symbols:
         "brief",
 
-      req_id:req()
+      req_id:id
     });
   };
 
 
   publicWS.onmessage =
     event => {
+
+      publicLastMessageAt =
+        Date.now();
 
       let msg;
 
@@ -2516,6 +2677,10 @@ function connectPublic(){
 
       }catch(error){
 
+        log(
+          "Public WS sent invalid JSON."
+        );
+
         return;
       }
 
@@ -2525,6 +2690,11 @@ function connectPublic(){
         log(
           "PUBLIC API ERROR: " +
           (
+            msg.error.code
+              ? msg.error.code + " — "
+              : ""
+          ) +
+          (
             msg.error.message ||
             JSON.stringify(msg.error)
           )
@@ -2533,10 +2703,6 @@ function connectPublic(){
         return;
       }
 
-
-      /*
-        Market list.
-      */
 
       if(
         Array.isArray(
@@ -2550,21 +2716,14 @@ function connectPublic(){
       }
 
 
-      /*
-        Historical ticks.
-      */
-
       if(msg.history){
 
         processHistory(
-          msg.history
+          msg.history,
+          msg.echo_req
         );
       }
 
-
-      /*
-        Live tick.
-      */
 
       if(msg.tick){
 
@@ -2572,35 +2731,94 @@ function connectPublic(){
           msg.tick
         );
       }
+
+
+      /*
+        Ping response simply proves that
+        the connection is alive.
+      */
+
+      if(msg.ping){
+
+        return;
+      }
     };
 
 
   publicWS.onerror =
-    () => {
+    event => {
 
       log(
-        "Public WebSocket error."
+        "PUBLIC WS ERROR — market feed connection problem."
       );
+
+      $("scannerStatus").textContent =
+        "ERROR / RECONNECTING";
+
+      $("scannerStatus").className =
+        "red";
     };
 
 
   publicWS.onclose =
-    () => {
+    event => {
+
+      stopPublicHeartbeat();
+
+      const code =
+        event?.code;
+
+      const reason =
+        event?.reason ||
+        "(none)";
 
       log(
-        "Public WebSocket closed."
+        "PUBLIC WS CLOSED — code " +
+        code +
+        " | reason " +
+        reason
       );
 
-      if(scannerRunning){
+      if(!scannerRunning)
+        return;
 
-        setTimeout(
-          connectPublic,
-          3000
-        );
-      }
+
+      $("scannerStatus").textContent =
+        "RECONNECTING";
+
+      $("scannerStatus").className =
+        "yellow";
+
+
+      /*
+        Keep market definitions but clear
+        their tick streams so the reconnect
+        gets a fresh 1000-tick history.
+      */
+
+      Object.keys(marketTicks)
+        .forEach(symbol => {
+
+          marketTicks[symbol] =
+            [];
+        });
+
+
+      publicSubscriptions =
+        {};
+
+      publicRequestMap =
+        {};
+
+
+      schedulePublicReconnect();
     };
 }
 
+
+/* ============================================================
+   SEND PUBLIC
+============================================================ */
 
 function sendPublic(obj){
 
@@ -2610,10 +2828,26 @@ function sendPublic(obj){
     WebSocket.OPEN
   ){
 
-    publicWS.send(
-      JSON.stringify(obj)
-    );
+    try{
+
+      publicWS.send(
+        JSON.stringify(obj)
+      );
+
+      return true;
+
+    }catch(error){
+
+      log(
+        "Public send failed: " +
+        error.message
+      );
+
+      return false;
+    }
   }
+
+  return false;
 }
 
 
@@ -2667,60 +2901,147 @@ function processMarkets(list){
     Object.keys(markets).length;
 
 
+  log(
+    "Scanner sees " +
+    Object.keys(markets).length +
+    " volatility market(s)."
+  );
+
+
   subscribeMarkets();
 
   renderMarkets();
 }
 
 
+/* ============================================================
+   SUBSCRIBE MARKETS
+============================================================ */
+
 function subscribeMarkets(){
 
   Object.keys(markets)
     .forEach(symbol => {
 
+      /*
+        Do not subscribe twice on the
+        same WebSocket.
+      */
+
       if(
-        marketTicks[symbol]
+        publicSubscriptions[symbol]
       ){
 
         return;
       }
 
-      marketTicks[symbol] =
-        [];
+
+      publicSubscriptions[symbol] =
+        true;
+
+
+      if(!marketTicks[symbol]){
+
+        marketTicks[symbol] =
+          [];
+      }
 
 
       /*
-        Historical data.
+        HISTORY
       */
 
-      sendPublic({
+      const historyReq =
+        req();
 
-        ticks_history:
-          symbol,
+      publicRequestMap[
+        historyReq
+      ] = {
 
-        count:1000,
+        type:"history",
 
-        end:"latest",
+        symbol
+      };
 
-        style:"ticks",
 
-        req_id:req()
-      });
+      const historySent =
+        sendPublic({
+
+          ticks_history:
+            symbol,
+
+          count:1000,
+
+          end:"latest",
+
+          style:"ticks",
+
+          req_id:
+            historyReq
+        });
+
+
+      if(!historySent){
+
+        delete publicSubscriptions[
+          symbol
+        ];
+
+        delete publicRequestMap[
+          historyReq
+        ];
+
+        return;
+      }
 
 
       /*
-        Live stream.
+        LIVE TICK STREAM
       */
 
-      sendPublic({
+      const tickReq =
+        req();
 
-        ticks:
-          symbol,
+      publicRequestMap[
+        tickReq
+      ] = {
 
-        subscribe:1,
+        type:"ticks",
 
-        req_id:req()
-      });
+        symbol
+      };
+
+
+      const tickSent =
+        sendPublic({
+
+          ticks:
+            symbol,
+
+          subscribe:1,
+
+          req_id:
+            tickReq
+        });
+
+
+      if(!tickSent){
+
+        delete publicSubscriptions[
+          symbol
+        ];
+
+        delete publicRequestMap[
+          tickReq
+        ];
+
+        return;
+      }
+
+      log(
+        "Subscribed: " +
+        symbol
+      );
     });
 }
 
@@ -2729,24 +3050,53 @@ function subscribeMarkets(){
    HISTORY
 ============================================================ */
 
-function processHistory(history){
+function processHistory(
+  history,
+  echoReq
+){
 
   /*
-    The current Deriv API returns history
-    separately from live ticks.
-
-    Identify the symbol from echo_req.
+    First try the explicit echo request.
   */
 
-  const symbol =
-    history.echo_req?.ticks_history ||
-    history.echo_req?.symbol;
+  let symbol =
+    echoReq?.ticks_history ||
+    echoReq?.symbol;
 
-  if(!symbol)
+
+  /*
+    If unavailable, use req_id mapping.
+  */
+
+  if(!symbol){
+
+    const id =
+      echoReq?.req_id;
+
+    const mapped =
+      publicRequestMap[id];
+
+    if(mapped?.symbol){
+
+      symbol =
+        mapped.symbol;
+    }
+  }
+
+
+  if(!symbol){
+
+    log(
+      "Received history but could not identify its market."
+    );
+
     return;
+  }
+
 
   if(!marketTicks[symbol])
-    marketTicks[symbol] = [];
+    marketTicks[symbol] =
+      [];
 
 
   const prices =
@@ -2754,6 +3104,15 @@ function processHistory(history){
 
   const times =
     history.times || [];
+
+
+  /*
+    Fresh history after reconnect.
+    Replace the old stream rather than
+    duplicating old data.
+  */
+
+  const fresh = [];
 
 
   prices.forEach(
@@ -2765,7 +3124,7 @@ function processHistory(history){
       if(!Number.isFinite(q))
         return;
 
-      marketTicks[symbol].push({
+      fresh.push({
 
         quote:q,
 
@@ -2785,14 +3144,18 @@ function processHistory(history){
   );
 
 
-  if(
-    marketTicks[symbol].length >
-    1200
-  ){
+  if(fresh.length){
 
     marketTicks[symbol] =
-      marketTicks[symbol]
-        .slice(-1200);
+      fresh.slice(-1200);
+  }
+
+
+  if(echoReq?.req_id){
+
+    delete publicRequestMap[
+      echoReq.req_id
+    ];
   }
 
 
@@ -2825,15 +3188,23 @@ function processTick(t){
       [];
 
 
+  const digit =
+    extractDigit(
+      q,
+      symbol
+    );
+
+
+  /*
+    If this is the first live tick after
+    history, this keeps the stream clean.
+  */
+
   marketTicks[symbol].push({
 
     quote:q,
 
-    digit:
-      extractDigit(
-        q,
-        symbol
-      ),
+    digit,
 
     epoch:
       Number(
@@ -2850,6 +3221,10 @@ function processTick(t){
 
     marketTicks[symbol].shift();
   }
+
+
+  publicLastTickAt =
+    Date.now();
 
 
   scanMarket(
@@ -3199,12 +3574,6 @@ function historicalTest(
   let losses = 0;
 
 
-  /*
-    IMPORTANT:
-    The setup is calculated using only
-    information BEFORE the result tick.
-  */
-
   for(
     let i = 120;
     i < a.length - 1;
@@ -3348,11 +3717,8 @@ function getSignal(a){
 
 
       /*
-        Your requested threshold:
-        80% validation.
-
-        Minimum 50 historical
-        qualifying examples.
+        80% validation threshold.
+        Minimum 50 qualifying examples.
       */
 
       if(hist.n < 50)
@@ -3393,10 +3759,6 @@ function getSignal(a){
     return null;
 
 
-  /*
-    Highest validated result first.
-  */
-
   candidates.sort(
     (a,b) =>
       b.validation -
@@ -3422,11 +3784,6 @@ function scanMarket(symbol){
     return;
 
 
-  /*
-    Don't create a new signal
-    while an actual contract is open.
-  */
-
   if(activeContracts[symbol])
     return;
 
@@ -3441,11 +3798,6 @@ function scanMarket(symbol){
   const latest =
     a[a.length-1];
 
-
-  /*
-    Prevent duplicate signals
-    on the same tick.
-  */
 
   const lock =
     symbol +
@@ -3468,10 +3820,6 @@ function scanMarket(symbol){
     signal
   );
 
-
-  /*
-    Actual trading.
-  */
 
   if(
     $("autoTrade").checked
@@ -3499,6 +3847,13 @@ function recordForwardSignal(
 
   forwardStats.signals++;
 
+  const key =
+    symbol +
+    "|" +
+    signal.side +
+    "|" +
+    Date.now();
+
   forwardHistory.unshift({
 
     time:
@@ -3508,6 +3863,20 @@ function recordForwardSignal(
 
     ...signal
   });
+
+
+  /*
+    Keep a separate pending record if
+    you later want exact forward-test
+    resolution. This does NOT alter the
+    strategy.
+  */
+
+  pendingForwardSignals[key] = {
+    symbol,
+    side:signal.side,
+    createdAt:Date.now()
+  };
 
 
   if(
@@ -3570,10 +3939,6 @@ function autoTradeChanged(){
     return;
   }
 
-
-  /*
-    Extra confirmation for real.
-  */
 
   if(
     activeAccountType === "real"
@@ -4004,6 +4369,93 @@ function renderMarkets(){
     }
   );
 }
+
+
+/* ============================================================
+   CONNECTION WATCHDOG
+============================================================ */
+
+/*
+  This does NOT change the strategy.
+
+  It only checks whether the market feed
+  has stopped delivering messages/ticks.
+
+  If the public socket appears stuck, it is
+  closed and the normal reconnect process
+  takes over.
+*/
+
+setInterval(() => {
+
+  if(!scannerRunning)
+    return;
+
+  if(
+    !publicWS ||
+    publicWS.readyState !==
+    WebSocket.OPEN
+  ){
+
+    return;
+  }
+
+
+  const now =
+    Date.now();
+
+
+  /*
+    No WebSocket message for 75 seconds.
+  */
+
+  if(
+    publicLastMessageAt &&
+    now -
+    publicLastMessageAt >
+    75000
+  ){
+
+    log(
+      "PUBLIC WS WATCHDOG: no message for 75s — reconnecting."
+    );
+
+    try{
+      publicWS.close();
+    }catch(e){}
+
+    return;
+  }
+
+
+  /*
+    If we have markets but no live tick
+    for 90 seconds, force a reconnect.
+
+    This is especially useful if the socket
+    remains technically OPEN but the tick
+    subscriptions silently died.
+  */
+
+  if(
+    Object.keys(markets).length > 0 &&
+    publicLastTickAt &&
+    now -
+    publicLastTickAt >
+    90000
+  ){
+
+    log(
+      "PUBLIC WS WATCHDOG: no tick for 90s — rebuilding market feed."
+    );
+
+    try{
+      publicWS.close();
+    }catch(e){}
+
+  }
+
+},15000);
 
 
 /* ============================================================
