@@ -695,9 +695,9 @@ hr{
       <input
         id="minMatches"
         type="number"
-        min="50"
+        min="30"
         step="1"
-        value="50"
+        value="30"
       >
 
     </div>
@@ -799,7 +799,7 @@ hr{
 
     Minimum:
     <strong>
-      80% validation + 50 matches
+      80% validation + 30 matches
     </strong>
 
     <br>
@@ -1181,33 +1181,13 @@ hr{
 
         <tr>
 
-          <th>
-            Time
-          </th>
-
-          <th>
-            Market
-          </th>
-
-          <th>
-            Contract
-          </th>
-
-          <th>
-            Validation
-          </th>
-
-          <th>
-            Matches
-          </th>
-
-          <th>
-            Mode
-          </th>
-
-          <th>
-            Result
-          </th>
+          <th>Time</th>
+          <th>Market</th>
+          <th>Contract</th>
+          <th>Validation</th>
+          <th>Matches</th>
+          <th>Mode</th>
+          <th>Result</th>
 
         </tr>
 
@@ -1253,33 +1233,13 @@ hr{
 
         <tr>
 
-          <th>
-            Time
-          </th>
-
-          <th>
-            Market
-          </th>
-
-          <th>
-            Contract
-          </th>
-
-          <th>
-            Stake
-          </th>
-
-          <th>
-            Mode
-          </th>
-
-          <th>
-            Result
-          </th>
-
-          <th>
-            P/L
-          </th>
+          <th>Time</th>
+          <th>Market</th>
+          <th>Contract</th>
+          <th>Stake</th>
+          <th>Mode</th>
+          <th>Result</th>
+          <th>P/L</th>
 
         </tr>
 
@@ -1357,29 +1317,17 @@ const PUBLIC_WS =
 ========================================================= */
 
 let publicWS = null;
-
 let publicReconnectTimer = null;
-
 let publicHeartbeatTimer = null;
-
 let publicWatchdogTimer = null;
-
 let publicGeneration = 0;
-
-let lastPublicMessage =
-  Date.now();
-
+let lastPublicMessage = Date.now();
 
 let tradingWS = null;
-
 let tradingReconnectTimer = null;
-
 let tradingHeartbeatTimer = null;
-
 let tradingGeneration = 0;
-
 let tradingWanted = false;
-
 let tradingConnecting = false;
 
 
@@ -1387,11 +1335,9 @@ let tradingConnecting = false;
    REQUEST STATE
 ========================================================= */
 
-let reqCounter =
-  1000;
+let reqCounter = 1000;
 
-const publicRequestMap =
-  new Map();
+const publicRequestMap = new Map();
 
 
 /* =========================================================
@@ -1399,37 +1345,22 @@ const publicRequestMap =
 ========================================================= */
 
 let accounts = [];
-
-let accountMap =
-  new Map();
-
-let selectedAccount =
-  null;
+let accountMap = new Map();
+let selectedAccount = null;
 
 
 /* =========================================================
    MARKET STATE
 ========================================================= */
 
-let allSyntheticMarkets =
-  new Map();
-
-let volatilityMarkets =
-  new Map();
-
-let digitEligibleMarkets =
-  new Map();
-
-let digitContractsBySymbol =
-  new Map();
-
+let allSyntheticMarkets = new Map();
+let volatilityMarkets = new Map();
+let digitEligibleMarkets = new Map();
+let digitContractsBySymbol = new Map();
 
 let marketTicks = {};
-
 let marketLastTick = {};
-
-let marketSubscriptions =
-  new Set();
+let marketSubscriptions = new Set();
 
 
 /* =========================================================
@@ -1437,68 +1368,30 @@ let marketSubscriptions =
 ========================================================= */
 
 let contractsForQueue = [];
-
-let contractsForRunning =
-  false;
-
-let contractsForGeneration =
-  0;
+let contractsForRunning = false;
+let contractsForGeneration = 0;
 
 
 /* =========================================================
    TRADING STATE
 ========================================================= */
 
-let scannerRunning =
-  false;
+let scannerRunning = false;
+let autoTradingEnabled = false;
+let tradeInFlight = false;
+let openContractId = null;
+let pendingSignal = null;
+let lastCompletedSignal = null;
+let signalsFound = 0;
+let wins = 0;
+let losses = 0;
+let totalTrades = 0;
+let sessionPL = 0;
+let recoveryMode = false;
+let recoveryTrades = 0;
+let lastTradeTime = 0;
 
-let autoTradingEnabled =
-  false;
-
-let tradeInFlight =
-  false;
-
-let openContractId =
-  null;
-
-let pendingSignal =
-  null;
-
-let lastCompletedSignal =
-  null;
-
-let signalsFound =
-  0;
-
-let wins =
-  0;
-
-let losses =
-  0;
-
-let totalTrades =
-  0;
-
-let sessionPL =
-  0;
-
-let recoveryMode =
-  false;
-
-let recoveryTrades =
-  0;
-
-let lastTradeTime =
-  0;
-
-
-/*
-  Prevents the same exact signal/tick from
-  being bought repeatedly.
-*/
-
-let lastBoughtSignalKey =
-  "";
+let lastBoughtSignalKey = "";
 
 
 /* =========================================================
@@ -1506,7 +1399,6 @@ let lastBoughtSignalKey =
 ========================================================= */
 
 let signalHistory = [];
-
 let actualTrades = [];
 
 
@@ -1515,28 +1407,17 @@ let actualTrades = [];
 ========================================================= */
 
 const PRIMARY_PRIORITY = {
-
   EVEN:0,
-
   ODD:1,
-
   OVER3:2,
-
   UNDER7:3
-
 };
 
-
 const RECOVERY_PRIORITY = {
-
   EVEN:0,
-
   ODD:1,
-
   OVER5:2,
-
   UNDER5:3
-
 };
 
 
@@ -1550,32 +1431,28 @@ const PRIMARY_CONTRACTS = {
     label:"EVEN",
     contract_type:"DIGITEVEN",
     barrier:null,
-    test:d =>
-      d % 2 === 0
+    test:d => d % 2 === 0
   },
 
   ODD:{
     label:"ODD",
     contract_type:"DIGITODD",
     barrier:null,
-    test:d =>
-      d % 2 === 1
+    test:d => d % 2 === 1
   },
 
   OVER3:{
     label:"OVER3",
     contract_type:"DIGITOVER",
     barrier:"3",
-    test:d =>
-      d >= 4
+    test:d => d >= 4
   },
 
   UNDER7:{
     label:"UNDER7",
     contract_type:"DIGITUNDER",
     barrier:"7",
-    test:d =>
-      d <= 6
+    test:d => d <= 6
   }
 
 };
@@ -1587,47 +1464,38 @@ const RECOVERY_CONTRACTS = {
     label:"EVEN",
     contract_type:"DIGITEVEN",
     barrier:null,
-    test:d =>
-      d % 2 === 0
+    test:d => d % 2 === 0
   },
 
   ODD:{
     label:"ODD",
     contract_type:"DIGITODD",
     barrier:null,
-    test:d =>
-      d % 2 === 1
+    test:d => d % 2 === 1
   },
 
   OVER5:{
     label:"OVER5",
     contract_type:"DIGITOVER",
     barrier:"5",
-    test:d =>
-      d >= 6
+    test:d => d >= 6
   },
 
   UNDER5:{
     label:"UNDER5",
     contract_type:"DIGITUNDER",
     barrier:"5",
-    test:d =>
-      d <= 4
+    test:d => d <= 4
   }
 
 };
 
 
 const REQUIRED_DIGIT_TYPES = [
-
   "DIGITOVER",
-
   "DIGITUNDER",
-
   "DIGITEVEN",
-
   "DIGITODD"
-
 ];
 
 
@@ -1636,33 +1504,21 @@ const REQUIRED_DIGIT_TYPES = [
 ========================================================= */
 
 function $(id){
-
   return document.getElementById(id);
-
 }
-
 
 function req(){
-
   reqCounter++;
-
   return reqCounter;
-
 }
-
 
 function nowTime(){
-
-  return new Date()
-    .toLocaleTimeString();
-
+  return new Date().toLocaleTimeString();
 }
-
 
 function log(message){
 
-  const box =
-    $("systemLog");
+  const box = $("systemLog");
 
   const line =
     "[" +
@@ -1670,97 +1526,58 @@ function log(message){
     "] " +
     message;
 
-
   box.textContent =
     line +
     "\n" +
     box.textContent;
 
-
-  if(
-    box.textContent.length >
-    45000
-  ){
-
+  if(box.textContent.length > 45000){
     box.textContent =
-      box.textContent.substring(
-        0,
-        45000
-      );
-
+      box.textContent.substring(0,45000);
   }
-
 }
-
 
 function clearLog(){
-
-  $("systemLog").textContent =
-    "Log cleared.";
-
+  $("systemLog").textContent = "Log cleared.";
 }
 
+function num(value,fallback=0){
 
-function num(
-  value,
-  fallback=0
-){
-
-  const n =
-    Number(value);
+  const n = Number(value);
 
   return Number.isFinite(n)
     ? n
     : fallback;
-
 }
-
 
 function getPAT(){
-
-  return $("pat")
-    .value
-    .trim();
-
+  return $("pat").value.trim();
 }
-
 
 function getAppId(){
-
-  return $("appId")
-    .value
-    .trim();
-
+  return $("appId").value.trim();
 }
-
 
 function getStake(){
 
   return Math.max(
     0.35,
-    num(
-      $("stake").value,
-      1
-    )
+    num($("stake").value,1)
   );
-
 }
-
 
 function getMinMatches(){
 
   return Math.max(
-    50,
+    30,
     Math.floor(
       num(
         $("minMatches").value,
-        50
+        30
       )
     )
   );
-
 }
-
 
 function getHistoryCount(){
 
@@ -1773,9 +1590,7 @@ function getHistoryCount(){
       )
     )
   );
-
 }
-
 
 function getMaxTrades(){
 
@@ -1788,9 +1603,7 @@ function getMaxTrades(){
       )
     )
   );
-
 }
-
 
 function getSessionTP(){
 
@@ -1800,9 +1613,7 @@ function getSessionTP(){
       10
     )
   );
-
 }
-
 
 function getSessionSL(){
 
@@ -1812,34 +1623,16 @@ function getSessionSL(){
       10
     )
   );
-
 }
-
 
 function escapeHTML(value){
 
   return String(value)
-    .replaceAll(
-      "&",
-      "&amp;"
-    )
-    .replaceAll(
-      "<",
-      "&lt;"
-    )
-    .replaceAll(
-      ">",
-      "&gt;"
-    )
-    .replaceAll(
-      '"',
-      "&quot;"
-    )
-    .replaceAll(
-      "'",
-      "&#039;"
-    );
-
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
 }
 
 
@@ -1847,16 +1640,13 @@ function escapeHTML(value){
    API ERROR
 ========================================================= */
 
-function extractApiError(
-  json
-){
+function extractApiError(json){
 
   return (
     json?.error?.message ||
     json?.message ||
     "API request failed"
   );
-
 }
 
 
@@ -1867,26 +1657,18 @@ function extractApiError(
 function getAccountType(){
 
   if(!selectedAccount){
-
     return "";
-
   }
-
 
   return String(
     selectedAccount.account_type ||
     selectedAccount.type ||
     ""
   ).toLowerCase();
-
 }
 
-
 function isRealAccount(){
-
-  return getAccountType()
-    .includes("real");
-
+  return getAccountType().includes("real");
 }
 
 
@@ -1899,19 +1681,14 @@ function updateUI(){
   $("allMarketsStat").textContent =
     allSyntheticMarkets.size;
 
-
   $("digitMarketsStat").textContent =
     digitEligibleMarkets.size;
-
 
   $("volMarketsStat").textContent =
     volatilityMarkets.size;
 
-
   $("tickStat").textContent =
-    Object.keys(
-      marketTicks
-    )
+    Object.keys(marketTicks)
     .filter(
       symbol =>
         marketTicks[symbol] &&
@@ -1919,45 +1696,27 @@ function updateUI(){
     )
     .length;
 
-
-  $("signalsStat").textContent =
-    signalsFound;
-
-
-  $("winsStat").textContent =
-    wins;
-
-
-  $("lossesStat").textContent =
-    losses;
-
+  $("signalsStat").textContent = signalsFound;
+  $("winsStat").textContent = wins;
+  $("lossesStat").textContent = losses;
 
   $("sessionPL").textContent =
-    "$" +
-    sessionPL.toFixed(2);
-
+    "$" + sessionPL.toFixed(2);
 
   $("tradeCount").textContent =
     totalTrades;
 
-
   $("recoveryStatus").textContent =
-    recoveryMode
-      ? "ON"
-      : "OFF";
-
+    recoveryMode ? "ON" : "OFF";
 
   $("allSyntheticText").textContent =
     allSyntheticMarkets.size;
 
-
   $("digitEligibleText").textContent =
     digitEligibleMarkets.size;
 
-
   $("volatilityText").textContent =
     volatilityMarkets.size;
-
 
   $("otherSyntheticText").textContent =
     Math.max(
@@ -1966,24 +1725,20 @@ function updateUI(){
       volatilityMarkets.size
     );
 
-
   $("scannerStatus").innerHTML =
     scannerRunning
       ? '<span class="ok">Scanner: ONLINE</span>'
       : '<span class="bad">Scanner: OFFLINE</span>';
-
 
   $("autoTradingState").textContent =
     autoTradingEnabled
       ? "AUTO TRADING: ON"
       : "AUTO TRADING: OFF";
 
-
   $("autoTradingStatus").innerHTML =
     autoTradingEnabled
       ? '<span class="ok">Qualified signals can place trades.</span>'
       : '<span class="warn">New trades are currently blocked.</span>';
-
 }
 
 
@@ -1993,12 +1748,8 @@ function updateUI(){
 
 async function loadAccounts(){
 
-  const pat =
-    getPAT();
-
-  const appId =
-    getAppId();
-
+  const pat = getPAT();
+  const appId = getAppId();
 
   if(!pat){
 
@@ -2006,252 +1757,132 @@ async function loadAccounts(){
       '<span class="bad">Enter your PAT first.</span>';
 
     return;
-
   }
 
-
-  $("loadAccountsBtn")
-    .disabled = true;
-
-
+  $("loadAccountsBtn").disabled = true;
   $("accountStatus").textContent =
     "Loading Options accounts...";
-
 
   try{
 
     const headers = {
-
-      "Authorization":
-        "Bearer " + pat
-
+      "Authorization":"Bearer " + pat
     };
 
-
     if(appId){
-
-      headers["Deriv-App-ID"] =
-        appId;
-
+      headers["Deriv-App-ID"] = appId;
     }
-
 
     const response =
       await fetch(
-        API_BASE +
-        "/trading/v1/options/accounts",
+        API_BASE + "/trading/v1/options/accounts",
         {
           method:"GET",
           headers
         }
       );
 
-
     const json =
       await response.json();
 
-
     if(!response.ok){
-
-      throw new Error(
-        extractApiError(json)
-      );
-
+      throw new Error(extractApiError(json));
     }
-
 
     let returned = [];
 
-
-    if(
-      Array.isArray(
-        json?.data
-      )
-    ){
-
-      returned =
-        json.data;
-
-    }else if(
-      Array.isArray(
-        json?.accounts
-      )
-    ){
-
-      returned =
-        json.accounts;
-
+    if(Array.isArray(json?.data)){
+      returned = json.data;
+    }else if(Array.isArray(json?.accounts)){
+      returned = json.accounts;
     }else if(
       json?.data &&
-      typeof json.data ===
-      "object"
+      typeof json.data === "object"
     ){
-
-      returned = [
-        json.data
-      ];
-
+      returned = [json.data];
     }
 
-
     if(!returned.length){
-
       throw new Error(
         "No Options accounts were returned."
       );
-
     }
 
-
-    accounts =
-      returned;
-
-
+    accounts = returned;
     accountMap.clear();
 
+    accounts.forEach(account => {
 
-    accounts.forEach(
-      account => {
+      const id =
+        account.account_id ||
+        account.id ||
+        account.loginid ||
+        account.login_id;
 
-        const id =
-          account.account_id ||
-          account.id ||
-          account.loginid ||
-          account.login_id;
-
-
-        if(id){
-
-          accountMap.set(
-            String(id),
-            account
-          );
-
-        }
-
+      if(id){
+        accountMap.set(String(id),account);
       }
-    );
+    });
 
-
-    const select =
-      $("accountSelect");
-
-
-    select.innerHTML =
-      "";
-
+    const select = $("accountSelect");
+    select.innerHTML = "";
 
     const sorted =
       [...accountMap.values()]
-      .sort(
-        (a,b) => {
+      .sort((a,b) => {
 
-          const ad =
-            String(
-              a.account_type ||
-              ""
-            )
-            .toLowerCase()
-            .includes("demo");
+        const ad =
+          String(a.account_type || "")
+          .toLowerCase()
+          .includes("demo");
 
+        const bd =
+          String(b.account_type || "")
+          .toLowerCase()
+          .includes("demo");
 
-          const bd =
-            String(
-              b.account_type ||
-              ""
-            )
-            .toLowerCase()
-            .includes("demo");
+        if(ad && !bd) return -1;
+        if(!ad && bd) return 1;
 
-
-          if(
-            ad &&
-            !bd
-          ){
-
-            return -1;
-
-          }
-
-
-          if(
-            !ad &&
-            bd
-          ){
-
-            return 1;
-
-          }
-
-
-          return String(
-            a.account_id ||
-            ""
-          )
+        return String(a.account_id || "")
           .localeCompare(
-            String(
-              b.account_id ||
-              ""
-            )
+            String(b.account_id || "")
           );
+      });
 
-        }
-      );
+    sorted.forEach(account => {
 
+      const id =
+        account.account_id ||
+        account.id ||
+        account.loginid ||
+        account.login_id;
 
-    sorted.forEach(
-      account => {
+      const option =
+        document.createElement("option");
 
-        const id =
-          account.account_id ||
-          account.id ||
-          account.loginid ||
-          account.login_id;
+      option.value = id;
 
+      option.textContent =
+        id +
+        " — " +
+        String(
+          account.account_type ||
+          "unknown"
+        ).toUpperCase();
 
-        const option =
-          document.createElement(
-            "option"
-          );
-
-
-        option.value =
-          id;
-
-
-        option.textContent =
-          id +
-          " — " +
-          String(
-            account.account_type ||
-            "unknown"
-          ).toUpperCase();
-
-
-        select.appendChild(
-          option
-        );
-
-      }
-    );
-
+      select.appendChild(option);
+    });
 
     const demo =
       sorted.find(
         account =>
-          String(
-            account.account_type ||
-            ""
-          )
+          String(account.account_type || "")
           .toLowerCase()
           .includes("demo")
       );
 
-
-    const first =
-      demo ||
-      sorted[0];
-
+    const first = demo || sorted[0];
 
     if(first){
 
@@ -2261,23 +1892,14 @@ async function loadAccounts(){
         first.loginid ||
         first.login_id;
 
-
-      select.value =
-        id;
-
-
-      setSelectedAccount(
-        id
-      );
-
+      select.value = id;
+      setSelectedAccount(id);
     }
-
 
     $("accountStatus").innerHTML =
       '<span class="ok">' +
       accountMap.size +
       " Options account(s) loaded.</span>";
-
 
     log(
       "Loaded " +
@@ -2285,30 +1907,22 @@ async function loadAccounts(){
       " Options account(s)."
     );
 
-
   }catch(error){
 
     $("accountStatus").innerHTML =
       '<span class="bad">' +
-      escapeHTML(
-        error.message
-      ) +
+      escapeHTML(error.message) +
       "</span>";
-
 
     log(
       "ACCOUNT ERROR: " +
       error.message
     );
 
-
   }finally{
 
-    $("loadAccountsBtn")
-      .disabled = false;
-
+    $("loadAccountsBtn").disabled = false;
   }
-
 }
 
 
@@ -2320,61 +1934,41 @@ $("accountSelect")
   .addEventListener(
     "change",
     event => {
-
       setSelectedAccount(
         event.target.value
       );
-
     }
   );
 
 
-function setSelectedAccount(
-  id
-){
+function setSelectedAccount(id){
 
   const account =
-    accountMap.get(
-      String(id)
-    );
-
+    accountMap.get(String(id));
 
   if(!account){
 
-    selectedAccount =
-      null;
-
+    selectedAccount = null;
     return;
-
   }
-
 
   if(
     tradingWS &&
-    tradingWS.readyState ===
-    WebSocket.OPEN
+    tradingWS.readyState === WebSocket.OPEN
   ){
 
     const connectedId =
       selectedAccount?.account_id;
 
-
     if(
       connectedId &&
-      String(connectedId) !==
-      String(id)
+      String(connectedId) !== String(id)
     ){
-
       disconnectTrading();
-
     }
-
   }
 
-
-  selectedAccount =
-    account;
-
+  selectedAccount = account;
 
   const accountId =
     account.account_id ||
@@ -2382,40 +1976,28 @@ function setSelectedAccount(
     account.loginid ||
     account.login_id;
 
-
   $("accountType").textContent =
     String(
       account.account_type ||
       "unknown"
     ).toUpperCase();
 
-
   $("accountIdDisplay").textContent =
     accountId;
 
-
-  if(
-    account.balance !==
-    undefined
-  ){
+  if(account.balance !== undefined){
 
     $("balanceDisplay").textContent =
       "$" +
-      Number(
-        account.balance
-      ).toFixed(2) +
+      Number(account.balance).toFixed(2) +
       " " +
       (
         account.currency ||
         "USD"
       );
-
   }
 
-
-  autoTradingEnabled =
-    false;
-
+  autoTradingEnabled = false;
 
   log(
     "Selected " +
@@ -2428,9 +2010,7 @@ function setSelectedAccount(
     accountId
   );
 
-
   updateUI();
-
 }
 
 
@@ -2441,44 +2021,23 @@ function setSelectedAccount(
 function clearCredentials(){
 
   stopAutoTrading();
-
   disconnectTrading();
 
-
-  $("pat").value =
-    "";
-
-  $("appId").value =
-    "";
-
+  $("pat").value = "";
+  $("appId").value = "";
 
   accounts = [];
-
   accountMap.clear();
-
-  selectedAccount =
-    null;
-
+  selectedAccount = null;
 
   $("accountSelect").innerHTML =
     '<option value="">Load accounts first</option>';
 
-
-  $("accountType").textContent =
-    "—";
-
-
-  $("accountIdDisplay").textContent =
-    "—";
-
-
-  $("balanceDisplay").textContent =
-    "$0.00 USD";
-
-
+  $("accountType").textContent = "—";
+  $("accountIdDisplay").textContent = "—";
+  $("balanceDisplay").textContent = "$0.00 USD";
   $("accountStatus").textContent =
     "Credentials cleared.";
-
 }
 
 
@@ -2489,21 +2048,12 @@ function clearCredentials(){
 async function connectTrading(){
 
   if(tradingConnecting){
-
     return;
-
   }
 
-
-  const pat =
-    getPAT();
-
-  const appId =
-    getAppId();
-
-  const accountId =
-    $("accountSelect").value;
-
+  const pat = getPAT();
+  const appId = getAppId();
+  const accountId = $("accountSelect").value;
 
   if(!pat){
 
@@ -2513,9 +2063,7 @@ async function connectTrading(){
     );
 
     return;
-
   }
-
 
   if(!accountId){
 
@@ -2525,14 +2073,9 @@ async function connectTrading(){
     );
 
     return;
-
   }
 
-
-  setSelectedAccount(
-    accountId
-  );
-
+  setSelectedAccount(accountId);
 
   if(
     isRealAccount() &&
@@ -2545,29 +2088,18 @@ async function connectTrading(){
     );
 
     return;
-
   }
 
+  tradingWanted = true;
 
-  tradingWanted =
-    true;
-
-
-  clearTimeout(
-    tradingReconnectTimer
-  );
-
-
-  tradingReconnectTimer =
-    null;
-
+  clearTimeout(tradingReconnectTimer);
+  tradingReconnectTimer = null;
 
   await openTradingConnection(
     pat,
     appId,
     accountId
   );
-
 }
 
 
@@ -2582,51 +2114,34 @@ async function openTradingConnection(
 ){
 
   if(tradingConnecting){
-
     return;
-
   }
 
-
-  tradingConnecting =
-    true;
-
+  tradingConnecting = true;
 
   const generation =
     ++tradingGeneration;
-
 
   setTradingStatus(
     "Requesting authenticated WebSocket...",
     null
   );
 
-
   try{
 
     const headers = {
-
-      "Authorization":
-        "Bearer " + pat
-
+      "Authorization":"Bearer " + pat
     };
 
-
     if(appId){
-
-      headers["Deriv-App-ID"] =
-        appId;
-
+      headers["Deriv-App-ID"] = appId;
     }
-
 
     const response =
       await fetch(
         API_BASE +
         "/trading/v1/options/accounts/" +
-        encodeURIComponent(
-          accountId
-        ) +
+        encodeURIComponent(accountId) +
         "/otp",
         {
           method:"POST",
@@ -2634,238 +2149,166 @@ async function openTradingConnection(
         }
       );
 
-
     const json =
       await response.json();
 
-
     if(!response.ok){
-
       throw new Error(
         extractApiError(json)
       );
-
     }
-
 
     const url =
       json?.data?.url ||
       json?.url;
 
-
     if(!url){
-
       throw new Error(
         "No WebSocket URL returned."
       );
-
     }
-
 
     if(
       generation !==
       tradingGeneration
     ){
-
       return;
-
     }
-
 
     if(tradingWS){
 
       try{
-
         tradingWS.close();
-
       }catch(e){}
-
     }
 
-
     tradingWS =
-      new WebSocket(
-        url
+      new WebSocket(url);
+
+    tradingWS.onopen = () => {
+
+      tradingConnecting = false;
+
+      setTradingStatus(
+        "Trading: Connected (" +
+        (
+          isRealAccount()
+            ? "REAL"
+            : "DEMO"
+        ) +
+        ")",
+        true
       );
 
+      log(
+        "Authenticated " +
+        (
+          isRealAccount()
+            ? "REAL"
+            : "demo"
+        ) +
+        " trading connection established."
+      );
 
-    tradingWS.onopen =
-      () => {
+      sendTrading({
+        balance:1,
+        subscribe:1,
+        req_id:req()
+      });
 
-        tradingConnecting =
-          false;
+      clearInterval(
+        tradingHeartbeatTimer
+      );
 
+      tradingHeartbeatTimer =
+        setInterval(
+          () => {
 
-        setTradingStatus(
-          "Trading: Connected (" +
-          (
-            isRealAccount()
-              ? "REAL"
-              : "DEMO"
-          ) +
-          ")",
-          true
+            if(
+              tradingWS &&
+              tradingWS.readyState ===
+              WebSocket.OPEN
+            ){
+
+              sendTrading({
+                ping:1,
+                req_id:req()
+              });
+            }
+
+          },
+          20000
         );
+    };
 
+    tradingWS.onmessage = event => {
 
-        log(
-          "Authenticated " +
-          (
-            isRealAccount()
-              ? "REAL"
-              : "demo"
-          ) +
-          " trading connection established."
-        );
+      if(
+        generation !==
+        tradingGeneration
+      ){
+        return;
+      }
 
+      handleTradingMessage(
+        event.data
+      );
+    };
 
-        sendTrading({
+    tradingWS.onerror = () => {
 
-          balance:1,
+      if(
+        generation !==
+        tradingGeneration
+      ){
+        return;
+      }
 
-          subscribe:1,
+      log(
+        "Trading WebSocket error."
+      );
+    };
 
-          req_id:req()
+    tradingWS.onclose = event => {
 
-        });
+      if(
+        generation !==
+        tradingGeneration
+      ){
+        return;
+      }
 
+      clearInterval(
+        tradingHeartbeatTimer
+      );
 
-        clearInterval(
-          tradingHeartbeatTimer
-        );
+      tradingHeartbeatTimer = null;
+      tradingConnecting = false;
+      tradingWS = null;
 
+      log(
+        "Trading WebSocket closed. Code " +
+        event.code
+      );
 
-        tradingHeartbeatTimer =
-          setInterval(
-            () => {
+      setTradingStatus(
+        "Trading: Offline — reconnecting...",
+        false
+      );
 
-              if(
-                tradingWS &&
-                tradingWS.readyState ===
-                WebSocket.OPEN
-              ){
-
-                sendTrading({
-
-                  ping:1,
-
-                  req_id:req()
-
-                });
-
-              }
-
-            },
-            20000
-          );
-
-      };
-
-
-    tradingWS.onmessage =
-      event => {
-
-        if(
-          generation !==
-          tradingGeneration
-        ){
-
-          return;
-
-        }
-
-
-        handleTradingMessage(
-          event.data
-        );
-
-      };
-
-
-    tradingWS.onerror =
-      () => {
-
-        if(
-          generation !==
-          tradingGeneration
-        ){
-
-          return;
-
-        }
-
-
-        log(
-          "Trading WebSocket error."
-        );
-
-      };
-
-
-    tradingWS.onclose =
-      event => {
-
-        if(
-          generation !==
-          tradingGeneration
-        ){
-
-          return;
-
-        }
-
-
-        clearInterval(
-          tradingHeartbeatTimer
-        );
-
-
-        tradingHeartbeatTimer =
-          null;
-
-
-        tradingConnecting =
-          false;
-
-
-        tradingWS =
-          null;
-
-
-        log(
-          "Trading WebSocket closed. Code " +
-          event.code
-        );
-
-
-        setTradingStatus(
-          "Trading: Offline — reconnecting...",
-          false
-        );
-
-
-        if(
-          tradingWanted
-        ){
-
-          scheduleTradingReconnect();
-
-        }
-
-      };
-
+      if(tradingWanted){
+        scheduleTradingReconnect();
+      }
+    };
 
   }catch(error){
 
-    tradingConnecting =
-      false;
-
+    tradingConnecting = false;
 
     log(
       "TRADING CONNECTION ERROR: " +
       error.message
     );
-
 
     setTradingStatus(
       "Trading: " +
@@ -2873,17 +2316,10 @@ async function openTradingConnection(
       false
     );
 
-
-    if(
-      tradingWanted
-    ){
-
+    if(tradingWanted){
       scheduleTradingReconnect();
-
     }
-
   }
-
 }
 
 
@@ -2897,56 +2333,36 @@ function scheduleTradingReconnect(){
     !tradingWanted ||
     tradingReconnectTimer
   ){
-
     return;
-
   }
-
 
   tradingReconnectTimer =
     setTimeout(
       async () => {
 
-        tradingReconnectTimer =
-          null;
+        tradingReconnectTimer = null;
 
-
-        if(
-          !tradingWanted
-        ){
-
+        if(!tradingWanted){
           return;
-
         }
 
-
-        const pat =
-          getPAT();
-
-        const appId =
-          getAppId();
-
+        const pat = getPAT();
+        const appId = getAppId();
         const accountId =
           $("accountSelect").value;
 
-
-        if(
-          pat &&
-          accountId
-        ){
+        if(pat && accountId){
 
           await openTradingConnection(
             pat,
             appId,
             accountId
           );
-
         }
 
       },
       5000
     );
-
 }
 
 
@@ -2956,55 +2372,35 @@ function scheduleTradingReconnect(){
 
 function disconnectTrading(){
 
-  tradingWanted =
-    false;
-
-
-  tradingConnecting =
-    false;
-
-
+  tradingWanted = false;
+  tradingConnecting = false;
   ++tradingGeneration;
-
 
   clearTimeout(
     tradingReconnectTimer
   );
 
-
-  tradingReconnectTimer =
-    null;
-
+  tradingReconnectTimer = null;
 
   clearInterval(
     tradingHeartbeatTimer
   );
 
-
-  tradingHeartbeatTimer =
-    null;
-
+  tradingHeartbeatTimer = null;
 
   if(tradingWS){
 
     try{
-
       tradingWS.close();
-
     }catch(e){}
-
   }
 
-
-  tradingWS =
-    null;
-
+  tradingWS = null;
 
   setTradingStatus(
     "Trading: Offline",
     false
   );
-
 }
 
 
@@ -3037,9 +2433,7 @@ function setTradingStatus(
       '<span class="warn">' +
       escapeHTML(text) +
       "</span>";
-
   }
-
 }
 
 
@@ -3047,9 +2441,7 @@ function setTradingStatus(
    SEND TRADING
 ========================================================= */
 
-function sendTrading(
-  payload
-){
+function sendTrading(payload){
 
   if(
     !tradingWS ||
@@ -3062,21 +2454,15 @@ function sendTrading(
     );
 
     return false;
-
   }
-
 
   try{
 
     tradingWS.send(
-      JSON.stringify(
-        payload
-      )
+      JSON.stringify(payload)
     );
 
-
     return true;
-
 
   }catch(error){
 
@@ -3085,11 +2471,8 @@ function sendTrading(
       error.message
     );
 
-
     return false;
-
   }
-
 }
 
 
@@ -3097,27 +2480,21 @@ function sendTrading(
    TRADING MESSAGE
 ========================================================= */
 
-function handleTradingMessage(
-  raw
-){
+function handleTradingMessage(raw){
 
   let data;
-
 
   try{
 
     data =
-      typeof raw ===
-      "string"
+      typeof raw === "string"
         ? JSON.parse(raw)
         : raw;
 
   }catch(e){
 
     return;
-
   }
-
 
   if(data.error){
 
@@ -3126,69 +2503,36 @@ function handleTradingMessage(
       extractApiError(data)
     );
 
-
-    tradeInFlight =
-      false;
-
+    tradeInFlight = false;
 
     return;
-
   }
 
+  if(data.msg_type === "balance"){
 
-  if(
-    data.msg_type ===
-    "balance"
-  ){
-
-    handleBalance(
-      data
-    );
-
+    handleBalance(data);
     return;
-
   }
 
+  if(data.msg_type === "proposal"){
 
-  if(
-    data.msg_type ===
-    "proposal"
-  ){
-
-    handleProposal(
-      data
-    );
-
+    handleProposal(data);
     return;
-
   }
 
+  if(data.msg_type === "buy"){
 
-  if(
-    data.msg_type ===
-    "buy"
-  ){
-
-    handleBuy(
-      data
-    );
-
+    handleBuy(data);
     return;
-
   }
-
 
   if(
     data.msg_type ===
     "proposal_open_contract"
   ){
 
-    handleOpenContract(
-      data
-    );
-
+    handleOpenContract(data);
   }
-
 }
 
 
@@ -3196,47 +2540,32 @@ function handleTradingMessage(
    BALANCE
 ========================================================= */
 
-function handleBalance(
-  data
-){
+function handleBalance(data){
 
   const balance =
     data?.balance?.balance;
 
-
-  if(
-    balance === undefined
-  ){
-
+  if(balance === undefined){
     return;
-
   }
-
 
   const currency =
     data?.balance?.currency ||
     selectedAccount?.currency ||
     "USD";
 
-
   $("balanceDisplay").textContent =
     "$" +
-    Number(
-      balance
-    ).toFixed(2) +
+    Number(balance).toFixed(2) +
     " " +
     currency;
 
-
   log(
     "Balance: $" +
-    Number(
-      balance
-    ).toFixed(2) +
+    Number(balance).toFixed(2) +
     " " +
     currency
   );
-
 }
 
 
@@ -3248,14 +2577,9 @@ function startAutoTrading(){
 
   if(!selectedAccount){
 
-    log(
-      "Select an account first."
-    );
-
+    log("Select an account first.");
     return;
-
   }
-
 
   if(
     !tradingWS ||
@@ -3263,14 +2587,9 @@ function startAutoTrading(){
     WebSocket.OPEN
   ){
 
-    log(
-      "Connect trading first."
-    );
-
+    log("Connect trading first.");
     return;
-
   }
-
 
   if(
     isRealAccount() &&
@@ -3282,37 +2601,23 @@ function startAutoTrading(){
     );
 
     return;
-
   }
 
+  autoTradingEnabled = true;
 
-  autoTradingEnabled =
-    true;
-
-
-  log(
-    "AUTO TRADING ENABLED."
-  );
-
+  log("AUTO TRADING ENABLED.");
 
   updateUI();
-
 }
 
 
 function stopAutoTrading(){
 
-  autoTradingEnabled =
-    false;
+  autoTradingEnabled = false;
 
-
-  log(
-    "AUTO TRADING DISABLED."
-  );
-
+  log("AUTO TRADING DISABLED.");
 
   updateUI();
-
 }
 
 
@@ -3331,67 +2636,40 @@ function setupScore(
   ){
 
     return 0;
-
   }
-
 
   const recent =
     digits.slice(-30);
 
-
-  let hits =
-    0;
-
+  let hits = 0;
 
   recent.forEach(
     d => {
 
-      if(
-        contract.test(d)
-      ){
-
+      if(contract.test(d)){
         hits++;
-
       }
 
     }
   );
 
-
   const frequency =
-    hits /
-    recent.length;
+    hits / recent.length;
 
-
-  let streak =
-    0;
-
+  let streak = 0;
 
   for(
-    let i =
-      recent.length - 1;
-
+    let i = recent.length - 1;
     i >= 0;
-
     i--
   ){
 
-    if(
-      contract.test(
-        recent[i]
-      )
-    ){
-
+    if(contract.test(recent[i])){
       streak++;
-
     }else{
-
       break;
-
     }
-
   }
-
 
   const frequencyScore =
     Math.min(
@@ -3399,19 +2677,16 @@ function setupScore(
       frequency * 100
     );
 
-
   const streakScore =
     Math.min(
       100,
       streak * 15
     );
 
-
   return (
     frequencyScore * 0.75 +
     streakScore * 0.25
   );
-
 }
 
 
@@ -3430,67 +2705,40 @@ function recoverySetupScore(
   ){
 
     return 0;
-
   }
-
 
   const recent =
     digits.slice(-30);
 
-
-  let hits =
-    0;
-
+  let hits = 0;
 
   recent.forEach(
     d => {
 
-      if(
-        contract.test(d)
-      ){
-
+      if(contract.test(d)){
         hits++;
-
       }
 
     }
   );
 
-
   const frequency =
-    hits /
-    recent.length;
+    hits / recent.length;
 
-
-  let streak =
-    0;
-
+  let streak = 0;
 
   for(
-    let i =
-      recent.length - 1;
-
+    let i = recent.length - 1;
     i >= 0;
-
     i--
   ){
 
-    if(
-      contract.test(
-        recent[i]
-      )
-    ){
-
+    if(contract.test(recent[i])){
       streak++;
-
     }else{
-
       break;
-
     }
-
   }
-
 
   return Math.min(
     100,
@@ -3500,7 +2748,6 @@ function recoverySetupScore(
       streak * 4
     )
   );
-
 }
 
 
@@ -3519,129 +2766,78 @@ function historicalTest(
   ){
 
     return {
-
       validation:0,
-
       matches:0,
-
       wins:0
-
     };
-
   }
-
 
   const currentWindow =
     digits.slice(-30);
 
-
-  let currentHits =
-    0;
-
+  let currentHits = 0;
 
   currentWindow.forEach(
     d => {
 
-      if(
-        contract.test(d)
-      ){
-
+      if(contract.test(d)){
         currentHits++;
-
       }
 
     }
   );
 
-
   const currentFrequency =
     currentHits /
     currentWindow.length;
-
 
   const targetBucket =
     Math.floor(
       currentFrequency * 20
     );
 
-
-  let matches =
-    0;
-
-  let winsFound =
-    0;
-
+  let matches = 0;
+  let winsFound = 0;
 
   for(
     let i = 30;
-
     i < digits.length - 1;
-
     i++
   ){
 
     const window =
-      digits.slice(
-        i - 30,
-        i
-      );
+      digits.slice(i - 30,i);
 
-
-    let hits =
-      0;
-
+    let hits = 0;
 
     window.forEach(
       d => {
 
-        if(
-          contract.test(d)
-        ){
-
+        if(contract.test(d)){
           hits++;
-
         }
 
       }
     );
 
-
     const frequency =
-      hits /
-      window.length;
-
+      hits / window.length;
 
     const bucket =
       Math.floor(
         frequency * 20
       );
 
-
-    if(
-      bucket !==
-      targetBucket
-    ){
-
+    if(bucket !== targetBucket){
       continue;
-
     }
-
 
     matches++;
 
-
-    if(
-      contract.test(
-        digits[i]
-      )
-    ){
-
+    if(contract.test(digits[i])){
       winsFound++;
-
     }
-
   }
-
 
   const validation =
     matches > 0
@@ -3651,18 +2847,11 @@ function historicalTest(
         ) * 100
       : 0;
 
-
   return {
-
     validation,
-
     matches,
-
-    wins:
-      winsFound
-
+    wins:winsFound
   };
-
 }
 
 
@@ -3681,12 +2870,9 @@ function getPrimaryCandidates(
   ){
 
     return [];
-
   }
 
-
   const candidates = [];
-
 
   Object.values(
     PRIMARY_CONTRACTS
@@ -3700,27 +2886,15 @@ function getPrimaryCandidates(
           contract
         );
 
-
-      /*
-        PRIMARY keeps the original
-        setup-score requirement.
-      */
-
-      if(
-        score < 55
-      ){
-
+      if(score < 55){
         return;
-
       }
-
 
       const historical =
         historicalTest(
           digits,
           contract
         );
-
 
       if(
         historical.validation < 80 ||
@@ -3729,49 +2903,30 @@ function getPrimaryCandidates(
       ){
 
         return;
-
       }
-
 
       candidates.push({
 
-        market:
-          symbol,
-
-        label:
-          contract.label,
-
-        contract_type:
-          contract.contract_type,
-
-        barrier:
-          contract.barrier,
-
-        validation:
-          historical.validation,
-
-        matches:
-          historical.matches,
-
-        setupScore:
-          score,
+        market:symbol,
+        label:contract.label,
+        contract_type:contract.contract_type,
+        barrier:contract.barrier,
+        validation:historical.validation,
+        matches:historical.matches,
+        setupScore:score,
 
         priority:
           PRIMARY_PRIORITY[
             contract.label
           ],
 
-        mode:
-          "PRIMARY"
-
+        mode:"PRIMARY"
       });
 
     }
   );
 
-
   return candidates;
-
 }
 
 
@@ -3790,12 +2945,9 @@ function getRecoveryCandidates(
   ){
 
     return [];
-
   }
 
-
   const candidates = [];
-
 
   Object.values(
     RECOVERY_CONTRACTS
@@ -3804,15 +2956,13 @@ function getRecoveryCandidates(
     contract => {
 
       /*
-        IMPORTANT:
-
         Recovery does NOT have the
         old 55 setup-score blocker.
 
         Only:
 
         >=80% validation
-        >=50 matches
+        >=30 matches
       */
 
       const historical =
@@ -3821,7 +2971,6 @@ function getRecoveryCandidates(
           contract
         );
 
-
       if(
         historical.validation < 80 ||
         historical.matches <
@@ -3829,9 +2978,7 @@ function getRecoveryCandidates(
       ){
 
         return;
-
       }
-
 
       const score =
         recoverySetupScore(
@@ -3839,66 +2986,34 @@ function getRecoveryCandidates(
           contract
         );
 
-
       candidates.push({
 
-        market:
-          symbol,
-
-        label:
-          contract.label,
-
-        contract_type:
-          contract.contract_type,
-
-        barrier:
-          contract.barrier,
-
-        validation:
-          historical.validation,
-
-        matches:
-          historical.matches,
-
-        setupScore:
-          score,
+        market:symbol,
+        label:contract.label,
+        contract_type:contract.contract_type,
+        barrier:contract.barrier,
+        validation:historical.validation,
+        matches:historical.matches,
+        setupScore:score,
 
         priority:
           RECOVERY_PRIORITY[
             contract.label
           ],
 
-        mode:
-          "RECOVERY"
-
+        mode:"RECOVERY"
       });
 
     }
   );
 
-
   return candidates;
-
 }
 
 
 /* =========================================================
    GLOBAL CANDIDATE COMPARISON
 ========================================================= */
-
-/*
-   THIS IS THE IMPORTANT CHANGE.
-
-   The bot does NOT simply trade the market
-   whose tick arrived first.
-
-   It gathers qualifying candidates from
-   ALL digit-eligible markets and then chooses:
-
-   1. Highest validation %
-   2. Highest matches
-   3. Contract preference
-*/
 
 function compareCandidates(
   a,
@@ -3914,9 +3029,7 @@ function compareCandidates(
       b.validation -
       a.validation
     );
-
   }
-
 
   if(
     b.matches !==
@@ -3927,9 +3040,7 @@ function compareCandidates(
       b.matches -
       a.matches
     );
-
   }
-
 
   if(
     a.priority !==
@@ -3940,9 +3051,7 @@ function compareCandidates(
       a.priority -
       b.priority
     );
-
   }
-
 
   if(
     b.setupScore !==
@@ -3953,14 +3062,11 @@ function compareCandidates(
       b.setupScore -
       a.setupScore
     );
-
   }
-
 
   return a.market.localeCompare(
     b.market
   );
-
 }
 
 
@@ -3972,25 +3078,18 @@ function findBestPrimarySignal(){
 
   const allCandidates = [];
 
-
   digitEligibleMarkets.forEach(
     (market,symbol) => {
 
       const digits =
-        marketTicks[
-          symbol
-        ];
-
+        marketTicks[symbol];
 
       if(
         !digits ||
         digits.length < 100
       ){
-
         return;
-
       }
-
 
       const candidates =
         getPrimaryCandidates(
@@ -3998,31 +3097,21 @@ function findBestPrimarySignal(){
           digits
         );
 
-
       allCandidates.push(
         ...candidates
       );
-
     }
   );
 
-
-  if(
-    !allCandidates.length
-  ){
-
+  if(!allCandidates.length){
     return null;
-
   }
-
 
   allCandidates.sort(
     compareCandidates
   );
 
-
   return allCandidates[0];
-
 }
 
 
@@ -4034,25 +3123,18 @@ function findBestRecoverySignal(){
 
   const allCandidates = [];
 
-
   digitEligibleMarkets.forEach(
     (market,symbol) => {
 
       const digits =
-        marketTicks[
-          symbol
-        ];
-
+        marketTicks[symbol];
 
       if(
         !digits ||
         digits.length < 100
       ){
-
         return;
-
       }
-
 
       const candidates =
         getRecoveryCandidates(
@@ -4060,31 +3142,21 @@ function findBestRecoverySignal(){
           digits
         );
 
-
       allCandidates.push(
         ...candidates
       );
-
     }
   );
 
-
-  if(
-    !allCandidates.length
-  ){
-
+  if(!allCandidates.length){
     return null;
-
   }
-
 
   allCandidates.sort(
     compareCandidates
   );
 
-
   return allCandidates[0];
-
 }
 
 
@@ -4094,72 +3166,29 @@ function findBestRecoverySignal(){
 
 function scanForBestSignal(){
 
-  if(
-    !scannerRunning
-  ){
-
+  if(!scannerRunning){
     return;
-
   }
 
-
-  if(
-    tradeInFlight
-  ){
-
+  if(tradeInFlight){
     return;
-
   }
 
-
-  if(
-    !digitEligibleMarkets.size
-  ){
-
+  if(!digitEligibleMarkets.size){
     return;
-
   }
 
-
-  if(
-    totalTrades >=
-    getMaxTrades()
-  ){
-
+  if(totalTrades >= getMaxTrades()){
     return;
-
   }
 
-
-  if(
-    sessionPL >=
-    getSessionTP()
-  ){
-
+  if(sessionPL >= getSessionTP()){
     return;
-
   }
 
-
-  if(
-    sessionPL <=
-    -getSessionSL()
-  ){
-
+  if(sessionPL <= -getSessionSL()){
     return;
-
   }
-
-
-  /*
-    PRIMARY keeps a 3.5 second
-    spacing between normal trades.
-
-    RECOVERY DOES NOT WAIT.
-
-    This is the fix for the delayed
-    recovery trade.
-  */
 
   if(
     !recoveryMode &&
@@ -4169,16 +3198,11 @@ function scanForBestSignal(){
   ){
 
     return;
-
   }
-
 
   let signal;
 
-
-  if(
-    recoveryMode
-  ){
+  if(recoveryMode){
 
     signal =
       findBestRecoverySignal();
@@ -4187,21 +3211,11 @@ function scanForBestSignal(){
 
     signal =
       findBestPrimarySignal();
-
   }
-
 
   if(!signal){
-
     return;
-
   }
-
-
-  /*
-    Prevent duplicate buying of the exact
-    same signal on the exact same tick.
-  */
 
   const signalKey =
     [
@@ -4209,9 +3223,7 @@ function scanForBestSignal(){
       signal.market,
       signal.label,
       signal.tick
-    ]
-    .join("|");
-
+    ].join("|");
 
   if(
     signalKey ===
@@ -4219,14 +3231,7 @@ function scanForBestSignal(){
   ){
 
     return;
-
   }
-
-
-  /*
-    Do not repeatedly re-log the same
-    qualifying candidate before a trade.
-  */
 
   const currentKey =
     [
@@ -4236,9 +3241,7 @@ function scanForBestSignal(){
       signal.validation.toFixed(3),
       signal.matches,
       signal.tick
-    ]
-    .join("|");
-
+    ].join("|");
 
   if(
     pendingSignal &&
@@ -4247,34 +3250,24 @@ function scanForBestSignal(){
   ){
 
     return;
-
   }
-
 
   signal.tick =
     marketLastTick[
       signal.market
     ];
 
-
   signal.scanKey =
     currentKey;
-
 
   pendingSignal =
     signal;
 
-
   signalsFound++;
-
 
   renderCurrentSignal();
 
-
-  if(
-    signal.mode ===
-    "RECOVERY"
-  ){
+  if(signal.mode === "RECOVERY"){
 
     log(
       "RECOVERY QUALIFIED: " +
@@ -4300,20 +3293,11 @@ function scanForBestSignal(){
       signal.matches +
       " | PRIMARY"
     );
-
   }
 
-
-  if(
-    autoTradingEnabled
-  ){
-
-    executeSignal(
-      signal
-    );
-
+  if(autoTradingEnabled){
+    executeSignal(signal);
   }
-
 }
 
 
@@ -4325,49 +3309,38 @@ function renderCurrentSignal(){
 
   if(!pendingSignal){
 
-    $("signalName")
-      .textContent =
+    $("signalName").textContent =
       "NO SIGNAL";
 
-
-    $("signalMeta")
-      .textContent =
+    $("signalMeta").textContent =
       "Waiting for a qualified setup.";
 
-
     return;
-
   }
 
+  $("signalName").textContent =
+    pendingSignal.market +
+    " " +
+    pendingSignal.label;
 
-  $("signalName")
-    .textContent =
-      pendingSignal.market +
-      " " +
-      pendingSignal.label;
+  $("signalMeta").innerHTML =
+    "Validation: <strong>" +
+    pendingSignal.validation.toFixed(1) +
+    "%</strong>" +
 
+    " | Matches: <strong>" +
+    pendingSignal.matches +
+    "</strong>" +
 
-  $("signalMeta")
-    .innerHTML =
+    " | Mode: <strong>" +
+    pendingSignal.mode +
+    "</strong>" +
 
-      "Validation: <strong>" +
-      pendingSignal.validation.toFixed(1) +
-      "%</strong>" +
-
-      " | Matches: <strong>" +
-      pendingSignal.matches +
-      "</strong>" +
-
-      " | Mode: <strong>" +
-      pendingSignal.mode +
-      "</strong>" +
-
-      " | Priority: <strong>" +
-      (
-        pendingSignal.priority + 1
-      ) +
-      "</strong>";
-
+    " | Priority: <strong>" +
+    (
+      pendingSignal.priority + 1
+    ) +
+    "</strong>";
 }
 
 
@@ -4375,9 +3348,7 @@ function renderCurrentSignal(){
    EXECUTE SIGNAL
 ========================================================= */
 
-function executeSignal(
-  signal
-){
+function executeSignal(signal){
 
   if(
     !autoTradingEnabled ||
@@ -4386,9 +3357,7 @@ function executeSignal(
   ){
 
     return;
-
   }
-
 
   if(
     !tradingWS ||
@@ -4401,9 +3370,7 @@ function executeSignal(
     );
 
     return;
-
   }
-
 
   if(
     !digitEligibleMarkets.has(
@@ -4412,50 +3379,26 @@ function executeSignal(
   ){
 
     return;
-
   }
 
-
-  if(
-    totalTrades >=
-    getMaxTrades()
-  ){
-
+  if(totalTrades >= getMaxTrades()){
     return;
-
   }
 
-
   if(
-    sessionPL >=
-    getSessionTP() ||
-    sessionPL <=
-    -getSessionSL()
+    sessionPL >= getSessionTP() ||
+    sessionPL <= -getSessionSL()
   ){
 
     stopAutoTrading();
-
     return;
-
   }
 
+  tradeInFlight = true;
 
-  tradeInFlight =
-    true;
+  lastTradeTime = Date.now();
 
-
-  lastTradeTime =
-    Date.now();
-
-
-  const stake =
-    getStake();
-
-
-  /*
-    Record the signal immediately so the
-    same tick cannot be bought twice.
-  */
+  const stake = getStake();
 
   lastBoughtSignalKey =
     [
@@ -4463,14 +3406,9 @@ function executeSignal(
       signal.market,
       signal.label,
       signal.tick
-    ]
-    .join("|");
+    ].join("|");
 
-
-  if(
-    signal.mode ===
-    "RECOVERY"
-  ){
+  if(signal.mode === "RECOVERY"){
 
     log(
       "RECOVERY TRADE: " +
@@ -4499,64 +3437,28 @@ function executeSignal(
       " | $" +
       stake.toFixed(2)
     );
-
   }
-
 
   const payload = {
 
-    proposal:
-      1,
-
-    amount:
-      stake,
-
-    basis:
-      "stake",
-
-    contract_type:
-      signal.contract_type,
-
-    currency:
-      "USD",
-
-    duration:
-      1,
-
-    duration_unit:
-      "t",
-
-    underlying_symbol:
-      signal.market,
-
-    req_id:
-      req()
-
+    proposal:1,
+    amount:stake,
+    basis:"stake",
+    contract_type:signal.contract_type,
+    currency:"USD",
+    duration:1,
+    duration_unit:"t",
+    underlying_symbol:signal.market,
+    req_id:req()
   };
 
-
-  if(
-    signal.barrier !==
-    null
-  ){
-
-    payload.barrier =
-      signal.barrier;
-
+  if(signal.barrier !== null){
+    payload.barrier = signal.barrier;
   }
 
-
-  if(
-    !sendTrading(
-      payload
-    )
-  ){
-
-    tradeInFlight =
-      false;
-
+  if(!sendTrading(payload)){
+    tradeInFlight = false;
   }
-
 }
 
 
@@ -4564,39 +3466,26 @@ function executeSignal(
    PROPOSAL
 ========================================================= */
 
-function handleProposal(
-  data
-){
+function handleProposal(data){
 
   const proposal =
     data.proposal;
 
-
   if(!proposal){
 
-    tradeInFlight =
-      false;
-
+    tradeInFlight = false;
     return;
-
   }
-
 
   const proposalId =
     proposal.id;
 
-
   const askPrice =
-    Number(
-      proposal.ask_price
-    );
-
+    Number(proposal.ask_price);
 
   if(
     !proposalId ||
-    !Number.isFinite(
-      askPrice
-    ) ||
+    !Number.isFinite(askPrice) ||
     askPrice <= 0
   ){
 
@@ -4604,37 +3493,23 @@ function handleProposal(
       "Proposal rejected: invalid proposal price/ID."
     );
 
-
-    tradeInFlight =
-      false;
-
+    tradeInFlight = false;
 
     return;
-
   }
-
 
   log(
     "Proposal accepted: ask $" +
     askPrice.toFixed(2)
   );
 
-
   sendTrading({
 
-    buy:
-      String(
-        proposalId
-      ),
-
-    price:
-      askPrice,
-
-    req_id:
-      req()
+    buy:String(proposalId),
+    price:askPrice,
+    req_id:req()
 
   });
-
 }
 
 
@@ -4642,75 +3517,49 @@ function handleProposal(
    BUY
 ========================================================= */
 
-function handleBuy(
-  data
-){
+function handleBuy(data){
 
   const buy =
     data.buy;
 
-
   if(!buy){
 
-    tradeInFlight =
-      false;
-
+    tradeInFlight = false;
     return;
-
   }
-
 
   const contractId =
     buy.contract_id ||
     buy.contractId;
 
-
   if(!contractId){
 
-    tradeInFlight =
-      false;
-
+    tradeInFlight = false;
     return;
-
   }
 
-
   openContractId =
-    String(
-      contractId
-    );
-
+    String(contractId);
 
   totalTrades++;
 
-
-  if(
-    recoveryMode
-  ){
-
+  if(recoveryMode){
     recoveryTrades++;
-
   }
-
 
   const signal =
     pendingSignal;
 
-
   if(signal){
 
-    lastCompletedSignal =
-      {
-        ...signal
-      };
-
+    lastCompletedSignal = {
+      ...signal
+    };
   }
-
 
   log(
     (
-      signal?.mode ===
-      "RECOVERY"
+      signal?.mode === "RECOVERY"
         ? "RECOVERY CONTRACT BOUGHT: "
         : "CONTRACT BOUGHT: "
     ) +
@@ -4727,11 +3576,9 @@ function handleBuy(
     getStake().toFixed(2)
   );
 
-
   addTradeRecord({
 
-    time:
-      nowTime(),
+    time:nowTime(),
 
     market:
       signal?.market ||
@@ -4741,62 +3588,38 @@ function handleBuy(
       signal?.label ||
       "-",
 
-    stake:
-      getStake(),
+    stake:getStake(),
 
     mode:
       signal?.mode ||
       "-",
 
-    result:
-      "OPEN",
+    result:"OPEN",
 
-    pl:
-      0,
+    pl:0,
 
     contractId:
-      String(
-        contractId
-      )
+      String(contractId)
 
   });
-
 
   sendTrading({
 
-    proposal_open_contract:
-      1,
-
-    contract_id:
-      contractId,
-
-    subscribe:
-      1,
-
-    req_id:
-      req()
+    proposal_open_contract:1,
+    contract_id:contractId,
+    subscribe:1,
+    req_id:req()
 
   });
-
-
-  /*
-    IMPORTANT:
-    Do NOT subscribe to balance again.
-  */
 
   sendTrading({
 
-    balance:
-      1,
-
-    req_id:
-      req()
+    balance:1,
+    req_id:req()
 
   });
-
 
   updateUI();
-
 }
 
 
@@ -4804,20 +3627,14 @@ function handleBuy(
    OPEN CONTRACT
 ========================================================= */
 
-function handleOpenContract(
-  data
-){
+function handleOpenContract(data){
 
   const contract =
     data.proposal_open_contract;
 
-
   if(!contract){
-
     return;
-
   }
-
 
   const contractId =
     String(
@@ -4825,71 +3642,47 @@ function handleOpenContract(
       ""
     );
 
-
   if(
     openContractId &&
     contractId !==
-    String(
-      openContractId
-    )
+    String(openContractId)
   ){
 
     return;
-
   }
-
 
   const status =
     String(
       contract.status ||
       ""
-    )
-    .toLowerCase();
-
+    ).toLowerCase();
 
   const isWon =
     status === "won" ||
     contract.is_won === 1 ||
     contract.is_won === true;
 
-
   const isLost =
     status === "lost" ||
     contract.is_lost === 1 ||
     contract.is_lost === true;
 
-
-  if(
-    !isWon &&
-    !isLost
-  ){
-
+  if(!isWon && !isLost){
     return;
-
   }
 
-
   const result =
-    isWon
-      ? "WON"
-      : "LOST";
-
+    isWon ? "WON" : "LOST";
 
   const profit =
-    Number(
-      contract.profit
-    );
-
+    Number(contract.profit);
 
   finishTrade(
     result,
-    Number.isFinite(
-      profit
-    )
+    Number.isFinite(profit)
       ? profit
       : 0
   );
-
 }
 
 
@@ -4903,99 +3696,55 @@ function finishTrade(
 ){
 
   if(!tradeInFlight){
-
     return;
-
   }
 
+  tradeInFlight = false;
+  openContractId = null;
 
-  tradeInFlight =
-    false;
-
-
-  openContractId =
-    null;
-
-
-  sessionPL +=
-    pl;
-
+  sessionPL += pl;
 
   const finishedSignal =
     pendingSignal
-      ? {
-          ...pendingSignal
-        }
+      ? {...pendingSignal}
       : null;
 
-
-  if(
-    result ===
-    "WON"
-  ){
+  if(result === "WON"){
 
     wins++;
-
 
     log(
       "TRADE WON: +" +
       pl.toFixed(2)
     );
 
+    if(recoveryMode){
 
-    if(
-      recoveryMode
-    ){
-
-      recoveryMode =
-        false;
-
-
-      recoveryTrades =
-        0;
-
+      recoveryMode = false;
+      recoveryTrades = 0;
 
       log(
         "RECOVERY WIN — returning to normal scan."
       );
-
     }
 
   }else{
 
     losses++;
 
-
     log(
       "TRADE LOST: " +
       pl.toFixed(2)
     );
 
+    if(!recoveryMode){
 
-    if(
-      !recoveryMode
-    ){
-
-      recoveryMode =
-        true;
-
-
-      recoveryTrades =
-        0;
-
-
-      /*
-        THIS IS THE IMPORTANT PART.
-
-        Recovery becomes active immediately.
-        There is NO 3.5 second recovery
-        cooldown.
-      */
+      recoveryMode = true;
+      recoveryTrades = 0;
 
       log(
         "PRIMARY LOSS — recovery mode activated."
       );
-
 
       log(
         "RECOVERY SCAN ACTIVE — " +
@@ -5003,71 +3752,40 @@ function finishTrade(
         " digit-eligible markets × 4 recovery contracts."
       );
 
-
       log(
         "RECOVERY WILL TRADE THE HIGHEST QUALIFYING VALIDATION %."
       );
 
-
-      /*
-        Clear previous duplicate key so the
-        recovery system can immediately act
-        on the next qualifying tick.
-      */
-
-      lastBoughtSignalKey =
-        "";
+      lastBoughtSignalKey = "";
 
     }else{
 
-      recoveryMode =
-        false;
-
-
-      recoveryTrades =
-        0;
-
+      recoveryMode = false;
+      recoveryTrades = 0;
 
       log(
         "RECOVERY LOSS — normal scan resumed."
       );
-
     }
-
   }
 
-
   if(finishedSignal){
-
     addSignalHistory(
       finishedSignal,
       result
     );
-
   }
-
 
   updateTradeRecord(
     result,
     pl
   );
 
-
-  pendingSignal =
-    null;
-
+  pendingSignal = null;
 
   renderCurrentSignal();
 
-
   updateUI();
-
-
-  /*
-    Immediately perform a recovery scan after
-    a primary loss instead of waiting for a
-    separate cooldown timer.
-  */
 
   if(
     recoveryMode &&
@@ -5077,21 +3795,16 @@ function finishTrade(
     const immediateRecovery =
       findBestRecoverySignal();
 
-
-    if(
-      immediateRecovery
-    ){
+    if(immediateRecovery){
 
       immediateRecovery.tick =
         marketLastTick[
           immediateRecovery.market
         ];
 
-
       immediateRecovery.scanKey =
         "IMMEDIATE-" +
         Date.now();
-
 
       log(
         "IMMEDIATE RECOVERY CANDIDATE: " +
@@ -5104,22 +3817,15 @@ function finishTrade(
         immediateRecovery.matches
       );
 
-
       pendingSignal =
         immediateRecovery;
 
-
       renderCurrentSignal();
 
-
-      if(
-        autoTradingEnabled
-      ){
-
+      if(autoTradingEnabled){
         executeSignal(
           immediateRecovery
         );
-
       }
 
     }else{
@@ -5129,62 +3835,37 @@ function finishTrade(
         getMinMatches() +
         " matches — continuing scan."
       );
-
     }
-
   }
 
-
-  if(
-    sessionPL >=
-    getSessionTP()
-  ){
+  if(sessionPL >= getSessionTP()){
 
     log(
       "SESSION TAKE-PROFIT REACHED."
     );
 
-
     stopAutoTrading();
-
-
     return;
-
   }
 
-
-  if(
-    sessionPL <=
-    -getSessionSL()
-  ){
+  if(sessionPL <= -getSessionSL()){
 
     log(
       "SESSION STOP-LOSS REACHED."
     );
 
-
     stopAutoTrading();
-
-
     return;
-
   }
 
-
-  if(
-    totalTrades >=
-    getMaxTrades()
-  ){
+  if(totalTrades >= getMaxTrades()){
 
     log(
       "MAXIMUM SESSION TRADES REACHED."
     );
 
-
     stopAutoTrading();
-
   }
-
 }
 
 
@@ -5192,27 +3873,15 @@ function finishTrade(
    TRADE HISTORY
 ========================================================= */
 
-function addTradeRecord(
-  record
-){
+function addTradeRecord(record){
 
-  actualTrades.unshift(
-    record
-  );
+  actualTrades.unshift(record);
 
-
-  if(
-    actualTrades.length >
-    50
-  ){
-
+  if(actualTrades.length > 50){
     actualTrades.pop();
-
   }
 
-
   renderTrades();
-
 }
 
 
@@ -5228,24 +3897,14 @@ function updateTradeRecord(
         "OPEN"
     );
 
-
   if(!target){
-
     return;
-
   }
 
-
-  target.result =
-    result;
-
-
-  target.pl =
-    pl;
-
+  target.result = result;
+  target.pl = pl;
 
   renderTrades();
-
 }
 
 
@@ -5254,60 +3913,41 @@ function renderTrades(){
   const body =
     $("tradeHistory");
 
-
-  if(
-    !actualTrades.length
-  ){
+  if(!actualTrades.length){
 
     body.innerHTML =
       '<tr><td colspan="7" class="small">No trades yet.</td></tr>';
 
     return;
-
   }
 
-
-  body.innerHTML =
-    "";
-
+  body.innerHTML = "";
 
   actualTrades.forEach(
     trade => {
 
       const row =
-        document.createElement(
-          "tr"
-        );
-
+        document.createElement("tr");
 
       const cls =
-        trade.result ===
-        "WON"
+        trade.result === "WON"
           ? "win"
-          : trade.result ===
-            "LOST"
-              ? "loss"
-              : "neutral";
-
+          : trade.result === "LOST"
+            ? "loss"
+            : "neutral";
 
       row.innerHTML = `
 
         <td>
-          ${escapeHTML(
-            trade.time
-          )}
+          ${escapeHTML(trade.time)}
         </td>
 
         <td>
-          ${escapeHTML(
-            trade.market
-          )}
+          ${escapeHTML(trade.market)}
         </td>
 
         <td>
-          ${escapeHTML(
-            trade.contract
-          )}
+          ${escapeHTML(trade.contract)}
         </td>
 
         <td>
@@ -5317,22 +3957,16 @@ function renderTrades(){
         </td>
 
         <td>
-          ${escapeHTML(
-            trade.mode
-          )}
+          ${escapeHTML(trade.mode)}
         </td>
 
         <td class="${cls}">
-          ${escapeHTML(
-            trade.result
-          )}
+          ${escapeHTML(trade.result)}
         </td>
 
         <td class="${cls}">
           ${
-            Number(
-              trade.pl
-            ) >= 0
+            Number(trade.pl) >= 0
               ? "+"
               : ""
           }$${Number(
@@ -5342,14 +3976,9 @@ function renderTrades(){
 
       `;
 
-
-      body.appendChild(
-        row
-      );
-
+      body.appendChild(row);
     }
   );
-
 }
 
 
@@ -5363,50 +3992,26 @@ function addSignalHistory(
 ){
 
   if(!signal){
-
     return;
-
   }
-
 
   signalHistory.unshift({
 
-    time:
-      nowTime(),
-
-    market:
-      signal.market,
-
-    contract:
-      signal.label,
-
-    validation:
-      signal.validation,
-
-    matches:
-      signal.matches,
-
-    mode:
-      signal.mode,
-
-    result:
-      result
+    time:nowTime(),
+    market:signal.market,
+    contract:signal.label,
+    validation:signal.validation,
+    matches:signal.matches,
+    mode:signal.mode,
+    result:result
 
   });
 
-
-  if(
-    signalHistory.length >
-    50
-  ){
-
+  if(signalHistory.length > 50){
     signalHistory.pop();
-
   }
 
-
   renderSignalHistory();
-
 }
 
 
@@ -5415,57 +4020,39 @@ function renderSignalHistory(){
   const body =
     $("signalHistory");
 
-
-  if(
-    !signalHistory.length
-  ){
+  if(!signalHistory.length){
 
     body.innerHTML =
       '<tr><td colspan="7" class="small">No completed signals.</td></tr>';
 
     return;
-
   }
 
-
-  body.innerHTML =
-    "";
-
+  body.innerHTML = "";
 
   signalHistory.forEach(
     signal => {
 
       const row =
-        document.createElement(
-          "tr"
-        );
-
+        document.createElement("tr");
 
       const cls =
-        signal.result ===
-        "WON"
+        signal.result === "WON"
           ? "win"
           : "loss";
-
 
       row.innerHTML = `
 
         <td>
-          ${escapeHTML(
-            signal.time
-          )}
+          ${escapeHTML(signal.time)}
         </td>
 
         <td>
-          ${escapeHTML(
-            signal.market
-          )}
+          ${escapeHTML(signal.market)}
         </td>
 
         <td>
-          ${escapeHTML(
-            signal.contract
-          )}
+          ${escapeHTML(signal.contract)}
         </td>
 
         <td>
@@ -5479,27 +4066,18 @@ function renderSignalHistory(){
         </td>
 
         <td>
-          ${escapeHTML(
-            signal.mode
-          )}
+          ${escapeHTML(signal.mode)}
         </td>
 
         <td class="${cls}">
-          ${escapeHTML(
-            signal.result
-          )}
+          ${escapeHTML(signal.result)}
         </td>
 
       `;
 
-
-      body.appendChild(
-        row
-      );
-
+      body.appendChild(row);
     }
   );
-
 }
 
 
@@ -5507,9 +4085,7 @@ function renderSignalHistory(){
    MARKET CLASSIFICATION
 ========================================================= */
 
-function marketClass(
-  item
-){
+function marketClass(item){
 
   const symbol =
     String(
@@ -5518,14 +4094,12 @@ function marketClass(
       ""
     );
 
-
   const name =
     String(
       item?.underlying_symbol_name ||
       item?.display_name ||
       ""
     );
-
 
   const type =
     String(
@@ -5534,13 +4108,11 @@ function marketClass(
       ""
     );
 
-
   const market =
     String(
       item?.market ||
       ""
     );
-
 
   const text =
     (
@@ -5551,14 +4123,11 @@ function marketClass(
       type +
       " " +
       market
-    )
-    .toLowerCase();
-
+    ).toLowerCase();
 
   const explicitSynthetic =
     type.toLowerCase() ===
     "synthetic_index";
-
 
   const knownSynthetic =
     /^r_\d+$/i.test(symbol) ||
@@ -5574,16 +4143,13 @@ function marketClass(
     text.includes("range break") ||
     text.includes("step index");
 
-
   if(
     !explicitSynthetic &&
     !knownSynthetic
   ){
 
     return null;
-
   }
-
 
   if(
     /^r_\d+$/i.test(symbol) ||
@@ -5592,9 +4158,7 @@ function marketClass(
   ){
 
     return "VOLATILITY";
-
   }
-
 
   if(
     /^boom\d+/i.test(symbol) ||
@@ -5602,9 +4166,7 @@ function marketClass(
   ){
 
     return "BOOM";
-
   }
-
 
   if(
     /^crash\d+/i.test(symbol) ||
@@ -5612,12 +4174,9 @@ function marketClass(
   ){
 
     return "CRASH";
-
   }
 
-
   return "OTHER";
-
 }
 
 
@@ -5630,212 +4189,156 @@ function connectPublic(){
   if(
     publicWS &&
     (
-      publicWS.readyState ===
-      WebSocket.OPEN ||
-
-      publicWS.readyState ===
-      WebSocket.CONNECTING
+      publicWS.readyState === WebSocket.OPEN ||
+      publicWS.readyState === WebSocket.CONNECTING
     )
   ){
 
     return;
-
   }
-
 
   const generation =
     ++publicGeneration;
-
 
   clearTimeout(
     publicReconnectTimer
   );
 
-
-  publicReconnectTimer =
-    null;
-
+  publicReconnectTimer = null;
 
   publicWS =
     new WebSocket(
       PUBLIC_WS
     );
 
+  publicWS.onopen = () => {
 
-  publicWS.onopen =
-    () => {
+    if(
+      generation !==
+      publicGeneration
+    ){
+      return;
+    }
 
-      if(
-        generation !==
-        publicGeneration
-      ){
+    log(
+      "Public market WebSocket connected."
+    );
 
-        return;
+    lastPublicMessage =
+      Date.now();
 
-      }
+    publicWS.send(
+      JSON.stringify({
 
+        active_symbols:"brief",
+        req_id:req()
 
-      log(
-        "Public market WebSocket connected."
+      })
+    );
+
+    clearInterval(
+      publicHeartbeatTimer
+    );
+
+    clearInterval(
+      publicWatchdogTimer
+    );
+
+    publicHeartbeatTimer =
+      setInterval(
+        () => {
+
+          if(
+            publicWS &&
+            publicWS.readyState ===
+            WebSocket.OPEN
+          ){
+
+            publicWS.send(
+              JSON.stringify({
+                ping:1,
+                req_id:req()
+              })
+            );
+          }
+
+        },
+        20000
       );
 
+    publicWatchdogTimer =
+      setInterval(
+        () => {
 
-      lastPublicMessage =
-        Date.now();
+          if(
+            scannerRunning &&
+            Date.now() -
+            lastPublicMessage >
+            45000
+          ){
 
+            log(
+              "Public watchdog reconnect."
+            );
 
-      publicWS.send(
-        JSON.stringify({
+            reconnectPublic();
+          }
 
-          active_symbols:
-            "brief",
-
-          req_id:
-            req()
-
-        })
+        },
+        15000
       );
+  };
 
 
-      clearInterval(
-        publicHeartbeatTimer
-      );
+  publicWS.onmessage = event => {
+
+    if(
+      generation !==
+      publicGeneration
+    ){
+      return;
+    }
+
+    lastPublicMessage =
+      Date.now();
+
+    handlePublicMessage(
+      event.data
+    );
+  };
 
 
-      clearInterval(
-        publicWatchdogTimer
-      );
+  publicWS.onerror = () => {
+
+    log(
+      "Public WebSocket error."
+    );
+  };
 
 
-      publicHeartbeatTimer =
-        setInterval(
-          () => {
+  publicWS.onclose = event => {
 
-            if(
-              publicWS &&
-              publicWS.readyState ===
-              WebSocket.OPEN
-            ){
+    clearInterval(
+      publicHeartbeatTimer
+    );
 
-              publicWS.send(
-                JSON.stringify({
+    clearInterval(
+      publicWatchdogTimer
+    );
 
-                  ping:1,
+    publicHeartbeatTimer = null;
+    publicWatchdogTimer = null;
+    publicWS = null;
 
-                  req_id:req()
+    log(
+      "Public WebSocket closed. Code " +
+      event.code
+    );
 
-                })
-              );
-
-            }
-
-          },
-          20000
-        );
-
-
-      publicWatchdogTimer =
-        setInterval(
-          () => {
-
-            if(
-              scannerRunning &&
-              Date.now() -
-              lastPublicMessage >
-              45000
-            ){
-
-              log(
-                "Public watchdog reconnect."
-              );
-
-
-              reconnectPublic();
-
-            }
-
-          },
-          15000
-        );
-
-    };
-
-
-  publicWS.onmessage =
-    event => {
-
-      if(
-        generation !==
-        publicGeneration
-      ){
-
-        return;
-
-      }
-
-
-      lastPublicMessage =
-        Date.now();
-
-
-      handlePublicMessage(
-        event.data
-      );
-
-    };
-
-
-  publicWS.onerror =
-    () => {
-
-      log(
-        "Public WebSocket error."
-      );
-
-    };
-
-
-  publicWS.onclose =
-    event => {
-
-      clearInterval(
-        publicHeartbeatTimer
-      );
-
-
-      clearInterval(
-        publicWatchdogTimer
-      );
-
-
-      publicHeartbeatTimer =
-        null;
-
-
-      publicWatchdogTimer =
-        null;
-
-
-      publicWS =
-        null;
-
-
-      log(
-        "Public WebSocket closed. Code " +
-        event.code
-      );
-
-
-      if(
-        scannerRunning
-      ){
-
-        schedulePublicReconnect();
-
-      }
-
-    };
-
+    if(scannerRunning){
+      schedulePublicReconnect();
+    }
+  };
 }
 
 
@@ -5851,9 +4354,7 @@ function schedulePublicReconnect(){
   ){
 
     return;
-
   }
-
 
   publicReconnectTimer =
     setTimeout(
@@ -5862,19 +4363,13 @@ function schedulePublicReconnect(){
         publicReconnectTimer =
           null;
 
-
-        if(
-          scannerRunning
-        ){
-
+        if(scannerRunning){
           connectPublic();
-
         }
 
       },
       3000
     );
-
 }
 
 
@@ -5884,32 +4379,20 @@ function reconnectPublic(){
     publicReconnectTimer
   );
 
-
-  publicReconnectTimer =
-    null;
-
+  publicReconnectTimer = null;
 
   if(publicWS){
 
     try{
-
       publicWS.close();
-
     }catch(e){}
-
   }
 
-
-  publicWS =
-    null;
-
+  publicWS = null;
 
   if(scannerRunning){
-
     connectPublic();
-
   }
-
 }
 
 
@@ -5921,59 +4404,38 @@ function stopPublic(){
 
   ++publicGeneration;
 
-
   clearTimeout(
     publicReconnectTimer
   );
 
-
-  publicReconnectTimer =
-    null;
-
+  publicReconnectTimer = null;
 
   clearInterval(
     publicHeartbeatTimer
   );
 
-
   clearInterval(
     publicWatchdogTimer
   );
 
-
-  publicHeartbeatTimer =
-    null;
-
-
-  publicWatchdogTimer =
-    null;
-
+  publicHeartbeatTimer = null;
+  publicWatchdogTimer = null;
 
   if(publicWS){
 
     try{
-
       publicWS.close();
-
     }catch(e){}
-
   }
 
-
-  publicWS =
-    null;
-
+  publicWS = null;
 
   marketSubscriptions.clear();
 
-  contractsForQueue =
-    [];
-
-  contractsForRunning =
-    false;
+  contractsForQueue = [];
+  contractsForRunning = false;
 
   ++contractsForGeneration;
-
 }
 
 
@@ -5981,27 +4443,21 @@ function stopPublic(){
    PUBLIC MESSAGE
 ========================================================= */
 
-function handlePublicMessage(
-  raw
-){
+function handlePublicMessage(raw){
 
   let data;
-
 
   try{
 
     data =
-      typeof raw ===
-      "string"
+      typeof raw === "string"
         ? JSON.parse(raw)
         : raw;
 
   }catch(e){
 
     return;
-
   }
-
 
   if(data.error){
 
@@ -6009,14 +4465,10 @@ function handlePublicMessage(
       data?.echo_req?.req_id ||
       data?.req_id;
 
-
     const info =
       publicRequestMap.get(
-        Number(
-          errorReq
-        )
+        Number(errorReq)
       );
-
 
     if(
       info?.type ===
@@ -6024,15 +4476,10 @@ function handlePublicMessage(
     ){
 
       publicRequestMap.delete(
-        Number(
-          errorReq
-        )
+        Number(errorReq)
       );
 
-
-      contractsForRunning =
-        false;
-
+      contractsForRunning = false;
 
       setTimeout(
         () =>
@@ -6042,22 +4489,16 @@ function handlePublicMessage(
         80
       );
 
-
       return;
-
     }
-
 
     log(
       "PUBLIC API ERROR: " +
       extractApiError(data)
     );
 
-
     return;
-
   }
-
 
   if(
     data.msg_type ===
@@ -6065,57 +4506,37 @@ function handlePublicMessage(
   ){
 
     processActiveSymbols(
-      data.active_symbols ||
-      []
+      data.active_symbols || []
     );
 
-
     return;
-
   }
-
 
   if(
     data.msg_type ===
     "contracts_for"
   ){
 
-    handleContractsFor(
-      data
-    );
-
-
+    handleContractsFor(data);
     return;
-
   }
-
 
   if(
     data.msg_type ===
     "history"
   ){
 
-    handleHistory(
-      data
-    );
-
-
+    handleHistory(data);
     return;
-
   }
-
 
   if(
     data.msg_type ===
     "tick"
   ){
 
-    handleTick(
-      data
-    );
-
+    handleTick(data);
   }
-
 }
 
 
@@ -6123,18 +4544,12 @@ function handlePublicMessage(
    ACTIVE SYMBOLS
 ========================================================= */
 
-function processActiveSymbols(
-  items
-){
+function processActiveSymbols(items){
 
   allSyntheticMarkets.clear();
-
   volatilityMarkets.clear();
-
   digitEligibleMarkets.clear();
-
   digitContractsBySymbol.clear();
-
 
   items.forEach(
     item => {
@@ -6146,26 +4561,16 @@ function processActiveSymbols(
           ""
         );
 
-
       if(!symbol){
-
         return;
-
       }
-
 
       const cls =
-        marketClass(
-          item
-        );
-
+        marketClass(item);
 
       if(!cls){
-
         return;
-
       }
-
 
       const record = {
 
@@ -6178,33 +4583,23 @@ function processActiveSymbols(
           item?.display_name ||
           symbol,
 
-        class:
-          cls
-
+        class:cls
       };
-
 
       allSyntheticMarkets.set(
         symbol,
         record
       );
 
-
-      if(
-        cls ===
-        "VOLATILITY"
-      ){
+      if(cls === "VOLATILITY"){
 
         volatilityMarkets.set(
           symbol,
           record
         );
-
       }
-
     }
   );
-
 
   log(
     "Synthetic markets: " +
@@ -6213,14 +4608,9 @@ function processActiveSymbols(
     volatilityMarkets.size
   );
 
-
   renderMarkets();
-
   updateUI();
-
-
   checkDigitEligibility();
-
 }
 
 
@@ -6237,26 +4627,18 @@ function checkDigitEligibility(){
   ){
 
     return;
-
   }
-
 
   contractsForQueue =
     Array.from(
       allSyntheticMarkets.keys()
     );
 
-
-  contractsForRunning =
-    false;
-
-
+  contractsForRunning = false;
   ++contractsForGeneration;
-
 
   const generation =
     contractsForGeneration;
-
 
   log(
     "Checking digit contracts for " +
@@ -6264,11 +4646,9 @@ function checkDigitEligibility(){
     " synthetic markets..."
   );
 
-
   processNextContractsFor(
     generation
   );
-
 }
 
 
@@ -6287,17 +4667,11 @@ function processNextContractsFor(
   ){
 
     return;
-
   }
 
+  if(!contractsForQueue.length){
 
-  if(
-    !contractsForQueue.length
-  ){
-
-    contractsForRunning =
-      false;
-
+    contractsForRunning = false;
 
     log(
       "Digit contract scan complete: " +
@@ -6305,23 +4679,15 @@ function processNextContractsFor(
       " eligible markets."
     );
 
-
     renderMarkets();
-
     updateUI();
 
-
     if(scannerRunning){
-
       subscribeDigitEligibleMarkets();
-
     }
 
-
     return;
-
   }
-
 
   if(
     !publicWS ||
@@ -6329,65 +4695,41 @@ function processNextContractsFor(
     WebSocket.OPEN
   ){
 
-    contractsForRunning =
-      false;
-
-
+    contractsForRunning = false;
     return;
-
   }
 
-
-  if(
-    contractsForRunning
-  ){
-
+  if(contractsForRunning){
     return;
-
   }
 
-
-  contractsForRunning =
-    true;
-
+  contractsForRunning = true;
 
   const symbol =
     contractsForQueue.shift();
 
-
   const requestId =
     req();
-
 
   publicRequestMap.set(
     requestId,
     {
-
-      type:
-        "contracts_for",
-
+      type:"contracts_for",
       symbol,
-
       generation
-
     }
   );
-
 
   try{
 
     publicWS.send(
       JSON.stringify({
 
-        contracts_for:
-          symbol,
-
-        req_id:
-          requestId
+        contracts_for:symbol,
+        req_id:requestId
 
       })
     );
-
 
   }catch(error){
 
@@ -6395,10 +4737,7 @@ function processNextContractsFor(
       requestId
     );
 
-
-    contractsForRunning =
-      false;
-
+    contractsForRunning = false;
 
     setTimeout(
       () =>
@@ -6407,9 +4746,7 @@ function processNextContractsFor(
         ),
       80
     );
-
   }
-
 
   setTimeout(
     () => {
@@ -6419,34 +4756,27 @@ function processNextContractsFor(
           requestId
         );
 
-
       if(info){
 
         publicRequestMap.delete(
           requestId
         );
 
-
-        contractsForRunning =
-          false;
-
+        contractsForRunning = false;
 
         log(
           "contracts_for timeout: " +
           symbol
         );
 
-
         processNextContractsFor(
           generation
         );
-
       }
 
     },
     5000
   );
-
 }
 
 
@@ -6454,41 +4784,28 @@ function processNextContractsFor(
    HANDLE CONTRACTS_FOR
 ========================================================= */
 
-function handleContractsFor(
-  data
-){
+function handleContractsFor(data){
 
   const echoReq =
     data?.echo_req?.req_id ||
     data?.req_id;
 
-
   const info =
     publicRequestMap.get(
-      Number(
-        echoReq
-      )
+      Number(echoReq)
     );
-
 
   if(info){
 
     publicRequestMap.delete(
-      Number(
-        echoReq
-      )
+      Number(echoReq)
     );
-
   }
 
-
-  contractsForRunning =
-    false;
-
+  contractsForRunning = false;
 
   const available =
     data?.contracts_for?.available;
-
 
   const symbol =
     String(
@@ -6497,27 +4814,19 @@ function handleContractsFor(
       ""
     );
 
-
   if(!symbol){
 
     if(info){
-
       processNextContractsFor(
         info.generation
       );
-
     }
 
-
     return;
-
   }
 
-
   const types =
-    Array.isArray(
-      available
-    )
+    Array.isArray(available)
       ? [
           ...new Set(
             available
@@ -6533,27 +4842,21 @@ function handleContractsFor(
         ]
       : [];
 
-
   digitContractsBySymbol.set(
     symbol,
     types
   );
 
-
   const eligible =
     REQUIRED_DIGIT_TYPES.every(
       type =>
-        types.includes(
-          type
-        )
+        types.includes(type)
     );
-
 
   const market =
     allSyntheticMarkets.get(
       symbol
     );
-
 
   if(
     eligible &&
@@ -6570,23 +4873,16 @@ function handleContractsFor(
     digitEligibleMarkets.delete(
       symbol
     );
-
   }
 
-
   renderMarkets();
-
   updateUI();
 
-
   if(info){
-
     processNextContractsFor(
       info.generation
     );
-
   }
-
 }
 
 
@@ -6599,7 +4895,6 @@ function renderMarkets(){
   const box =
     $("marketList");
 
-
   const markets =
     Array.from(
       allSyntheticMarkets.values()
@@ -6611,41 +4906,27 @@ function renderMarkets(){
         )
     );
 
-
   if(!markets.length){
 
     box.innerHTML =
       '<div class="small">No synthetic markets loaded.</div>';
 
     return;
-
   }
 
-
-  box.innerHTML =
-    "";
-
+  box.innerHTML = "";
 
   markets.forEach(
     market => {
 
       const row =
-        document.createElement(
-          "div"
-        );
-
+        document.createElement("div");
 
       row.className =
         "marketRow";
 
-
-      let badgeClass =
-        "other";
-
-
-      let badgeText =
-        market.class;
-
+      let badgeClass = "other";
+      let badgeText = market.class;
 
       if(
         digitEligibleMarkets.has(
@@ -6653,49 +4934,37 @@ function renderMarkets(){
         )
       ){
 
-        badgeClass =
-          "digit";
-
-
-        badgeText =
-          "DIGITS";
+        badgeClass = "digit";
+        badgeText = "DIGITS";
 
       }else if(
         market.class ===
         "VOLATILITY"
       ){
 
-        badgeClass =
-          "vol";
+        badgeClass = "vol";
 
       }else if(
         market.class ===
         "BOOM"
       ){
 
-        badgeClass =
-          "boom";
+        badgeClass = "boom";
 
       }else if(
         market.class ===
         "CRASH"
       ){
 
-        badgeClass =
-          "crash";
-
+        badgeClass = "crash";
       }
 
-
       const ticks =
-        marketTicks[
-          market.symbol
-        ]
+        marketTicks[market.symbol]
           ? marketTicks[
               market.symbol
             ].length
           : 0;
-
 
       row.innerHTML = `
 
@@ -6731,14 +5000,9 @@ function renderMarkets(){
 
       `;
 
-
-      box.appendChild(
-        row
-      );
-
+      box.appendChild(row);
     }
   );
-
 }
 
 
@@ -6755,13 +5019,9 @@ function subscribeDigitEligibleMarkets(){
   ){
 
     return;
-
   }
 
-
-  let count =
-    0;
-
+  let count = 0;
 
   digitEligibleMarkets.forEach(
     (market,symbol) => {
@@ -6773,30 +5033,18 @@ function subscribeDigitEligibleMarkets(){
       ){
 
         return;
-
       }
 
-
-      requestHistory(
-        symbol
-      );
-
-
-      requestTicks(
-        symbol
-      );
-
+      requestHistory(symbol);
+      requestTicks(symbol);
 
       marketSubscriptions.add(
         symbol
       );
 
-
       count++;
-
     }
   );
-
 
   log(
     "Digit subscriptions: " +
@@ -6804,7 +5052,6 @@ function subscribeDigitEligibleMarkets(){
     " | New: " +
     count
   );
-
 }
 
 
@@ -6812,9 +5059,7 @@ function subscribeDigitEligibleMarkets(){
    REQUEST HISTORY
 ========================================================= */
 
-function requestHistory(
-  symbol
-){
+function requestHistory(symbol){
 
   if(
     !publicWS ||
@@ -6823,31 +5068,19 @@ function requestHistory(
   ){
 
     return;
-
   }
-
 
   publicWS.send(
     JSON.stringify({
 
-      ticks_history:
-        symbol,
-
-      count:
-        getHistoryCount(),
-
-      end:
-        "latest",
-
-      style:
-        "ticks",
-
-      req_id:
-        req()
+      ticks_history:symbol,
+      count:getHistoryCount(),
+      end:"latest",
+      style:"ticks",
+      req_id:req()
 
     })
   );
-
 }
 
 
@@ -6855,9 +5088,7 @@ function requestHistory(
    REQUEST TICKS
 ========================================================= */
 
-function requestTicks(
-  symbol
-){
+function requestTicks(symbol){
 
   if(
     !publicWS ||
@@ -6866,25 +5097,17 @@ function requestTicks(
   ){
 
     return;
-
   }
-
 
   publicWS.send(
     JSON.stringify({
 
-      ticks:
-        symbol,
-
-      subscribe:
-        1,
-
-      req_id:
-        req()
+      ticks:symbol,
+      subscribe:1,
+      req_id:req()
 
     })
   );
-
 }
 
 
@@ -6892,9 +5115,7 @@ function requestTicks(
    HISTORY HANDLER
 ========================================================= */
 
-function handleHistory(
-  data
-){
+function handleHistory(data){
 
   const symbol =
     String(
@@ -6903,13 +5124,9 @@ function handleHistory(
       ""
     );
 
-
   if(!symbol){
-
     return;
-
   }
-
 
   const prices =
     Array.isArray(
@@ -6918,13 +5135,9 @@ function handleHistory(
       ? data.history.prices
       : [];
 
-
   if(!prices.length){
-
     return;
-
   }
-
 
   const digits =
     prices
@@ -6941,45 +5154,28 @@ function handleHistory(
           d <= 9
       );
 
-
   if(!digits.length){
-
     return;
-
   }
 
-
-  marketTicks[
-    symbol
-  ] =
+  marketTicks[symbol] =
     digits.slice(
       -getHistoryCount()
     );
 
-
-  marketLastTick[
-    symbol
-  ] =
-    marketTicks[
-      symbol
-    ].at(-1);
-
+  marketLastTick[symbol] =
+    marketTicks[symbol].at(-1);
 
   log(
     "History loaded: " +
     symbol +
     " | " +
-    marketTicks[
-      symbol
-    ].length +
+    marketTicks[symbol].length +
     " digits"
   );
 
-
   renderMarkets();
-
   updateUI();
-
 }
 
 
@@ -6987,20 +5183,14 @@ function handleHistory(
    TICK HANDLER
 ========================================================= */
 
-function handleTick(
-  data
-){
+function handleTick(data){
 
   const tick =
     data.tick;
 
-
   if(!tick){
-
     return;
-
   }
-
 
   const symbol =
     String(
@@ -7009,13 +5199,9 @@ function handleTick(
       ""
     );
 
-
   if(!symbol){
-
     return;
-
   }
-
 
   if(
     !digitEligibleMarkets.has(
@@ -7024,9 +5210,7 @@ function handleTick(
   ){
 
     return;
-
   }
-
 
   const digit =
     extractDigit(
@@ -7034,82 +5218,41 @@ function handleTick(
       tick.pip_size
     );
 
-
   if(
     digit < 0 ||
     digit > 9
   ){
 
     return;
-
   }
 
-
-  if(
-    !marketTicks[
-      symbol
-    ]
-  ){
-
-    marketTicks[
-      symbol
-    ] =
-      [];
-
+  if(!marketTicks[symbol]){
+    marketTicks[symbol] = [];
   }
 
-
-  marketTicks[
-    symbol
-  ].push(
-    digit
-  );
-
+  marketTicks[symbol].push(digit);
 
   if(
-    marketTicks[
-      symbol
-    ].length >
+    marketTicks[symbol].length >
     getHistoryCount()
   ){
 
-    marketTicks[
-      symbol
-    ].shift();
-
+    marketTicks[symbol].shift();
   }
 
-
-  marketLastTick[
-    symbol
-  ] =
+  marketLastTick[symbol] =
     digit;
-
 
   addLiveDigit(
     symbol,
     digit
   );
 
-
-  /*
-    GLOBAL SCAN.
-
-    Every new tick gives the bot a chance
-    to compare ALL currently eligible markets.
-  */
-
-  if(
-    scannerRunning
-  ){
-
+  if(scannerRunning){
     scanForBestSignal();
-
   }
 
-
   updateUI();
-
 }
 
 
@@ -7123,50 +5266,28 @@ function extractDigit(
 ){
 
   const q =
-    Number(
-      quote
-    );
+    Number(quote);
 
-
-  if(
-    !Number.isFinite(q)
-  ){
-
+  if(!Number.isFinite(q)){
     return -1;
-
   }
-
 
   const p =
     Number.isFinite(
-      Number(
-        pipSize
-      )
+      Number(pipSize)
     )
-      ? Number(
-          pipSize
-        )
+      ? Number(pipSize)
       : 2;
 
-
   const factor =
-    Math.pow(
-      10,
-      p
-    );
-
+    Math.pow(10,p);
 
   const scaled =
     Math.round(
-      q *
-      factor
+      q * factor
     );
 
-
-  return Math.abs(
-    scaled
-  ) % 10;
-
+  return Math.abs(scaled) % 10;
 }
 
 
@@ -7182,41 +5303,28 @@ function addLiveDigit(
   const box =
     $("tickStream");
 
-
   if(
     box.children.length === 1 &&
     box.children[0].textContent ===
     "Waiting..."
   ){
 
-    box.innerHTML =
-      "";
-
+    box.innerHTML = "";
   }
 
-
   const element =
-    document.createElement(
-      "div"
-    );
-
+    document.createElement("div");
 
   element.className =
     "digit recentDigit";
 
-
   element.textContent =
     digit;
-
 
   element.title =
     symbol;
 
-
-  box.prepend(
-    element
-  );
-
+  box.prepend(element);
 
   while(
     box.children.length >
@@ -7226,9 +5334,7 @@ function addLiveDigit(
     box.removeChild(
       box.lastChild
     );
-
   }
-
 }
 
 
@@ -7238,44 +5344,29 @@ function addLiveDigit(
 
 function startScanner(){
 
-  if(
-    scannerRunning
-  ){
-
+  if(scannerRunning){
     return;
-
   }
 
+  scannerRunning = true;
 
-  scannerRunning =
-    true;
-
-
-  log(
-    "SCANNER STARTED."
-  );
-
+  log("SCANNER STARTED.");
 
   log(
     "PRIMARY: highest validation % → matches → EVEN/ODD/OVER3/UNDER7 tie-break."
   );
 
-
   log(
     "RECOVERY: highest validation % → matches → EVEN/ODD/OVER5/UNDER5 tie-break."
   );
-
 
   log(
     "RECOVERY HAS NO 3.5 SECOND COOLDOWN."
   );
 
-
   connectPublic();
 
-
   updateUI();
-
 }
 
 
@@ -7285,32 +5376,21 @@ function startScanner(){
 
 function stopScanner(){
 
-  scannerRunning =
-    false;
-
+  scannerRunning = false;
 
   stopPublic();
 
-
-  pendingSignal =
-    null;
-
+  pendingSignal = null;
 
   $("signalName").textContent =
     "NO SIGNAL";
 
-
   $("signalMeta").textContent =
     "Scanner stopped.";
 
-
-  log(
-    "SCANNER STOPPED."
-  );
-
+  log("SCANNER STOPPED.");
 
   updateUI();
-
 }
 
 
@@ -7327,39 +5407,25 @@ function refreshMarkets(){
   ){
 
     connectPublic();
-
     return;
-
   }
 
-
-  log(
-    "Refreshing markets..."
-  );
-
+  log("Refreshing markets...");
 
   digitEligibleMarkets.clear();
-
   digitContractsBySymbol.clear();
-
   marketSubscriptions.clear();
-
 
   publicWS.send(
     JSON.stringify({
 
-      active_symbols:
-        "brief",
-
-      req_id:
-        req()
+      active_symbols:"brief",
+      req_id:req()
 
     })
   );
 
-
   updateUI();
-
 }
 
 
@@ -7369,51 +5435,39 @@ function refreshMarkets(){
 
 updateUI();
 
-
-log(
-  "V16 ready."
-);
-
+log("V16 ready.");
 
 log(
   "Highest validation % is now the primary selection rule."
 );
 
-
 log(
   "Minimum validation: 80%."
 );
 
-
 log(
-  "Minimum matches: 50."
+  "Minimum matches: 30."
 );
-
 
 log(
   "Primary setup score requirement remains unchanged."
 );
 
-
 log(
   "Recovery has no extra setup-score blocker."
 );
-
 
 log(
   "Recovery has no 3.5-second cooldown."
 );
 
-
 log(
   "Fixed stake only."
 );
 
-
 log(
   "No Martingale."
 );
-
 
 log(
   "Auto Trading is OFF by default."
