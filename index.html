@@ -7,197 +7,79 @@
 
 <style>
 *{box-sizing:border-box}
-
 body{
-  margin:0;
-  background:#071321;
-  color:#e8eef8;
-  font-family:Arial,Helvetica,sans-serif;
+  margin:0;background:#071321;color:#e8eef8;
+  font-family:Arial,Helvetica,sans-serif
 }
-
-.wrap{
-  max-width:1250px;
-  margin:auto;
-  padding:18px;
-}
-
+.wrap{max-width:1250px;margin:auto;padding:18px}
 .card{
-  background:#0b1a2d;
-  border:1px solid #1e3857;
-  border-radius:18px;
-  padding:18px;
-  margin-bottom:18px;
-  box-shadow:0 8px 25px rgba(0,0,0,.18);
+  background:#0b1a2d;border:1px solid #1e3857;
+  border-radius:18px;padding:18px;margin-bottom:18px
 }
-
 h1,h2{margin-top:0}
-
-h1{font-size:24px}
-h2{font-size:21px}
-
-label{
-  display:block;
-  color:#91a8c7;
-  margin:13px 0 7px;
-}
-
+h1{font-size:24px}h2{font-size:21px}
+label{display:block;color:#91a8c7;margin:13px 0 7px}
 input,select{
-  width:100%;
-  padding:13px;
-  border-radius:12px;
-  border:1px solid #294a70;
-  background:#081625;
-  color:#e8eef8;
-  font-size:16px;
-  outline:none;
+  width:100%;padding:13px;border-radius:12px;
+  border:1px solid #294a70;background:#081625;
+  color:#e8eef8;font-size:16px;outline:none
 }
-
 button{
-  border:1px solid #31557e;
-  background:#10243d;
-  color:#edf4ff;
-  padding:13px 18px;
-  border-radius:12px;
-  font-size:16px;
-  font-weight:700;
-  cursor:pointer;
+  border:1px solid #31557e;background:#10243d;
+  color:#edf4ff;padding:13px 18px;border-radius:12px;
+  font-size:16px;font-weight:700;cursor:pointer
 }
-
-button:hover{
-  filter:brightness(1.12);
-}
-
-.btnrow{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:12px;
-  margin-top:15px;
-}
-
-.start{
-  border-color:#00b86b;
-  background:#102d29;
-}
-
-.stop{
-  border-color:#e24b65;
-  background:#67263a;
-}
-
-.warn{
-  border-color:#d39c00;
-  background:#674d08;
-}
-
-.reset{
-  border-color:#347dc5;
-  background:#183d68;
-}
-
-.statusrow{
-  display:flex;
-  flex-wrap:wrap;
-  gap:10px;
-  margin-top:18px;
-}
-
+button:hover{filter:brightness(1.12)}
+.btnrow{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:15px}
+.start{border-color:#00b86b;background:#102d29}
+.stop{border-color:#e24b65;background:#67263a}
+.warn{border-color:#d39c00;background:#674d08}
+.reset{border-color:#347dc5;background:#183d68}
+.statusrow{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
 .pill{
-  border:1px solid #294a70;
-  background:#0d2036;
-  border-radius:30px;
-  padding:12px 18px;
-  font-size:16px;
+  border:1px solid #294a70;background:#0d2036;
+  border-radius:30px;padding:12px 18px;font-size:16px
 }
-
-.green{color:#35e99a}
-.red{color:#ff5d72}
-.yellow{color:#ffd052}
-.blue{color:#68aef7}
-
-.small{
-  color:#8ea6c4;
-  font-size:13px;
-}
-
-.grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:14px;
-}
-
+.green{color:#35e99a}.red{color:#ff5d72}
+.yellow{color:#ffd052}.blue{color:#68aef7}
+.small{color:#8ea6c4;font-size:13px}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
 @media(max-width:700px){
   .grid{grid-template-columns:1fr}
   .btnrow{grid-template-columns:1fr}
 }
-
-.tablewrap{
-  overflow-x:auto;
-  border-radius:12px;
-}
-
-table{
-  width:100%;
-  border-collapse:collapse;
-  min-width:1150px;
-}
-
+.tablewrap{overflow-x:auto;border-radius:12px}
+table{width:100%;border-collapse:collapse;min-width:1150px}
 th,td{
-  padding:9px 10px;
-  border-bottom:1px solid #1b3048;
-  text-align:center;
-  white-space:nowrap;
-  font-size:12px;
+  padding:9px 10px;border-bottom:1px solid #1b3048;
+  text-align:center;white-space:nowrap;font-size:12px
 }
-
-th{
-  color:#9eb5d2;
-  background:#0a1829;
-}
-
-.good{color:#38e49a}
-.bad{color:#ff6174}
-.neutral{color:#b8c6d8}
-
+th{color:#9eb5d2;background:#0a1829}
+.good{color:#38e49a}.bad{color:#ff6174}.neutral{color:#b8c6d8}
 .log{
-  background:#06111e;
-  border:1px solid #1b3048;
-  border-radius:12px;
-  padding:12px;
-  height:270px;
-  overflow:auto;
-  font-family:monospace;
-  font-size:12px;
-  line-height:1.55;
+  background:#06111e;border:1px solid #1b3048;
+  border-radius:12px;padding:12px;height:270px;
+  overflow:auto;font-family:monospace;font-size:12px;line-height:1.55
 }
-
 .notice{
-  border-left:4px solid #e2a928;
-  background:#17170d;
-  padding:12px;
-  border-radius:8px;
-  color:#e8dba9;
-  font-size:13px;
-  line-height:1.5;
+  border-left:4px solid #e2a928;background:#17170d;
+  padding:12px;border-radius:8px;color:#e8dba9;
+  font-size:13px;line-height:1.5
 }
-
-.avail{
-  font-size:11px;
-}
+.avail{font-size:11px}
 </style>
 </head>
 
 <body>
-
 <div class="wrap">
 
 <div class="card">
-
 <h1>V33 LIVE Pulse / Surge Multi Trader</h1>
 
 <div class="notice">
 <b>LIVE EXECUTION ONLY.</b>
 No Paper/Backtest mode.
-DEMO = real bot execution using demo funds.
+DEMO = live bot execution using demo funds.
 REAL = real-money execution.
 </div>
 
@@ -234,7 +116,6 @@ REAL = real-money execution.
 <option value="EVEN">DIGIT EVEN</option>
 <option value="ODD">DIGIT ODD</option>
 <option value="MATCH">DIGIT MATCH</option>
-<option value="DIFFERS">DIGIT DIFFERS</option>
 </select>
 </div>
 
@@ -319,58 +200,23 @@ REAL = real-money execution.
 </div>
 
 <div class="statusrow">
-
-<div class="pill">
-Status:
-<b id="status" class="yellow">DISCONNECTED</b>
-</div>
-
-<div class="pill">
-Account:
-<b id="account">---</b>
-</div>
-
-<div class="pill">
-Balance:
-<b id="balance">$0.00</b>
-</div>
-
-<div class="pill">
-Trades:
-<b id="trades">0</b>
-</div>
-
-<div class="pill">
-Wins:
-<b id="wins">0</b>
-</div>
-
-<div class="pill">
-Losses:
-<b id="losses">0</b>
-</div>
-
-<div class="pill">
-P/L:
-<b id="pnl">$0.00</b>
-</div>
-
+<div class="pill">Status: <b id="status" class="yellow">DISCONNECTED</b></div>
+<div class="pill">Account: <b id="account">---</b></div>
+<div class="pill">Balance: <b id="balance">$0.00</b></div>
+<div class="pill">Trades: <b id="trades">0</b></div>
+<div class="pill">Wins: <b id="wins">0</b></div>
+<div class="pill">Losses: <b id="losses">0</b></div>
+<div class="pill">P/L: <b id="pnl">$0.00</b></div>
 </div>
 </div>
 
 
 <div class="card">
-
 <h2>Live Scanner</h2>
-
-<div class="small" id="scannerInfo">
-Waiting for market data...
-</div>
+<div class="small" id="scannerInfo">Waiting for market data...</div>
 
 <div class="tablewrap">
-
 <table>
-
 <thead>
 <tr>
 <th>Market</th>
@@ -391,23 +237,17 @@ Waiting for market data...
 <th>Status</th>
 </tr>
 </thead>
-
 <tbody id="scannerBody"></tbody>
-
 </table>
-
 </div>
 </div>
 
 
 <div class="card">
-
 <h2>Digit Analyzer</h2>
 
 <div class="tablewrap">
-
 <table>
-
 <thead>
 <tr>
 <th>Market</th>
@@ -429,23 +269,17 @@ Waiting for market data...
 <th>Least</th>
 </tr>
 </thead>
-
 <tbody id="digitBody"></tbody>
-
 </table>
-
 </div>
 </div>
 
 
 <div class="card">
-
 <h2>Validation</h2>
 
 <div class="tablewrap">
-
 <table>
-
 <thead>
 <tr>
 <th>Market</th>
@@ -458,23 +292,17 @@ Waiting for market data...
 <th>Qualified</th>
 </tr>
 </thead>
-
 <tbody id="backtestBody"></tbody>
-
 </table>
-
 </div>
 </div>
 
 
 <div class="card">
-
 <h2>Trade History</h2>
 
 <div class="tablewrap">
-
 <table>
-
 <thead>
 <tr>
 <th>Time</th>
@@ -490,21 +318,15 @@ Waiting for market data...
 <th>P/L</th>
 </tr>
 </thead>
-
 <tbody id="historyBody"></tbody>
-
 </table>
-
 </div>
 </div>
 
 
 <div class="card">
-
 <h2>Engine Log</h2>
-
 <div id="log" class="log"></div>
-
 </div>
 
 </div>
@@ -512,17 +334,11 @@ Waiting for market data...
 
 <script>
 
-/* =========================================================
-   CONFIG
-========================================================= */
-
 const API_BASE="https://api.derivws.com";
-
 const MAX_MARKETS=40;
 const HISTORY_COUNT=200;
 
 let ws=null;
-
 let connected=false;
 let trading=false;
 
@@ -533,7 +349,6 @@ let marketList=[];
 let markets={};
 
 let reqId=1;
-
 const pending=new Map();
 
 let totalTrades=0;
@@ -551,7 +366,6 @@ let proposalInFlight=false;
 let lastProposalAt=0;
 let proposalCooldownMs=2000;
 let proposalBackoffUntil=0;
-
 let lastEvaluationByMarket={};
 
 
@@ -579,22 +393,15 @@ function escapeHtml(s){
 }
 
 function log(msg){
-
   const box=$("log");
-
-  const t=
-    new Date().toLocaleTimeString();
-
-  box.innerHTML+=
-    `<div>[${t}] ${escapeHtml(msg)}</div>`;
-
+  const t=new Date().toLocaleTimeString();
+  box.innerHTML+=`<div>[${t}] ${escapeHtml(msg)}</div>`;
   box.scrollTop=box.scrollHeight;
 }
 
-function setStatus(text,cls){
-
+function setStatus(text,cls="yellow"){
   $("status").textContent=text;
-  $("status").className=cls||"yellow";
+  $("status").className=cls;
 }
 
 function updateStatsUI(){
@@ -614,7 +421,6 @@ function updateStatsUI(){
 function getSettings(){
 
   return {
-
     strategy:$("strategy").value,
 
     stake:Math.max(
@@ -633,9 +439,7 @@ function getSettings(){
     minSamples:
       Math.max(
         10,
-        Math.floor(
-          num($("minSamples").value,20)
-        )
+        Math.floor(num($("minSamples").value,20))
       ),
 
     minScore:
@@ -656,25 +460,19 @@ function getSettings(){
     marketLossLock:
       Math.max(
         0,
-        Math.floor(
-          num($("marketLossLock").value,1)
-        )
+        Math.floor(num($("marketLossLock").value,1))
       ),
 
     maxTrades:
       Math.max(
         1,
-        Math.floor(
-          num($("maxTrades").value,20)
-        )
+        Math.floor(num($("maxTrades").value,20))
       ),
 
     maxLosses:
       Math.max(
         1,
-        Math.floor(
-          num($("maxLosses").value,2)
-        )
+        Math.floor(num($("maxLosses").value,2))
       ),
 
     takeProfit:
@@ -694,13 +492,8 @@ function send(obj,timeout=15000){
 
   return new Promise((resolve,reject)=>{
 
-    if(
-      !ws ||
-      ws.readyState!==WebSocket.OPEN
-    ){
-      reject(
-        new Error("WebSocket not connected")
-      );
+    if(!ws || ws.readyState!==WebSocket.OPEN){
+      reject(new Error("WebSocket not connected"));
       return;
     }
 
@@ -711,25 +504,17 @@ function send(obj,timeout=15000){
     const timer=setTimeout(()=>{
 
       pending.delete(id);
-
-      reject(
-        new Error("Request timeout")
-      );
+      reject(new Error("Request timeout"));
 
     },timeout);
 
-    pending.set(
-      id,
-      {
-        resolve,
-        reject,
-        timer
-      }
-    );
+    pending.set(id,{
+      resolve,
+      reject,
+      timer
+    });
 
-    ws.send(
-      JSON.stringify(obj)
-    );
+    ws.send(JSON.stringify(obj));
   });
 }
 
@@ -737,9 +522,7 @@ function send(obj,timeout=15000){
 function handleMessage(msg){
 
   if(msg.proposal_open_contract){
-    processOpenContract(
-      msg.proposal_open_contract
-    );
+    processOpenContract(msg.proposal_open_contract);
   }
 
   if(msg.tick){
@@ -749,12 +532,9 @@ function handleMessage(msg){
   if(msg.error){
 
     const err=
-      msg.error.message||
-      "API error";
+      msg.error.message||"API error";
 
-    log(
-      "API error: "+err
-    );
+    log("API error: "+err);
 
     if(/rate limit/i.test(err)){
 
@@ -769,29 +549,22 @@ function handleMessage(msg){
     }
   }
 
-  if(
-    msg.req_id &&
-    pending.has(msg.req_id)
-  ){
+  if(msg.req_id && pending.has(msg.req_id)){
 
-    const p=
-      pending.get(msg.req_id);
+    const p=pending.get(msg.req_id);
 
     clearTimeout(p.timer);
-
     pending.delete(msg.req_id);
 
     if(msg.error){
 
       p.reject(
         new Error(
-          msg.error.message||
-          "API error"
+          msg.error.message||"API error"
         )
       );
 
     }else{
-
       p.resolve(msg);
     }
   }
@@ -804,14 +577,9 @@ function handleMessage(msg){
 
 async function connectAccount(){
 
-  const pat=
-    $("pat").value.trim();
-
-  const appId=
-    $("appId").value.trim();
-
-  const type=
-    $("accountType").value;
+  const pat=$("pat").value.trim();
+  const appId=$("appId").value.trim();
+  const type=$("accountType").value;
 
   if(!pat){
     alert("Enter your Deriv PAT.");
@@ -827,34 +595,21 @@ async function connectAccount(){
 
   try{
 
-    setStatus(
-      "CONNECTING",
-      "yellow"
-    );
-
-    log(
-      "Getting Options accounts..."
-    );
+    setStatus("CONNECTING","yellow");
+    log("Getting Options accounts...");
 
     const r=await fetch(
-      API_BASE+
-      "/trading/v1/options/accounts",
+      API_BASE+"/trading/v1/options/accounts",
       {
         headers:{
-          "Authorization":
-            "Bearer "+pat,
-
-          "Deriv-App-ID":
-            appId,
-
-          "Content-Type":
-            "application/json"
+          "Authorization":"Bearer "+pat,
+          "Deriv-App-ID":appId,
+          "Content-Type":"application/json"
         }
       }
     );
 
-    const data=
-      await r.json();
+    const data=await r.json();
 
     if(!r.ok){
 
@@ -865,95 +620,70 @@ async function connectAccount(){
       );
     }
 
-    const accounts=
-      extractAccounts(data);
+    const accounts=extractAccounts(data);
 
-    const wanted=
-      accounts.filter(a=>{
+    const wanted=accounts.filter(a=>{
 
-        const typeText=
-          String(
-            a.account_type||
-            a.type||
-            a.environment||
-            a.account_category||
-            ""
-          ).toLowerCase();
+      const typeText=String(
+        a.account_type||
+        a.type||
+        a.environment||
+        a.account_category||
+        ""
+      ).toLowerCase();
 
-        const id=
-          String(
-            a.account_id||""
-          ).toUpperCase();
+      const id=String(
+        a.account_id||""
+      ).toUpperCase();
 
-        if(type==="demo"){
-
-          return(
-            typeText.includes("demo")||
-            id.startsWith("DOT")
-          );
-        }
-
+      if(type==="demo"){
         return(
-          typeText.includes("real")||
-          id.startsWith("CR")
+          typeText.includes("demo")||
+          id.startsWith("DOT")
         );
-      });
+      }
 
-    const selected=
-      wanted[0]||
-      accounts[0];
+      return(
+        typeText.includes("real")||
+        id.startsWith("CR")
+      );
+    });
 
-    if(
-      !selected||
-      !selected.account_id
-    ){
+    const selected=wanted[0]||accounts[0];
+
+    if(!selected||!selected.account_id){
 
       throw new Error(
-        "No matching "+
-        type+
+        "No matching "+type+
         " Options account found."
       );
     }
 
-    accountId=
-      selected.account_id;
-
+    accountId=selected.account_id;
     accountCurrency=
-      selected.currency||
-      $("currency").value;
+      selected.currency||$("currency").value;
 
-    $("account").textContent=
-      accountId;
+    $("account").textContent=accountId;
 
-    log(
-      "Selected account: "+
-      accountId
+    log("Selected account: "+accountId);
+    log("Requesting authenticated WebSocket URL...");
+
+    const otp=await fetch(
+      API_BASE+
+      "/trading/v1/options/accounts/"+
+      encodeURIComponent(accountId)+
+      "/otp",
+      {
+        method:"POST",
+        headers:{
+          "Authorization":"Bearer "+pat,
+          "Deriv-App-ID":appId,
+          "Content-Type":"application/json"
+        }
+      }
     );
 
-    const otp=
-      await fetch(
-        API_BASE+
-        "/trading/v1/options/accounts/"+
-        encodeURIComponent(accountId)+
-        "/otp",
-        {
-          method:"POST",
-
-          headers:{
-            "Authorization":
-              "Bearer "+pat,
-
-            "Deriv-App-ID":
-              appId,
-
-            "Content-Type":
-              "application/json"
-          }
-        }
-      );
-
-    const otpData=
-      await otp.json();
+    const otpData=await otp.json();
 
     if(!otp.ok){
 
@@ -970,14 +700,12 @@ async function connectAccount(){
       otpData?.data?.data?.url;
 
     if(!socketUrl){
-
       throw new Error(
         "Authenticated WebSocket URL missing."
       );
     }
 
-    ws=
-      new WebSocket(socketUrl);
+    ws=new WebSocket(socketUrl);
 
     ws.onopen=async()=>{
 
@@ -989,30 +717,21 @@ async function connectAccount(){
       proposalBackoffUntil=0;
       lastEvaluationByMarket={};
 
-      setStatus(
-        "CONNECTED",
-        "green"
-      );
+      setStatus("CONNECTED","green");
 
       log(
         "Authenticated WebSocket connected."
       );
 
       await refreshBalance();
-
       await initializeMarkets();
     };
 
     ws.onmessage=e=>{
 
       try{
-
-        handleMessage(
-          JSON.parse(e.data)
-        );
-
+        handleMessage(JSON.parse(e.data));
       }catch(err){
-
         log(
           "Message parse error: "+
           err.message
@@ -1021,15 +740,8 @@ async function connectAccount(){
     };
 
     ws.onerror=()=>{
-
-      log(
-        "WebSocket error."
-      );
-
-      setStatus(
-        "ERROR",
-        "red"
-      );
+      log("WebSocket error.");
+      setStatus("ERROR","red");
     };
 
     ws.onclose=()=>{
@@ -1039,24 +751,16 @@ async function connectAccount(){
       tradeInFlight=false;
       proposalInFlight=false;
 
-      setStatus(
-        "DISCONNECTED",
-        "yellow"
-      );
+      setStatus("DISCONNECTED","yellow");
 
-      log(
-        "WebSocket closed."
-      );
+      log("WebSocket closed.");
     };
 
   }catch(err){
 
     connected=false;
 
-    setStatus(
-      "ERROR",
-      "red"
-    );
+    setStatus("ERROR","red");
 
     log(
       "Connection error: "+
@@ -1068,8 +772,7 @@ async function connectAccount(){
 
 function extractAccounts(obj,out=[]){
 
-  if(!obj||
-     typeof obj!=="object")
+  if(!obj||typeof obj!=="object")
     return out;
 
   if(Array.isArray(obj)){
@@ -1089,10 +792,7 @@ function extractAccounts(obj,out=[]){
 
     const v=obj[k];
 
-    if(
-      v &&
-      typeof v==="object"
-    ){
+    if(v&&typeof v==="object"){
       extractAccounts(v,out);
     }
   }
@@ -1103,26 +803,21 @@ function extractAccounts(obj,out=[]){
 
 async function refreshBalance(){
 
-  if(
-    !connected||
-    !ws
-  ) return;
+  if(!connected||!ws)
+    return;
 
   try{
 
-    const r=
-      await send({
-        balance:1
-      });
+    const r=await send({
+      balance:1
+    });
 
-    const b=
-      r?.balance?.balance;
+    const b=r?.balance?.balance;
 
     if(b!==undefined){
 
       $("balance").textContent=
-        "$"+
-        Number(b).toFixed(2);
+        "$"+Number(b).toFixed(2);
     }
 
   }catch(err){
@@ -1141,13 +836,11 @@ async function refreshBalance(){
 
 async function getActiveMarkets(){
 
-  const r=
-    await send({
-      active_symbols:"brief"
-    });
+  const r=await send({
+    active_symbols:"brief"
+  });
 
-  const arr=
-    r.active_symbols||[];
+  const arr=r.active_symbols||[];
 
   const result=[];
   const seen=new Set();
@@ -1159,20 +852,14 @@ async function getActiveMarkets(){
         s.underlying_symbol||""
       ).trim();
 
-    if(
-      !symbol||
-      seen.has(symbol)
-    ) continue;
+    if(!symbol||seen.has(symbol))
+      continue;
 
     const market=
-      String(
-        s.market||""
-      ).toLowerCase();
+      String(s.market||"").toLowerCase();
 
     const subgroup=
-      String(
-        s.subgroup||""
-      ).toLowerCase();
+      String(s.subgroup||"").toLowerCase();
 
     const type=
       String(
@@ -1189,56 +876,41 @@ async function getActiveMarkets(){
       subgroup==="synthetics"||
       type==="stockindex"||
       /volatility|boom|crash|jump|step|range|drift|bull|bear|daily reset/i
-      .test(
-        name+" "+symbol
-      );
+      .test(name+" "+symbol);
 
     if(!synthetic)
       continue;
 
     result.push({
-
-      underlying_symbol:
-        symbol,
-
+      underlying_symbol:symbol,
       underlying_symbol_name:
-        s.underlying_symbol_name||
-        symbol,
-
-      market:
-        s.market||"",
-
-      subgroup:
-        s.subgroup||"",
-
-      pip_size:
-        num(s.pip_size,0)
+        s.underlying_symbol_name||symbol,
+      market:s.market||"",
+      subgroup:s.subgroup||"",
+      pip_size:num(s.pip_size,0)
     });
 
     seen.add(symbol);
   }
 
-  return result.slice(
-    0,
-    MAX_MARKETS
-  );
+  return result.slice(0,MAX_MARKETS);
 }
 
 
 /* =========================================================
    CONTRACT AVAILABILITY
+   MATCH IS INCLUDED.
+   DIFFERS IS COMPLETELY REMOVED.
 ========================================================= */
 
 async function getContractsFor(symbol){
 
-  const r=
-    await send({
-      contracts_for:symbol
-    });
+  const r=await send({
+    contracts_for:symbol
+  });
 
   const available=
-    r?.contracts_for?.available||
-    [];
+    r?.contracts_for?.available||[];
 
   const set=new Set();
 
@@ -1264,15 +936,10 @@ function contractAvailable(
 
   const m=markets[symbol];
 
-  if(!m)
+  if(!m||!m.contractsLoaded)
     return false;
 
-  if(!m.contractsLoaded)
-    return false;
-
-  return m.contracts.has(
-    contractType
-  );
+  return m.contracts.has(contractType);
 }
 
 
@@ -1280,12 +947,8 @@ function availabilityText(symbol){
 
   const m=markets[symbol];
 
-  if(
-    !m||
-    !m.contractsLoaded
-  ){
+  if(!m||!m.contractsLoaded)
     return "...";
-  }
 
   const map=[
     ["CALL","RF"],
@@ -1294,8 +957,7 @@ function availabilityText(symbol){
     ["DIGITUNDER","U7"],
     ["DIGITEVEN","EV"],
     ["DIGITODD","OD"],
-    ["DIGITMATCH","M"],
-    ["DIGITDIFF","D"]
+    ["DIGITMATCH","MATCH"]
   ];
 
   const x=[];
@@ -1335,18 +997,16 @@ async function initializeMarkets(){
 
     for(const m of marketList){
 
-      const symbol=
-        m.underlying_symbol;
+      const symbol=m.underlying_symbol;
 
       try{
 
-        const history=
-          await send({
-            ticks_history:symbol,
-            count:HISTORY_COUNT,
-            end:"latest",
-            style:"ticks"
-          });
+        const history=await send({
+          ticks_history:symbol,
+          count:HISTORY_COUNT,
+          end:"latest",
+          style:"ticks"
+        });
 
         const prices=
           (history.history?.prices||[])
@@ -1372,14 +1032,10 @@ async function initializeMarkets(){
             m.pip_size,
 
           prices:
-            prices.slice(
-              -HISTORY_COUNT
-            ),
+            prices.slice(-HISTORY_COUNT),
 
           epochs:
-            epochs.slice(
-              -HISTORY_COUNT
-            ),
+            epochs.slice(-HISTORY_COUNT),
 
           digitWindow:[],
 
@@ -1457,27 +1113,18 @@ function processTick(tick){
     return;
 
   const symbol=
-    String(
-      tick.symbol||""
-    );
+    String(tick.symbol||"");
 
-  const m=
-    markets[symbol];
+  const m=markets[symbol];
 
   if(!m)
     return;
 
   const price=
-    num(
-      tick.quote,
-      NaN
-    );
+    num(tick.quote,NaN);
 
   const epoch=
-    num(
-      tick.epoch,
-      0
-    );
+    num(tick.epoch,0);
 
   if(!Number.isFinite(price))
     return;
@@ -1490,10 +1137,7 @@ function processTick(tick){
   m.prices.push(price);
   m.epochs.push(epoch);
 
-  if(
-    m.prices.length>
-    HISTORY_COUNT
-  ){
+  if(m.prices.length>HISTORY_COUNT){
     m.prices.shift();
     m.epochs.shift();
   }
@@ -1506,9 +1150,7 @@ function processTick(tick){
 
   m.digitWindow.push(digit);
 
-  if(
-    m.digitWindow.length>100
-  ){
+  if(m.digitWindow.length>100){
     m.digitWindow.shift();
   }
 
@@ -1518,13 +1160,10 @@ function processTick(tick){
 }
 
 
-function extractDigit(
-  price,
-  pipSize
-){
+function extractDigit(price,pipSize){
 
   if(
-    Number.isFinite(pipSize) &&
+    Number.isFinite(pipSize)&&
     pipSize>0
   ){
 
@@ -1534,28 +1173,24 @@ function extractDigit(
         Math.min(
           8,
           String(pipSize)
-          .split(".")[1]?.length||0
+            .split(".")[1]?.length||0
         )
       );
 
     const s=
       Math.abs(price)
-      .toFixed(decimals)
-      .replace(/\D/g,"");
+        .toFixed(decimals)
+        .replace(/\D/g,"");
 
-    return Number(
-      s.slice(-1)
-    )||0;
+    return Number(s.slice(-1))||0;
   }
 
   const s=
     Math.abs(price)
-    .toFixed(8)
-    .replace(/\D/g,"");
+      .toFixed(8)
+      .replace(/\D/g,"");
 
-  return Number(
-    s.slice(-1)
-  )||0;
+  return Number(s.slice(-1))||0;
 }
 
 
@@ -1571,16 +1206,12 @@ function percentage(a,b){
   return a/b*100;
 }
 
-
 function directionStats(prices){
 
   function calc(n){
 
-    if(
-      prices.length<n+1
-    ){
+    if(prices.length<n+1)
       return 50;
-    }
 
     const start=
       prices.length-(n+1);
@@ -1593,11 +1224,8 @@ function directionStats(prices){
       i++
     ){
 
-      if(
-        prices[i]>prices[i-1]
-      ){
+      if(prices[i]>prices[i-1])
         up++;
-      }
     }
 
     return percentage(up,n);
@@ -1613,21 +1241,15 @@ function directionStats(prices){
 
 function digitStats(digits){
 
-  const counts=
-    Array(10).fill(0);
+  const counts=Array(10).fill(0);
 
   for(const d of digits){
 
-    if(
-      d>=0 &&
-      d<=9
-    ){
+    if(d>=0&&d<=9)
       counts[d]++;
-    }
   }
 
-  const total=
-    digits.length||1;
+  const total=digits.length||1;
 
   const even=
     counts[0]+
@@ -1636,8 +1258,7 @@ function digitStats(digits){
     counts[6]+
     counts[8];
 
-  const odd=
-    total-even;
+  const odd=total-even;
 
   const over3=
     counts[4]+
@@ -1659,23 +1280,13 @@ function digitStats(digits){
   let most=0;
   let least=0;
 
-  for(
-    let i=1;
-    i<10;
-    i++
-  ){
+  for(let i=1;i<10;i++){
 
-    if(
-      counts[i]>counts[most]
-    ){
+    if(counts[i]>counts[most])
       most=i;
-    }
 
-    if(
-      counts[i]<counts[least]
-    ){
+    if(counts[i]<counts[least])
       least=i;
-    }
   }
 
   return {
@@ -1722,11 +1333,8 @@ function digitStats(digits){
 
 function persistenceScore(prices){
 
-  if(
-    prices.length<20
-  ){
+  if(prices.length<20)
     return 0;
-  }
 
   let same=0;
   let total=0;
@@ -1738,36 +1346,27 @@ function persistenceScore(prices){
   ){
 
     const prev=
-      prices[i-1] >
-      prices[i-2] ? 1 : -1;
+      prices[i-1]>
+      prices[i-2]?1:-1;
 
     const cur=
-      prices[i] >
-      prices[i-1] ? 1 : -1;
+      prices[i]>
+      prices[i-1]?1:-1;
 
-    if(
-      prev===cur
-    ){
+    if(prev===cur)
       same++;
-    }
 
     total++;
   }
 
-  return percentage(
-    same,
-    total
-  );
+  return percentage(same,total);
 }
 
 
 function chopScore(prices){
 
-  if(
-    prices.length<21
-  ){
+  if(prices.length<21)
     return 100;
-  }
 
   let changes=0;
   let last=0;
@@ -1779,56 +1378,37 @@ function chopScore(prices){
   ){
 
     const d=
-      prices[i]>
-      prices[i-1]
+      prices[i]>prices[i-1]
       ?1:
-      prices[i]<
-      prices[i-1]
+      prices[i]<prices[i-1]
       ?-1:
       0;
 
-    if(
-      d &&
-      last &&
-      d!==last
-    ){
+    if(d&&last&&d!==last)
       changes++;
-    }
 
     if(d)
       last=d;
   }
 
-  return percentage(
-    changes,
-    19
-  );
+  return percentage(changes,19);
 }
 
 
 function volatilityScore(prices){
 
-  if(
-    prices.length<20
-  ){
+  if(prices.length<20)
     return 0;
-  }
 
-  const x=
-    prices.slice(-20);
+  const x=prices.slice(-20);
 
   let sum=0;
 
-  for(
-    let i=1;
-    i<x.length;
-    i++
-  ){
+  for(let i=1;i<x.length;i++){
 
-    sum+=
-      Math.abs(
-        x[i]-x[i-1]
-      );
+    sum+=Math.abs(
+      x[i]-x[i-1]
+    );
   }
 
   return sum/19;
@@ -1837,18 +1417,12 @@ function volatilityScore(prices){
 
 function analyzeMarket(symbol){
 
-  const m=
-    markets[symbol];
+  const m=markets[symbol];
 
-  if(
-    !m||
-    m.prices.length<100
-  ){
+  if(!m||m.prices.length<100)
     return null;
-  }
 
-  const prices=
-    m.prices;
+  const prices=m.prices;
 
   const current100=
     prices.slice(-100);
@@ -1857,14 +1431,10 @@ function analyzeMarket(symbol){
     prices.slice(-200,-100);
 
   const d20=
-    directionStats(
-      current100
-    );
+    directionStats(current100);
 
   const dPrev=
-    directionStats(
-      previous100
-    );
+    directionStats(previous100);
 
   const currentDigits=
     current100.map(
@@ -1883,14 +1453,10 @@ function analyzeMarket(symbol){
     );
 
   const ds=
-    digitStats(
-      currentDigits
-    );
+    digitStats(currentDigits);
 
   const ps=
-    digitStats(
-      previousDigits
-    );
+    digitStats(previousDigits);
 
   return {
 
@@ -1902,19 +1468,13 @@ function analyzeMarket(symbol){
     prev100:dPrev.p100,
 
     persistence:
-      persistenceScore(
-        current100
-      ),
+      persistenceScore(current100),
 
     chop:
-      chopScore(
-        current100
-      ),
+      chopScore(current100),
 
     volatility:
-      volatilityScore(
-        current100
-      ),
+      volatilityScore(current100),
 
     digit:
       currentDigits[
@@ -1931,41 +1491,24 @@ function analyzeMarket(symbol){
     prevEven:ps.even,
     prevOdd:ps.odd,
 
-    digitPct:
-      ds.pct,
+    digitPct:ds.pct,
 
-    mostDigit:
-      ds.mostDigit,
+    mostDigit:ds.mostDigit,
+    leastDigit:ds.leastDigit,
 
-    leastDigit:
-      ds.leastDigit,
+    mostPct:ds.mostPct,
+    leastPct:ds.leastPct,
 
-    mostPct:
-      ds.mostPct,
+    prevMostDigit:ps.mostDigit,
+    prevMostPct:ps.mostPct,
 
-    leastPct:
-      ds.leastPct,
-
-    prevMostDigit:
-      ps.mostDigit,
-
-    prevLeastDigit:
-      ps.leastDigit,
-
-    prevMostPct:
-      ps.mostPct,
-
-    prevLeastPct:
-      ps.leastPct,
-
-    samples:
-      currentDigits.length
+    samples:currentDigits.length
   };
 }
 
 
 /* =========================================================
-   CANDIDATES
+   STRATEGIES
 ========================================================= */
 
 function candidateSignals(a){
@@ -1975,9 +1518,8 @@ function candidateSignals(a){
 
   const out=[];
 
-  /*
-    RISE
-  */
+
+  /* RISE */
 
   if(
     a.p20>=55 &&
@@ -2011,21 +1553,12 @@ function candidateSignals(a){
   }
 
 
-  /*
-    FALL
-  */
+  /* FALL */
 
-  const fall20=
-    100-a.p20;
-
-  const fall50=
-    100-a.p50;
-
-  const fall100=
-    100-a.p100;
-
-  const prevFall=
-    100-a.prev100;
+  const fall20=100-a.p20;
+  const fall50=100-a.p50;
+  const fall100=100-a.p100;
+  const prevFall=100-a.prev100;
 
   if(
     fall20>=55 &&
@@ -2059,9 +1592,7 @@ function candidateSignals(a){
   }
 
 
-  /*
-    OVER 3
-  */
+  /* OVER 3 */
 
   if(
     a.over3>=56 &&
@@ -2092,9 +1623,7 @@ function candidateSignals(a){
   }
 
 
-  /*
-    UNDER 7
-  */
+  /* UNDER 7 */
 
   if(
     a.under7>=58 &&
@@ -2125,9 +1654,7 @@ function candidateSignals(a){
   }
 
 
-  /*
-    EVEN
-  */
+  /* EVEN */
 
   if(
     a.even>=56 &&
@@ -2158,9 +1685,7 @@ function candidateSignals(a){
   }
 
 
-  /*
-    ODD
-  */
+  /* ODD */
 
   if(
     a.odd>=56 &&
@@ -2191,15 +1716,7 @@ function candidateSignals(a){
   }
 
 
-  /*
-    MATCH
-
-    Predict the most frequent digit.
-
-    Example:
-    digit 5 = 17%
-    → MATCH 5
-  */
+  /* MATCH ONLY */
 
   if(
     a.mostPct>=10 &&
@@ -2238,86 +1755,26 @@ function candidateSignals(a){
     });
   }
 
-
-  /*
-    DIFFERS
-
-    Predict that the next digit will NOT
-    equal the least frequent digit.
-
-    Probability:
-    100 - frequency of predicted digit
-  */
-
-  const diffCurrent=
-    100-a.leastPct;
-
-  const diffPrevious=
-    100-a.prevLeastPct;
-
-  if(
-    diffCurrent>=56 &&
-    diffPrevious>=50
-  ){
-
-    const score=
-      (
-        diffCurrent+
-        diffPrevious
-      )/2;
-
-    out.push({
-
-      strategy:"DIFFERS",
-
-      signal:
-        "DIFF "+a.leastDigit,
-
-      contractType:
-        "DIGITDIFF",
-
-      barrier:
-        a.leastDigit,
-
-      current:
-        diffCurrent,
-
-      validation:
-        diffPrevious,
-
-      score,
-
-      reason:
-        "LEAST_FREQUENT_DIGIT"
-    });
-  }
-
-
   return out;
 }
 
 
 /* =========================================================
-   FILTER
+   SIGNAL FILTER
 ========================================================= */
 
 function chooseBestSignal(a){
 
-  const s=
-    getSettings();
+  const s=getSettings();
 
   let candidates=
     candidateSignals(a);
 
-  if(
-    s.strategy!=="AUTO"
-  ){
+  if(s.strategy!=="AUTO"){
 
     candidates=
       candidates.filter(
-        x=>
-          x.strategy===
-          s.strategy
+        x=>x.strategy===s.strategy
       );
   }
 
@@ -2327,63 +1784,47 @@ function chooseBestSignal(a){
       if(
         x.validation<
         s.minValidation
-      ){
+      )
         return false;
-      }
 
       if(
         x.current<
         s.minValidation
-      ){
+      )
         return false;
-      }
 
       if(
         x.score<
         s.minScore
-      ){
+      )
         return false;
-      }
 
       if(
         a.samples<
         s.minSamples
-      ){
+      )
         return false;
-      }
 
       if(
         a.chop>
         s.maxChop
-      ){
+      )
         return false;
-      }
 
       if(
         a.persistence<
         s.persistence
-      ){
+      )
         return false;
-      }
 
       return true;
     });
 
-  if(
-    !candidates.length
-  ){
+  if(!candidates.length)
     return null;
-  }
-
-  /*
-    First prioritize signal quality.
-    Payout is checked AFTER proposal because
-    payout is dynamic.
-  */
 
   candidates.sort(
-    (a,b)=>
-      b.score-a.score
+    (a,b)=>b.score-a.score
   );
 
   return candidates[0];
@@ -2396,8 +1837,7 @@ function chooseBestSignal(a){
 
 function proposalAllowed(){
 
-  const now=
-    Date.now();
+  const now=Date.now();
 
   if(proposalInFlight)
     return false;
@@ -2405,16 +1845,11 @@ function proposalAllowed(){
   if(
     now-lastProposalAt<
     proposalCooldownMs
-  ){
+  )
     return false;
-  }
 
-  if(
-    now<
-    proposalBackoffUntil
-  ){
+  if(now<proposalBackoffUntil)
     return false;
-  }
 
   return true;
 }
@@ -2425,15 +1860,13 @@ async function getProposal(
   signal
 ){
 
-  const s=
-    getSettings();
+  const s=getSettings();
 
   const req={
 
     proposal:1,
 
-    amount:
-      s.stake,
+    amount:s.stake,
 
     basis:"stake",
 
@@ -2452,19 +1885,10 @@ async function getProposal(
       symbol
   };
 
-  /*
-    Digit contracts with barriers.
-  */
-
   if(
-    signal.contractType===
-      "DIGITOVER"||
-    signal.contractType===
-      "DIGITUNDER"||
-    signal.contractType===
-      "DIGITMATCH"||
-    signal.contractType===
-      "DIGITDIFF"
+    signal.contractType==="DIGITOVER"||
+    signal.contractType==="DIGITUNDER"||
+    signal.contractType==="DIGITMATCH"
   ){
 
     req.barrier=
@@ -2479,7 +1903,7 @@ async function getProposal(
 
 
 /* =========================================================
-   PAYOUT MATH
+   PAYOUT / BREAK-EVEN
 ========================================================= */
 
 function payoutMetrics(
@@ -2496,21 +1920,9 @@ function payoutMetrics(
 
     return {
       breakEven:Infinity,
-      profitOnWin:0,
-      evAtSignal:NaN
+      profitOnWin:0
     };
   }
-
-  /*
-    payout is total return.
-
-    If stake = $1
-    payout = $1.70
-
-    profit on win = $0.70
-
-    BE = 1 / 1.70 = 58.82%
-  */
 
   const profitOnWin=
     payout-ask;
@@ -2524,20 +1936,6 @@ function payoutMetrics(
   };
 }
 
-
-/*
-  This is intentionally NOT an aggressive filter.
-
-  We don't require a huge edge.
-
-  We only reject a proposal when the signal's
-  estimated probability is clearly below the
-  break-even probability.
-
-  A small safety margin of 1 percentage point
-  is used to avoid taking obviously negative
-  setups.
-*/
 
 function payoutPasses(
   signal,
@@ -2556,9 +1954,11 @@ function payoutPasses(
       metrics.breakEven
     )
   ){
+
     return {
       pass:false,
-      metrics
+      breakEven:Infinity,
+      edge:-Infinity
     };
   }
 
@@ -2570,29 +1970,19 @@ function payoutPasses(
     metrics.breakEven;
 
   /*
-    Minimum 0% EV setting means:
-
-    estimated probability must at least
-    reach break-even.
-
-    We intentionally don't demand +5/+10%.
+    Minimum EV remains intentionally loose.
+    Default = 0%, so the signal only needs
+    to reach break-even.
   */
 
-  const required=
-    getSettings().minEV;
-
   const pass=
-    edge>=required;
+    edge>=getSettings().minEV;
 
   return {
-
     pass,
-
     breakEven:
       metrics.breakEven,
-
     edge,
-
     estimated
   };
 }
@@ -2602,9 +1992,7 @@ function payoutPasses(
    EVALUATION
 ========================================================= */
 
-async function evaluateMarket(
-  symbol
-){
+async function evaluateMarket(symbol){
 
   if(!trading)
     return;
@@ -2612,55 +2000,37 @@ async function evaluateMarket(
   if(tradeInFlight)
     return;
 
-  const s=
-    getSettings();
+  const s=getSettings();
 
   if(
-    totalTrades>=
-    s.maxTrades
-  ){
+    totalTrades>=s.maxTrades||
+    losses>=s.maxLosses
+  )
     return;
-  }
 
-  if(
-    losses>=
-    s.maxLosses
-  ){
-    return;
-  }
-
-  const now=
-    Date.now();
+  const now=Date.now();
 
   if(
     lastEvaluationByMarket[symbol]&&
-    now-
-    lastEvaluationByMarket[symbol]<
-    750
-  ){
+    now-lastEvaluationByMarket[symbol]<750
+  )
     return;
-  }
 
-  lastEvaluationByMarket[symbol]=
-    now;
+  lastEvaluationByMarket[symbol]=now;
 
   if(
-    (marketCooldownUntil[symbol]||0)>
-    now
-  ){
+    (marketCooldownUntil[symbol]||0)>now
+  )
     return;
-  }
 
-  const m=
-    markets[symbol];
+  const m=markets[symbol];
 
   if(
     !m||
     !m.lastTick||
     !m.contractsLoaded
-  ){
+  )
     return;
-  }
 
   const analysis=
     analyzeMarket(symbol);
@@ -2668,45 +2038,29 @@ async function evaluateMarket(
   if(!analysis)
     return;
 
-  m.lastAnalysis=
-    analysis;
+  m.lastAnalysis=analysis;
 
-  let signal=
-    chooseBestSignal(
-      analysis
-    );
+  const signal=
+    chooseBestSignal(analysis);
+
+  renderMarket(symbol);
 
   if(!signal)
     return;
-
-  /*
-    Contract availability check BEFORE proposal.
-  */
 
   if(
     !contractAvailable(
       symbol,
       signal.contractType
     )
-  ){
-
+  )
     return;
-  }
 
-  /*
-    Avoid proposal flooding.
-  */
-
-  if(
-    !proposalAllowed()
-  ){
+  if(!proposalAllowed())
     return;
-  }
 
   proposalInFlight=true;
-
-  lastProposalAt=
-    Date.now();
+  lastProposalAt=Date.now();
 
   const triggerEpoch=
     m.lastTick.epoch;
@@ -2732,11 +2086,10 @@ async function evaluateMarket(
     const proposal=
       response.proposal;
 
-    if(!proposal){
+    if(!proposal)
       throw new Error(
         "Proposal missing."
       );
-    }
 
     const current=
       markets[symbol];
@@ -2744,8 +2097,7 @@ async function evaluateMarket(
     if(
       !current||
       !current.lastTick||
-      current.lastTick.epoch!==
-      triggerEpoch
+      current.lastTick.epoch!==triggerEpoch
     ){
 
       log(
@@ -2801,9 +2153,6 @@ async function evaluateMarket(
         payout
       );
 
-    const edge=
-      metrics.edge;
-
     log(
       symbol+
       ": "+
@@ -2815,7 +2164,7 @@ async function evaluateMarket(
       "% signal="+
       signal.score.toFixed(1)+
       "% edge="+
-      edge.toFixed(1)+
+      metrics.edge.toFixed(1)+
       "%"
     );
 
@@ -2823,7 +2172,7 @@ async function evaluateMarket(
 
       log(
         symbol+
-        ": skipped - payout does not support signal."
+        ": skipped - payout too poor for signal."
       );
 
       return;
@@ -2842,8 +2191,7 @@ async function evaluateMarket(
   }catch(err){
 
     const message=
-      err.message||
-      String(err);
+      err.message||String(err);
 
     log(
       symbol+
@@ -2851,11 +2199,7 @@ async function evaluateMarket(
       message
     );
 
-    if(
-      /rate limit/i.test(
-        message
-      )
-    ){
+    if(/rate limit/i.test(message)){
 
       proposalBackoffUntil=
         Date.now()+15000;
@@ -2875,7 +2219,7 @@ async function evaluateMarket(
 
 
 /* =========================================================
-   LIVE TRADE
+   BUY LIVE
 ========================================================= */
 
 async function executeLiveTrade(
@@ -2888,34 +2232,19 @@ async function executeLiveTrade(
   metrics
 ){
 
-  if(
-    !connected||
-    !ws
-  ){
-    throw new Error(
-      "Not connected."
-    );
-  }
+  if(!connected||!ws)
+    throw new Error("Not connected.");
 
   if(tradeInFlight)
     return;
 
-  const s=
-    getSettings();
+  const s=getSettings();
 
   if(
-    totalTrades>=
-    s.maxTrades
-  ){
+    totalTrades>=s.maxTrades||
+    losses>=s.maxLosses
+  )
     return;
-  }
-
-  if(
-    losses>=
-    s.maxLosses
-  ){
-    return;
-  }
 
   tradeInFlight=true;
 
@@ -2930,40 +2259,33 @@ async function executeLiveTrade(
       ask.toFixed(2)
     );
 
-    const r=
-      await send({
+    const r=await send({
 
-        buy:
-          proposal.id,
+      buy:
+        proposal.id,
 
-        price:
-          ask
+      price:
+        ask
 
-      },12000);
+    },12000);
 
-    const buy=
-      r.buy;
+    const buy=r.buy;
 
-    if(!buy){
-
+    if(!buy)
       throw new Error(
         "Buy response missing."
       );
-    }
 
     const contractId=
       buy.contract_id||
       buy.id;
 
-    if(!contractId){
-
+    if(!contractId)
       throw new Error(
         "No contract ID returned."
       );
-    }
 
     totalTrades++;
-
     updateStatsUI();
 
     openTrade={
@@ -3021,38 +2343,29 @@ async function executeLiveTrade(
   }catch(err){
 
     tradeInFlight=false;
-
     throw err;
   }
 }
 
 
 /* =========================================================
-   CONTRACT UPDATES
+   OPEN CONTRACT
 ========================================================= */
 
 function processOpenContract(c){
 
-  if(
-    !c||
-    !openTrade
-  ){
+  if(!c||!openTrade)
     return;
-  }
 
   const id=
-    String(
-      c.contract_id||""
-    );
+    String(c.contract_id||"");
 
   if(
-    id!==
-    String(
+    id!==String(
       openTrade.contractId
     )
-  ){
+  )
     return;
-  }
 
   if(
     c.is_sold||
@@ -3068,7 +2381,7 @@ function processOpenContract(c){
 
 
 /* =========================================================
-   FINISH
+   FINISH TRADE
 ========================================================= */
 
 function finishTrade(c){
@@ -3076,11 +2389,8 @@ function finishTrade(c){
   if(!openTrade)
     return;
 
-  if(
-    openTrade.finalized
-  ){
+  if(openTrade.finalized)
     return;
-  }
 
   openTrade.finalized=true;
 
@@ -3092,16 +2402,11 @@ function finishTrade(c){
   tradeInFlight=false;
 
   const profit=
-    num(
-      c.profit,
-      NaN
-    );
+    num(c.profit,NaN);
 
   let pnl=profit;
 
-  if(
-    !Number.isFinite(pnl)
-  ){
+  if(!Number.isFinite(pnl)){
 
     const buyPrice=
       num(
@@ -3115,17 +2420,9 @@ function finishTrade(c){
         c.bid_price
       );
 
-    if(
-      Number.isFinite(
-        sellPrice
-      )
-    ){
-
-      pnl=
-        sellPrice-buyPrice;
-
+    if(Number.isFinite(sellPrice)){
+      pnl=sellPrice-buyPrice;
     }else{
-
       pnl=0;
     }
   }
@@ -3149,14 +2446,11 @@ function finishTrade(c){
     marketLosses[
       finished.symbol
     ]=
-      (
-        marketLosses[
-          finished.symbol
-        ]||0
-      )+1;
+      (marketLosses[
+        finished.symbol
+      ]||0)+1;
 
-    const s=
-      getSettings();
+    const s=getSettings();
 
     marketCooldownUntil[
       finished.symbol
@@ -3181,30 +2475,16 @@ function finishTrade(c){
     " | "+
     finished.signal+
     " | "+
-    (
-      won?
-      "WIN":
-      "LOSS"
-    )+
+    (won?"WIN":"LOSS")+
     " | P/L "+
-    (
-      pnl>=0?
-      "+$":
-      "-$"
-    )+
+    (pnl>=0?"+$":"-$")+
     Math.abs(pnl).toFixed(2)
   );
-
-  /*
-    Refresh real/demo account balance.
-  */
 
   if(connected){
 
     setTimeout(
-      ()=>{
-        refreshBalance();
-      },
+      ()=>refreshBalance(),
       500
     );
   }
@@ -3219,14 +2499,11 @@ function finishTrade(c){
 
 function checkSessionLimits(){
 
-  const s=
-    getSettings();
+  const s=getSettings();
 
   if(
-    totalTrades>=
-    s.maxTrades||
-    losses>=
-    s.maxLosses
+    totalTrades>=s.maxTrades||
+    losses>=s.maxLosses
   ){
 
     trading=false;
@@ -3260,10 +2537,7 @@ function checkSessionLimits(){
 
   if(
     s.stopLoss>0&&
-    totalPnL<=
-    -Math.abs(
-      s.stopLoss
-    )
+    totalPnL<=-Math.abs(s.stopLoss)
   ){
 
     trading=false;
@@ -3373,8 +2647,7 @@ function disconnect(logIt=true){
       "yellow"
     );
 
-    $("account").textContent=
-      "---";
+    $("account").textContent="---";
 
     log(
       "Disconnected."
@@ -3384,13 +2657,12 @@ function disconnect(logIt=true){
 
 
 /* =========================================================
-   RENDER SCANNER
+   RENDERING
 ========================================================= */
 
 function renderMarket(symbol){
 
-  const m=
-    markets[symbol];
+  const m=markets[symbol];
 
   if(!m)
     return;
@@ -3434,18 +2706,15 @@ function renderScannerRow(
     row=
       document.createElement("tr");
 
-    row.dataset.symbol=
-      symbol;
+    row.dataset.symbol=symbol;
 
     $("scannerBody")
       .appendChild(row);
   }
 
   const locked=
-    (
-      marketCooldownUntil[symbol]||
-      0
-    )>Date.now();
+    (marketCooldownUntil[symbol]||0)>
+    Date.now();
 
   const status=
     locked?
@@ -3455,10 +2724,10 @@ function renderScannerRow(
     "WAIT";
 
   const statusClass=
-    status==="QUALIFIED"?
-    "good":
-    status==="COOLDOWN"?
-    "yellow":
+    status==="QUALIFIED"
+    ?"good":
+    status==="COOLDOWN"
+    ?"yellow":
     "neutral";
 
   row.innerHTML=`
@@ -3467,23 +2736,23 @@ function renderScannerRow(
 
     <td>
       ${signal?
-        signal.strategy:
-        "-"}
+        signal.strategy:"-"}
     </td>
 
     <td>
       ${signal?
-        signal.signal:
-        "-"}
+        signal.signal:"-"}
     </td>
 
     <td>
-      ${signal&&
+      ${
+        signal&&
         signal.barrier!==null&&
         signal.barrier!==undefined
         ?
         signal.barrier:
-        "-"}
+        "-"
+      }
     </td>
 
     <td>
@@ -3492,25 +2761,12 @@ function renderScannerRow(
         "-"}
     </td>
 
-    <td>
-      ${a.p20.toFixed(1)}%
-    </td>
+    <td>${a.p20.toFixed(1)}%</td>
+    <td>${a.p50.toFixed(1)}%</td>
+    <td>${a.p100.toFixed(1)}%</td>
+    <td>${a.prev100.toFixed(1)}%</td>
 
-    <td>
-      ${a.p50.toFixed(1)}%
-    </td>
-
-    <td>
-      ${a.p100.toFixed(1)}%
-    </td>
-
-    <td>
-      ${a.prev100.toFixed(1)}%
-    </td>
-
-    <td>
-      ${a.digit}
-    </td>
+    <td>${a.digit}</td>
 
     <td>
       ${signal?
@@ -3518,21 +2774,14 @@ function renderScannerRow(
         "-"}
     </td>
 
-    <td>
-      ${a.samples}
-    </td>
+    <td>${a.samples}</td>
 
     <td class="avail">
       ${availabilityText(symbol)}
     </td>
 
-    <td>
-      -
-    </td>
-
-    <td>
-      -
-    </td>
+    <td>-</td>
+    <td>-</td>
 
     <td class="${statusClass}">
       ${status}
@@ -3541,10 +2790,7 @@ function renderScannerRow(
 }
 
 
-function renderDigitRow(
-  symbol,
-  a
-){
+function renderDigitRow(symbol,a){
 
   let row=
     document.querySelector(
@@ -3553,11 +2799,9 @@ function renderDigitRow(
 
   if(!row){
 
-    row=
-      document.createElement("tr");
+    row=document.createElement("tr");
 
-    row.dataset.symbol=
-      symbol;
+    row.dataset.symbol=symbol;
 
     $("digitBody")
       .appendChild(row);
@@ -3565,30 +2809,17 @@ function renderDigitRow(
 
   row.innerHTML=`
 
-    <td>
-      ${escapeHtml(symbol)}
-    </td>
+    <td>${escapeHtml(symbol)}</td>
 
     ${a.digitPct.map(
       x=>
         `<td>${x.toFixed(1)}%</td>`
     ).join("")}
 
-    <td>
-      ${a.even.toFixed(1)}%
-    </td>
-
-    <td>
-      ${a.odd.toFixed(1)}%
-    </td>
-
-    <td>
-      ${a.over3.toFixed(1)}%
-    </td>
-
-    <td>
-      ${a.under7.toFixed(1)}%
-    </td>
+    <td>${a.even.toFixed(1)}%</td>
+    <td>${a.odd.toFixed(1)}%</td>
+    <td>${a.over3.toFixed(1)}%</td>
+    <td>${a.under7.toFixed(1)}%</td>
 
     <td class="good">
       ${a.mostDigit}
@@ -3603,20 +2834,14 @@ function renderDigitRow(
 }
 
 
-/* =========================================================
-   VALIDATION TABLE
-========================================================= */
-
 function renderBacktest(){
 
-  const body=
-    $("backtestBody");
+  const body=$("backtestBody");
 
   body.innerHTML="";
 
   for(
-    const symbol of
-    Object.keys(markets)
+    const symbol of Object.keys(markets)
   ){
 
     const a=
@@ -3642,24 +2867,12 @@ function renderBacktest(){
         );
 
       const qualified=
-        x.current>=
-          s.minValidation&&
-
-        x.validation>=
-          s.minValidation&&
-
-        x.score>=
-          s.minScore&&
-
-        a.samples>=
-          s.minSamples&&
-
-        a.chop<=
-          s.maxChop&&
-
-        a.persistence>=
-          s.persistence&&
-
+        x.current>=s.minValidation&&
+        x.validation>=s.minValidation&&
+        x.score>=s.minScore&&
+        a.samples>=s.minSamples&&
+        a.chop<=s.maxChop&&
+        a.persistence>=s.persistence&&
         available;
 
       const tr=
@@ -3667,21 +2880,14 @@ function renderBacktest(){
 
       tr.innerHTML=`
 
-        <td>
-          ${escapeHtml(symbol)}
-        </td>
+        <td>${escapeHtml(symbol)}</td>
+
+        <td>${x.strategy}</td>
+
+        <td>${x.signal}</td>
 
         <td>
-          ${x.strategy}
-        </td>
-
-        <td>
-          ${x.signal}
-        </td>
-
-        <td>
-          ${x.barrier??
-            "-"}
+          ${x.barrier??"-"}
         </td>
 
         <td>
@@ -3692,22 +2898,20 @@ function renderBacktest(){
           ${x.validation.toFixed(1)}%
         </td>
 
-        <td>
-          ${a.samples}
-        </td>
+        <td>${a.samples}</td>
 
         <td class="${
-          qualified?
-          "good":
-          "neutral"
+          qualified?"good":"neutral"
         }">
+
           ${
-            qualified?
-            "YES":
-            available?
-            "NO":
-            "UNAVAILABLE"
+            qualified
+            ?"YES"
+            :available
+            ?"NO"
+            :"UNAVAILABLE"
           }
+
         </td>
       `;
 
@@ -3718,7 +2922,7 @@ function renderBacktest(){
 
 
 /* =========================================================
-   TRADE HISTORY
+   HISTORY
 ========================================================= */
 
 function addTradeHistory(
@@ -3733,8 +2937,7 @@ function addTradeHistory(
   row.innerHTML=`
 
     <td>
-      ${new Date()
-        .toLocaleTimeString()}
+      ${new Date().toLocaleTimeString()}
     </td>
 
     <td>
@@ -3750,58 +2953,39 @@ function addTradeHistory(
     </td>
 
     <td>
-      ${t.barrier??
-        "-"}
+      ${t.barrier??"-"}
     </td>
 
     <td>
-      $${Number(t.stake)
-        .toFixed(2)}
+      $${Number(t.stake).toFixed(2)}
     </td>
 
     <td>
-      $${Number(t.payout)
-        .toFixed(2)}
+      $${Number(t.payout).toFixed(2)}
     </td>
 
     <td>
-      ${Number(t.breakEven)
-        .toFixed(1)}%
+      ${Number(t.breakEven).toFixed(1)}%
     </td>
 
     <td>
-      ${Number(t.ev)
-        .toFixed(1)}%
+      ${Number(t.ev).toFixed(1)}%
     </td>
 
     <td class="${
-      won?
-      "good":
-      "bad"
+      won?"good":"bad"
     }">
-      ${
-        won?
-        "WIN":
-        "LOSS"
-      }
+      ${won?"WIN":"LOSS"}
     </td>
 
     <td class="${
-      pnl>=0?
-      "good":
-      "bad"
+      pnl>=0?"good":"bad"
     }">
-      ${
-        pnl>=0?
-        "+$":
-        "-$"
-      }${Math.abs(pnl)
-        .toFixed(2)}
+      ${pnl>=0?"+$":"-$"}${Math.abs(pnl).toFixed(2)}
     </td>
   `;
 
-  $("historyBody")
-    .prepend(row);
+  $("historyBody").prepend(row);
 }
 
 
@@ -3812,16 +2996,13 @@ function addTradeHistory(
 function renderAll(){
 
   for(
-    const symbol of
-    Object.keys(markets)
+    const symbol of Object.keys(markets)
   ){
-
     renderMarket(symbol);
   }
 
   renderBacktest();
 }
-
 
 setInterval(()=>{
 
@@ -3830,22 +3011,17 @@ setInterval(()=>{
 
   renderBacktest();
 
-  if(trading){
+  if(trading)
     checkSessionLimits();
-  }
 
 },5000);
 
 
-/*
-  Balance refresh every 30 seconds.
-*/
-
+/* Balance refresh */
 setInterval(()=>{
 
-  if(connected){
+  if(connected)
     refreshBalance();
-  }
 
 },30000);
 
@@ -3866,19 +3042,23 @@ log(
 );
 
 log(
-  "Paper/Backtest mode removed."
+  "Strategies: Rise/Fall, Over3, Under7, Even, Odd, MATCH."
 );
 
 log(
-  "Added MATCH / DIFFERS analysis."
+  "DIFFERS is disabled."
 );
 
 log(
-  "Added contract availability scanner."
+  "Payout / break-even filter enabled."
 );
 
 log(
-  "Added payout / break-even filter."
+  "Contract availability scanner enabled."
+);
+
+log(
+  "No Martingale / no recovery."
 );
 
 log(
@@ -3886,6 +3066,5 @@ log(
 );
 
 </script>
-
 </body>
 </html>
