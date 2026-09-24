@@ -5,11 +5,10 @@
 
 <meta charset="UTF-8">
 
-<meta
-name="viewport"
-content="width=device-width,initial-scale=1.0">
+<meta name="viewport"
+      content="width=device-width,initial-scale=1.0">
 
-<title>V30 Pulse Surge Multi Trader</title>
+<title>V31 Pulse Surge Multi Trader</title>
 
 <style>
 
@@ -94,38 +93,24 @@ label{
 input,
 select,
 button{
-
     width:100%;
-
     border-radius:8px;
-
     border:1px solid #29415e;
-
     background:#091525;
-
     color:#eaf2ff;
-
     padding:10px;
-
     font-size:13px;
-
 }
 
 input:focus,
 select:focus{
-
     outline:none;
-
     border-color:#4e9cff;
-
 }
 
 button{
-
     cursor:pointer;
-
     font-weight:bold;
-
 }
 
 button:hover{
@@ -133,21 +118,15 @@ button:hover{
 }
 
 .btnrow{
-
     display:grid;
-
-    grid-template-columns:
-    repeat(4,1fr);
-
+    grid-template-columns:repeat(4,1fr);
     gap:8px;
-
 }
 
 @media(max-width:700px){
 
     .btnrow{
-        grid-template-columns:
-        1fr 1fr;
+        grid-template-columns:1fr 1fr;
     }
 
 }
@@ -173,29 +152,18 @@ button:hover{
 }
 
 .status{
-
     display:flex;
-
     flex-wrap:wrap;
-
     gap:8px;
-
     margin-top:10px;
-
 }
 
 .badge{
-
     padding:6px 9px;
-
     border-radius:20px;
-
     background:#132339;
-
     border:1px solid #263d58;
-
     font-size:11px;
-
 }
 
 .green{
@@ -219,21 +187,15 @@ button:hover{
 }
 
 .statgrid{
-
     display:grid;
-
-    grid-template-columns:
-    repeat(7,1fr);
-
+    grid-template-columns:repeat(7,1fr);
     gap:7px;
-
 }
 
 @media(max-width:900px){
 
     .statgrid{
-        grid-template-columns:
-        repeat(4,1fr);
+        grid-template-columns:repeat(4,1fr);
     }
 
 }
@@ -241,216 +203,121 @@ button:hover{
 @media(max-width:500px){
 
     .statgrid{
-        grid-template-columns:
-        repeat(2,1fr);
+        grid-template-columns:repeat(2,1fr);
     }
 
 }
 
 .stat{
-
     background:#091625;
-
     border:1px solid #1b3049;
-
     border-radius:9px;
-
     padding:9px;
-
 }
 
 .stat .name{
-
     font-size:10px;
-
     color:#8299b1;
-
 }
 
 .stat .value{
-
     margin-top:4px;
-
     font-size:16px;
-
     font-weight:bold;
-
 }
 
 .tablewrap{
-
     overflow:auto;
-
     max-height:500px;
-
 }
 
 table{
-
     width:100%;
-
     border-collapse:collapse;
-
     font-size:11px;
-
     min-width:1100px;
-
 }
 
 th{
-
     position:sticky;
-
     top:0;
-
     background:#101f32;
-
     color:#8ea7c2;
-
     padding:8px;
-
     border-bottom:1px solid #253b54;
-
     text-align:left;
-
+    z-index:2;
 }
 
 td{
-
     padding:7px;
-
     border-bottom:1px solid #16283d;
-
     white-space:nowrap;
-
 }
 
 tr:hover{
-
     background:#102033;
-
 }
 
 .signal{
-
     font-weight:bold;
-
 }
 
 .signal.buy{
-
     color:#62e5a5;
-
 }
 
 .signal.wait{
-
     color:#91a5bd;
-
 }
 
 .log{
-
-    height:280px;
-
+    height:300px;
     overflow:auto;
-
     background:#050c15;
-
     border:1px solid #18283c;
-
     border-radius:8px;
-
     padding:9px;
-
     font-family:monospace;
-
     font-size:11px;
-
     line-height:1.55;
-
 }
 
 .logline{
-
     border-bottom:1px solid #0d1927;
-
     padding:3px 0;
-
 }
 
 .small{
-
     font-size:10px;
-
     color:#738aa3;
-
 }
 
 .warning{
-
     background:#32270d;
-
     border:1px solid #6d5319;
-
     color:#ffd86a;
-
     padding:10px;
-
     border-radius:8px;
-
     font-size:11px;
-
     line-height:1.5;
-
 }
 
 .success{
-
     background:#0d3023;
-
     border:1px solid #1c684e;
-
     color:#6ce7ad;
-
     padding:10px;
-
     border-radius:8px;
-
     font-size:11px;
-
     line-height:1.5;
-
-}
-
-.danger{
-
-    background:#32131a;
-
-    border:1px solid #6d2637;
-
-    color:#ff9aaa;
-
-    padding:10px;
-
-    border-radius:8px;
-
-    font-size:11px;
-
-    line-height:1.5;
-
 }
 
 footer{
-
     text-align:center;
-
     color:#617891;
-
     font-size:10px;
-
     padding:20px;
-
 }
 
 </style>
@@ -460,33 +327,28 @@ footer{
 
 <body>
 
-
 <div class="container">
 
 
 <h1>
-V30 Pulse / Surge Multi Trader
+V31 Pulse / Surge Multi Trader
 </h1>
 
-
 <div class="sub">
-
 Pulse • Surge • Rise/Fall • Digit Over/Under • Even/Odd
 • Current 100T + Previous 100T Validation
-
 </div>
 
 
 <div class="warning">
 
 <b>NO MARTINGALE.</b>
-
 <b>NO RECOVERY.</b>
-
 <b>NO LOSS DOUBLING.</b>
 
-Paper mode is available before live trading.
+<br><br>
 
+Use PAPER mode first.
 Automated trading can lose money.
 
 </div>
@@ -505,9 +367,7 @@ CONNECTION
 1. Deriv Connection
 </h2>
 
-
 <div class="grid3">
-
 
 <div>
 
@@ -557,7 +417,6 @@ Real
 
 </div>
 
-
 </div>
 
 
@@ -565,7 +424,6 @@ Real
 
 
 <div class="btnrow">
-
 
 <button
 class="btn-blue"
@@ -602,12 +460,10 @@ STOP TRADING
 
 </button>
 
-
 </div>
 
 
 <div class="status">
-
 
 <div class="badge">
 
@@ -643,7 +499,8 @@ None
 
 Currency:
 
-<span id="currencyStatus">
+<span
+id="currencyStatus">
 
 ---
 
@@ -656,14 +513,14 @@ Currency:
 
 Mode:
 
-<span id="modeStatus">
+<span
+id="modeStatus">
 
 PAPER
 
 </span>
 
 </div>
-
 
 </div>
 
@@ -677,13 +534,12 @@ Waiting for connection...
 
 </div>
 
-
 </div>
 
 
 
 <!-- =====================================================
-SETTINGS
+TRADING SETTINGS
 ===================================================== -->
 
 <div class="panel">
@@ -1000,7 +856,7 @@ value="5">
 <div>
 
 <label>
-Cooldown after loss (sec)
+Cooldown after loss
 </label>
 
 <input
@@ -1046,7 +902,7 @@ value="40">
 <div>
 
 <label>
-Scan Interval (sec)
+Scan Interval
 </label>
 
 <input
@@ -1216,9 +1072,13 @@ SCANNER
 
 <div class="small">
 
-Current 100 ticks are analyzed separately from the previous 100 ticks.
+200 ticks are loaded once per market.
 
-Historical data is loaded once per market and live ticks are then maintained locally.
+Current 100 ticks = signal window.
+
+Previous 100 ticks = validation window.
+
+Live ticks are then appended locally.
 
 </div>
 
@@ -1228,77 +1088,28 @@ Historical data is loaded once per market and live ticks are then maintained loc
 
 <div class="tablewrap">
 
-
 <table>
-
 
 <thead>
 
 <tr>
 
-<th>
-Market
-</th>
-
-<th>
-Pulse
-</th>
-
-<th>
-Score
-</th>
-
-<th>
-20T
-</th>
-
-<th>
-50T
-</th>
-
-<th>
-100T
-</th>
-
-<th>
-Persistence
-</th>
-
-<th>
-Chop
-</th>
-
-<th>
-Volatility
-</th>
-
-<th>
-Digit
-</th>
-
-<th>
-Validation
-</th>
-
-<th>
-Conservative
-</th>
-
-<th>
-Samples
-</th>
-
-<th>
-Payout
-</th>
-
-<th>
-EV
-</th>
-
-<th>
-Status
-</th>
+<th>Market</th>
+<th>Pulse</th>
+<th>Score</th>
+<th>20T</th>
+<th>50T</th>
+<th>100T</th>
+<th>Persistence</th>
+<th>Chop</th>
+<th>Volatility</th>
+<th>Digit</th>
+<th>Validation</th>
+<th>Conservative</th>
+<th>Samples</th>
+<th>Payout</th>
+<th>EV</th>
+<th>Status</th>
 
 </tr>
 
@@ -1319,9 +1130,7 @@ Waiting for market data...
 
 </tbody>
 
-
 </table>
-
 
 </div>
 
@@ -1330,7 +1139,7 @@ Waiting for market data...
 
 
 <!-- =====================================================
-DIGIT
+DIGIT ANALYZER
 ===================================================== -->
 
 <div class="panel">
@@ -1342,17 +1151,13 @@ DIGIT
 
 <div class="tablewrap">
 
-
 <table>
-
 
 <thead>
 
 <tr>
 
-<th>
-Market
-</th>
+<th>Market</th>
 
 <th>0</th>
 <th>1</th>
@@ -1365,21 +1170,10 @@ Market
 <th>8</th>
 <th>9</th>
 
-<th>
-Even
-</th>
-
-<th>
-Odd
-</th>
-
-<th>
-Over 3
-</th>
-
-<th>
-Under 7
-</th>
+<th>Even</th>
+<th>Odd</th>
+<th>Over 3</th>
+<th>Under 7</th>
 
 </tr>
 
@@ -1390,9 +1184,7 @@ Under 7
 
 </tbody>
 
-
 </table>
-
 
 </div>
 
@@ -1413,49 +1205,21 @@ BACKTEST
 
 <div class="tablewrap">
 
-
 <table>
-
 
 <thead>
 
 <tr>
 
-<th>
-Market
-</th>
-
-<th>
-Strategy
-</th>
-
-<th>
-Samples
-</th>
-
-<th>
-Wins
-</th>
-
-<th>
-Losses
-</th>
-
-<th>
-Win %
-</th>
-
-<th>
-Conservative %
-</th>
-
-<th>
-Score
-</th>
-
-<th>
-Result
-</th>
+<th>Market</th>
+<th>Strategy</th>
+<th>Samples</th>
+<th>Wins</th>
+<th>Losses</th>
+<th>Win %</th>
+<th>Conservative %</th>
+<th>Score</th>
+<th>Result</th>
 
 </tr>
 
@@ -1466,9 +1230,7 @@ Result
 
 </tbody>
 
-
 </table>
-
 
 </div>
 
@@ -1477,7 +1239,7 @@ Result
 
 
 <!-- =====================================================
-HISTORY
+TRADE HISTORY
 ===================================================== -->
 
 <div class="panel">
@@ -1489,30 +1251,20 @@ HISTORY
 
 <div class="tablewrap">
 
-
 <table>
-
 
 <thead>
 
 <tr>
 
 <th>Time</th>
-
 <th>Market</th>
-
 <th>Strategy</th>
-
 <th>Direction</th>
-
 <th>Stake</th>
-
 <th>Payout</th>
-
 <th>Result</th>
-
 <th>P/L</th>
-
 <th>Mode</th>
 
 </tr>
@@ -1524,9 +1276,7 @@ HISTORY
 
 </tbody>
 
-
 </table>
-
 
 </div>
 
@@ -1551,14 +1301,14 @@ class="log">
 
 </div>
 
-
 </div>
 
 
 <footer>
 
-V30 Pulse / Surge Multi Trader
-— No Martingale / No Recovery
+V31 Pulse / Surge Multi Trader
+<br>
+No Martingale • No Recovery
 
 </footer>
 
@@ -1577,54 +1327,50 @@ const API_BASE =
 "https://api.derivws.com";
 
 
-let ws=null;
+let ws = null;
 
-let wsTimer=null;
+let wsTimer = null;
 
-let connected=false;
+let connected = false;
 
-let trading=false;
+let trading = false;
 
-let requestId=1;
+let requestId = 1;
 
-const pending=
-new Map();
+const pending = new Map();
 
-let selectedAccount=null;
+let selectedAccount = null;
 
-let selectedCurrency="USD";
+let selectedCurrency = "USD";
 
-let markets={};
+let markets = {};
 
-let marketList=[];
+let marketList = [];
 
-let marketMeta={};
+let marketMeta = {};
 
-let tickSubscriptions={};
+let tickSubscriptions = {};
 
-let contractSubscriptions={};
+let contractSubscriptions = {};
 
-let scannerTimer=null;
+let scannerTimer = null;
 
-let scanRunning=false;
+let scanRunning = false;
 
-let currentTrade=null;
+let currentTrade = null;
 
-let totalTrades=0;
+let totalTrades = 0;
 
-let totalWins=0;
+let totalWins = 0;
 
-let totalLosses=0;
+let totalLosses = 0;
 
-let totalProfit=0;
+let totalProfit = 0;
 
-let accountBalance=0;
+let accountBalance = 0;
 
-let cooldownUntil=0;
+let cooldownUntil = 0;
 
-let marketLosses={};
-
-let lastGlobalEvaluation=0;
 
 
 /* =====================================================
@@ -1632,81 +1378,89 @@ DOM
 ===================================================== */
 
 function $(id){
+
     return document.getElementById(id);
+
 }
 
 
 function num(id,fallback=0){
 
-    const x=
-    parseFloat(
-        $(id).value
-    );
+    const x =
+        parseFloat(
+            $(id).value
+        );
 
     return Number.isFinite(x)
-    ? x
-    : fallback;
+        ? x
+        : fallback;
+
 }
 
 
 function int(id,fallback=0){
 
-    const x=
-    parseInt(
-        $(id).value
-    );
+    const x =
+        parseInt(
+            $(id).value
+        );
 
     return Number.isFinite(x)
-    ? x
-    : fallback;
+        ? x
+        : fallback;
+
 }
 
 
 function sleep(ms){
 
     return new Promise(
-        resolve=>
+        resolve =>
         setTimeout(
             resolve,
             ms
         )
     );
+
 }
 
 
+
 /* =====================================================
-ESCAPE
+HTML ESCAPE
 ===================================================== */
 
 function escapeHtml(value){
 
     return String(value)
 
-    .replaceAll(
-        "&",
-        "&amp;"
-    )
+        .replaceAll(
+            "&",
+            "&amp;"
+        )
 
-    .replaceAll(
-        "<",
-        "&lt;"
-    )
+        .replaceAll(
+            "<",
+            "&lt;"
+        )
 
-    .replaceAll(
-        ">",
-        "&gt;"
-    )
+        .replaceAll(
+            ">",
+            "&gt;"
+        )
 
-    .replaceAll(
-        '"',
-        "&quot;"
-    )
+        .replaceAll(
+            '"',
+            "&quot;"
+        )
 
-    .replaceAll(
-        "'",
-        "&#039;"
-    );
+        .replaceAll(
+            "'",
+            "&#039;"
+        );
+
 }
+
 
 
 /* =====================================================
@@ -1718,43 +1472,45 @@ function log(
     type="info"
 ){
 
-    const box=
-    $("log");
+    const box =
+        $("log");
 
-    const time=
-    new Date()
-    .toLocaleTimeString();
+    const time =
+        new Date()
+        .toLocaleTimeString();
 
-    let cls="";
+    let cls = "";
 
-    if(type==="good"){
-        cls="green";
-    }
+    if(type === "good")
+        cls = "green";
 
-    if(type==="bad"){
-        cls="red";
-    }
+    if(type === "bad")
+        cls = "red";
 
-    if(type==="warn"){
-        cls="yellow";
-    }
+    if(type === "warn")
+        cls = "yellow";
+
 
     box.innerHTML +=
-    `<div class="logline">
 
-        <span class="gray">
-            [${time}]
-        </span>
+        `<div class="logline">
 
-        <span class="${cls}">
-            ${escapeHtml(message)}
-        </span>
+            <span class="gray">
+                [${time}]
+            </span>
 
-    </div>`;
+            <span class="${cls}">
+                ${escapeHtml(message)}
+            </span>
 
-    box.scrollTop=
-    box.scrollHeight;
+        </div>`;
+
+
+    box.scrollTop =
+        box.scrollHeight;
+
 }
+
 
 
 /* =====================================================
@@ -1767,37 +1523,41 @@ function setConnection(
 ){
 
     $("connectionStatus")
-    .textContent=text;
+        .textContent = text;
 
     $("connectionStatus")
-    .className=cls;
+        .className = cls;
+
 }
 
 
 function setMessage(text){
 
     $("connectionMessage")
-    .textContent=text;
+        .textContent = text;
+
 }
 
 
+
 /* =====================================================
-MODE
+MODE DISPLAY
 ===================================================== */
 
 $("tradeMode")
 .addEventListener(
     "change",
-    ()=>{
+    () => {
 
         $("modeStatus")
-        .textContent=
-        $("tradeMode")
-        .value
-        .toUpperCase();
+            .textContent =
+            $("tradeMode")
+                .value
+                .toUpperCase();
 
     }
 );
+
 
 
 /* =====================================================
@@ -1809,78 +1569,73 @@ async function restFetch(
     options={}
 ){
 
-    const response=
-    await fetch(
-        API_BASE+path,
-        options
-    );
+    const response =
+        await fetch(
+            API_BASE + path,
+            options
+        );
 
-    let data=null;
+
+    let data = null;
+
 
     try{
 
-        data=
-        await response.json();
+        data =
+            await response.json();
 
     }catch(e){
 
-        data=null;
+        data = null;
 
     }
 
 
     if(!response.ok){
 
-        const message=
+        const message =
 
-        data?.errors?.[0]?.message ||
+            data?.errors?.[0]?.message ||
 
-        data?.error?.message ||
+            data?.error?.message ||
 
-        data?.message ||
+            data?.message ||
 
-        `HTTP ${response.status}`;
+            `HTTP ${response.status}`;
 
-        throw new Error(
-            message
-        );
+
+        throw new Error(message);
+
     }
 
 
     return data;
+
 }
 
 
+
 /* =====================================================
-ACCOUNT DISCOVERY
+ACCOUNT EXTRACTION
 ===================================================== */
 
 function extractAccounts(obj){
 
-    const found=[];
+    const found = [];
 
 
     function walk(value){
 
-        if(!value){
+        if(!value)
             return;
-        }
 
 
-        if(
-            Array.isArray(value)
-        ){
+        if(Array.isArray(value)){
 
-            for(
-                const item
-                of value
-            ){
-
-                walk(item);
-
-            }
+            value.forEach(walk);
 
             return;
+
         }
 
 
@@ -1890,38 +1645,33 @@ function extractAccounts(obj){
         ){
 
             return;
+
         }
 
 
-        if(
-            value.account_id
-        ){
+        if(value.account_id){
 
-            found.push(
-                value
+            found.push(value);
+
+        }
+
+
+        Object.values(value)
+            .forEach(
+                child => {
+
+                    if(
+                        child &&
+                        typeof child ===
+                        "object"
+                    ){
+
+                        walk(child);
+
+                    }
+
+                }
             );
-        }
-
-
-        for(
-            const key
-            of Object.keys(value)
-        ){
-
-            const child=
-            value[key];
-
-            if(
-                child &&
-                typeof child===
-                "object"
-            ){
-
-                walk(child);
-
-            }
-
-        }
 
     }
 
@@ -1929,87 +1679,81 @@ function extractAccounts(obj){
     walk(obj);
 
 
-    const unique=
-    new Map();
+    const unique =
+        new Map();
 
 
-    for(
-        const account
-        of found
-    ){
+    found.forEach(
+        account => {
 
-        unique.set(
-            account.account_id,
-            account
-        );
+            unique.set(
+                account.account_id,
+                account
+            );
 
-    }
+        }
+    );
 
 
     return [
         ...unique.values()
     ];
+
 }
+
 
 
 /* =====================================================
-ACCOUNT TYPE
+DEMO DETECTION
 ===================================================== */
 
-function isDemoAccount(
-    account
-){
+function isDemoAccount(account){
 
-    if(
-        account.is_demo===true
-    ){
+    if(account.is_demo === true)
         return true;
-    }
+
+    if(account.demo === true)
+        return true;
 
 
     if(
-        account.demo===true
+        String(
+            account.account_type || ""
+        ).toLowerCase()
+        === "demo"
     ){
+
         return true;
+
     }
 
 
     if(
         String(
-            account.account_type||""
-        ).toLowerCase()==="demo"
+            account.environment || ""
+        ).toLowerCase()
+        === "demo"
     ){
 
         return true;
+
     }
 
 
-    if(
+    const id =
         String(
-            account.environment||""
-        ).toLowerCase()==="demo"
-    ){
+            account.account_id || ""
+        ).toLowerCase();
 
+
+    if(id.includes("vrtc"))
         return true;
-    }
-
-
-    const id=
-    String(
-        account.account_id||""
-    ).toLowerCase();
-
-
-    if(
-        id.includes("vrtc")
-    ){
-
-        return true;
-    }
 
 
     return false;
+
 }
+
 
 
 function chooseAccount(
@@ -2017,21 +1761,22 @@ function chooseAccount(
     type
 ){
 
-    const wantDemo=
-    type==="demo";
+    const wantDemo =
+        type === "demo";
 
 
     return accounts.find(
         account =>
-        isDemoAccount(
-            account
-        )===wantDemo
-    )||null;
+            isDemoAccount(account)
+            === wantDemo
+    ) || null;
+
 }
 
 
+
 /* =====================================================
-CONNECT
+CONNECT ACCOUNT
 ===================================================== */
 
 async function connectAccount(){
@@ -2044,24 +1789,25 @@ async function connectAccount(){
         );
 
         return;
+
     }
 
 
-    const PAT=
-    $("pat")
-    .value
-    .trim();
+    const PAT =
+        $("pat")
+        .value
+        .trim();
 
 
-    const APP_ID=
-    $("appId")
-    .value
-    .trim();
+    const APP_ID =
+        $("appId")
+        .value
+        .trim();
 
 
-    const accountType=
-    $("accountType")
-    .value;
+    const accountType =
+        $("accountType")
+        .value;
 
 
     if(!PAT){
@@ -2071,6 +1817,7 @@ async function connectAccount(){
         );
 
         return;
+
     }
 
 
@@ -2081,6 +1828,7 @@ async function connectAccount(){
         );
 
         return;
+
     }
 
 
@@ -2102,50 +1850,43 @@ async function connectAccount(){
 
     try{
 
-        const accountResponse=
-        await restFetch(
-            "/trading/v1/options/accounts",
-            {
+        const accountResponse =
+            await restFetch(
+                "/trading/v1/options/accounts",
+                {
 
-                method:"GET",
+                    method:"GET",
 
-                headers:{
+                    headers:{
 
-                    "Authorization":
-                    "Bearer "+PAT,
+                        "Authorization":
+                            "Bearer " + PAT,
 
-                    "Deriv-App-ID":
-                    APP_ID,
+                        "Deriv-App-ID":
+                            APP_ID,
 
-                    "Content-Type":
-                    "application/json"
+                        "Content-Type":
+                            "application/json"
+
+                    }
 
                 }
+            );
 
-            }
-        );
+
+        const accounts =
+            extractAccounts(
+                accountResponse
+            );
 
 
         log(
-            "Account API successful.",
+            `Found ${accounts.length} Options account(s).`,
             "good"
         );
 
 
-        const accounts=
-        extractAccounts(
-            accountResponse
-        );
-
-
-        log(
-            `Found ${accounts.length} Options account(s).`
-        );
-
-
-        if(
-            !accounts.length
-        ){
+        if(!accounts.length){
 
             throw new Error(
                 "No Options accounts returned."
@@ -2154,43 +1895,44 @@ async function connectAccount(){
         }
 
 
-        selectedAccount=
-        chooseAccount(
-            accounts,
-            accountType
-        );
+        selectedAccount =
+            chooseAccount(
+                accounts,
+                accountType
+            );
 
 
         if(!selectedAccount){
 
-            const available=
-            accounts
-            .map(
-                a =>
-                `${a.account_id} (${isDemoAccount(a)?"demo":"real"})`
-            )
-            .join(", ");
+            const available =
+                accounts
+                .map(
+                    a =>
+                        `${a.account_id} (${isDemoAccount(a) ? "demo" : "real"})`
+                )
+                .join(", ");
 
 
             throw new Error(
-                `No ${accountType} Options account found. Available: ${available}`
+                `No ${accountType} account found. Available: ${available}`
             );
+
         }
 
 
-        selectedCurrency=
-        selectedAccount.currency||
-        "USD";
+        selectedCurrency =
+            selectedAccount.currency ||
+            "USD";
 
 
         $("accountStatus")
-        .textContent=
-        selectedAccount.account_id;
+            .textContent =
+            selectedAccount.account_id;
 
 
         $("currencyStatus")
-        .textContent=
-        selectedCurrency;
+            .textContent =
+            selectedCurrency;
 
 
         log(
@@ -2199,12 +1941,12 @@ async function connectAccount(){
         );
 
 
-        const wsUrl=
-        await getOTP(
-            selectedAccount.account_id,
-            PAT,
-            APP_ID
-        );
+        const wsUrl =
+            await getOTP(
+                selectedAccount.account_id,
+                PAT,
+                APP_ID
+            );
 
 
         await openAuthenticatedSocket(
@@ -2229,13 +1971,15 @@ async function connectAccount(){
 
 
         log(
-            "CONNECTION FAILED: "+
+            "CONNECTION FAILED: " +
             error.message,
             "bad"
         );
 
     }
+
 }
+
 
 
 /* =====================================================
@@ -2248,49 +1992,49 @@ async function getOTP(
     APP_ID
 ){
 
-    const endpoint=
-    `/trading/v1/options/accounts/${encodeURIComponent(accountId)}/otp`;
+    const endpoint =
+        `/trading/v1/options/accounts/${encodeURIComponent(accountId)}/otp`;
 
 
     log(
-        "OTP API: requesting WebSocket URL..."
+        "Requesting authenticated WebSocket..."
     );
 
 
-    const response=
-    await restFetch(
-        endpoint,
-        {
+    const response =
+        await restFetch(
+            endpoint,
+            {
 
-            method:"POST",
+                method:"POST",
 
-            headers:{
+                headers:{
 
-                "Authorization":
-                "Bearer "+PAT,
+                    "Authorization":
+                        "Bearer " + PAT,
 
-                "Deriv-App-ID":
-                APP_ID,
+                    "Deriv-App-ID":
+                        APP_ID,
 
-                "Content-Type":
-                "application/json"
+                    "Content-Type":
+                        "application/json"
 
-            },
+                },
 
-            body:
-            JSON.stringify({})
+                body:
+                    JSON.stringify({})
 
-        }
-    );
+            }
+        );
 
 
-    const url=
+    const url =
 
-    response?.data?.url ||
+        response?.data?.url ||
 
-    response?.url ||
+        response?.url ||
 
-    response?.data?.data?.url;
+        response?.data?.data?.url;
 
 
     if(!url){
@@ -2304,6 +2048,7 @@ async function getOTP(
         throw new Error(
             "OTP response did not contain data.url."
         );
+
     }
 
 
@@ -2315,29 +2060,30 @@ async function getOTP(
         throw new Error(
             "OTP returned invalid WebSocket URL."
         );
+
     }
 
 
     log(
-        "OTP API successful.",
+        "Authenticated WebSocket URL received.",
         "good"
     );
 
 
     return url;
+
 }
+
 
 
 /* =====================================================
 WEBSOCKET
 ===================================================== */
 
-function openAuthenticatedSocket(
-    url
-){
+function openAuthenticatedSocket(url){
 
     return new Promise(
-        (resolve,reject)=>{
+        (resolve,reject) => {
 
             if(ws){
 
@@ -2348,202 +2094,195 @@ function openAuthenticatedSocket(
             }
 
 
-            let settled=false;
+            let settled = false;
 
 
-            log(
-                "Opening authenticated WebSocket..."
-            );
+            ws =
+                new WebSocket(url);
 
 
-            ws=
-            new WebSocket(url);
+            wsTimer =
+                setTimeout(
+                    () => {
+
+                        if(settled)
+                            return;
 
 
-            wsTimer=
-            setTimeout(
-                ()=>{
+                        settled = true;
 
-                    if(settled){
-                        return;
+
+                        try{
+                            ws.close();
+                        }catch(e){}
+
+
+                        reject(
+                            new Error(
+                                "WebSocket connection timeout."
+                            )
+                        );
+
+                    },
+                    15000
+                );
+
+
+            ws.onopen =
+                () => {
+
+                    connected = true;
+
+
+                    setConnection(
+                        "CONNECTED",
+                        "green"
+                    );
+
+
+                    setMessage(
+                        "Authenticated WebSocket connected."
+                    );
+
+
+                    log(
+                        "WebSocket OPEN.",
+                        "good"
+                    );
+
+
+                    if(!settled){
+
+                        settled = true;
+
+                        clearTimeout(
+                            wsTimer
+                        );
+
+                        resolve();
+
                     }
 
 
-                    settled=true;
+                    /*
+                      Balance stream.
+                    */
+
+                    send({
+
+                        balance:1,
+
+                        subscribe:1
+
+                    })
+                    .catch(
+                        e =>
+                            log(
+                                "Balance stream: " +
+                                e.message,
+                                "warn"
+                            )
+                    );
+
+
+                    /*
+                      Start scanner.
+                    */
+
+                    setTimeout(
+                        () => {
+
+                            scanMarkets(
+                                true
+                            );
+
+                        },
+                        500
+                    );
+
+                };
+
+
+            ws.onmessage =
+                event => {
+
+                    let data;
 
 
                     try{
-                        ws.close();
-                    }catch(e){}
+
+                        data =
+                            JSON.parse(
+                                event.data
+                            );
+
+                    }catch(e){
+
+                        return;
+
+                    }
 
 
-                    reject(
-                        new Error(
-                            "WebSocket timeout after 15 seconds."
-                        )
+                    handleMessage(
+                        data
                     );
 
-                },
-                15000
-            );
+                };
 
 
-            ws.onopen=
-            ()=>{
-
-                connected=true;
-
-
-                setConnection(
-                    "CONNECTED",
-                    "green"
-                );
-
-
-                setMessage(
-                    "Authenticated WebSocket connected."
-                );
-
-
-                log(
-                    "WebSocket OPEN.",
-                    "good"
-                );
-
-
-                if(!settled){
-
-                    settled=true;
-
-                    clearTimeout(
-                        wsTimer
-                    );
-
-                    resolve();
-
-                }
-
-
-                send({
-
-                    balance:1,
-
-                    subscribe:1
-
-                })
-                .catch(
-                    e =>
-                    log(
-                        "Balance error: "+
-                        e.message,
-                        "warn"
-                    )
-                );
-
-
-                setTimeout(
-                    ()=>{
-                        scanMarkets(true);
-                    },
-                    500
-                );
-
-            };
-
-
-            ws.onmessage=
-            event=>{
-
-                let data;
-
-
-                try{
-
-                    data=
-                    JSON.parse(
-                        event.data
-                    );
-
-                }catch(e){
+            ws.onerror =
+                event => {
 
                     log(
-                        "Invalid WebSocket JSON.",
+                        "WebSocket error event.",
                         "bad"
                     );
 
-                    return;
-                }
+                };
 
 
-                handleMessage(
-                    data
-                );
+            ws.onclose =
+                event => {
 
-            };
-
-
-            ws.onerror=
-            event=>{
-
-                console.error(
-                    "WebSocket error",
-                    event
-                );
+                    connected = false;
 
 
-                log(
-                    "WebSocket error event.",
-                    "bad"
-                );
-
-            };
-
-
-            ws.onclose=
-            event=>{
-
-                connected=false;
-
-
-                setConnection(
-                    "DISCONNECTED",
-                    "red"
-                );
-
-
-                const reason=
-                event.reason||
-                "(no reason supplied)";
-
-
-                log(
-                    `WebSocket closed. Code=${event.code} Reason=${reason}`,
-                    "bad"
-                );
-
-
-                if(!settled){
-
-                    settled=true;
-
-                    clearTimeout(
-                        wsTimer
+                    setConnection(
+                        "DISCONNECTED",
+                        "red"
                     );
 
 
-                    reject(
-                        new Error(
-                            `WebSocket closed during connection. Code=${event.code} Reason=${reason}`
-                        )
+                    log(
+                        `WebSocket closed. Code=${event.code} Reason=${event.reason || "none"}`,
+                        "bad"
                     );
 
-                }
 
-            };
+                    if(!settled){
+
+                        settled = true;
+
+                        clearTimeout(
+                            wsTimer
+                        );
+
+
+                        reject(
+                            new Error(
+                                `WebSocket closed during connection. Code=${event.code}`
+                            )
+                        );
+
+                    }
+
+                };
 
         }
     );
+
 }
+
 
 
 /* =====================================================
@@ -2553,7 +2292,7 @@ SEND
 function send(payload){
 
     return new Promise(
-        (resolve,reject)=>{
+        (resolve,reject) => {
 
             if(
                 !ws ||
@@ -2568,15 +2307,16 @@ function send(payload){
                 );
 
                 return;
+
             }
 
 
-            const id=
-            requestId++;
+            const id =
+                requestId++;
 
 
-            payload.req_id=
-            id;
+            payload.req_id =
+                id;
 
 
             pending.set(
@@ -2603,11 +2343,12 @@ function send(payload){
                 reject(error);
 
                 return;
+
             }
 
 
             setTimeout(
-                ()=>{
+                () => {
 
                     if(
                         pending.has(id)
@@ -2629,22 +2370,22 @@ function send(payload){
 
         }
     );
+
 }
+
 
 
 /* =====================================================
 MESSAGE HANDLER
 ===================================================== */
 
-function handleMessage(
-    data
-){
+function handleMessage(data){
 
     if(data.error){
 
-        const message=
-        data.error.message||
-        "Deriv API error";
+        const message =
+            data.error.message ||
+            "Deriv API error";
 
 
         if(
@@ -2655,14 +2396,10 @@ function handleMessage(
         ){
 
             pending
-            .get(
-                data.req_id
-            )
-            .reject(
-                new Error(
-                    message
-                )
-            );
+                .get(data.req_id)
+                .reject(
+                    new Error(message)
+                );
 
 
             pending.delete(
@@ -2673,13 +2410,13 @@ function handleMessage(
 
 
         log(
-            "API error: "+
-            message,
+            "API error: " + message,
             "bad"
         );
 
 
         return;
+
     }
 
 
@@ -2691,10 +2428,8 @@ function handleMessage(
     ){
 
         pending
-        .get(
-            data.req_id
-        )
-        .resolve(data);
+            .get(data.req_id)
+            .resolve(data);
 
 
         pending.delete(
@@ -2705,30 +2440,29 @@ function handleMessage(
 
 
     if(
-        data.msg_type===
+        data.msg_type ===
         "balance"
     ){
 
-        const value=
-        data.balance?.balance??
-        data.balance??
-        0;
+        const value =
+            data.balance?.balance ??
+            data.balance ??
+            0;
 
 
-        accountBalance=
-        parseFloat(value)||
-        0;
+        accountBalance =
+            parseFloat(value) || 0;
 
 
         $("balance")
-        .textContent=
-        `${selectedCurrency} ${accountBalance.toFixed(2)}`;
+            .textContent =
+            `${selectedCurrency} ${accountBalance.toFixed(2)}`;
 
     }
 
 
     if(
-        data.msg_type===
+        data.msg_type ===
         "tick"
     ){
 
@@ -2738,7 +2472,7 @@ function handleMessage(
 
 
     if(
-        data.msg_type===
+        data.msg_type ===
         "proposal_open_contract"
     ){
 
@@ -2757,6 +2491,7 @@ function handleMessage(
 }
 
 
+
 /* =====================================================
 ACTIVE SYMBOLS
 ===================================================== */
@@ -2764,29 +2499,25 @@ ACTIVE SYMBOLS
 async function getActiveMarkets(){
 
     /*
-      CURRENT DERIV API
+      CURRENT API:
 
-      Do NOT send product_type.
+      active_symbols:"brief"
 
-      New response uses:
-      underlying_symbol
-      underlying_symbol_name
-      underlying_symbol_type
+      NO product_type.
     */
 
+    const response =
+        await send({
 
-    const response=
-    await send({
+            active_symbols:
+                "brief"
 
-        active_symbols:
-        "brief"
-
-    });
+        });
 
 
-    const symbols=
-    response.active_symbols||
-    [];
+    const symbols =
+        response.active_symbols ||
+        [];
 
 
     log(
@@ -2794,205 +2525,197 @@ async function getActiveMarkets(){
     );
 
 
-    /*
-      Synthetic markets are identified
-      primarily from current API fields.
-    */
+    const synthetic =
+        symbols.filter(
+            s => {
+
+                const symbol =
+                    String(
+                        s.underlying_symbol ||
+                        ""
+                    )
+                    .toUpperCase();
 
 
-    const synthetic=
-    symbols.filter(
-        s=>{
-
-            const symbol=
-            String(
-                s.underlying_symbol||
-                ""
-            ).toUpperCase();
+                const name =
+                    String(
+                        s.underlying_symbol_name ||
+                        ""
+                    )
+                    .toLowerCase();
 
 
-            const name=
-            String(
-                s.underlying_symbol_name||
-                ""
-            ).toLowerCase();
+                const market =
+                    String(
+                        s.market ||
+                        ""
+                    )
+                    .toLowerCase();
 
 
-            const market=
-            String(
-                s.market||
-                ""
-            ).toLowerCase();
+                const subgroup =
+                    String(
+                        s.subgroup ||
+                        ""
+                    )
+                    .toLowerCase();
 
 
-            const subgroup=
-            String(
-                s.subgroup||
-                ""
-            ).toLowerCase();
+                const submarket =
+                    String(
+                        s.submarket ||
+                        ""
+                    )
+                    .toLowerCase();
 
 
-            const submarket=
-            String(
-                s.submarket||
-                ""
-            ).toLowerCase();
+                const type =
+                    String(
+                        s.underlying_symbol_type ||
+                        ""
+                    )
+                    .toLowerCase();
 
 
-            const type=
-            String(
-                s.underlying_symbol_type||
-                ""
-            ).toLowerCase();
+                return (
+
+                    market ===
+                    "synthetic_index"
+
+                    ||
+
+                    subgroup ===
+                    "synthetics"
+
+                    ||
+
+                    submarket ===
+                    "synthetics"
+
+                    ||
+
+                    type ===
+                    "synthetic_index"
+
+                    ||
+
+                    name.includes(
+                        "volatility"
+                    )
+
+                    ||
+
+                    name.includes(
+                        "crash"
+                    )
+
+                    ||
+
+                    name.includes(
+                        "boom"
+                    )
+
+                    ||
+
+                    name.includes(
+                        "jump"
+                    )
+
+                    ||
+
+                    name.includes(
+                        "range break"
+                    )
+
+                    ||
+
+                    symbol.includes(
+                        "V"
+                    )
+
+                    ||
+
+                    symbol.includes(
+                        "R_"
+                    )
+
+                );
+
+            }
+        );
 
 
-            return(
+    const unique =
+        new Map();
 
-                market===
-                "synthetic_index"
 
-                ||
+    synthetic.forEach(
+        item => {
 
-                subgroup===
-                "synthetics"
+            if(
+                item.underlying_symbol
+            ){
 
-                ||
+                unique.set(
+                    item.underlying_symbol,
+                    item
+                );
 
-                submarket===
-                "synthetics"
+            }
 
-                ||
+        }
+    );
 
-                type===
-                "synthetic_index"
 
-                ||
+    const maxMarkets =
+        int(
+            "maxMarkets",
+            40
+        );
 
-                symbol.includes("V")
 
-                ||
+    const result =
+        [
+            ...unique.values()
+        ]
+        .slice(
+            0,
+            maxMarkets
+        );
 
-                symbol.includes("R_")
 
-                ||
+    marketMeta = {};
 
-                name.includes(
-                    "volatility"
-                )
 
-                ||
+    result.forEach(
+        item => {
 
-                name.includes(
-                    "crash"
-                )
-
-                ||
-
-                name.includes(
-                    "boom"
-                )
-
-                ||
-
-                name.includes(
-                    "jump"
-                )
-
-                ||
-
-                name.includes(
-                    "range break"
-                )
-
-            );
+            marketMeta[
+                item.underlying_symbol
+            ] =
+                item;
 
         }
     );
-
-
-    /*
-      Remove duplicate symbols.
-    */
-
-    const unique=
-    new Map();
-
-
-    for(
-        const item
-        of synthetic
-    ){
-
-        const symbol=
-        item.underlying_symbol;
-
-
-        if(symbol){
-
-            unique.set(
-                symbol,
-                item
-            );
-
-        }
-
-    }
-
-
-    const max=
-    int(
-        "maxMarkets",
-        40
-    );
-
-
-    const result=
-    [
-        ...unique.values()
-    ]
-    .slice(
-        0,
-        max
-    );
-
-
-    /*
-      Store metadata.
-    */
-
-    marketMeta={};
-
-
-    for(
-        const item
-        of result
-    ){
-
-        marketMeta[
-            item.underlying_symbol
-        ]=
-        item;
-
-    }
 
 
     log(
         `Synthetic filter found ${result.length} market(s).`,
         result.length
-        ? "good"
-        : "warn"
+            ? "good"
+            : "warn"
     );
 
 
     if(result.length){
 
         log(
-            "Markets: "+
+            "Markets: " +
             result
             .slice(0,10)
             .map(
                 x =>
-                x.underlying_symbol
+                    x.underlying_symbol
             )
             .join(", "),
             "good"
@@ -3002,18 +2725,18 @@ async function getActiveMarkets(){
 
 
     return result;
+
 }
+
 
 
 /* =====================================================
 MARKET OBJECT
 ===================================================== */
 
-function createMarket(
-    symbol
-){
+function createMarket(symbol){
 
-    return{
+    return {
 
         symbol,
 
@@ -3029,12 +2752,14 @@ function createMarket(
 
         updated:0,
 
-        stats:null,
+        tickCount:0,
 
-        tickCount:0
+        stats:null
 
     };
+
 }
+
 
 
 /* =====================================================
@@ -3047,40 +2772,44 @@ async function loadMarketHistory(
 
     try{
 
-        const response=
-        await send({
+        /*
+          IMPORTANT V31 FIX
 
-            ticks_history:
-            symbol,
+          No subscribe field here.
 
-            count:
-            200,
+          This is a one-time historical
+          snapshot of 200 ticks.
+        */
 
-            end:
-            "latest",
+        const response =
+            await send({
 
-            style:
-            "ticks",
+                ticks_history:
+                    symbol,
 
-            subscribe:
-            0
+                count:
+                    200,
 
-        });
+                end:
+                    "latest",
 
+                style:
+                    "ticks"
 
-        const prices=
-        response.history?.prices||
-        [];
-
-
-        const times=
-        response.history?.times||
-        [];
+            });
 
 
-        if(
-            !prices.length
-        ){
+        const prices =
+            response.history?.prices ||
+            [];
+
+
+        const times =
+            response.history?.times ||
+            [];
+
+
+        if(!prices.length){
 
             log(
                 `${symbol}: no historical prices returned.`,
@@ -3088,74 +2817,94 @@ async function loadMarketHistory(
             );
 
             return false;
+
         }
 
 
-        const state=
-        markets[symbol]||
-        createMarket(symbol);
+        const state =
+            markets[symbol] ||
+            createMarket(symbol);
 
 
-        state.prices=
-        prices
-        .map(Number)
-        .filter(
-            Number.isFinite
-        )
-        .slice(-200);
+        state.prices =
+            prices
+            .map(Number)
+            .filter(
+                Number.isFinite
+            )
+            .slice(-200);
 
 
-        state.times=
-        times.slice(-200);
+        state.times =
+            times.slice(-200);
 
 
-        state.lastPrice=
-        state.prices.at(-1);
+        state.lastPrice =
+            state.prices.at(-1);
 
 
-        state.lastDigit=
-        getLastDigit(
-            state.lastPrice
-        );
+        state.lastDigit =
+            getLastDigit(
+                state.lastPrice,
+                symbol
+            );
 
 
-        state.initialized=true;
+        state.initialized = true;
 
+        state.updated =
+            Date.now();
 
-        markets[symbol]=
-        state;
+        markets[symbol] =
+            state;
 
 
         /*
-          Subscribe once to live ticks.
+          LIVE STREAM
+
+          subscribe:1 IS correct here.
         */
 
         if(
             !tickSubscriptions[symbol]
         ){
 
-            const tickResponse=
-            await send({
+            try{
 
-                ticks:
-                symbol,
+                const tickResponse =
+                    await send({
 
-                subscribe:
-                1
+                        ticks:
+                            symbol,
 
-            });
+                        subscribe:
+                            1
+
+                    });
 
 
-            if(
-                tickResponse
-                ?.subscription
-                ?.id
-            ){
+                if(
+                    tickResponse
+                    ?.subscription
+                    ?.id
+                ){
 
-                tickSubscriptions[symbol]=
-                tickResponse
-                .subscription
-                .id;
+                    tickSubscriptions[
+                        symbol
+                    ] =
+                        tickResponse
+                        .subscription
+                        .id;
+
+                }
+
+
+            }catch(error){
+
+                log(
+                    `${symbol}: live tick subscription failed - ${error.message}`,
+                    "warn"
+                );
 
             }
 
@@ -3174,20 +2923,21 @@ async function loadMarketHistory(
 
 
         return false;
+
     }
+
 }
+
 
 
 /* =====================================================
 TICK
 ===================================================== */
 
-function processTick(
-    data
-){
+function processTick(data){
 
-    const tick=
-    data.tick;
+    const tick =
+        data.tick;
 
 
     if(
@@ -3196,17 +2946,18 @@ function processTick(
     ){
 
         return;
+
     }
 
 
-    const symbol=
-    tick.symbol;
+    const symbol =
+        tick.symbol;
 
 
-    const price=
-    parseFloat(
-        tick.quote
-    );
+    const price =
+        parseFloat(
+            tick.quote
+        );
 
 
     if(
@@ -3214,12 +2965,13 @@ function processTick(
     ){
 
         return;
+
     }
 
 
-    const state=
-    markets[symbol]||
-    createMarket(symbol);
+    const state =
+        markets[symbol] ||
+        createMarket(symbol);
 
 
     state.prices.push(
@@ -3236,8 +2988,12 @@ function processTick(
     }
 
 
+    /*
+      Keep a rolling 220-tick buffer.
+    */
+
     while(
-        state.prices.length>
+        state.prices.length >
         220
     ){
 
@@ -3247,7 +3003,7 @@ function processTick(
 
 
     while(
-        state.times.length>
+        state.times.length >
         220
     ){
 
@@ -3256,28 +3012,30 @@ function processTick(
     }
 
 
-    state.lastPrice=
-    price;
+    state.lastPrice =
+        price;
 
 
-    state.lastDigit=
-    getLastDigit(
-        price
-    );
+    state.lastDigit =
+        getLastDigit(
+            price,
+            symbol
+        );
 
 
-    state.updated=
-    Date.now();
+    state.updated =
+        Date.now();
 
 
     state.tickCount++;
 
 
-    state.initialized=true;
+    state.initialized =
+        true;
 
 
-    markets[symbol]=
-    state;
+    markets[symbol] =
+        state;
 
 
     /*
@@ -3286,9 +3044,9 @@ function processTick(
 
     if(
         currentTrade &&
-        currentTrade.mode===
+        currentTrade.mode ===
         "paper" &&
-        currentTrade.symbol===
+        currentTrade.symbol ===
         symbol
     ){
 
@@ -3300,9 +3058,7 @@ function processTick(
 
 
     /*
-      Live signal engine.
-
-      One trade at a time.
+      Live strategy engine.
     */
 
     if(
@@ -3319,62 +3075,130 @@ function processTick(
 }
 
 
+
 /* =====================================================
 LAST DIGIT
 ===================================================== */
 
 function getLastDigit(
-    price
+    price,
+    symbol=""
 ){
 
-    const str=
-    String(price);
+    /*
+      Try to use the market's pip_size
+      when available.
+    */
+
+    const meta =
+        marketMeta[symbol];
 
 
-    const clean=
-    str.replace(
-        /[^0-9]/g,
-        ""
-    );
+    const pip =
+        parseFloat(
+            meta?.pip_size
+        );
 
 
     if(
-        !clean.length
+        Number.isFinite(pip) &&
+        pip > 0
     ){
 
-        return 0;
+        const decimals =
+            Math.max(
+                0,
+                Math.round(
+                    -Math.log10(pip)
+                )
+            );
+
+
+        if(
+            decimals >= 0 &&
+            decimals <= 10
+        ){
+
+            const fixed =
+                Number(price)
+                .toFixed(
+                    decimals
+                );
+
+
+            const digits =
+                fixed.replace(
+                    /[^0-9]/g,
+                    ""
+                );
+
+
+            if(digits.length){
+
+                return parseInt(
+                    digits.at(-1),
+                    10
+                );
+
+            }
+
+        }
+
     }
+
+
+    /*
+      Fallback.
+    */
+
+    const str =
+        String(price);
+
+
+    const clean =
+        str.replace(
+            /[^0-9]/g,
+            ""
+        );
+
+
+    if(!clean.length)
+        return 0;
 
 
     return parseInt(
-        clean.charAt(
-            clean.length-1
-        ),
+        clean.at(-1),
         10
     );
+
 }
+
 
 
 /* =====================================================
-MATH
+MEAN
 ===================================================== */
 
-function mean(
-    array
-){
+function mean(array){
 
-    if(!array.length){
+    if(!array.length)
         return 0;
-    }
 
 
     return array.reduce(
-        (a,b)=>a+b,
+        (a,b) =>
+            a + b,
         0
-    )/
+    ) /
     array.length;
+
 }
 
+
+
+/* =====================================================
+CLAMP
+===================================================== */
 
 function clamp(
     value,
@@ -3389,7 +3213,9 @@ function clamp(
             value
         )
     );
+
 }
+
 
 
 /* =====================================================
@@ -3397,24 +3223,25 @@ DIGIT STATS
 ===================================================== */
 
 function digitStats(
-    prices
+    prices,
+    symbol=""
 ){
 
-    const counts=
-    Array(10)
-    .fill(0);
+    const counts =
+        Array(10)
+        .fill(0);
 
 
-    let even=0;
+    let even = 0;
 
-    let odd=0;
+    let odd = 0;
 
-    let over3=0;
+    let over3 = 0;
 
-    let under7=0;
+    let under7 = 0;
 
 
-    const digits=[];
+    const digits = [];
 
 
     for(
@@ -3422,10 +3249,11 @@ function digitStats(
         of prices
     ){
 
-        const digit=
-        getLastDigit(
-            price
-        );
+        const digit =
+            getLastDigit(
+                price,
+                symbol
+            );
 
 
         digits.push(
@@ -3437,7 +3265,7 @@ function digitStats(
 
 
         if(
-            digit%2===0
+            digit % 2 === 0
         ){
 
             even++;
@@ -3450,7 +3278,7 @@ function digitStats(
 
 
         if(
-            digit>3
+            digit > 3
         ){
 
             over3++;
@@ -3464,12 +3292,12 @@ function digitStats(
     }
 
 
-    const n=
-    prices.length||
-    1;
+    const n =
+        prices.length ||
+        1;
 
 
-    return{
+    return {
 
         counts,
 
@@ -3484,25 +3312,27 @@ function digitStats(
         under7,
 
         pct:
-        counts.map(
-            x=>
-            x/n*100
-        ),
+            counts.map(
+                x =>
+                    x / n * 100
+            ),
 
         evenPct:
-        even/n*100,
+            even / n * 100,
 
         oddPct:
-        odd/n*100,
+            odd / n * 100,
 
         over3Pct:
-        over3/n*100,
+            over3 / n * 100,
 
         under7Pct:
-        under7/n*100
+            under7 / n * 100
 
     };
+
 }
+
 
 
 /* =====================================================
@@ -3514,10 +3344,10 @@ function directionStats(
 ){
 
     if(
-        prices.length<10
+        prices.length < 10
     ){
 
-        return{
+        return {
 
             up20:50,
 
@@ -3534,6 +3364,7 @@ function directionStats(
             slope:0
 
         };
+
     }
 
 
@@ -3541,13 +3372,13 @@ function directionStats(
         count
     ){
 
-        const a=
-        prices.slice(
-            -count
-        );
+        const a =
+            prices.slice(
+                -count
+            );
 
 
-        let up=0;
+        let up = 0;
 
 
         for(
@@ -3557,7 +3388,8 @@ function directionStats(
         ){
 
             if(
-                a[i]>a[i-1]
+                a[i] >
+                a[i-1]
             ){
 
                 up++;
@@ -3567,56 +3399,59 @@ function directionStats(
         }
 
 
-        return(
-            up/
+        return (
+            up /
             Math.max(
                 1,
-                a.length-1
+                a.length - 1
             )
-        )*100;
+        ) * 100;
+
     }
 
 
-    const up20=
-    upPercent(
-        Math.min(
-            20,
-            prices.length
-        )
-    );
+    const up20 =
+        upPercent(
+            Math.min(
+                20,
+                prices.length
+            )
+        );
 
 
-    const up50=
-    upPercent(
-        Math.min(
-            50,
-            prices.length
-        )
-    );
+    const up50 =
+        upPercent(
+            Math.min(
+                50,
+                prices.length
+            )
+        );
 
 
-    const up100=
-    upPercent(
-        Math.min(
-            100,
-            prices.length
-        )
-    );
+    const up100 =
+        upPercent(
+            Math.min(
+                100,
+                prices.length
+            )
+        );
 
 
-    const recent=
-    prices.slice(-100);
+    const recent =
+        prices.slice(
+            -100
+        );
 
 
     /*
       Persistence
     */
 
-    let continuation=0;
+    let continuation = 0;
 
-    let comparisons=0;
+    let comparisons = 0;
 
-    let previousDirection=0;
+    let previousDirection = 0;
 
 
     for(
@@ -3625,29 +3460,29 @@ function directionStats(
         i++
     ){
 
-        const diff=
-        recent[i]-
-        recent[i-1];
+        const diff =
+            recent[i] -
+            recent[i-1];
 
 
-        const direction=
-        diff>0
-        ?1
-        :diff<0
-        ?-1
-        :0;
+        const direction =
+            diff > 0
+                ? 1
+                : diff < 0
+                    ? -1
+                    : 0;
 
 
         if(
-            previousDirection!==0 &&
-            direction!==0
+            previousDirection !== 0 &&
+            direction !== 0
         ){
 
             comparisons++;
 
 
             if(
-                direction===
+                direction ===
                 previousDirection
             ){
 
@@ -3659,33 +3494,33 @@ function directionStats(
 
 
         if(
-            direction!==0
+            direction !== 0
         ){
 
-            previousDirection=
-            direction;
+            previousDirection =
+                direction;
 
         }
 
     }
 
 
-    const persistence=
-    comparisons
-    ? continuation/
-      comparisons*100
-    :50;
+    const persistence =
+        comparisons
+            ? continuation /
+              comparisons * 100
+            : 50;
 
 
     /*
-      Chop
+      Chop.
     */
 
-    let reversals=0;
+    let reversals = 0;
 
-    let moves=0;
+    let moves = 0;
 
-    let previous=0;
+    let previous = 0;
 
 
     for(
@@ -3694,24 +3529,25 @@ function directionStats(
         i++
     ){
 
-        const diff=
-        recent[i]-
-        recent[i-1];
+        const diff =
+            recent[i] -
+            recent[i-1];
 
 
-        const direction=
-        diff>0
-        ?1
-        :diff<0
-        ?-1
-        :0;
+        const direction =
+            diff > 0
+                ? 1
+                : diff < 0
+                    ? -1
+                    : 0;
 
 
         if(
-            direction===0
+            direction === 0
         ){
 
             continue;
+
         }
 
 
@@ -3719,8 +3555,8 @@ function directionStats(
 
 
         if(
-            previous!==0 &&
-            direction!==previous
+            previous !== 0 &&
+            direction !== previous
         ){
 
             reversals++;
@@ -3728,24 +3564,24 @@ function directionStats(
         }
 
 
-        previous=
-        direction;
+        previous =
+            direction;
 
     }
 
 
-    const chop=
-    moves
-    ?reversals/
-     moves*100
-    :50;
+    const chop =
+        moves
+            ? reversals /
+              moves * 100
+            : 50;
 
 
     /*
-      Volatility
+      Volatility.
     */
 
-    const returns=[];
+    const returns = [];
 
 
     for(
@@ -3754,58 +3590,54 @@ function directionStats(
         i++
     ){
 
-        const prev=
-        recent[i-1];
+        const prev =
+            recent[i-1];
 
 
-        if(
-            prev===0
-        ){
-
+        if(prev === 0)
             continue;
-        }
 
 
         returns.push(
             Math.abs(
                 (
-                    recent[i]-prev
-                )/
+                    recent[i] -
+                    prev
+                ) /
                 prev
-            )*100
+            ) * 100
         );
 
     }
 
 
-    const volatility=
-    mean(
-        returns
-    );
+    const volatility =
+        mean(
+            returns
+        );
 
 
     /*
-      Slope
+      Slope.
     */
 
-    const first=
-    recent[0];
+    const first =
+        recent[0];
+
+    const last =
+        recent.at(-1);
 
 
-    const last=
-    recent.at(-1);
+    const slope =
+        first !== 0
+            ? (
+                (last-first) /
+                first
+              ) * 100
+            : 0;
 
 
-    const slope=
-    first!==0
-    ?(
-        (last-first)/
-        first
-    )*100
-    :0;
-
-
-    return{
+    return {
 
         up20,
 
@@ -3822,11 +3654,13 @@ function directionStats(
         slope
 
     };
+
 }
 
 
+
 /* =====================================================
-WILSON
+WILSON CONSERVATIVE RATE
 ===================================================== */
 
 function wilsonLower(
@@ -3836,52 +3670,62 @@ function wilsonLower(
 ){
 
     if(
-        samples<=0
+        samples <= 0
     ){
 
         return 0;
+
     }
 
 
-    const p=
-    wins/samples;
+    const p =
+        wins /
+        samples;
 
 
-    const denominator=
-    1+
-    z*z/samples;
+    const denominator =
+        1 +
+        z*z /
+        samples;
 
 
-    const center=
-    p+
-    z*z/
-    (2*samples);
+    const center =
+        p +
+        z*z /
+        (2*samples);
 
 
-    const spread=
-    z*
-    Math.sqrt(
+    const spread =
+        z *
+        Math.sqrt(
+
+            (
+                p*(1-p) /
+                samples
+            )
+
+            +
+
+            (
+                z*z /
+                (4*samples*samples)
+            )
+
+        );
+
+
+    return (
 
         (
-            p*(1-p)/
-            samples
-        )
-        +
-        (
-            z*z/
-            (4*samples*samples)
-        )
-
-    );
-
-
-    return(
-        (
-            center-spread
-        )/
+            center -
+            spread
+        ) /
         denominator
-    )*100;
+
+    ) * 100;
+
 }
+
 
 
 /* =====================================================
@@ -3890,18 +3734,19 @@ DIGIT VALIDATION
 
 function validateDigit(
     prices,
-    strategy
+    strategy,
+    symbol
 ){
 
-    const samples=
-    prices.length;
+    const samples =
+        prices.length;
 
 
     if(
-        samples<10
+        samples < 10
     ){
 
-        return{
+        return {
 
             samples,
 
@@ -3914,81 +3759,92 @@ function validateDigit(
             conservative:0
 
         };
+
     }
 
 
-    const d=
-    digitStats(
-        prices
-    );
+    const d =
+        digitStats(
+            prices,
+            symbol
+        );
 
 
-    let wins=0;
+    let wins = 0;
 
 
     if(
-        strategy===
+        strategy ===
         "OVER3"
     ){
 
-        wins=d.over3;
+        wins =
+            d.over3;
 
     }
 
 
     else if(
-        strategy===
+        strategy ===
         "UNDER7"
     ){
 
-        wins=d.under7;
+        wins =
+            d.under7;
 
     }
 
 
     else if(
-        strategy===
+        strategy ===
         "EVEN"
     ){
 
-        wins=d.even;
+        wins =
+            d.even;
 
     }
 
 
     else if(
-        strategy===
+        strategy ===
         "ODD"
     ){
 
-        wins=d.odd;
+        wins =
+            d.odd;
 
     }
 
 
-    const winPct=
-    wins/samples*100;
+    const winPct =
+        wins /
+        samples *
+        100;
 
 
-    return{
+    return {
 
         samples,
 
         wins,
 
         losses:
-        samples-wins,
+            samples -
+            wins,
 
         winPct,
 
         conservative:
-        wilsonLower(
-            wins,
-            samples
-        )
+            wilsonLower(
+                wins,
+                samples
+            )
 
     };
+
 }
+
 
 
 /* =====================================================
@@ -4000,10 +3856,10 @@ function validateDirection(
 ){
 
     if(
-        prices.length<10
+        prices.length < 10
     ){
 
-        return{
+        return {
 
             samples:0,
 
@@ -4016,12 +3872,13 @@ function validateDirection(
             conservative:0
 
         };
+
     }
 
 
-    let wins=0;
+    let wins = 0;
 
-    let samples=0;
+    let samples = 0;
 
 
     for(
@@ -4030,44 +3887,49 @@ function validateDirection(
         i++
     ){
 
-        const previous=
-        prices[i-1];
+        const previous =
+            prices[i-1];
 
-        const current=
-        prices[i];
+        const current =
+            prices[i];
 
-        const next=
-        prices[i+1];
+        const next =
+            prices[i+1];
 
 
         if(
-            current===
+            current ===
             previous
         ){
 
             continue;
+
         }
 
 
-        const direction=
-        current>previous
-        ?1
-        :-1;
+        const direction =
+            current >
+            previous
+                ? 1
+                : -1;
 
 
-        const actual=
-        next>current
-        ?1
-        :next<current
-        ?-1
-        :0;
+        const actual =
+            next >
+            current
+                ? 1
+                : next <
+                  current
+                    ? -1
+                    : 0;
 
 
         if(
-            actual===0
+            actual === 0
         ){
 
             continue;
+
         }
 
 
@@ -4075,7 +3937,7 @@ function validateDirection(
 
 
         if(
-            actual===
+            actual ===
             direction
         ){
 
@@ -4086,31 +3948,35 @@ function validateDirection(
     }
 
 
-    const winPct=
-    samples
-    ?wins/samples*100
-    :0;
+    const winPct =
+        samples
+            ? wins /
+              samples * 100
+            : 0;
 
 
-    return{
+    return {
 
         samples,
 
         wins,
 
         losses:
-        samples-wins,
+            samples -
+            wins,
 
         winPct,
 
         conservative:
-        wilsonLower(
-            wins,
-            samples
-        )
+            wilsonLower(
+                wins,
+                samples
+            )
 
     };
+
 }
+
 
 
 /* =====================================================
@@ -4123,98 +3989,100 @@ function calculateScore(
     validation
 ){
 
-    let score=50;
+    let score = 50;
 
 
     if(
-        side==="CALL"
+        side ===
+        "CALL"
     ){
 
-        score+=
-        clamp(
-            (
-                direction.up20-
-                50
-            )*.55,
-            -20,
-            20
-        );
+        score +=
+            clamp(
+                (
+                    direction.up20 -
+                    50
+                ) * .55,
+                -20,
+                20
+            );
 
 
-        score+=
-        clamp(
-            (
-                direction.up50-
-                50
-            )*.25,
-            -10,
-            10
-        );
+        score +=
+            clamp(
+                (
+                    direction.up50 -
+                    50
+                ) * .25,
+                -10,
+                10
+            );
 
     }
 
 
     if(
-        side==="PUT"
+        side ===
+        "PUT"
     ){
 
-        score+=
-        clamp(
-            (
-                50-
-                direction.up20
-            )*.55,
-            -20,
-            20
-        );
+        score +=
+            clamp(
+                (
+                    50 -
+                    direction.up20
+                ) * .55,
+                -20,
+                20
+            );
 
 
-        score+=
-        clamp(
-            (
-                50-
-                direction.up50
-            )*.25,
-            -10,
-            10
-        );
+        score +=
+            clamp(
+                (
+                    50 -
+                    direction.up50
+                ) * .25,
+                -10,
+                10
+            );
 
     }
 
 
-    score+=
-    clamp(
-        (
-            direction.persistence-
-            50
-        )*.20,
-        -8,
-        8
-    );
+    score +=
+        clamp(
+            (
+                direction.persistence -
+                50
+            ) * .20,
+            -8,
+            8
+        );
 
 
-    score-=
-    clamp(
-        (
-            direction.chop-
-            35
-        )*.20,
-        0,
-        10
-    );
+    score -=
+        clamp(
+            (
+                direction.chop -
+                35
+            ) * .20,
+            0,
+            10
+        );
 
 
     if(validation){
 
-        score+=
-        clamp(
-            (
-                validation.conservative-
-                50
-            )*.50,
-            -5,
-            15
-        );
+        score +=
+            clamp(
+                (
+                    validation.conservative -
+                    50
+                ) * .50,
+                -5,
+                15
+            );
 
     }
 
@@ -4224,7 +4092,9 @@ function calculateScore(
         0,
         100
     );
+
 }
+
 
 
 /* =====================================================
@@ -4235,232 +4105,235 @@ function analyzeMarket(
     symbol
 ){
 
-    const market=
-    markets[symbol];
+    const market =
+        markets[symbol];
 
 
     if(
         !market ||
         !market.initialized ||
-        market.prices.length<200
+        market.prices.length < 200
     ){
 
         return null;
+
     }
 
 
-    const current=
-    market.prices.slice(
-        -100
-    );
+    const current =
+        market.prices.slice(
+            -100
+        );
 
 
-    const previous=
-    market.prices.slice(
-        -200,
-        -100
-    );
+    const previous =
+        market.prices.slice(
+            -200,
+            -100
+        );
 
 
-    const direction=
-    directionStats(
-        current
-    );
+    const direction =
+        directionStats(
+            current
+        );
 
 
-    const currentDigits=
-    digitStats(
-        current
-    );
+    const currentDigits =
+        digitStats(
+            current,
+            symbol
+        );
 
 
-    const previousDigits=
-    digitStats(
-        previous
-    );
+    const previousDigits =
+        digitStats(
+            previous,
+            symbol
+        );
 
 
-    /*
-      Previous 100 are validation.
-    */
-
-    const directionValidation=
-    validateDirection(
-        previous
-    );
+    const directionValidation =
+        validateDirection(
+            previous
+        );
 
 
-    const overValidation=
-    validateDigit(
-        previous,
-        "OVER3"
-    );
+    const overValidation =
+        validateDigit(
+            previous,
+            "OVER3",
+            symbol
+        );
 
 
-    const underValidation=
-    validateDigit(
-        previous,
-        "UNDER7"
-    );
+    const underValidation =
+        validateDigit(
+            previous,
+            "UNDER7",
+            symbol
+        );
 
 
-    const evenValidation=
-    validateDigit(
-        previous,
-        "EVEN"
-    );
+    const evenValidation =
+        validateDigit(
+            previous,
+            "EVEN",
+            symbol
+        );
 
 
-    const oddValidation=
-    validateDigit(
-        previous,
-        "ODD"
-    );
+    const oddValidation =
+        validateDigit(
+            previous,
+            "ODD",
+            symbol
+        );
 
 
-    /*
-      Direction.
-    */
-
-    const riseScore=
-    calculateScore(
-        direction,
-        "CALL",
-        directionValidation
-    );
+    const riseScore =
+        calculateScore(
+            direction,
+            "CALL",
+            directionValidation
+        );
 
 
-    const fallScore=
-    calculateScore(
-        direction,
-        "PUT",
-        directionValidation
-    );
+    const fallScore =
+        calculateScore(
+            direction,
+            "PUT",
+            directionValidation
+        );
 
 
     /*
       Digit pressure.
 
       Over 3:
-      wanted 4,5,6,7,8,9
-      unwanted 0,1,2,3
+      4 5 6 7 8 9 are wins.
 
       Under 7:
-      wanted 0,1,2,3,4,5,6
-      unwanted 7,8,9
+      0 1 2 3 4 5 6 are wins.
     */
 
-    const unwantedOver=
-    100-
-    currentDigits.over3Pct;
+    const unwantedOver =
+        100 -
+        currentDigits.over3Pct;
 
 
-    const unwantedUnder=
-    100-
-    currentDigits.under7Pct;
+    const unwantedUnder =
+        100 -
+        currentDigits.under7Pct;
 
 
-    const overImbalance=
-    40-
-    unwantedOver;
+    const overImbalance =
+        40 -
+        unwantedOver;
 
 
-    const underImbalance=
-    30-
-    unwantedUnder;
+    const underImbalance =
+        30 -
+        unwantedUnder;
 
 
-    const overScore=
-    clamp(
+    const overScore =
+        clamp(
 
-        50+
+            50 +
 
-        overImbalance*.8+
+            overImbalance *
+            .8 +
 
-        (
-            overValidation.conservative-
-            50
-        )*.5,
+            (
+                overValidation
+                    .conservative -
+                50
+            ) * .5,
 
-        0,
-        100
-    );
+            0,
+            100
 
-
-    const underScore=
-    clamp(
-
-        50+
-
-        underImbalance*.8+
-
-        (
-            underValidation.conservative-
-            50
-        )*.5,
-
-        0,
-        100
-    );
+        );
 
 
-    const evenScore=
-    clamp(
+    const underScore =
+        clamp(
 
-        50+
+            50 +
 
-        (
-            currentDigits.evenPct-
-            50
-        )*.5+
+            underImbalance *
+            .8 +
 
-        (
-            evenValidation.conservative-
-            50
-        )*.5,
+            (
+                underValidation
+                    .conservative -
+                50
+            ) * .5,
 
-        0,
-        100
-    );
+            0,
+            100
 
-
-    const oddScore=
-    clamp(
-
-        50+
-
-        (
-            currentDigits.oddPct-
-            50
-        )*.5+
-
-        (
-            oddValidation.conservative-
-            50
-        )*.5,
-
-        0,
-        100
-    );
+        );
 
 
-    market.stats={
+    const evenScore =
+        clamp(
 
-        current,
+            50 +
 
-        previous,
+            (
+                currentDigits.evenPct -
+                50
+            ) * .5 +
+
+            (
+                evenValidation
+                    .conservative -
+                50
+            ) * .5,
+
+            0,
+            100
+
+        );
+
+
+    const oddScore =
+        clamp(
+
+            50 +
+
+            (
+                currentDigits.oddPct -
+                50
+            ) * .5 +
+
+            (
+                oddValidation
+                    .conservative -
+                50
+            ) * .5,
+
+            0,
+            100
+
+        );
+
+
+    market.stats = {
 
         direction,
 
         digits:
-        currentDigits,
+            currentDigits,
 
         previousDigits
 
     };
 
 
-    return{
+    return {
 
         symbol,
 
@@ -4469,7 +4342,7 @@ function analyzeMarket(
         },
 
         digits:
-        currentDigits,
+            currentDigits,
 
         previousDigits,
 
@@ -4478,19 +4351,19 @@ function analyzeMarket(
             CALL:{
 
                 strategy:
-                "RISEFALL",
+                    "RISEFALL",
 
                 direction:
-                "CALL",
+                    "CALL",
 
                 validation:
-                directionValidation,
+                    directionValidation,
 
                 score:
-                riseScore,
+                    riseScore,
 
                 pulse:
-                direction.up20
+                    direction.up20
 
             },
 
@@ -4498,19 +4371,20 @@ function analyzeMarket(
             PUT:{
 
                 strategy:
-                "RISEFALL",
+                    "RISEFALL",
 
                 direction:
-                "PUT",
+                    "PUT",
 
                 validation:
-                directionValidation,
+                    directionValidation,
 
                 score:
-                fallScore,
+                    fallScore,
 
                 pulse:
-                100-direction.up20
+                    100 -
+                    direction.up20
 
             },
 
@@ -4518,22 +4392,22 @@ function analyzeMarket(
             OVER3:{
 
                 strategy:
-                "OVER3",
+                    "OVER3",
 
                 direction:
-                "OVER3",
+                    "OVER3",
 
                 validation:
-                overValidation,
+                    overValidation,
 
                 score:
-                overScore,
+                    overScore,
 
                 pulse:
-                currentDigits.over3Pct,
+                    currentDigits.over3Pct,
 
                 unwanted:
-                unwantedOver
+                    unwantedOver
 
             },
 
@@ -4541,22 +4415,22 @@ function analyzeMarket(
             UNDER7:{
 
                 strategy:
-                "UNDER7",
+                    "UNDER7",
 
                 direction:
-                "UNDER7",
+                    "UNDER7",
 
                 validation:
-                underValidation,
+                    underValidation,
 
                 score:
-                underScore,
+                    underScore,
 
                 pulse:
-                currentDigits.under7Pct,
+                    currentDigits.under7Pct,
 
                 unwanted:
-                unwantedUnder
+                    unwantedUnder
 
             },
 
@@ -4564,19 +4438,19 @@ function analyzeMarket(
             EVEN:{
 
                 strategy:
-                "EVEN",
+                    "EVEN",
 
                 direction:
-                "EVEN",
+                    "EVEN",
 
                 validation:
-                evenValidation,
+                    evenValidation,
 
                 score:
-                evenScore,
+                    evenScore,
 
                 pulse:
-                currentDigits.evenPct
+                    currentDigits.evenPct
 
             },
 
@@ -4584,201 +4458,208 @@ function analyzeMarket(
             ODD:{
 
                 strategy:
-                "ODD",
+                    "ODD",
 
                 direction:
-                "ODD",
+                    "ODD",
 
                 validation:
-                oddValidation,
+                    oddValidation,
 
                 score:
-                oddScore,
+                    oddScore,
 
                 pulse:
-                currentDigits.oddPct
+                    currentDigits.oddPct
 
             }
 
         }
 
     };
+
 }
 
 
+
 /* =====================================================
-CHOOSE BEST
+CHOOSE BEST SIGNAL
 ===================================================== */
 
 function chooseBestSignal(
     analysis
 ){
 
-    if(!analysis){
+    if(!analysis)
         return null;
-    }
 
 
-    const configured=
-    $("strategy")
-    .value;
+    const configured =
+        $("strategy")
+        .value;
 
 
-    let candidates=
-    Object.values(
-        analysis.strategies
-    );
+    let candidates =
+        Object.values(
+            analysis.strategies
+        );
 
 
     if(
-        configured!=="AUTO"
+        configured !==
+        "AUTO"
     ){
 
         if(
-            configured===
+            configured ===
             "RISEFALL"
         ){
 
-            candidates=
-            candidates.filter(
-                x =>
-                x.strategy===
-                "RISEFALL"
-            );
+            candidates =
+                candidates.filter(
+                    x =>
+                        x.strategy ===
+                        "RISEFALL"
+                );
 
         }else{
 
-            candidates=
-            candidates.filter(
-                x =>
-                x.strategy===
-                configured
-            );
+            candidates =
+                candidates.filter(
+                    x =>
+                        x.strategy ===
+                        configured
+                );
 
         }
 
     }
 
 
-    const minValidation=
-    num(
-        "minValidation",
-        62
-    );
+    const minValidation =
+        num(
+            "minValidation",
+            62
+        );
 
 
-    const minConservative=
-    num(
-        "minConservative",
-        55
-    );
+    const minConservative =
+        num(
+            "minConservative",
+            55
+        );
 
 
-    const minScore=
-    num(
-        "minScore",
-        68
-    );
+    const minScore =
+        num(
+            "minScore",
+            68
+        );
 
 
-    const minPersistence=
-    num(
-        "minPersistence",
-        55
-    );
+    const minPersistence =
+        num(
+            "minPersistence",
+            55
+        );
 
 
-    const maxChop=
-    num(
-        "maxChop",
-        48
-    );
+    const maxChop =
+        num(
+            "maxChop",
+            48
+        );
 
 
-    const minSamples=
-    int(
-        "minSamples",
-        60
-    );
+    const minSamples =
+        int(
+            "minSamples",
+            60
+        );
 
 
-    candidates=
-    candidates.filter(
-        signal=>{
+    candidates =
+        candidates.filter(
+            signal => {
 
-            const v=
-            signal.validation;
+                const v =
+                    signal.validation;
 
 
-            if(!v){
-                return false;
+                if(!v)
+                    return false;
+
+
+                if(
+                    v.samples <
+                    minSamples
+                ){
+
+                    return false;
+
+                }
+
+
+                if(
+                    v.winPct <
+                    minValidation
+                ){
+
+                    return false;
+
+                }
+
+
+                if(
+                    v.conservative <
+                    minConservative
+                ){
+
+                    return false;
+
+                }
+
+
+                if(
+                    signal.score <
+                    minScore
+                ){
+
+                    return false;
+
+                }
+
+
+                const d =
+                    analysis
+                    .stats
+                    .direction;
+
+
+                if(
+                    d.persistence <
+                    minPersistence
+                ){
+
+                    return false;
+
+                }
+
+
+                if(
+                    d.chop >
+                    maxChop
+                ){
+
+                    return false;
+
+                }
+
+
+                return true;
+
             }
-
-
-            if(
-                v.samples<
-                minSamples
-            ){
-
-                return false;
-            }
-
-
-            if(
-                v.winPct<
-                minValidation
-            ){
-
-                return false;
-            }
-
-
-            if(
-                v.conservative<
-                minConservative
-            ){
-
-                return false;
-            }
-
-
-            if(
-                signal.score<
-                minScore
-            ){
-
-                return false;
-            }
-
-
-            const d=
-            analysis
-            .stats
-            .direction;
-
-
-            if(
-                d.persistence<
-                minPersistence
-            ){
-
-                return false;
-            }
-
-
-            if(
-                d.chop>
-                maxChop
-            ){
-
-                return false;
-            }
-
-
-            return true;
-
-        }
-    );
+        );
 
 
     if(
@@ -4786,17 +4667,21 @@ function chooseBestSignal(
     ){
 
         return null;
+
     }
 
 
     candidates.sort(
-        (a,b)=>
-        b.score-a.score
+        (a,b) =>
+            b.score -
+            a.score
     );
 
 
     return candidates[0];
+
 }
+
 
 
 /* =====================================================
@@ -4810,67 +4695,67 @@ async function getProposal(
 
     let contractType;
 
-    let barrier;
+    let barrier = null;
 
 
     if(
-        signal.strategy===
+        signal.strategy ===
         "RISEFALL"
     ){
 
-        contractType=
-        signal.direction===
-        "CALL"
-        ?"CALL"
-        :"PUT";
+        contractType =
+            signal.direction ===
+            "CALL"
+                ? "CALL"
+                : "PUT";
 
     }
 
 
     else if(
-        signal.strategy===
+        signal.strategy ===
         "OVER3"
     ){
 
-        contractType=
-        "DIGITOVER";
+        contractType =
+            "DIGITOVER";
 
-        barrier=3;
+        barrier = 3;
 
     }
 
 
     else if(
-        signal.strategy===
+        signal.strategy ===
         "UNDER7"
     ){
 
-        contractType=
-        "DIGITUNDER";
+        contractType =
+            "DIGITUNDER";
 
-        barrier=7;
+        barrier = 7;
 
     }
 
 
     else if(
-        signal.strategy===
+        signal.strategy ===
         "EVEN"
     ){
 
-        contractType=
-        "DIGITEVEN";
+        contractType =
+            "DIGITEVEN";
 
     }
 
 
     else if(
-        signal.strategy===
+        signal.strategy ===
         "ODD"
     ){
 
-        contractType=
-        "DIGITODD";
+        contractType =
+            "DIGITODD";
 
     }
 
@@ -4886,63 +4771,68 @@ async function getProposal(
 
     /*
       CURRENT NEW API:
+
       underlying_symbol
-      NOT symbol
+      NOT symbol.
+
+      No subscribe is necessary because
+      we only need one proposal snapshot.
     */
 
-    const request={
+    const request = {
 
         proposal:1,
 
         amount:
-        num(
-            "stake",
-            1
-        ),
+            num(
+                "stake",
+                1
+            ),
 
         basis:
-        "stake",
+            "stake",
 
         contract_type:
-        contractType,
+            contractType,
 
         currency:
-        selectedCurrency,
+            selectedCurrency,
 
         duration:
-        int(
-            "duration",
-            1
-        ),
+            int(
+                "duration",
+                1
+            ),
 
         duration_unit:
-        "t",
+            "t",
 
         underlying_symbol:
-        symbol
+            symbol
 
     };
 
 
     if(
-        contractType===
+        contractType ===
         "DIGITOVER" ||
-        contractType===
+
+        contractType ===
         "DIGITUNDER"
     ){
 
-        request.barrier=
-        String(
-            barrier
-        );
+        request.barrier =
+            String(
+                barrier
+            );
 
     }
 
 
-    const response=
-    await send(
-        request
-    );
+    const response =
+        await send(
+            request
+        );
 
 
     if(
@@ -4956,36 +4846,32 @@ async function getProposal(
     }
 
 
-    return{
+    return {
 
         proposalId:
-        response
-        .proposal
-        .id,
+            response.proposal.id,
 
         askPrice:
-        parseFloat(
-            response
-            .proposal
-            .ask_price||
-            num(
-                "stake",
-                1
-            )
-        ),
+            parseFloat(
+                response.proposal.ask_price ||
+                num(
+                    "stake",
+                    1
+                )
+            ),
 
         payout:
-        parseFloat(
-            response
-            .proposal
-            .payout||
-            0
-        ),
+            parseFloat(
+                response.proposal.payout ||
+                0
+            ),
 
         response
 
     };
+
 }
+
 
 
 /* =====================================================
@@ -5001,61 +4887,69 @@ function calculateEV(
     if(
         !Number.isFinite(
             probability
-        )||
+        ) ||
+
         !Number.isFinite(
             payout
-        )||
-        payout<=0
+        ) ||
+
+        payout <= 0
     ){
 
         return -999;
+
     }
 
 
-    const p=
-    probability/100;
+    const p =
+        probability / 100;
 
 
-    const winProfit=
-    payout-stake;
+    const winProfit =
+        payout -
+        stake;
 
 
-    return(
-        p*winProfit-
-        (1-p)*stake
+    return (
+        p * winProfit
+    ) -
+    (
+        (1-p) *
+        stake
     );
+
 }
 
 
+
 /* =====================================================
-EVALUATE
+EVALUATE MARKET
 ===================================================== */
 
 async function evaluateMarket(
     symbol
 ){
 
-    if(!trading){
+    if(!trading)
         return;
-    }
 
 
-    if(currentTrade){
+    if(currentTrade)
         return;
-    }
 
 
     if(
-        Date.now()<
+        Date.now() <
         cooldownUntil
     ){
 
         return;
+
     }
 
 
     if(
-        totalTrades>=
+        totalTrades >=
         int(
             "maxTrades",
             20
@@ -5067,11 +4961,12 @@ async function evaluateMarket(
         );
 
         return;
+
     }
 
 
     if(
-        totalLosses>=
+        totalLosses >=
         int(
             "maxLosses",
             2
@@ -5083,11 +4978,12 @@ async function evaluateMarket(
         );
 
         return;
+
     }
 
 
     if(
-        totalProfit>=
+        totalProfit >=
         num(
             "takeProfit",
             10
@@ -5099,11 +4995,12 @@ async function evaluateMarket(
         );
 
         return;
+
     }
 
 
     if(
-        totalProfit<=
+        totalProfit <=
         -num(
             "stopLoss",
             5
@@ -5115,11 +5012,12 @@ async function evaluateMarket(
         );
 
         return;
+
     }
 
 
     if(
-        marketLosses[symbol]>=
+        marketLosses[symbol] >=
         int(
             "marketLossLock",
             1
@@ -5127,130 +5025,123 @@ async function evaluateMarket(
     ){
 
         return;
+
     }
 
 
-    const analysis=
-    analyzeMarket(
-        symbol
-    );
-
-
-    if(!analysis){
-        return;
-    }
-
-
-    const signal=
-    chooseBestSignal(
-        analysis
-    );
-
-
-    if(!signal){
-        return;
-    }
-
-
-    const triggerPrice=
-    markets[symbol]
-    ?.lastPrice;
-
-
-    log(
-        `SURGE: ${symbol} → ${signal.strategy} ${signal.direction} score=${signal.score.toFixed(1)}`,
-        "good"
-    );
-
-
-    try{
-
-        const proposal=
-        await getProposal(
-            symbol,
-            signal
+    const analysis =
+        analyzeMarket(
+            symbol
         );
 
 
-        /*
-          Do not buy stale signal.
-        */
+    if(!analysis)
+        return;
 
-        const latest=
+
+    const signal =
+        chooseBestSignal(
+            analysis
+        );
+
+
+    if(!signal)
+        return;
+
+
+    const triggerPrice =
         markets[symbol]
         ?.lastPrice;
 
 
-        if(
-            latest!==
-            triggerPrice
-        ){
+    try{
 
-            log(
-                `${symbol}: price changed before entry. Skipping.`,
-                "warn"
+        const proposal =
+            await getProposal(
+                symbol,
+                signal
             );
-
-            return;
-        }
-
-
-        const stake=
-        proposal.askPrice;
-
-
-        const payout=
-        proposal.payout;
-
-
-        const ev=
-        calculateEV(
-            signal
-            .validation
-            .conservative,
-
-            payout,
-
-            stake
-        );
-
-
-        signal.payout=
-        payout;
-
-
-        signal.ev=
-        ev;
-
-
-        const minEV=
-        num(
-            "minEV",
-            0.5
-        );
-
-
-        if(
-            ev<
-            minEV
-        ){
-
-            log(
-                `${symbol}: EV ${ev.toFixed(3)} below minimum ${minEV}.`,
-                "warn"
-            );
-
-            return;
-        }
 
 
         /*
-          PAPER
+          If price changed while proposal
+          was being requested, do not enter
+          on the stale signal.
+        */
+
+        const latestPrice =
+            markets[symbol]
+            ?.lastPrice;
+
+
+        if(
+            latestPrice !==
+            triggerPrice
+        ){
+
+            return;
+
+        }
+
+
+        const stake =
+            proposal.askPrice;
+
+
+        const payout =
+            proposal.payout;
+
+
+        const ev =
+            calculateEV(
+                signal
+                    .validation
+                    .conservative,
+
+                payout,
+
+                stake
+            );
+
+
+        signal.payout =
+            payout;
+
+
+        signal.ev =
+            ev;
+
+
+        const minEV =
+            num(
+                "minEV",
+                0.5
+            );
+
+
+        if(
+            ev <
+            minEV
+        ){
+
+            return;
+
+        }
+
+
+        log(
+            `${symbol}: QUALIFIED ${signal.strategy} ${signal.direction} score=${signal.score.toFixed(1)} validation=${signal.validation.winPct.toFixed(1)}% EV=${ev.toFixed(3)}`,
+            "good"
+        );
+
+
+        /*
+          PAPER MODE
         */
 
         if(
             $("tradeMode")
-            .value===
+            .value ===
             "paper"
         ){
 
@@ -5262,11 +5153,12 @@ async function evaluateMarket(
             );
 
             return;
+
         }
 
 
         /*
-          LIVE
+          LIVE MODE
         */
 
         await executeLiveTrade(
@@ -5284,11 +5176,13 @@ async function evaluateMarket(
         );
 
     }
+
 }
 
 
+
 /* =====================================================
-LIVE BUY
+LIVE TRADE
 ===================================================== */
 
 async function executeLiveTrade(
@@ -5297,9 +5191,8 @@ async function executeLiveTrade(
     proposal
 ){
 
-    if(currentTrade){
+    if(currentTrade)
         return;
-    }
 
 
     if(
@@ -5313,20 +5206,20 @@ async function executeLiveTrade(
     }
 
 
-    const response=
-    await send({
+    const response =
+        await send({
 
-        buy:
-        proposal.proposalId,
+            buy:
+                proposal.proposalId,
 
-        price:
-        proposal.askPrice
+            price:
+                proposal.askPrice
 
-    });
+        });
 
 
-    const contract=
-    response.buy;
+    const contract =
+        response.buy;
 
 
     if(!contract){
@@ -5338,30 +5231,30 @@ async function executeLiveTrade(
     }
 
 
-    currentTrade={
+    currentTrade = {
 
         mode:
-        "live",
+            "live",
 
         symbol,
 
         strategy:
-        signal.strategy,
+            signal.strategy,
 
         direction:
-        signal.direction,
+            signal.direction,
 
         stake:
-        proposal.askPrice,
+            proposal.askPrice,
 
         payout:
-        proposal.payout,
+            proposal.payout,
 
         contractId:
-        contract.contract_id,
+            contract.contract_id,
 
         startTime:
-        Date.now(),
+            Date.now(),
 
         signal
 
@@ -5375,8 +5268,8 @@ async function executeLiveTrade(
 
 
     $("openTrade")
-    .textContent=
-    `${symbol} / ${signal.strategy}`;
+        .textContent =
+        `${symbol} / ${signal.strategy}`;
 
 
     log(
@@ -5387,19 +5280,19 @@ async function executeLiveTrade(
 
     try{
 
-        const contractResponse=
-        await send({
+        const contractResponse =
+            await send({
 
-            proposal_open_contract:
-            1,
+                proposal_open_contract:
+                    1,
 
-            contract_id:
-            contract.contract_id,
+                contract_id:
+                    contract.contract_id,
 
-            subscribe:
-            1
+                subscribe:
+                    1
 
-        });
+            });
 
 
         if(
@@ -5410,24 +5303,25 @@ async function executeLiveTrade(
 
             contractSubscriptions[
                 contract.contract_id
-            ]=
-            contractResponse
-            .subscription
-            .id;
+            ] =
+                contractResponse
+                .subscription
+                .id;
 
         }
-
 
     }catch(error){
 
         log(
-            "Contract subscription error: "+
+            "Contract subscription error: " +
             error.message,
             "bad"
         );
 
     }
+
 }
+
 
 
 /* =====================================================
@@ -5438,42 +5332,45 @@ function processContractUpdate(
     contract
 ){
 
-    if(!currentTrade){
+    if(!currentTrade)
         return;
-    }
 
 
     if(
         String(
             contract.contract_id
-        )!==
+        ) !==
         String(
             currentTrade.contractId
         )
     ){
 
         return;
+
     }
 
 
-    const profit=
-    parseFloat(
-        contract.profit||0
-    );
+    const profit =
+        parseFloat(
+            contract.profit ||
+            0
+        );
 
 
     if(
-        contract.is_sold||
-        contract.status===
-        "won"||
-        contract.status===
+        contract.is_sold ||
+
+        contract.status ===
+        "won" ||
+
+        contract.status ===
         "lost"
     ){
 
-        const won=
-        contract.status===
-        "won"||
-        profit>0;
+        const won =
+            contract.status ===
+            "won" ||
+            profit > 0;
 
 
         finishTrade(
@@ -5482,7 +5379,9 @@ function processContractUpdate(
         );
 
     }
+
 }
+
 
 
 /* =====================================================
@@ -5496,41 +5395,40 @@ function createPaperTrade(
     payout
 ){
 
-    if(currentTrade){
+    if(currentTrade)
         return;
-    }
 
 
-    currentTrade={
+    currentTrade = {
 
         mode:
-        "paper",
+            "paper",
 
         symbol,
 
         strategy:
-        signal.strategy,
+            signal.strategy,
 
         direction:
-        signal.direction,
+            signal.direction,
 
         stake,
 
         payout,
 
         entryPrice:
-        markets[symbol]
-        ?.lastPrice,
+            markets[symbol]
+            ?.lastPrice,
 
         entryTick:
-        markets[symbol]
-        ?.tickCount,
+            markets[symbol]
+            ?.tickCount,
 
         duration:
-        int(
-            "duration",
-            1
-        ),
+            int(
+                "duration",
+                1
+            ),
 
         signal
 
@@ -5544,15 +5442,17 @@ function createPaperTrade(
 
 
     $("openTrade")
-    .textContent=
-    `${symbol} / PAPER`;
+        .textContent =
+        `${symbol} / PAPER`;
 
 
     log(
         `PAPER ENTRY: ${symbol} ${signal.strategy} ${signal.direction}`,
         "good"
     );
+
 }
+
 
 
 /* =====================================================
@@ -5564,57 +5464,61 @@ function updatePaperTrade(
 ){
 
     if(
-        !currentTrade||
-        currentTrade.mode!==
+        !currentTrade ||
+        currentTrade.mode !==
         "paper"
     ){
 
         return;
+
     }
 
 
-    const ticksPassed=
-    state.tickCount-
-    currentTrade.entryTick;
+    const ticksPassed =
+        state.tickCount -
+        currentTrade.entryTick;
 
 
     if(
-        ticksPassed<
+        ticksPassed <
         currentTrade.duration
     ){
 
         return;
+
     }
 
 
-    const current=
-    state.lastPrice;
+    const current =
+        state.lastPrice;
 
 
-    const entry=
-    currentTrade.entryPrice;
+    const entry =
+        currentTrade.entryPrice;
 
 
-    let won=false;
+    let won = false;
 
 
     if(
-        currentTrade.strategy===
+        currentTrade.strategy ===
         "RISEFALL"
     ){
 
         if(
-            currentTrade.direction===
+            currentTrade.direction ===
             "CALL"
         ){
 
-            won=
-            current>entry;
+            won =
+                current >
+                entry;
 
         }else{
 
-            won=
-            current<entry;
+            won =
+                current <
+                entry;
 
         }
 
@@ -5623,74 +5527,77 @@ function updatePaperTrade(
 
     else{
 
-        const digit=
-        getLastDigit(
-            current
-        );
+        const digit =
+            getLastDigit(
+                current,
+                currentTrade.symbol
+            );
 
 
         if(
-            currentTrade.strategy===
+            currentTrade.strategy ===
             "OVER3"
         ){
 
-            won=
-            digit>3;
+            won =
+                digit > 3;
 
         }
 
 
         else if(
-            currentTrade.strategy===
+            currentTrade.strategy ===
             "UNDER7"
         ){
 
-            won=
-            digit<7;
+            won =
+                digit < 7;
 
         }
 
 
         else if(
-            currentTrade.strategy===
+            currentTrade.strategy ===
             "EVEN"
         ){
 
-            won=
-            digit%2===0;
+            won =
+                digit % 2 === 0;
 
         }
 
 
         else if(
-            currentTrade.strategy===
+            currentTrade.strategy ===
             "ODD"
         ){
 
-            won=
-            digit%2!==0;
+            won =
+                digit % 2 !== 0;
 
         }
 
     }
 
 
-    const profit=
-    won
-    ?currentTrade.payout-
-     currentTrade.stake
-    :-currentTrade.stake;
+    const profit =
+        won
+            ? currentTrade.payout -
+              currentTrade.stake
+            : -currentTrade.stake;
 
 
     finishTrade(
         won,
         profit
     );
+
 }
 
 
+
 /* =====================================================
-FINISH
+FINISH TRADE
 ===================================================== */
 
 function finishTrade(
@@ -5698,18 +5605,17 @@ function finishTrade(
     profit
 ){
 
-    if(!currentTrade){
+    if(!currentTrade)
         return;
-    }
 
 
-    const trade=
-    currentTrade;
+    const trade =
+        currentTrade;
 
 
-    totalProfit+=
-    Number(profit)||
-    0;
+    totalProfit +=
+        Number(profit) ||
+        0;
 
 
     if(won){
@@ -5723,20 +5629,21 @@ function finishTrade(
 
         marketLosses[
             trade.symbol
-        ]=
-        (
-            marketLosses[
-                trade.symbol
-            ]||0
-        )+1;
+        ] =
+            (
+                marketLosses[
+                    trade.symbol
+                ] || 0
+            ) + 1;
 
 
-        cooldownUntil=
-        Date.now()+
-        int(
-            "cooldown",
-            30
-        )*1000;
+        cooldownUntil =
+            Date.now() +
+
+            int(
+                "cooldown",
+                30
+            ) * 1000;
 
     }
 
@@ -5749,24 +5656,26 @@ function finishTrade(
 
 
     log(
-        `${won?"WIN":"LOSS"}: ${trade.symbol} ${trade.strategy} P/L=${Number(profit).toFixed(2)}`,
-        won?"good":"bad"
+        `${won ? "WIN" : "LOSS"}: ${trade.symbol} ${trade.strategy} P/L=${Number(profit).toFixed(2)}`,
+        won
+            ? "good"
+            : "bad"
     );
 
 
-    currentTrade=null;
+    currentTrade = null;
 
 
     $("openTrade")
-    .textContent=
-    "None";
+        .textContent =
+        "None";
 
 
     updateStats();
 
 
     if(
-        totalLosses>=
+        totalLosses >=
         int(
             "maxLosses",
             2
@@ -5778,11 +5687,12 @@ function finishTrade(
         );
 
         return;
+
     }
 
 
     if(
-        totalProfit<=
+        totalProfit <=
         -num(
             "stopLoss",
             5
@@ -5794,11 +5704,12 @@ function finishTrade(
         );
 
         return;
+
     }
 
 
     if(
-        totalProfit>=
+        totalProfit >=
         num(
             "takeProfit",
             10
@@ -5810,11 +5721,12 @@ function finishTrade(
         );
 
         return;
+
     }
 
 
     if(
-        totalTrades>=
+        totalTrades >=
         int(
             "maxTrades",
             20
@@ -5826,11 +5738,13 @@ function finishTrade(
         );
 
     }
+
 }
 
 
+
 /* =====================================================
-HISTORY
+TRADE HISTORY
 ===================================================== */
 
 function addTradeHistory(
@@ -5839,17 +5753,17 @@ function addTradeHistory(
     profit
 ){
 
-    const row=
-    document.createElement(
-        "tr"
-    );
+    const row =
+        document.createElement(
+            "tr"
+        );
 
 
-    row.innerHTML=`
+    row.innerHTML = `
 
         <td>
             ${new Date()
-            .toLocaleTimeString()}
+                .toLocaleTimeString()}
         </td>
 
         <td>
@@ -5866,7 +5780,7 @@ function addTradeHistory(
 
         <td>
             ${escapeHtml(
-                trade.direction||""
+                trade.direction || ""
             )}
         </td>
 
@@ -5878,30 +5792,30 @@ function addTradeHistory(
 
         <td>
             ${Number(
-                trade.payout||0
+                trade.payout || 0
             ).toFixed(2)}
         </td>
 
         <td class="${
             won
-            ?"green"
-            :"red"
+                ? "green"
+                : "red"
         }">
 
-            ${won?"WIN":"LOSS"}
+            ${won ? "WIN" : "LOSS"}
 
         </td>
 
         <td class="${
-            profit>=0
-            ?"green"
-            :"red"
+            profit >= 0
+                ? "green"
+                : "red"
         }">
 
             ${
-                profit>=0
-                ?"+"
-                :""
+                profit >= 0
+                    ? "+"
+                    : ""
             }${Number(
                 profit
             ).toFixed(2)}
@@ -5916,8 +5830,10 @@ function addTradeHistory(
 
 
     $("historyBody")
-    .prepend(row);
+        .prepend(row);
+
 }
+
 
 
 /* =====================================================
@@ -5927,53 +5843,57 @@ STATS
 function updateStats(){
 
     $("trades")
-    .textContent=
-    totalTrades;
+        .textContent =
+        totalTrades;
 
 
     $("wins")
-    .textContent=
-    totalWins;
+        .textContent =
+        totalWins;
 
 
     $("losses")
-    .textContent=
-    totalLosses;
+        .textContent =
+        totalLosses;
 
 
     $("profit")
-    .textContent=
-    totalProfit.toFixed(2);
+        .textContent =
+        totalProfit.toFixed(2);
 
 
     $("profit")
-    .className=
-    "value "+
-    (
-        totalProfit>0
-        ?"green"
-        :totalProfit<0
-        ?"red"
-        :""
-    );
+        .className =
+        "value " +
+
+        (
+            totalProfit > 0
+                ? "green"
+                : totalProfit < 0
+                    ? "red"
+                    : ""
+        );
 
 
-    const rate=
-    totalTrades
-    ?totalWins/
-     totalTrades*100
-    :0;
+    const rate =
+        totalTrades
+            ? totalWins /
+              totalTrades *
+              100
+            : 0;
 
 
     $("winrate")
-    .textContent=
-    rate.toFixed(1)+
-    "%";
+        .textContent =
+        rate.toFixed(1) +
+        "%";
+
 }
 
 
+
 /* =====================================================
-SCAN
+SCAN MARKETS
 ===================================================== */
 
 async function scanMarkets(
@@ -5988,31 +5908,34 @@ async function scanMarkets(
         );
 
         return;
+
     }
 
 
     if(
-        scanRunning&&!force
+        scanRunning &&
+        !force
     ){
 
         return;
+
     }
 
 
-    scanRunning=true;
+    scanRunning = true;
 
 
     try{
 
-        const active=
-        await getActiveMarkets();
+        const active =
+            await getActiveMarkets();
 
 
-        marketList=
-        active.map(
-            x =>
-            x.underlying_symbol
-        );
+        marketList =
+            active.map(
+                x =>
+                    x.underlying_symbol
+            );
 
 
         if(
@@ -6025,10 +5948,14 @@ async function scanMarkets(
             );
 
             return;
+
         }
 
 
-        let loaded=0;
+        let loaded = 0;
+
+
+        let failed = 0;
 
 
         for(
@@ -6036,13 +5963,12 @@ async function scanMarkets(
             of active
         ){
 
-            const symbol=
-            item.underlying_symbol;
+            const symbol =
+                item.underlying_symbol;
 
 
-            if(!symbol){
+            if(!symbol)
                 continue;
-            }
 
 
             if(
@@ -6053,30 +5979,51 @@ async function scanMarkets(
                 loaded++;
 
                 continue;
+
             }
 
 
-            await loadMarketHistory(
-                symbol
-            );
+            /*
+              V31:
+              loadMarketHistory now sends
+              ticks_history WITHOUT subscribe.
+            */
+
+            const success =
+                await loadMarketHistory(
+                    symbol
+                );
 
 
-            loaded++;
+            if(success){
+
+                loaded++;
+
+            }else{
+
+                failed++;
+
+            }
 
 
             if(
-                loaded%5===0||
-                loaded===active.length
+                (loaded + failed) %
+                5 === 0
             ){
 
                 log(
-                    `Loaded ${loaded}/${active.length} markets.`
+                    `Processed ${loaded + failed}/${active.length} markets. Loaded=${loaded}, Failed=${failed}`
                 );
 
             }
 
 
-            await sleep(100);
+            /*
+              Small spacing prevents
+              request bursts.
+            */
+
+            await sleep(120);
 
         }
 
@@ -6085,46 +6032,50 @@ async function scanMarkets(
 
 
         log(
-            `Scanner ready: ${loaded}/${active.length} markets loaded.`,
-            "good"
+            `Scanner ready: ${loaded}/${active.length} markets loaded. ${failed} failed.`,
+            loaded
+                ? "good"
+                : "warn"
         );
 
 
     }catch(error){
 
         log(
-            "Scanner error: "+
+            "Scanner error: " +
             error.message,
             "bad"
         );
 
     }finally{
 
-        scanRunning=false;
+        scanRunning = false;
 
     }
+
 }
 
 
+
 /* =====================================================
-RENDER
+RENDER ALL
 ===================================================== */
 
 function renderAllMarkets(){
 
     $("scannerBody")
-    .innerHTML="";
+        .innerHTML = "";
 
 
     $("digitBody")
-    .innerHTML="";
+        .innerHTML = "";
 
 
     $("backtestBody")
-    .innerHTML="";
+        .innerHTML = "";
 
 
-    let count=0;
+    let count = 0;
 
 
     for(
@@ -6132,15 +6083,14 @@ function renderAllMarkets(){
         of marketList
     ){
 
-        const analysis=
-        analyzeMarket(
-            symbol
-        );
+        const analysis =
+            analyzeMarket(
+                symbol
+            );
 
 
-        if(!analysis){
+        if(!analysis)
             continue;
-        }
 
 
         renderScannerRow(
@@ -6166,19 +6116,22 @@ function renderAllMarkets(){
     if(!count){
 
         $("scannerBody")
-        .innerHTML=
-        `<tr>
+            .innerHTML =
 
-            <td colspan="16">
+            `<tr>
 
-                Waiting for 200 ticks...
+                <td colspan="16">
 
-            </td>
+                    Waiting for 200 valid ticks...
 
-        </tr>`;
+                </td>
+
+            </tr>`;
 
     }
+
 }
+
 
 
 /* =====================================================
@@ -6189,30 +6142,30 @@ function renderScannerRow(
     analysis
 ){
 
-    const row=
-    document.createElement(
-        "tr"
-    );
+    const row =
+        document.createElement(
+            "tr"
+        );
 
 
-    const best=
-    chooseBestSignal(
+    const best =
+        chooseBestSignal(
+            analysis
+        );
+
+
+    const d =
         analysis
-    );
+        .stats
+        .direction;
 
 
-    const d=
-    analysis
-    .stats
-    .direction;
+    const validation =
+        best
+            ?.validation;
 
 
-    const validation=
-    best
-    ?.validation;
-
-
-    row.innerHTML=`
+    row.innerHTML = `
 
         <td>
             <b>
@@ -6222,128 +6175,149 @@ function renderScannerRow(
             </b>
         </td>
 
+
         <td>
             ${
                 best
-                ?Number(
-                    best.pulse
-                ).toFixed(1)
-                :"—"
+                    ? Number(
+                        best.pulse
+                    ).toFixed(1)
+                    : "—"
             }
         </td>
 
+
         <td class="${
-            best&&
-            best.score>=
+            best &&
+            best.score >=
             num(
                 "minScore",
                 68
             )
-            ?"green"
-            :""
+                ? "green"
+                : ""
         }">
 
             ${
                 best
-                ?best.score.toFixed(1)
-                :"—"
+                    ? best.score.toFixed(1)
+                    : "—"
             }
 
         </td>
+
 
         <td>
             ${d.up20.toFixed(1)}%
         </td>
 
+
         <td>
             ${d.up50.toFixed(1)}%
         </td>
+
 
         <td>
             ${d.up100.toFixed(1)}%
         </td>
 
+
         <td>
             ${d.persistence.toFixed(1)}%
         </td>
+
 
         <td>
             ${d.chop.toFixed(1)}%
         </td>
 
+
         <td>
             ${d.volatility.toFixed(5)}%
         </td>
+
 
         <td>
             ${
                 analysis
                 .digits
                 .digits
-                .at(-1)??"—"
+                .at(-1)
+                ??
+                "—"
             }
         </td>
+
 
         <td>
             ${
                 validation
-                ?validation.winPct
-                    .toFixed(1)+"%"
-                :"—"
+                    ? validation
+                        .winPct
+                        .toFixed(1) +
+                      "%"
+                    : "—"
             }
         </td>
+
 
         <td>
             ${
                 validation
-                ?validation.conservative
-                    .toFixed(1)+"%"
-                :"—"
+                    ? validation
+                        .conservative
+                        .toFixed(1) +
+                      "%"
+                    : "—"
             }
         </td>
+
 
         <td>
             ${
                 validation
-                ?validation.samples
-                :"—"
+                    ? validation.samples
+                    : "—"
             }
         </td>
+
 
         <td>
             ${
                 best?.payout
-                ?Number(
-                    best.payout
-                ).toFixed(2)
-                :"—"
+                    ? Number(
+                        best.payout
+                    ).toFixed(2)
+                    : "—"
             }
         </td>
+
 
         <td>
             ${
-                best?.ev!==undefined
-                ?Number(
-                    best.ev
-                ).toFixed(3)
-                :"—"
+                best?.ev !== undefined
+                    ? Number(
+                        best.ev
+                    ).toFixed(3)
+                    : "—"
             }
         </td>
 
+
         <td class="${
             best
-            ?"signal buy"
-            :"signal wait"
+                ? "signal buy"
+                : "signal wait"
         }">
 
             ${
                 best
-                ?escapeHtml(
-                    best.strategy+
-                    " "+
-                    best.direction
-                )
-                :"WAIT"
+                    ? escapeHtml(
+                        best.strategy +
+                        " " +
+                        best.direction
+                    )
+                    : "WAIT"
             }
 
         </td>
@@ -6352,8 +6326,10 @@ function renderScannerRow(
 
 
     $("scannerBody")
-    .appendChild(row);
+        .appendChild(row);
+
 }
+
 
 
 /* =====================================================
@@ -6364,17 +6340,17 @@ function renderDigitRow(
     analysis
 ){
 
-    const row=
-    document.createElement(
-        "tr"
-    );
+    const row =
+        document.createElement(
+            "tr"
+        );
 
 
-    const d=
-    analysis.digits;
+    const d =
+        analysis.digits;
 
 
-    row.innerHTML=`
+    row.innerHTML = `
 
         <td>
             <b>
@@ -6384,28 +6360,33 @@ function renderDigitRow(
             </b>
         </td>
 
+
         ${
             d.pct
             .map(
                 p =>
-                `<td>
-                    ${p.toFixed(1)}%
-                </td>`
+                    `<td>
+                        ${p.toFixed(1)}%
+                    </td>`
             )
             .join("")
         }
+
 
         <td>
             ${d.evenPct.toFixed(1)}%
         </td>
 
+
         <td>
             ${d.oddPct.toFixed(1)}%
         </td>
 
+
         <td>
             ${d.over3Pct.toFixed(1)}%
         </td>
+
 
         <td>
             ${d.under7Pct.toFixed(1)}%
@@ -6415,25 +6396,29 @@ function renderDigitRow(
 
 
     $("digitBody")
-    .appendChild(row);
+        .appendChild(row);
+
 }
 
 
+
 /* =====================================================
-BACKTEST
+BACKTEST ROWS
 ===================================================== */
 
 function renderBacktestRows(
     analysis
 ){
 
-    const keys=[
+    const keys = [
+
         "CALL",
         "PUT",
         "OVER3",
         "UNDER7",
         "EVEN",
         "ODD"
+
     ];
 
 
@@ -6442,27 +6427,26 @@ function renderBacktestRows(
         of keys
     ){
 
-        const signal=
-        analysis
-        .strategies[key];
+        const signal =
+            analysis
+            .strategies[key];
 
 
-        if(!signal){
+        if(!signal)
             continue;
-        }
 
 
-        const v=
-        signal.validation;
+        const v =
+            signal.validation;
 
 
-        const row=
-        document.createElement(
-            "tr"
-        );
+        const row =
+            document.createElement(
+                "tr"
+            );
 
 
-        row.innerHTML=`
+        row.innerHTML = `
 
             <td>
                 ${escapeHtml(
@@ -6470,62 +6454,71 @@ function renderBacktestRows(
                 )}
             </td>
 
+
             <td>
                 ${escapeHtml(
                     signal.strategy
                 )}
+
                 ${
                     signal.direction
-                    ?" "+
-                    escapeHtml(
-                        signal.direction
-                    )
-                    :""
+                        ? " " +
+                          escapeHtml(
+                              signal.direction
+                          )
+                        : ""
                 }
             </td>
+
 
             <td>
                 ${v.samples}
             </td>
 
+
             <td>
                 ${v.wins}
             </td>
+
 
             <td>
                 ${v.losses}
             </td>
 
+
             <td>
                 ${v.winPct.toFixed(1)}%
             </td>
+
 
             <td>
                 ${v.conservative.toFixed(1)}%
             </td>
 
+
             <td>
                 ${signal.score.toFixed(1)}
             </td>
 
+
             <td class="${
-                signal.score>=
+                signal.score >=
                 num(
                     "minScore",
                     68
                 )
-                ?"green"
-                :"gray"
+                    ? "green"
+                    : "gray"
             }">
 
                 ${
-                    signal.score>=
+                    signal.score >=
                     num(
                         "minScore",
                         68
                     )
-                    ?"QUALIFIED"
-                    :"WAIT"
+                        ? "QUALIFIED"
+                        : "WAIT"
                 }
 
             </td>
@@ -6534,14 +6527,16 @@ function renderBacktestRows(
 
 
         $("backtestBody")
-        .appendChild(row);
+            .appendChild(row);
 
     }
+
 }
 
 
+
 /* =====================================================
-START
+START TRADING
 ===================================================== */
 
 function startTrading(){
@@ -6553,6 +6548,7 @@ function startTrading(){
         );
 
         return;
+
     }
 
 
@@ -6564,39 +6560,40 @@ function startTrading(){
         );
 
         return;
+
     }
 
 
     /*
-      Reset session counters.
+      Reset session statistics.
     */
 
-    totalTrades=0;
+    totalTrades = 0;
 
-    totalWins=0;
+    totalWins = 0;
 
-    totalLosses=0;
+    totalLosses = 0;
 
-    totalProfit=0;
+    totalProfit = 0;
 
-    currentTrade=null;
+    currentTrade = null;
 
-    marketLosses={};
+    marketLosses = {};
 
-    cooldownUntil=0;
+    cooldownUntil = 0;
 
 
     updateStats();
 
 
-    trading=true;
+    trading = true;
 
 
     $("modeStatus")
-    .textContent=
-    $("tradeMode")
-    .value
-    .toUpperCase();
+        .textContent =
+        $("tradeMode")
+        .value
+        .toUpperCase();
 
 
     log(
@@ -6618,40 +6615,39 @@ function startTrading(){
     );
 
 
-    scannerTimer=
-    setInterval(
-        ()=>{
+    scannerTimer =
+        setInterval(
+            () => {
 
-            if(!trading){
-                return;
-            }
-
-
-            scanMarkets();
+                if(!trading)
+                    return;
 
 
-            renderAllMarkets();
+                scanMarkets();
 
 
-        },
-        int(
-            "scanInterval",
-            5
-        )*1000
-    );
+                renderAllMarkets();
+
+            },
+            int(
+                "scanInterval",
+                5
+            ) * 1000
+        );
 
 }
 
 
+
 /* =====================================================
-STOP
+STOP TRADING
 ===================================================== */
 
 function stopTrading(
     reason="Manual stop"
 ){
 
-    trading=false;
+    trading = false;
 
 
     clearInterval(
@@ -6659,26 +6655,28 @@ function stopTrading(
     );
 
 
-    scannerTimer=null;
+    scannerTimer = null;
 
 
     log(
         `TRADING STOPPED — ${reason}`,
         reason.includes(
             "Maximum"
-        )||
+        ) ||
         reason.includes(
             "Stop loss"
         )
-        ?"bad"
-        :"warn"
+            ? "bad"
+            : "warn"
     );
 
 
     setMessage(
         `Trading stopped: ${reason}`
     );
+
 }
+
 
 
 /* =====================================================
@@ -6692,49 +6690,55 @@ function disconnectAll(){
     );
 
 
+    /*
+      Forget tick subscriptions.
+    */
+
     if(
-        ws&&
-        ws.readyState===
+        ws &&
+        ws.readyState ===
         WebSocket.OPEN
     ){
 
-        for(
-            const id
-            of Object.values(
-                tickSubscriptions
-            )
-        ){
+        Object.values(
+            tickSubscriptions
+        )
+        .forEach(
+            id => {
 
-            send({
-                forget:id
-            }).catch(
-                ()=>{}
-            );
+                send({
+                    forget:id
+                })
+                .catch(
+                    () => {}
+                );
 
-        }
+            }
+        );
 
 
-        for(
-            const id
-            of Object.values(
-                contractSubscriptions
-            )
-        ){
+        Object.values(
+            contractSubscriptions
+        )
+        .forEach(
+            id => {
 
-            send({
-                forget:id
-            }).catch(
-                ()=>{}
-            );
+                send({
+                    forget:id
+                })
+                .catch(
+                    () => {}
+                );
 
-        }
+            }
+        );
 
     }
 
 
-    tickSubscriptions={};
+    tickSubscriptions = {};
 
-    contractSubscriptions={};
+    contractSubscriptions = {};
 
 
     if(ws){
@@ -6751,26 +6755,26 @@ function disconnectAll(){
     }
 
 
-    ws=null;
+    ws = null;
 
-    connected=false;
+    connected = false;
 
-    selectedAccount=null;
+    selectedAccount = null;
 
 
     $("accountStatus")
-    .textContent=
-    "None";
+        .textContent =
+        "None";
 
 
     $("currencyStatus")
-    .textContent=
-    "---";
+        .textContent =
+        "---";
 
 
     $("balance")
-    .textContent=
-    "---";
+        .textContent =
+        "---";
 
 
     setConnection(
@@ -6787,29 +6791,23 @@ function disconnectAll(){
     log(
         "Disconnected by user."
     );
+
 }
 
 
+
 /* =====================================================
-INITIAL
+INITIAL LOG
 ===================================================== */
 
 log(
-    "V30 engine loaded.",
+    "V31 engine loaded.",
     "good"
 );
 
 log(
-    "Current Deriv New API fields enabled.",
+    "Current New API symbol fields enabled.",
     "good"
-);
-
-log(
-    "active_symbols uses underlying_symbol."
-);
-
-log(
-    "proposal uses underlying_symbol."
 );
 
 log(
@@ -6817,12 +6815,25 @@ log(
 );
 
 log(
-    "200-tick local rolling architecture enabled."
+    "Proposal uses underlying_symbol."
 );
 
 log(
-    "No Martingale / no recovery."
+    "ticks_history uses NO subscribe field."
 );
+
+log(
+    "ticks uses subscribe:1 for live data."
+);
+
+log(
+    "200 historical ticks + local rolling stream."
+);
+
+log(
+    "No Martingale / No Recovery."
+);
+
 
 
 /* =====================================================
@@ -6830,19 +6841,19 @@ PAPER SAFETY LOOP
 ===================================================== */
 
 setInterval(
-    ()=>{
+    () => {
 
         if(
-            trading&&
-            currentTrade&&
-            currentTrade.mode===
+            trading &&
+            currentTrade &&
+            currentTrade.mode ===
             "paper"
         ){
 
-            const state=
-            markets[
-                currentTrade.symbol
-            ];
+            const state =
+                markets[
+                    currentTrade.symbol
+                ];
 
 
             if(state){
