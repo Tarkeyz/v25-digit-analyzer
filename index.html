@@ -3,182 +3,155 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>V26 Adaptive Rise/Fall Trader</title>
+<title>V27 Pulse Surge Multi Trader</title>
 
 <style>
 *{box-sizing:border-box}
 
 body{
- margin:0;
- background:#07111f;
- color:#eaf1fb;
- font-family:Arial,Helvetica,sans-serif;
- font-size:14px;
+margin:0;
+background:#07111f;
+color:#edf4ff;
+font-family:Arial,Helvetica,sans-serif;
+font-size:14px
 }
 
 .wrap{
- max-width:1200px;
- margin:auto;
- padding:14px;
+max-width:1250px;
+margin:auto;
+padding:14px
 }
 
 h1{
- margin:4px 0;
- font-size:22px;
+font-size:22px;
+margin:4px 0
 }
 
 h2{
- font-size:16px;
- margin:8px 0 10px;
+font-size:16px;
+margin:7px 0 10px
 }
 
 .card{
- background:#101d30;
- border:1px solid #29405e;
- border-radius:14px;
- padding:13px;
- margin-bottom:12px;
+background:#101d30;
+border:1px solid #29415f;
+border-radius:14px;
+padding:13px;
+margin-bottom:12px
 }
 
 .grid{
- display:grid;
- grid-template-columns:repeat(auto-fit,minmax(145px,1fr));
- gap:8px;
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(145px,1fr));
+gap:8px
 }
 
 input,
 select,
 button{
- width:100%;
- padding:10px;
- border-radius:8px;
- border:1px solid #344b68;
- background:#0a1627;
- color:#fff;
+width:100%;
+padding:10px;
+border-radius:8px;
+border:1px solid #344c69;
+background:#091628;
+color:#fff
 }
 
 button{
- cursor:pointer;
- font-weight:bold;
+cursor:pointer;
+font-weight:bold
 }
 
 button:active{
- transform:scale(.98);
+transform:scale(.98)
 }
 
-.start{
- background:#087b4b;
-}
-
-.stop{
- background:#a92e3c;
-}
-
-.scan{
- background:#245c96;
-}
-
-.reset{
- background:#70438f;
-}
-
-.good{
- color:#4fe39b;
-}
-
-.bad{
- color:#ff6875;
-}
-
-.warn{
- color:#ffd166;
-}
-
-.blue{
- color:#70b8ff;
-}
-
-.small{
- color:#98a8bc;
- font-size:12px;
-}
+.start{background:#087d4c}
+.stop{background:#a72d3d}
+.scan{background:#255e99}
+.reset{background:#71458d}
 
 .status{
- margin-top:9px;
- padding:10px;
- border-radius:8px;
- background:#091526;
+margin-top:9px;
+padding:10px;
+border-radius:8px;
+background:#091628
+}
+
+.good{color:#4fe49b}
+.bad{color:#ff6876}
+.warn{color:#ffd166}
+.blue{color:#6db8ff}
+
+.small{
+font-size:12px;
+color:#96a8bd
 }
 
 .stats{
- display:grid;
- grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
- gap:8px;
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(115px,1fr));
+gap:8px
 }
 
 .stat{
- background:#091526;
- padding:10px;
- border-radius:9px;
+background:#091628;
+padding:10px;
+border-radius:9px
 }
 
 .stat span{
- color:#92a2b7;
- font-size:12px;
+font-size:12px;
+color:#91a3b8
 }
 
 .stat b{
- display:block;
- margin-top:4px;
- font-size:18px;
+display:block;
+font-size:18px;
+margin-top:4px
 }
 
 .scroll{
- overflow:auto;
+overflow:auto
 }
 
 table{
- width:100%;
- border-collapse:collapse;
- font-size:12px;
+width:100%;
+border-collapse:collapse;
+font-size:11px
 }
 
-th,
-td{
- padding:7px;
- border-bottom:1px solid #263b57;
- text-align:left;
- white-space:nowrap;
+th,td{
+padding:7px;
+border-bottom:1px solid #263b57;
+text-align:left;
+white-space:nowrap
 }
 
 th{
- color:#aebdd0;
+color:#aebdd0
 }
 
 pre{
- margin:0;
- background:#040b14;
- border-radius:9px;
- padding:10px;
- max-height:320px;
- overflow:auto;
- white-space:pre-wrap;
- font-size:11px;
- line-height:1.35;
+margin:0;
+background:#040b14;
+border-radius:9px;
+padding:10px;
+max-height:330px;
+overflow:auto;
+white-space:pre-wrap;
+font-size:11px;
+line-height:1.35
 }
 
 .badge{
- padding:3px 6px;
- border-radius:5px;
- background:#182b42;
+padding:3px 6px;
+border-radius:5px;
+background:#192d45
 }
 
-.score{
- font-weight:bold;
-}
-
-input[type=checkbox]{
- width:auto;
+.pulse{
+font-weight:bold
 }
 </style>
 </head>
@@ -187,10 +160,10 @@ input[type=checkbox]{
 
 <div class="wrap">
 
-<h1>⚡ V26 Adaptive Rise/Fall Trader</h1>
+<h1>⚡ V27 Pulse / Surge Multi Trader</h1>
 
 <div class="small">
-20T + 50T + 100T • persistence • chop • volatility • walk-forward validation • EV
+Rise/Fall • Over 3 • Under 7 • Even • Odd • Statistical scanner • EV
 </div>
 
 
@@ -204,17 +177,12 @@ input[type=checkbox]{
 
 <div>
 <label>PAT</label>
-<input
- id="pat"
- type="password"
- placeholder="Deriv PAT">
+<input id="pat" type="password" placeholder="Deriv PAT">
 </div>
 
 <div>
 <label>App ID</label>
-<input
- id="appid"
- placeholder="Deriv App ID">
+<input id="appid" placeholder="Deriv App ID">
 </div>
 
 <div>
@@ -227,9 +195,7 @@ input[type=checkbox]{
 
 <div>
 <label>Currency</label>
-<input
- id="currency"
- value="USD">
+<input id="currency" value="USD">
 </div>
 
 </div>
@@ -240,9 +206,7 @@ input[type=checkbox]{
 🔌 CONNECT
 </button>
 
-<div
- id="accountInfo"
- class="status">
+<div id="accountInfo" class="status">
 Not connected
 </div>
 
@@ -253,38 +217,41 @@ Not connected
 
 <div class="card">
 
-<h2>⚙️ Strategy</h2>
+<h2>⚙️ Strategy Engine</h2>
 
 <div class="grid">
 
 <div>
-<label>Mode</label>
+<label>Trading Mode</label>
 <select id="mode">
-<option value="paper">
-PAPER — no real trades
-</option>
-<option value="live">
-LIVE — real trades
-</option>
+<option value="paper">PAPER — no real trades</option>
+<option value="live">LIVE — real trades</option>
+</select>
+</div>
+
+<div>
+<label>Strategy</label>
+<select id="strategy">
+<option value="AUTO">AUTO — best qualified</option>
+<option value="RISEFALL">RISE / FALL</option>
+<option value="DIGITOVER">OVER 3</option>
+<option value="DIGITUNDER">UNDER 7</option>
+<option value="DIGITEVEN">EVEN</option>
+<option value="DIGITODD">ODD</option>
 </select>
 </div>
 
 <div>
 <label>Stake</label>
-<input
- id="stake"
- type="number"
- value="1"
- min="0.35"
- step="0.01">
+<input id="stake" type="number" value="1" min="0.35" step="0.01">
 </div>
 
 <div>
 <label>Duration</label>
 <select id="duration">
-<option value="1">1 tick</option>
+<option value="1" selected>1 tick</option>
 <option value="2">2 ticks</option>
-<option value="3" selected>3 ticks</option>
+<option value="3">3 ticks</option>
 <option value="5">5 ticks</option>
 <option value="10">10 ticks</option>
 </select>
@@ -292,150 +259,87 @@ LIVE — real trades
 
 <div>
 <label>Min Validation %</label>
-<input
- id="minValidation"
- type="number"
- value="60"
- min="50"
- max="95">
+<input id="minValidation" type="number" value="58" min="50" max="95">
 </div>
 
 <div>
-<label>Min Validation Samples</label>
-<input
- id="minSamples"
- type="number"
- value="25"
- min="5">
+<label>Min Samples</label>
+<input id="minSamples" type="number" value="25" min="5">
 </div>
 
 <div>
 <label>Min Conservative %</label>
-<input
- id="minConservative"
- type="number"
- value="55"
- min="50"
- max="95">
+<input id="minConservative" type="number" value="53" min="50" max="95">
 </div>
 
 <div>
 <label>Min EV</label>
-<input
- id="minEV"
- type="number"
- value="0.05"
- step="0.01">
+<input id="minEV" type="number" value="0.03" step="0.01">
 </div>
 
 <div>
-<label>Min Signal Score</label>
-<input
- id="minScore"
- type="number"
- value="72"
- min="50"
- max="100">
+<label>Min Score</label>
+<input id="minScore" type="number" value="68" min="50" max="100">
 </div>
 
 <div>
 <label>Persistence %</label>
-<input
- id="minPersistence"
- type="number"
- value="63"
- min="50"
- max="95">
+<input id="minPersistence" type="number" value="60" min="50" max="95">
 </div>
 
 <div>
 <label>Max Chop %</label>
-<input
- id="maxChop"
- type="number"
- value="42"
- min="0"
- max="100">
+<input id="maxChop" type="number" value="48" min="0" max="100">
 </div>
 
 <div>
 <label>Min Volatility Ratio</label>
-<input
- id="minVol"
- type="number"
- value="0.55"
- min="0"
- step="0.05">
+<input id="minVol" type="number" value="0.45" min="0" step="0.05">
 </div>
 
 <div>
 <label>Max Run</label>
-<input
- id="maxRun"
- type="number"
- value="8"
- min="2">
+<input id="maxRun" type="number" value="8" min="2">
 </div>
 
 <div>
-<label>Cooldown after loss</label>
-<input
- id="cooldown"
- type="number"
- value="10"
- min="0">
+<label>Digit Window</label>
+<input id="digitWindow" type="number" value="100" min="30" max="300">
 </div>
 
 <div>
-<label>Market loss lock</label>
-<input
- id="marketLossLock"
- type="number"
- value="2"
- min="1">
+<label>Cooldown Seconds</label>
+<input id="cooldown" type="number" value="10" min="0">
 </div>
 
 <div>
-<label>Lock ticks</label>
-<input
- id="lockTicks"
- type="number"
- value="50"
- min="1">
+<label>Market Loss Lock</label>
+<input id="marketLossLock" type="number" value="2" min="1">
+</div>
+
+<div>
+<label>Lock Ticks</label>
+<input id="lockTicks" type="number" value="50" min="1">
 </div>
 
 <div>
 <label>Max Trades</label>
-<input
- id="maxTrades"
- type="number"
- value="20">
+<input id="maxTrades" type="number" value="20">
 </div>
 
 <div>
 <label>Max Losses</label>
-<input
- id="maxLosses"
- type="number"
- value="2">
+<input id="maxLosses" type="number" value="2">
 </div>
 
 <div>
 <label>Take Profit</label>
-<input
- id="takeProfit"
- type="number"
- value="10"
- step="0.01">
+<input id="takeProfit" type="number" value="10">
 </div>
 
 <div>
 <label>Stop Loss</label>
-<input
- id="stopLoss"
- type="number"
- value="-5"
- step="0.01">
+<input id="stopLoss" type="number" value="-5">
 </div>
 
 </div>
@@ -480,7 +384,7 @@ LIVE — real trades
 </div>
 
 <div class="stat">
-<span>Open Trade</span>
+<span>Open</span>
 <b id="openTrade">None</b>
 </div>
 
@@ -495,35 +399,29 @@ LIVE — real trades
 
 <div class="grid">
 
-<button
- class="scan"
- onclick="scanMarkets()">
+<button class="scan"
+onclick="scanMarkets()">
 🔎 SCAN / REFRESH
 </button>
 
-<button
- class="start"
- onclick="startTrading()">
+<button class="start"
+onclick="startTrading()">
 ▶ START TRADING
 </button>
 
-<button
- class="stop"
- onclick="stopTrading()">
+<button class="stop"
+onclick="stopTrading()">
 ⏹ STOP TRADING
 </button>
 
-<button
- class="reset"
- onclick="resetSession()">
+<button class="reset"
+onclick="resetSession()">
 ♻ RESET SESSION
 </button>
 
 </div>
 
-<div
- id="status"
- class="status">
+<div id="status" class="status">
 Disconnected
 </div>
 
@@ -534,11 +432,11 @@ Disconnected
 
 <div class="card">
 
-<h2>📊 Live Market Engine</h2>
+<h2>📡 Pulse / Surge Scanner</h2>
 
 <div class="small">
-WAIT = no qualifying setup. Score is calculated from the current
-statistical conditions; it is not a guarantee.
+The scanner compares Rise/Fall and digit strategies and displays the strongest
+currently qualified setup.
 </div>
 
 <br>
@@ -552,18 +450,21 @@ statistical conditions; it is not a guarantee.
 <tr>
 <th>Market</th>
 <th>Price</th>
-<th>Signal</th>
+<th>Best</th>
+<th>Type</th>
 <th>Score</th>
+<th>Pulse</th>
 <th>20T</th>
 <th>50T</th>
 <th>100T</th>
 <th>Persist</th>
 <th>Chop</th>
 <th>Vol</th>
-<th>Run</th>
-<th>Validation</th>
+<th>Digits</th>
+<th>Val</th>
 <th>LB</th>
 <th>N</th>
+<th>Payout</th>
 <th>EV</th>
 <th>Status</th>
 </tr>
@@ -579,11 +480,17 @@ statistical conditions; it is not a guarantee.
 </div>
 
 
-<!-- BACKTEST -->
+<!-- DIGIT PANEL -->
 
 <div class="card">
 
-<h2>🧪 Backtest Lab</h2>
+<h2>🔢 Digit Analyzer</h2>
+
+<div class="small">
+Current rolling digit distribution across each selected market.
+</div>
+
+<br>
 
 <div class="scroll">
 
@@ -593,13 +500,55 @@ statistical conditions; it is not a guarantee.
 
 <tr>
 <th>Market</th>
-<th>Duration</th>
-<th>Training</th>
-<th>Validation</th>
-<th>Val N</th>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+<th>7</th>
+<th>8</th>
+<th>9</th>
+<th>Even</th>
+<th>Odd</th>
+<th>Over 3</th>
+<th>Under 7</th>
+</tr>
+
+</thead>
+
+<tbody id="digits"></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+
+<!-- BACKTEST -->
+
+<div class="card">
+
+<h2>🧪 Strategy Backtest</h2>
+
+<div class="scroll">
+
+<table>
+
+<thead>
+
+<tr>
+<th>Market</th>
+<th>Strategy</th>
+<th>Train %</th>
+<th>Validation %</th>
+<th>Wins</th>
+<th>Total</th>
 <th>Conservative</th>
-<th>Score</th>
-<th>Result</th>
+<th>Current Score</th>
+<th>Qualified</th>
 </tr>
 
 </thead>
@@ -628,6 +577,7 @@ statistical conditions; it is not a guarantee.
 <tr>
 <th>#</th>
 <th>Market</th>
+<th>Strategy</th>
 <th>Direction</th>
 <th>Stake</th>
 <th>Payout</th>
@@ -663,43 +613,33 @@ statistical conditions; it is not a guarantee.
 <script>
 
 /* =========================================================
-   V26
-   =========================================================
+   V27 PULSE / SURGE MULTI-STRATEGY ENGINE
 
-   IMPORTANT:
+   Strategies:
 
-   This browser app uses a PAT entered by the user.
+   RISEFALL
+      CALL
+      PUT
 
-   Do not hard-code your PAT into this file or publish it
-   inside a public GitHub repository.
+   DIGITOVER
+      barrier 3
 
-   V26:
-   - Rise/Fall CALL/PUT
-   - 400 tick rolling window
-   - 20/50/100 trend
-   - persistence
-   - chop
-   - volatility
-   - overextension
-   - walk-forward validation
-   - Wilson lower bound
-   - payout / break-even
-   - EV
-   - score
-   - market locks
-   - paper/live
-   - duplicate subscription protection
-   - no recovery
-   - no Martingale
+   DIGITUNDER
+      barrier 7
+
+   DIGITEVEN
+
+   DIGITODD
+
+
+   NO MARTINGALE
+   NO RECOVERY
+   ONE TRADE AT A TIME
    ========================================================= */
 
 
-/* =========================
-   CONFIG
-========================= */
-
 const API_BASE =
- "https://api.derivws.com";
+"https://api.derivws.com";
 
 const HISTORY_SIZE = 400;
 
@@ -707,45 +647,46 @@ const MAX_MARKETS = 30;
 
 const VALIDATION_WINDOW = 100;
 
-const TRAINING_WINDOW = 200;
 
-const PERSISTENCE_WINDOW = 30;
+/* =========================
+   GLOBAL STATE
+========================= */
 
-let ws = null;
+let ws=null;
 
-let pat = "";
+let pat="";
 
-let appId = "";
+let appId="";
 
-let account = null;
+let account=null;
 
-let connected = false;
+let connected=false;
 
-let scanning = false;
+let scanning=false;
 
-let trading = false;
+let trading=false;
 
-let reqId = 0;
+let reqId=0;
 
-let pending = {};
+let pending={};
 
-let markets = {};
+let markets={};
 
-let marketList = [];
+let marketList=[];
 
-let openTrade = null;
+let openTrade=null;
 
-let tradeInFlight = false;
+let tradeInFlight=false;
 
-let totalTrades = 0;
+let totalTrades=0;
 
-let wins = 0;
+let wins=0;
 
-let losses = 0;
+let losses=0;
 
-let sessionPL = 0;
+let sessionPL=0;
 
-let cooldownUntil = 0;
+let cooldownUntil=0;
 
 
 /* =========================
@@ -753,234 +694,218 @@ let cooldownUntil = 0;
 ========================= */
 
 function $(id){
- return document.getElementById(id);
+return document.getElementById(id);
 }
 
 function num(v){
 
- const n = Number(v);
+const n=Number(v);
 
- return Number.isFinite(n)
-   ? n
-   : 0;
+return Number.isFinite(n)
+?n
+:0;
 
 }
 
 function sleep(ms){
 
- return new Promise(
-   resolve=>setTimeout(resolve,ms)
- );
-
-}
-
-function now(){
-
- return Date.now();
+return new Promise(
+resolve=>setTimeout(resolve,ms)
+);
 
 }
 
 function log(message){
 
- const box = $("log");
-
- box.textContent =
-   `[${new Date().toLocaleTimeString()}] ${message}\n`
-   + box.textContent;
+$("log").textContent=
+`[${new Date().toLocaleTimeString()}] ${message}\n`
++$("log").textContent;
 
 }
 
-function setStatus(message, cls=""){
+function status(message,cls=""){
 
- $("status").textContent = message;
+$("status").textContent=message;
 
- $("status").className =
-   "status " + cls;
+$("status").className=
+"status "+cls;
 
 }
 
 
 /* =========================
-   ACCOUNT CONNECTION
+   ACCOUNT
 ========================= */
 
 async function connectAccount(){
 
- stopTrading();
+stopTrading();
 
- pat =
-   $("pat").value.trim();
+pat=
+$("pat").value.trim();
 
- appId =
-   $("appid").value.trim();
+appId=
+$("appid").value.trim();
 
- if(!pat || !appId){
+if(!pat || !appId){
 
-   alert(
-     "Enter your Deriv PAT and App ID."
-   );
+alert(
+"Enter PAT and App ID."
+);
 
-   return;
+return;
 
- }
+}
 
- try{
+try{
 
-   setStatus(
-     "Getting account list..."
-   );
+status(
+"Getting account list..."
+);
 
-   const response =
-     await fetch(
-       API_BASE+
-       "/trading/v1/options/accounts",
-       {
-         headers:{
-           "Authorization":
-             "Bearer "+pat,
-           "Deriv-App-ID":
-             appId
-         }
-       }
-     );
+const response=
+await fetch(
+API_BASE+
+"/trading/v1/options/accounts",
+{
+headers:{
+"Authorization":
+"Bearer "+pat,
+"Deriv-App-ID":
+appId
+}
+}
+);
 
-   const data =
-     await response.json();
+const data=
+await response.json();
 
-   if(!response.ok){
+if(!response.ok){
 
-     throw new Error(
-       data?.errors?.[0]?.message ||
-       data?.error?.message ||
-       "Account request failed."
-     );
+throw new Error(
+data?.errors?.[0]?.message||
+data?.error?.message||
+"Account request failed."
+);
 
-   }
+}
 
-   const accounts =
-     extractAccounts(data);
+const accounts=
+extractAccounts(data);
 
-   const wanted =
-     $("accountMode").value;
+const wanted=
+$("accountMode").value;
 
-   account =
-     accounts.find(
-       a =>
-       String(
-         a.account_type || ""
-       ).toLowerCase()
-       === wanted
-     );
+account=
+accounts.find(
+a=>
+String(
+a.account_type||""
+).toLowerCase()
+===wanted
+);
 
-   if(!account){
+if(!account){
 
-     account =
-       accounts.find(
-         a =>
-         String(
-           a.type || ""
-         ).toLowerCase()
-         === wanted
-       );
+account=
+accounts.find(
+a=>
+String(
+a.type||""
+).toLowerCase()
+===wanted
+);
 
-   }
+}
 
-   if(!account){
+if(!account){
 
-     throw new Error(
-       "No "+wanted+
-       " Options account was found."
-     );
+throw new Error(
+"No "+wanted+
+" Options account found."
+);
 
-   }
+}
 
-   $("accountInfo").innerHTML =
-     `<span class="good">
-       Selected ${wanted} account:
-      </span>
-      ${account.account_id}`;
+$("accountInfo").innerHTML=
+`<span class="good">
+Selected ${wanted} account:
+</span>
+${account.account_id}`;
 
-   log(
-     "Selected "+
-     wanted+
-     " account automatically: "+
-     account.account_id
-   );
+log(
+"Selected "+
+wanted+
+" account: "+
+account.account_id
+);
 
-   await connectWebSocket(account);
+await connectWebSocket(account);
 
- }catch(error){
+}catch(e){
 
-   console.error(error);
+connected=false;
 
-   connected=false;
+status(
+"Connection error: "+
+e.message,
+"bad"
+);
 
-   setStatus(
-     "Connection error: "+
-     error.message,
-     "bad"
-   );
+log(
+"CONNECTION ERROR: "+
+e.message
+);
 
-   log(
-     "CONNECTION ERROR: "+
-     error.message
-   );
-
- }
+}
 
 }
 
 
-/* =========================
-   ACCOUNT EXTRACTION
-========================= */
-
 function extractAccounts(obj){
 
- const result = [];
+const result=[];
 
- const seen = new Set();
+const seen=new Set();
 
- function walk(value){
+function walk(value){
 
-   if(
-     !value ||
-     typeof value !== "object"
-   ){
-     return;
-   }
+if(
+!value ||
+typeof value!=="object"
+)return;
 
-   if(value.account_id){
+if(value.account_id){
 
-     const id =
-       String(value.account_id);
+const id=
+String(value.account_id);
 
-     if(!seen.has(id)){
+if(!seen.has(id)){
 
-       seen.add(id);
+seen.add(id);
 
-       result.push(value);
+result.push(value);
 
-     }
+}
 
-   }
+}
 
-   if(Array.isArray(value)){
+if(Array.isArray(value)){
 
-     value.forEach(walk);
+value.forEach(walk);
 
-   }else{
+}else{
 
-     Object.values(value)
-       .forEach(walk);
+Object.values(value)
+.forEach(walk);
 
-   }
+}
 
- }
+}
 
- walk(obj);
+walk(obj);
 
- return result;
+return result;
 
 }
 
@@ -989,54 +914,54 @@ function extractAccounts(obj){
    OTP
 ========================= */
 
-async function getOTP(accountId){
+async function getOTP(id){
 
- const response =
-   await fetch(
-     API_BASE+
-     "/trading/v1/options/accounts/"+
-     encodeURIComponent(accountId)+
-     "/otp",
-     {
-       method:"POST",
-       headers:{
-         "Authorization":
-           "Bearer "+pat,
-         "Deriv-App-ID":
-           appId
-       }
-     }
-   );
+const response=
+await fetch(
+API_BASE+
+"/trading/v1/options/accounts/"+
+encodeURIComponent(id)+
+"/otp",
+{
+method:"POST",
+headers:{
+"Authorization":
+"Bearer "+pat,
+"Deriv-App-ID":
+appId
+}
+}
+);
 
- const data =
-   await response.json();
+const data=
+await response.json();
 
- if(!response.ok){
+if(!response.ok){
 
-   throw new Error(
-     data?.errors?.[0]?.message ||
-     data?.error?.message ||
-     "OTP request failed."
-   );
+throw new Error(
+data?.errors?.[0]?.message||
+data?.error?.message||
+"OTP request failed."
+);
 
- }
+}
 
- const url =
-   data?.data?.url ||
-   data?.url ||
-   data?.data?.data?.url;
+const url=
+data?.data?.url||
+data?.url||
+data?.data?.data?.url;
 
- if(!url){
+if(!url){
 
-   console.log(data);
+console.log(data);
 
-   throw new Error(
-     "No authenticated WebSocket URL returned."
-   );
+throw new Error(
+"No WebSocket URL returned."
+);
 
- }
+}
 
- return url;
+return url;
 
 }
 
@@ -1047,98 +972,96 @@ async function getOTP(accountId){
 
 async function connectWebSocket(acc){
 
- if(ws){
+if(ws){
 
-   try{
+try{
+ws.close();
+}catch(e){}
 
-     ws.close();
+}
 
-   }catch(e){}
+const url=
+await getOTP(
+acc.account_id
+);
 
- }
+status(
+"Connecting WebSocket..."
+);
 
- const url =
-   await getOTP(
-     acc.account_id
-   );
+ws=
+new WebSocket(url);
 
- setStatus(
-   "Connecting authenticated WebSocket..."
- );
+ws.onopen=
+async()=>{
 
- ws =
-   new WebSocket(url);
+connected=true;
 
- ws.onopen =
- async function(){
+status(
+"CONNECTED — "+
+acc.account_id,
+"good"
+);
 
-   connected=true;
+log(
+"Authenticated WebSocket connected."
+);
 
-   setStatus(
-     "CONNECTED — "+
-     acc.account_id,
-     "good"
-   );
+await requestBalance();
 
-   log(
-     "Authenticated WebSocket connected."
-   );
+await scanMarkets();
 
-   await requestBalance();
+};
 
-   await scanMarkets();
+ws.onmessage=
+event=>{
 
- };
+let data;
 
- ws.onmessage =
- function(event){
+try{
 
-   let data;
+data=
+JSON.parse(event.data);
 
-   try{
+}catch(e){
 
-     data =
-       JSON.parse(event.data);
+return;
 
-   }catch(e){
+}
 
-     return;
+handleMessage(data);
 
-   }
+};
 
-   handleMessage(data);
+ws.onerror=
+()=>{
 
- };
+status(
+"WebSocket error.",
+"bad"
+);
 
- ws.onerror =
- function(){
+};
 
-   setStatus(
-     "WebSocket error.",
-     "bad"
-   );
+ws.onclose=
+()=>{
 
- };
+connected=false;
 
- ws.onclose =
- function(){
+trading=false;
 
-   connected=false;
+scanning=false;
 
-   trading=false;
+status(
+"WebSocket disconnected.",
+"bad"
+);
 
-   scanning=false;
+log(
+"WebSocket closed."
+);
 
-   setStatus(
-     "WebSocket disconnected.",
-     "bad"
-   );
-
-   log(
-     "WebSocket closed."
-   );
-
- };
+};
 
 }
 
@@ -1148,65 +1071,65 @@ async function connectWebSocket(acc){
 ========================= */
 
 function sendRequest(
- request,
- timeout=12000
+request,
+timeout=12000
 ){
 
- return new Promise(
-   (resolve,reject)=>{
+return new Promise(
+(resolve,reject)=>{
 
-     if(
-       !ws ||
-       ws.readyState!==1
-     ){
+if(
+!ws ||
+ws.readyState!==1
+){
 
-       reject(
-         new Error(
-           "WebSocket not connected."
-         )
-       );
+reject(
+new Error(
+"WebSocket not connected."
+)
+);
 
-       return;
+return;
 
-     }
+}
 
-     const id =
-       ++reqId;
+const id=
+++reqId;
 
-     request.req_id = id;
+request.req_id=id;
 
-     const timer =
-       setTimeout(
-         ()=>{
-           if(
-             pending[id]
-           ){
+const timer=
+setTimeout(
+()=>{
 
-             delete pending[id];
+if(pending[id]){
 
-             reject(
-               new Error(
-                 "Request timeout."
-               )
-             );
+delete pending[id];
 
-           }
-         },
-         timeout
-       );
+reject(
+new Error(
+"Request timeout."
+)
+);
 
-     pending[id]={
-       resolve,
-       reject,
-       timer
-     };
+}
 
-     ws.send(
-       JSON.stringify(request)
-     );
+},
+timeout
+);
 
-   }
- );
+pending[id]={
+resolve,
+reject,
+timer
+};
+
+ws.send(
+JSON.stringify(request)
+);
+
+}
+);
 
 }
 
@@ -1217,97 +1140,93 @@ function sendRequest(
 
 function handleMessage(data){
 
- if(data.error){
+if(data.error){
 
-   log(
-     "API ERROR: "+
-     (
-       data.error.message ||
-       JSON.stringify(data.error)
-     )
-   );
+if(
+data.req_id &&
+pending[data.req_id]
+){
 
-   if(
-     data.req_id &&
-     pending[data.req_id]
-   ){
+const p=
+pending[data.req_id];
 
-     const p =
-       pending[data.req_id];
+clearTimeout(
+p.timer
+);
 
-     clearTimeout(
-       p.timer
-     );
+delete pending[data.req_id];
 
-     delete pending[data.req_id];
+p.reject(
+new Error(
+data.error.message
+)
+);
 
-     p.reject(
-       new Error(
-         data.error.message
-       )
-     );
+}
 
-   }
+log(
+"API ERROR: "+
+data.error.message
+);
 
-   return;
+return;
 
- }
+}
 
 
- /* Resolve request */
+/* request */
 
- if(
-   data.req_id &&
-   pending[data.req_id]
- ){
+if(
+data.req_id &&
+pending[data.req_id]
+){
 
-   const p =
-     pending[data.req_id];
+const p=
+pending[data.req_id];
 
-   clearTimeout(
-     p.timer
-   );
+clearTimeout(
+p.timer
+);
 
-   delete pending[data.req_id];
+delete pending[data.req_id];
 
-   p.resolve(data);
+p.resolve(data);
 
- }
-
-
- /* Tick */
-
- if(
-   data.msg_type==="tick"
- ){
-
-   handleTick(data);
-
- }
+}
 
 
- /* Balance */
+/* tick */
 
- if(
-   data.msg_type==="balance"
- ){
+if(
+data.msg_type==="tick"
+){
 
-   updateBalance(data);
+handleTick(data);
 
- }
+}
 
 
- /* Contract */
+/* balance */
 
- if(
-   data.msg_type===
-   "proposal_open_contract"
- ){
+if(
+data.msg_type==="balance"
+){
 
-   handleContract(data);
+updateBalance(data);
 
- }
+}
 
+
+/* contract */
+
+if(
+data.msg_type===
+"proposal_open_contract"
+){
+
+handleContract(data);
+
+}
 
 }
 
@@ -1318,946 +1237,1091 @@ function handleMessage(data){
 
 async function requestBalance(){
 
- try{
+try{
 
-   const data =
-     await sendRequest({
-       balance:1
-     });
+const data=
+await sendRequest({
+balance:1
+});
 
-   updateBalance(data);
+updateBalance(data);
 
- }catch(error){
+}catch(e){
 
-   log(
-     "Balance error: "+
-     error.message
-   );
+log(
+"Balance error: "+
+e.message
+);
 
- }
+}
 
 }
 
 function updateBalance(data){
 
- const balance =
-   num(
-     data.balance?.balance
-   );
+const b=
+num(
+data.balance?.balance
+);
 
- if(balance){
+if(b){
 
-   $("balance").textContent =
-     "$"+
-     balance.toFixed(2);
+$("balance").textContent=
+"$"+
+b.toFixed(2);
 
- }
+}
 
 }
 
 
 /* =========================
-   MARKET SCAN
+   SCAN MARKETS
 ========================= */
 
 async function scanMarkets(){
 
- if(!connected){
-
-   setStatus(
-     "Connect first.",
-     "warn"
-   );
-
-   return;
-
- }
-
- if(scanning){
-
-   log(
-     "Scan already running."
-   );
-
-   return;
-
- }
-
- scanning=true;
-
- setStatus(
-   "Scanning markets..."
- );
-
- try{
-
-   const response =
-     await sendRequest({
-       active_symbols:"brief"
-     });
-
-   const all =
-     response.active_symbols || [];
-
-   /*
-      Synthetic market detection.
-   */
-
-   const candidates =
-     all.filter(
-       x => {
-
-         const market =
-           String(
-             x.market || ""
-           ).toLowerCase();
-
-         const submarket =
-           String(
-             x.submarket || ""
-           ).toLowerCase();
+if(!connected){
 
-         const display =
-           String(
-             x.display_name || ""
-           ).toLowerCase();
+status(
+"Connect first.",
+"warn"
+);
 
-         const synthetic =
-           market.includes(
-             "synthetic"
-           ) ||
-           submarket.includes(
-             "synthetic"
-           ) ||
-           display.includes(
-             "synthetic"
-           );
+return;
 
-         const symbol =
-           String(
-             x.underlying_symbol ||
-             x.symbol ||
-             ""
-           );
+}
 
-         return (
-           synthetic &&
-           symbol
-         );
+if(scanning){
 
-       }
-     )
-     .slice(
-       0,
-       MAX_MARKETS
-     );
+return;
 
-   /*
-      IMPORTANT:
+}
 
-      Do NOT replace existing market
-      objects.
+scanning=true;
 
-      That was the cause of the
-      duplicate subscription errors
-      seen in the screenshot.
-   */
+status(
+"Scanning synthetic markets..."
+);
 
-   const nextSymbols =
-     candidates.map(
-       x =>
-       x.underlying_symbol ||
-       x.symbol
-     );
+try{
 
-   marketList =
-     [...new Set(nextSymbols)];
+const response=
+await sendRequest({
+active_symbols:"brief"
+});
 
-   $("marketCount").textContent =
-     marketList.length;
+const symbols=
+response.active_symbols||[];
 
-   log(
-     "Found "+
-     marketList.length+
-     " synthetic markets."
-   );
 
+/*
+ New API uses underlying_symbol
+ and underlying_symbol_type.
+*/
 
-   /*
-      Create objects only if they
-      don't already exist.
-   */
+const candidates=
+symbols.filter(
+x=>{
 
-   for(
-     const symbol of marketList
-   ){
+const market=
+String(
+x.market||""
+).toLowerCase();
 
-     if(
-       !markets[symbol]
-     ){
+const type=
+String(
+x.underlying_symbol_type||""
+).toLowerCase();
 
-       markets[symbol]={
-         symbol,
-         prices:[],
-         epochs:[],
-         seq:0,
+const submarket=
+String(
+x.submarket||""
+).toLowerCase();
 
-         ready:false,
+const symbol=
+x.underlying_symbol||
+x.symbol;
 
-         lastTick:null,
-         lastEpoch:null,
+if(!symbol)
+return false;
 
-         subscriptionId:null,
 
-         signal:null,
-         score:0,
+/*
+ Broad synthetic detection.
 
-         feature:null,
+ We also accept known synthetic
+ symbol patterns because the API
+ response structure can vary.
+*/
 
-         backtest:null,
+const synthetic=
+market.includes("synthetic")||
+type.includes("synthetic")||
+submarket.includes("synthetic")||
+/^(1HZ|R_|V|stpRNG|JD|WLDAUD|BOOM|CRASH|RDBULL|RDBEAR)/i
+.test(symbol);
 
-         payout:null,
-         ev:null,
-         breakEven:null,
+return synthetic;
 
-         lastProposalAt:0,
+}
+)
+.slice(
+0,
+MAX_MARKETS
+);
 
-         consecutiveLosses:0,
 
-         lockedUntilSeq:0,
+marketList=
+[
+...new Set(
+candidates.map(
+x=>
+x.underlying_symbol||
+x.symbol
+)
+)
+];
 
-         lastTradeSeq:0
-       };
+$("marketCount").textContent=
+marketList.length;
 
-     }
+log(
+"Found "+
+marketList.length+
+" synthetic markets."
+);
 
-   }
 
-   renderMarkets();
+/*
+ Keep existing market objects.
 
+ This prevents duplicate
+ subscriptions.
+*/
 
-   /*
-      Load history.
+for(
+const symbol of marketList
+){
 
-      One request per market.
-   */
+if(!markets[symbol]){
 
-   for(
-     const symbol of marketList
-   ){
+markets[symbol]={
 
-     const m =
-       markets[symbol];
+symbol,
 
-     /*
-        Already loaded recently?
-        Don't hammer ticks_history.
-     */
+prices:[],
 
-     if(
-       m.ready &&
-       m.prices.length>=HISTORY_SIZE
-     ){
+epochs:[],
 
-       ensureTickSubscription(m);
+seq:0,
 
-       continue;
+ready:false,
 
-     }
+lastTick:null,
 
-     try{
+lastEpoch:null,
 
-       const data =
-         await sendRequest(
-           {
-             ticks_history:symbol,
-             end:"latest",
-             count:HISTORY_SIZE,
-             style:"ticks"
-           },
-           15000
-         );
+subscriptionId:null,
 
-       const prices =
-         (
-           data.history?.prices ||
-           []
-         )
-         .map(Number)
-         .filter(
-           Number.isFinite
-         );
+subscribing:false,
 
-       const times =
-         (
-           data.history?.times ||
-           []
-         )
-         .map(Number);
+contracts:{},
 
-       if(
-         prices.length>=220
-       ){
+features:null,
 
-         m.prices =
-           prices.slice(
-             -HISTORY_SIZE
-           );
+strategies:{},
 
-         m.epochs =
-           times.slice(
-             -HISTORY_SIZE
-           );
+best:null,
 
-         m.ready=true;
+lastProposalAt:0,
 
-         m.backtest =
-           runBacktest(
-             m.prices
-           );
+consecutiveLosses:0,
 
-         updateLiveFeature(m);
+lockedUntilSeq:0,
 
-         ensureTickSubscription(m);
+lastTradeTime:0
 
-       }else{
+};
 
-         log(
-           symbol+
-           " insufficient history: "+
-           prices.length
-         );
+}
 
-       }
+}
 
-     }catch(error){
+renderAll();
 
-       log(
-         symbol+
-         " history error: "+
-         error.message
-       );
 
-     }
+/*
+ Load 400 ticks once.
 
-     renderMarkets();
+*/
 
-     await sleep(180);
+for(
+const symbol of marketList
+){
 
-   }
+const m=
+markets[symbol];
 
 
-   setStatus(
-     "READY — "+
-     marketList.length+
-     " markets",
-     "good"
-   );
+/*
+ If already loaded, do not
+ request history again.
+*/
 
- }catch(error){
+if(
+m.ready &&
+m.prices.length>=220
+){
 
-   log(
-     "SCAN ERROR: "+
-     error.message
-   );
+ensureSubscription(m);
 
-   setStatus(
-     "Scan error: "+
-     error.message,
-     "bad"
-   );
+continue;
 
- }finally{
+}
 
-   scanning=false;
+try{
 
- }
+const data=
+await sendRequest(
+{
+ticks_history:symbol,
+end:"latest",
+count:HISTORY_SIZE,
+style:"ticks"
+},
+15000
+);
+
+const prices=
+(
+data.history?.prices||
+[]
+)
+.map(Number)
+.filter(
+Number.isFinite
+);
+
+const times=
+(
+data.history?.times||
+[]
+)
+.map(Number);
+
+
+if(
+prices.length>=220
+){
+
+m.prices=
+prices.slice(-HISTORY_SIZE);
+
+m.epochs=
+times.slice(-HISTORY_SIZE);
+
+m.ready=true;
+
+
+/*
+ Check contract availability.
+*/
+
+await getContracts(m);
+
+
+/*
+ Calculate initial analysis.
+*/
+
+calculateMarket(m);
+
+
+/*
+ Subscribe.
+*/
+
+ensureSubscription(m);
+
+}else{
+
+log(
+symbol+
+" only returned "+
+prices.length+
+" ticks."
+);
+
+}
+
+}catch(e){
+
+log(
+symbol+
+" history error: "+
+e.message
+);
+
+}
+
+renderAll();
+
+await sleep(150);
+
+}
+
+
+status(
+"READY — "+
+marketList.length+
+" markets",
+"good"
+);
+
+}catch(e){
+
+log(
+"SCAN ERROR: "+
+e.message
+);
+
+status(
+"Scan error: "+
+e.message,
+"bad"
+);
+
+}finally{
+
+scanning=false;
+
+}
 
 }
 
 
 /* =========================
-   SUBSCRIPTIONS
+   CONTRACT AVAILABILITY
 ========================= */
 
-function ensureTickSubscription(m){
+async function getContracts(m){
 
- if(
-   !m ||
-   !ws ||
-   ws.readyState!==1
- ){
-   return;
- }
+try{
 
- /*
-    The key duplicate-subscription fix.
- */
+const data=
+await sendRequest(
+{
+contracts_for:m.symbol
+},
+10000
+);
 
- if(
-   m.subscriptionId
- ){
-   return;
- }
+const available=
+data.contracts_for?.available||
+[];
 
- /*
-    Also prevent repeated requests
-    while one subscription is being
-    established.
- */
+m.contracts={};
 
- if(
-   m.subscribing
- ){
-   return;
- }
+available.forEach(
+c=>{
 
- m.subscribing=true;
+if(c.contract_type){
 
- ws.send(
-   JSON.stringify({
-     ticks:m.symbol,
-     subscribe:1,
-     req_id:++reqId
-   })
- );
+m.contracts[
+c.contract_type
+]=true;
+
+}
+
+}
+);
+
+}catch(e){
+
+/*
+ If contracts_for fails we
+ don't permanently disable
+ the market. Proposal will
+ confirm availability.
+*/
+
+log(
+m.symbol+
+" contracts_for: "+
+e.message
+);
+
+}
 
 }
 
 
 /* =========================
-   TICK HANDLER
+   SUBSCRIPTION
+========================= */
+
+function ensureSubscription(m){
+
+if(
+!m ||
+!ws ||
+ws.readyState!==1
+){
+
+return;
+
+}
+
+if(
+m.subscriptionId ||
+m.subscribing
+){
+
+return;
+
+}
+
+m.subscribing=true;
+
+ws.send(
+JSON.stringify({
+ticks:m.symbol,
+subscribe:1,
+req_id:++reqId
+})
+);
+
+}
+
+
+/* =========================
+   TICK
 ========================= */
 
 function handleTick(data){
 
- const tick =
-   data.tick;
+const tick=
+data.tick;
 
- if(!tick){
+if(!tick)
+return;
 
-   return;
+const symbol=
+tick.symbol;
 
- }
+const m=
+markets[symbol];
 
- const symbol =
-   tick.symbol;
+if(!m)
+return;
 
- const m =
-   markets[symbol];
+const price=
+num(tick.quote);
 
- if(!m){
+if(!Number.isFinite(price))
+return;
 
-   return;
-
- }
-
- const price =
-   num(tick.quote);
-
- if(
-   !Number.isFinite(price)
- ){
-
-   return;
-
- }
-
- const epoch =
-   num(tick.epoch);
+const epoch=
+num(tick.epoch);
 
 
- /* Save subscription ID */
+/*
+ Save subscription ID.
+*/
 
- if(
-   data.subscription?.id
- ){
+if(
+data.subscription?.id
+){
 
-   m.subscriptionId =
-     data.subscription.id;
+m.subscriptionId=
+data.subscription.id;
 
-   m.subscribing=false;
+m.subscribing=false;
 
- }
-
-
- /*
-    Prevent duplicate tick messages.
- */
-
- if(
-   epoch &&
-   m.lastEpoch===epoch
- ){
-
-   return;
-
- }
+}
 
 
- m.lastEpoch =
-   epoch;
+/*
+ Ignore duplicate epoch.
+*/
+
+if(
+epoch &&
+m.lastEpoch===epoch
+){
+
+return;
+
+}
+
+m.lastEpoch=epoch;
+
+m.seq++;
+
+m.lastTick=price;
+
+m.prices.push(price);
+
+if(epoch){
+
+m.epochs.push(epoch);
+
+}
+
+while(
+m.prices.length>
+HISTORY_SIZE
+){
+
+m.prices.shift();
+
+}
+
+while(
+m.epochs.length>
+HISTORY_SIZE
+){
+
+m.epochs.shift();
+
+}
 
 
- /*
-    Sequence number = actual tick.
- */
+if(
+m.prices.length>=120
+){
 
- m.seq++;
+m.ready=true;
 
+calculateMarket(m);
 
- m.lastTick =
-   price;
-
-
- m.prices.push(
-   price
- );
-
- if(
-   epoch
- ){
-
-   m.epochs.push(
-     epoch
-   );
-
- }
+}
 
 
- while(
-   m.prices.length>
-   HISTORY_SIZE
- ){
+/*
+ Paper trade resolution.
+*/
 
-   m.prices.shift();
+if(
+openTrade &&
+openTrade.paper &&
+openTrade.symbol===symbol
+){
 
- }
+resolvePaperTrade(m);
 
- while(
-   m.epochs.length>
-   HISTORY_SIZE
- ){
-
-   m.epochs.shift();
-
- }
+}
 
 
- if(
-   m.prices.length>=220
- ){
+/*
+ Live scanner.
+*/
 
-   m.ready=true;
+if(trading){
 
-   updateLiveFeature(m);
+evaluateMarket(m);
 
- }
+}
 
+renderAll();
 
- /*
-    Paper trade resolution happens
-    ONLY here — once per real tick.
- */
-
- if(
-   openTrade &&
-   openTrade.paper &&
-   openTrade.symbol===symbol
- ){
-
-   resolvePaperTrade(m);
-
- }
+}
 
 
- /*
-    Live strategy.
- */
+/* =========================================================
+   LAST DIGIT
+========================================================= */
 
- if(
-   trading
- ){
+function lastDigit(price){
 
-   evaluateMarket(m);
+/*
+ Deriv quotes can have different
+ decimal precision.
 
- }
+ Convert the displayed number
+ into a string and remove decimal
+ point.
 
+ Example:
 
- renderMarkets();
+ 123.4567 -> 7
+
+ This is suitable for the final
+ displayed quote digit.
+*/
+
+const s=
+String(price);
+
+const cleaned=
+s.replace(
+/[^0-9]/g,
+""
+);
+
+if(!cleaned)
+return null;
+
+return Number(
+cleaned[
+cleaned.length-1
+]
+);
 
 }
 
 
 /* =========================
-   DIRECTION FEATURE
+   DIGIT DISTRIBUTION
 ========================= */
 
-function directionFeature(
- prices
+function digitStats(
+prices,
+windowSize
 ){
 
- if(
-   prices.length<105
- ){
+const start=
+Math.max(
+0,
+prices.length-windowSize
+);
 
-   return null;
+const counts=
+Array(10).fill(0);
 
- }
+let total=0;
 
- const last =
-   prices.length-1;
+for(
+let i=start;
+i<prices.length;
+i++
+){
 
- const p20 =
-   prices[last-20];
+const d=
+lastDigit(
+prices[i]
+);
 
- const p50 =
-   prices[last-50];
+if(
+Number.isInteger(d) &&
+d>=0 &&
+d<=9
+){
 
- const p100 =
-   prices[last-100];
+counts[d]++;
 
- const current =
-   prices[last];
+total++;
 
+}
 
- const d20 =
-   current-p20;
+}
 
- const d50 =
-   current-p50;
+const pct=
+counts.map(
+c=>
+total
+? c/total*100
+:0
+);
 
- const d100 =
-   current-p100;
+const even=
+pct[0]+
+pct[2]+
+pct[4]+
+pct[6]+
+pct[8];
 
+const odd=
+pct[1]+
+pct[3]+
+pct[5]+
+pct[7]+
+pct[9];
 
- let votes=0;
+const over3=
+pct[4]+
+pct[5]+
+pct[6]+
+pct[7]+
+pct[8]+
+pct[9];
 
- if(d20>0) votes++;
- if(d20<0) votes--;
+const under7=
+pct[0]+
+pct[1]+
+pct[2]+
+pct[3]+
+pct[4]+
+pct[5]+
+pct[6];
 
- if(d50>0) votes++;
- if(d50<0) votes--;
+return{
 
- if(d100>0) votes++;
- if(d100<0) votes--;
+counts,
 
+pct,
 
- /*
-    20-tick persistence.
- */
+total,
 
- const persistence =
-   calcPersistence(
-     prices,
-     PERSISTENCE_WINDOW
-   );
+even,
 
+odd,
 
- /*
-    Chop.
- */
+over3,
 
- const chop =
-   calcChop(
-     prices,
-     PERSISTENCE_WINDOW
-   );
+under7
 
-
- /*
-    Volatility.
-
-    Compare short movement against
-    longer movement.
- */
-
- const shortVol =
-   avgAbsMove(
-     prices,
-     20
-   );
-
- const longVol =
-   avgAbsMove(
-     prices,
-     100
-   );
-
- const volatilityRatio =
-   longVol>0
-   ? shortVol/longVol
-   : 0;
-
-
- /*
-    Directional slope.
- */
-
- const slope =
-   linearSlope(
-     prices,
-     50
-   );
-
- const normalizedSlope =
-   longVol>0
-   ? slope/longVol
-   : 0;
-
-
- /*
-    Current run.
- */
-
- const run =
-   currentRun(
-     prices
-   );
-
-
- /*
-    Signal.
-
-    All three horizons must agree.
- */
-
- let signal=null;
-
- if(
-   d20>0 &&
-   d50>0 &&
-   d100>0 &&
-   normalizedSlope>0
- ){
-
-   signal="CALL";
-
- }
-
- if(
-   d20<0 &&
-   d50<0 &&
-   d100<0 &&
-   normalizedSlope<0
- ){
-
-   signal="PUT";
-
- }
-
-
- /*
-    Directional persistence for
-    the selected direction.
- */
-
- let directionalPersistence=0;
-
- if(signal==="CALL"){
-
-   directionalPersistence =
-     persistence.up;
-
- }
-
- if(signal==="PUT"){
-
-   directionalPersistence =
-     persistence.down;
-
- }
-
-
- /*
-    Overextension.
- */
-
- const maxRun =
-   num(
-     $("maxRun").value
-   );
-
- const extended =
-   run.length>=maxRun;
-
-
- /*
-    Score.
-
-    Maximum 100.
- */
-
- let score=0;
-
- if(
-   signal &&
-   Math.abs(votes)===3
- ){
-
-   score+=25;
-
- }else if(
-   signal &&
-   Math.abs(votes)===2
- ){
-
-   score+=15;
-
- }
-
- if(
-   directionalPersistence>=
-   num($("minPersistence").value)
- ){
-
-   score+=20;
-
- }else if(
-   directionalPersistence>=55
- ){
-
-   score+=10;
-
- }
-
- if(
-   chop<=num($("maxChop").value)
- ){
-
-   score+=15;
-
- }else if(
-   chop<=50
- ){
-
-   score+=7;
-
- }
-
- if(
-   volatilityRatio>=
-   num($("minVol").value)
- ){
-
-   score+=10;
-
- }
-
- if(
-   !extended
- ){
-
-   score+=10;
-
- }
-
- if(
-   Math.abs(normalizedSlope)>=0.08
- ){
-
-   score+=10;
-
- }
-
-
- return {
-
-   signal,
-
-   votes,
-
-   d20,
-
-   d50,
-
-   d100,
-
-   persistence,
-   directionalPersistence,
-
-   chop,
-
-   shortVol,
-   longVol,
-   volatilityRatio,
-
-   slope,
-   normalizedSlope,
-
-   runLength:run.length,
-   runDirection:run.direction,
-
-   extended,
-
-   score
-
- };
+};
 
 }
 
 
 /* =========================
-   PERSISTENCE
+   DIGIT PERSISTENCE
 ========================= */
 
-function calcPersistence(
- prices,
- window
+function digitPersistence(
+prices,
+type,
+windowSize=30
 ){
 
- const start =
-   Math.max(
-     1,
-     prices.length-window
-   );
+const start=
+Math.max(
+1,
+prices.length-windowSize
+);
 
- let up=0;
- let down=0;
- let total=0;
+let wins=0;
 
- for(
-   let i=start;
-   i<prices.length;
-   i++
- ){
+let total=0;
 
-   const diff =
-     prices[i]-prices[i-1];
+for(
+let i=start;
+i<prices.length;
+i++
+){
 
-   if(diff>0){
+const d=
+lastDigit(
+prices[i]
+);
 
-     up++;
+if(d===null)
+continue;
 
-     total++;
+let good=false;
 
-   }else if(diff<0){
+if(type==="DIGITOVER")
+good=d>3;
 
-     down++;
+if(type==="DIGITUNDER")
+good=d<7;
 
-     total++;
+if(type==="DIGITEVEN")
+good=d%2===0;
 
-   }
+if(type==="DIGITODD")
+good=d%2===1;
 
- }
+if(good)
+wins++;
 
- return {
+total++;
 
-   up:
-     total
-     ? up/total*100
-     : 0,
+}
 
-   down:
-     total
-     ? down/total*100
-     : 0,
+return total
+? wins/total*100
+: 0;
 
-   upCount:up,
-   downCount:down,
-   total
+}
 
- };
+
+/* =========================
+   PRICE FEATURE
+========================= */
+
+function priceFeature(
+prices
+){
+
+if(
+prices.length<105
+){
+
+return null;
+
+}
+
+const last=
+prices.length-1;
+
+const current=
+prices[last];
+
+const d20=
+current-
+prices[last-20];
+
+const d50=
+current-
+prices[last-50];
+
+const d100=
+current-
+prices[last-100];
+
+let votes=0;
+
+if(d20>0)votes++;
+if(d20<0)votes--;
+
+if(d50>0)votes++;
+if(d50<0)votes--;
+
+if(d100>0)votes++;
+if(d100<0)votes--;
+
+
+const persistence=
+pricePersistence(
+prices,
+30
+);
+
+const chop=
+priceChop(
+prices,
+30
+);
+
+const shortVol=
+avgMove(
+prices,
+20
+);
+
+const longVol=
+avgMove(
+prices,
+100
+);
+
+const volRatio=
+longVol
+?shortVol/longVol
+:0;
+
+const slope=
+linearSlope(
+prices,
+50
+);
+
+const normalizedSlope=
+longVol
+?slope/longVol
+:0;
+
+const run=
+priceRun(
+prices
+);
+
+let signal=null;
+
+if(
+d20>0 &&
+d50>0 &&
+d100>0 &&
+normalizedSlope>0
+){
+
+signal="CALL";
+
+}
+
+if(
+d20<0 &&
+d50<0 &&
+d100<0 &&
+normalizedSlope<0
+){
+
+signal="PUT";
+
+}
+
+
+let directionalPersistence=0;
+
+if(signal==="CALL")
+directionalPersistence=
+persistence.up;
+
+if(signal==="PUT")
+directionalPersistence=
+persistence.down;
+
+
+let score=0;
+
+if(
+signal &&
+Math.abs(votes)===3
+){
+
+score+=25;
+
+}
+
+if(
+directionalPersistence>=
+num($("minPersistence").value)
+){
+
+score+=20;
+
+}else if(
+directionalPersistence>=55
+){
+
+score+=10;
+
+}
+
+if(
+chop<=
+num($("maxChop").value)
+){
+
+score+=15;
+
+}
+
+if(
+volRatio>=
+num($("minVol").value)
+){
+
+score+=10;
+
+}
+
+if(
+run.length<
+num($("maxRun").value)
+){
+
+score+=10;
+
+}
+
+if(
+Math.abs(normalizedSlope)>=0.08
+){
+
+score+=10;
+
+}
+
+
+return{
+
+signal,
+
+votes,
+
+d20,
+
+d50,
+
+d100,
+
+persistence,
+
+directionalPersistence,
+
+chop,
+
+shortVol,
+
+longVol,
+
+volRatio,
+
+slope,
+
+normalizedSlope,
+
+run,
+
+score
+
+};
+
+}
+
+
+/* =========================
+   PRICE PERSISTENCE
+========================= */
+
+function pricePersistence(
+prices,
+window
+){
+
+const start=
+Math.max(
+1,
+prices.length-window
+);
+
+let up=0;
+
+let down=0;
+
+let total=0;
+
+for(
+let i=start;
+i<prices.length;
+i++
+){
+
+const d=
+prices[i]-prices[i-1];
+
+if(d>0){
+
+up++;
+total++;
+
+}else if(d<0){
+
+down++;
+total++;
+
+}
+
+}
+
+return{
+
+up:
+total
+?up/total*100
+:0,
+
+down:
+total
+?down/total*100
+:0
+
+};
 
 }
 
@@ -2266,109 +2330,101 @@ function calcPersistence(
    CHOP
 ========================= */
 
-function calcChop(
- prices,
- window
+function priceChop(
+prices,
+window
 ){
 
- const start =
-   Math.max(
-     1,
-     prices.length-window
-   );
+const start=
+Math.max(
+1,
+prices.length-window
+);
 
- let changes=0;
+let previous=null;
 
- let previous=null;
+let changes=0;
 
- let total=0;
+let total=0;
 
- for(
-   let i=start;
-   i<prices.length;
-   i++
- ){
+for(
+let i=start;
+i<prices.length;
+i++
+){
 
-   const diff =
-     prices[i]-prices[i-1];
+const d=
+prices[i]-prices[i-1];
 
-   if(diff===0){
+if(d===0)
+continue;
 
-     continue;
+const direction=
+d>0?1:-1;
 
-   }
+if(
+previous!==null &&
+direction!==previous
+){
 
-   const dir =
-     diff>0
-     ? 1
-     : -1;
+changes++;
 
-   if(
-     previous!==null &&
-     dir!==previous
-   ){
+}
 
-     changes++;
+previous=direction;
 
-   }
+total++;
 
-   previous=dir;
+}
 
-   total++;
+if(total<=1)
+return 100;
 
- }
-
- if(total<=1){
-
-   return 100;
-
- }
-
- return (
-   changes/
-   (total-1)
- )*100;
+return(
+changes/
+(total-1)
+)*100;
 
 }
 
 
 /* =========================
-   AVERAGE ABS MOVEMENT
+   AVG MOVEMENT
 ========================= */
 
-function avgAbsMove(
- prices,
- window
+function avgMove(
+prices,
+window
 ){
 
- const start =
-   Math.max(
-     1,
-     prices.length-window
-   );
+const start=
+Math.max(
+1,
+prices.length-window
+);
 
- let sum=0;
+let sum=0;
 
- let count=0;
+let total=0;
 
- for(
-   let i=start;
-   i<prices.length;
-   i++
- ){
+for(
+let i=start;
+i<prices.length;
+i++
+){
 
-   sum+=
-     Math.abs(
-       prices[i]-prices[i-1]
-     );
+sum+=
+Math.abs(
+prices[i]-prices[i-1]
+);
 
-   count++;
+total++;
 
- }
+}
 
- return count
-   ? sum/count
-   : 0;
+return total
+?sum/total
+:0;
 
 }
 
@@ -2378,184 +2434,918 @@ function avgAbsMove(
 ========================= */
 
 function linearSlope(
- prices,
- window
+prices,
+window
 ){
 
- const n =
-   Math.min(
-     window,
-     prices.length
-   );
+const n=
+Math.min(
+window,
+prices.length
+);
 
- if(n<2){
+if(n<2)
+return 0;
 
-   return 0;
+let sx=0;
+let sy=0;
+let sxy=0;
+let sx2=0;
 
- }
+for(
+let i=0;
+i<n;
+i++
+){
 
- let sx=0;
- let sy=0;
- let sxy=0;
- let sx2=0;
+const x=i;
 
- for(
-   let i=0;
-   i<n;
-   i++
- ){
+const y=
+prices[
+prices.length-n+i
+];
 
-   const x=i;
+sx+=x;
+sy+=y;
+sxy+=x*y;
+sx2+=x*x;
 
-   const y=
-     prices[
-       prices.length-n+i
-     ];
+}
 
-   sx+=x;
-   sy+=y;
-   sxy+=x*y;
-   sx2+=x*x;
+const denom=
+n*sx2-sx*sx;
 
- }
+if(!denom)
+return 0;
 
- const denominator =
-   n*sx2-sx*sx;
-
- if(
-   denominator===0
- ){
-
-   return 0;
-
- }
-
- return (
-   n*sxy-sx*sy
- )/denominator;
+return(
+n*sxy-sx*sy
+)/denom;
 
 }
 
 
 /* =========================
-   CURRENT RUN
+   RUN
 ========================= */
 
-function currentRun(
- prices
+function priceRun(
+prices
 ){
 
- if(
-   prices.length<2
- ){
+if(prices.length<2){
 
-   return {
-     direction:0,
-     length:0
-   };
+return{
+direction:0,
+length:0
+};
 
- }
+}
 
- const last =
-   prices[prices.length-1];
+const last=
+prices[prices.length-1];
 
- const previous =
-   prices[prices.length-2];
+const previous=
+prices[prices.length-2];
 
- if(last===previous){
+if(last===previous){
 
-   return {
-     direction:0,
-     length:0
-   };
+return{
+direction:0,
+length:0
+};
 
- }
+}
 
- const direction =
-   last>previous
-   ? 1
-   : -1;
+const direction=
+last>previous
+?1
+:-1;
 
- let length=0;
+let length=0;
 
- for(
-   let i=prices.length-1;
-   i>0;
-   i--
- ){
+for(
+let i=prices.length-1;
+i>0;
+i--
+){
 
-   const diff =
-     prices[i]-prices[i-1];
+const d=
+prices[i]-prices[i-1];
 
-   const dir =
-     diff>0
-     ? 1
-     : diff<0
-     ? -1
-     : 0;
+const dir=
+d>0
+?1
+:d<0
+?-1
+:0;
 
-   if(
-     dir!==direction
-   ){
+if(dir!==direction)
+break;
 
-     break;
+length++;
 
-   }
+}
 
-   length++;
+return{
+direction,
+length
+};
 
- }
+}
 
- return {
-   direction,
-   length
- };
+
+/* =========================================================
+   DIGIT STRATEGY
+========================================================= */
+
+function digitStrategy(
+m,
+type
+){
+
+const window=
+num(
+$("digitWindow").value
+);
+
+const ds=
+digitStats(
+m.prices,
+window
+);
+
+if(!ds.total)
+return null;
+
+
+/*
+ Under 7:
+
+ Expected probability:
+ 7/10 = 70%
+
+ Over 3:
+ Expected probability:
+ 6/10 = 60%
+
+ Even:
+ Expected = 50%
+
+ Odd:
+ Expected = 50%
+*/
+
+
+let signal=false;
+
+let pressure=0;
+
+let persistence=
+digitPersistence(
+m.prices,
+type,
+30
+);
+
+if(type==="DIGITOVER"){
+
+/*
+ We want the unwanted group
+ 0,1,2,3 to be relatively
+ suppressed.
+
+ Actual Over3:
+ 4-9.
+
+ Baseline:
+ 60%.
+*/
+
+pressure=
+ds.over3-60;
+
+if(
+ds.over3>=60
+){
+
+signal=true;
+
+}
+
+}
+
+if(type==="DIGITUNDER"){
+
+/*
+ Under7:
+ 0-6.
+
+ Baseline:
+ 70%.
+*/
+
+pressure=
+ds.under7-70;
+
+if(
+ds.under7>=70
+){
+
+signal=true;
+
+}
+
+}
+
+if(type==="DIGITEVEN"){
+
+pressure=
+ds.even-50;
+
+if(
+ds.even>=50
+){
+
+signal=true;
+
+}
+
+}
+
+if(type==="DIGITODD"){
+
+pressure=
+ds.odd-50;
+
+if(
+ds.odd>=50
+){
+
+signal=true;
+
+}
+
+}
+
+
+/*
+ Persistence should agree.
+*/
+
+if(
+persistence<
+num($("minPersistence").value)
+){
+
+signal=false;
+
+}
+
+
+/*
+ Chop of digit direction.
+*/
+
+const digitChop=
+digitChopRate(
+m.prices,
+type,
+30
+);
+
+if(
+digitChop>
+num($("maxChop").value)
+){
+
+signal=false;
+
+}
+
+
+/*
+ Score.
+*/
+
+let score=0;
+
+if(signal)
+score+=25;
+
+
+/*
+ Frequency advantage.
+
+ Use the absolute deviation from
+ the theoretical probability.
+*/
+
+const advantage=
+Math.abs(
+pressure
+);
+
+if(
+advantage>=5
+)
+score+=20;
+else if(
+advantage>=3
+)
+score+=12;
+else if(
+advantage>=1
+)
+score+=6;
+
+
+/*
+ Persistence.
+*/
+
+if(
+persistence>=
+num($("minPersistence").value)
+)
+score+=20;
+else if(
+persistence>=55
+)
+score+=10;
+
+
+/*
+ Lower chop.
+*/
+
+if(
+digitChop<=
+num($("maxChop").value)
+)
+score+=15;
+
+
+/*
+ Current digit trigger.
+
+ For Over3, a current 0-3 is
+ considered a trigger.
+
+ For Under7, current 7-9.
+
+ For Even, current odd.
+
+ For Odd, current even.
+*/
+
+const currentDigit=
+lastDigit(
+m.lastTick
+);
+
+let trigger=false;
+
+if(
+currentDigit!==null
+){
+
+if(
+type==="DIGITOVER" &&
+currentDigit<=3
+)
+trigger=true;
+
+if(
+type==="DIGITUNDER" &&
+currentDigit>=7
+)
+trigger=true;
+
+if(
+type==="DIGITEVEN" &&
+currentDigit%2===1
+)
+trigger=true;
+
+if(
+type==="DIGITODD" &&
+currentDigit%2===0
+)
+trigger=true;
+
+}
+
+if(trigger)
+score+=20;
+
+
+return{
+
+type,
+
+signal,
+
+score,
+
+pressure,
+
+persistence,
+
+chop:digitChop,
+
+currentDigit,
+
+trigger,
+
+distribution:ds
+
+};
 
 }
 
 
 /* =========================
-   LIVE FEATURE UPDATE
+   DIGIT CHOP
 ========================= */
 
-function updateLiveFeature(m){
+function digitChopRate(
+prices,
+type,
+window
+){
 
- if(
-   !m ||
-   !m.ready
- ){
+const start=
+Math.max(
+1,
+prices.length-window
+);
 
-   return;
+let previous=null;
 
- }
+let changes=0;
 
- m.feature =
-   directionFeature(
-     m.prices
-   );
+let total=0;
 
- if(
-   m.backtest
- ){
+for(
+let i=start;
+i<prices.length;
+i++
+){
 
-   /*
-      Do not overwrite backtest
-      with live results.
-   */
+const d=
+lastDigit(
+prices[i]
+);
 
- }
+if(d===null)
+continue;
 
- if(
-   m.feature
- ){
+let good;
 
-   m.signal =
-     m.feature.signal;
+if(type==="DIGITOVER")
+good=d>3;
 
-   m.score =
-     m.feature.score;
+if(type==="DIGITUNDER")
+good=d<7;
 
- }
+if(type==="DIGITEVEN")
+good=d%2===0;
+
+if(type==="DIGITODD")
+good=d%2===1;
+
+const direction=
+good?1:-1;
+
+if(
+previous!==null &&
+direction!==previous
+){
+
+changes++;
+
+}
+
+previous=direction;
+
+total++;
+
+}
+
+if(total<=1)
+return 100;
+
+return(
+changes/
+(total-1)
+)*100;
+
+}
+
+
+/* =========================================================
+   STRATEGY BACKTEST
+========================================================= */
+
+function strategyBacktest(
+prices,
+type
+){
+
+const duration=
+num(
+$("duration").value
+);
+
+if(
+prices.length<220
+){
+
+return{
+trainRate:0,
+validationRate:0,
+validationWins:0,
+validationTotal:0,
+conservative:0
+};
+
+}
+
+const validationStart=
+Math.max(
+105,
+prices.length-
+VALIDATION_WINDOW
+);
+
+let trainTotal=0;
+
+let trainWins=0;
+
+let valTotal=0;
+
+let valWins=0;
+
+
+/*
+ TRAINING
+*/
+
+for(
+let i=105;
+i<validationStart-duration;
+i++
+){
+
+const slice=
+prices.slice(
+0,
+i+1
+);
+
+const result=
+strategyAtIndex(
+slice,
+type
+);
+
+if(
+!result ||
+!result.signal
+)
+continue;
+
+if(
+result.score<
+num($("minScore").value)
+)
+continue;
+
+if(
+result.persistence<
+num($("minPersistence").value)
+)
+continue;
+
+if(
+result.chop>
+num($("maxChop").value)
+)
+continue;
+
+
+const entry=
+prices[i];
+
+const exit=
+prices[i+duration];
+
+const win=
+contractOutcome(
+prices,
+i,
+duration,
+type
+);
+
+if(
+win===null
+)
+continue;
+
+trainTotal++;
+
+if(win)
+trainWins++;
+
+}
+
+
+/*
+ VALIDATION
+*/
+
+for(
+let i=validationStart;
+i<prices.length-duration;
+i++
+){
+
+const slice=
+prices.slice(
+0,
+i+1
+);
+
+const result=
+strategyAtIndex(
+slice,
+type
+);
+
+if(
+!result ||
+!result.signal
+)
+continue;
+
+if(
+result.score<
+num($("minScore").value)
+)
+continue;
+
+if(
+result.persistence<
+num($("minPersistence").value)
+)
+continue;
+
+if(
+result.chop>
+num($("maxChop").value)
+)
+continue;
+
+
+/*
+ For digit strategies, require
+ the trigger at historical entry.
+*/
+
+if(
+type!=="RISEFALL" &&
+!result.trigger
+)
+continue;
+
+
+const win=
+contractOutcome(
+prices,
+i,
+duration,
+type
+);
+
+if(win===null)
+continue;
+
+valTotal++;
+
+if(win)
+valWins++;
+
+}
+
+
+const trainRate=
+trainTotal
+?trainWins/trainTotal*100
+:0;
+
+const validationRate=
+valTotal
+?valWins/valTotal*100
+:0;
+
+const conservative=
+wilsonLower(
+valWins,
+valTotal
+);
+
+return{
+
+trainRate,
+
+trainTotal,
+
+validationRate,
+
+validationWins:valWins,
+
+validationLosses:
+valTotal-valWins,
+
+validationTotal:
+valTotal,
+
+conservative
+
+};
+
+}
+
+
+/* =========================
+   STRATEGY AT HISTORICAL POINT
+========================= */
+
+function strategyAtIndex(
+prices,
+type
+){
+
+if(type==="RISEFALL"){
+
+const f=
+priceFeature(
+prices
+);
+
+if(!f)
+return null;
+
+return{
+
+signal:
+!!f.signal,
+
+direction:
+f.signal,
+
+score:
+f.score,
+
+persistence:
+f.directionalPersistence,
+
+chop:
+f.chop,
+
+trigger:true
+
+};
+
+}
+
+
+/*
+ Digit
+*/
+
+const ds=
+digitStrategy(
+{
+prices,
+lastTick:
+prices[prices.length-1]
+},
+type
+);
+
+if(!ds)
+return null;
+
+return{
+
+signal:
+ds.signal,
+
+direction:type,
+
+score:
+ds.score,
+
+persistence:
+ds.persistence,
+
+chop:
+ds.chop,
+
+trigger:
+ds.trigger
+
+};
+
+}
+
+
+/* =========================
+   OUTCOME
+========================= */
+
+function contractOutcome(
+prices,
+index,
+duration,
+type
+){
+
+const exitIndex=
+index+duration;
+
+if(
+exitIndex>=prices.length
+)
+return null;
+
+const entry=
+prices[index];
+
+const exit=
+prices[exitIndex];
+
+if(type==="RISEFALL"){
+
+/*
+ Determine direction from
+ strategy at entry.
+*/
+
+const result=
+strategyAtIndex(
+prices.slice(0,index+1),
+"RISEFALL"
+);
+
+if(
+!result ||
+!result.direction
+)
+return null;
+
+if(
+result.direction==="CALL"
+)
+return exit>entry;
+
+if(
+result.direction==="PUT"
+)
+return exit<entry;
+
+return null;
+
+}
+
+
+/*
+ Digit contracts use the final
+ digit of the exit tick.
+*/
+
+const d=
+lastDigit(exit);
+
+if(d===null)
+return null;
+
+if(type==="DIGITOVER")
+return d>3;
+
+if(type==="DIGITUNDER")
+return d<7;
+
+if(type==="DIGITEVEN")
+return d%2===0;
+
+if(type==="DIGITODD")
+return d%2===1;
+
+return null;
 
 }
 
@@ -2565,903 +3355,829 @@ function updateLiveFeature(m){
 ========================= */
 
 function wilsonLower(
- winsCount,
- total,
- confidence=0.90
+winsCount,
+total
 ){
 
- if(
-   total<=0
- ){
+if(!total)
+return 0;
 
-   return 0;
+const z=1.645;
 
- }
+const p=
+winsCount/total;
 
- /*
-    z for approximately 90% confidence.
- */
+const denominator=
+1+
+(z*z)/total;
 
- const z=1.645;
+const centre=
+p+
+(z*z)/(2*total);
 
- const p =
-   winsCount/total;
+const margin=
+z*
+Math.sqrt(
+(
+p*(1-p)+
+(z*z)/(4*total)
+)/total
+);
 
- const denominator =
-   1+
-   (z*z)/total;
+return(
+(
+centre-margin
+)/
+denominator
+)*100;
 
- const centre =
-   p+
-   (z*z)/(2*total);
+}
 
- const margin =
-   z*
-   Math.sqrt(
-     (
-       p*(1-p)+
-       (z*z)/(4*total)
-     )/total
-   );
 
- return (
-   (
-     centre-margin
-   )/denominator
- )*100;
+/* =========================================================
+   MARKET CALCULATION
+========================================================= */
+
+function calculateMarket(m){
+
+if(
+!m ||
+!m.ready ||
+m.prices.length<120
+)
+return;
+
+
+const price=
+priceFeature(
+m.prices
+);
+
+const strategies={};
+
+
+/*
+ Rise/Fall
+*/
+
+if(
+!m.contracts ||
+m.contracts.CALL ||
+m.contracts.PUT ||
+Object.keys(m.contracts).length===0
+){
+
+const bt=
+strategyBacktest(
+m.prices,
+"RISEFALL"
+);
+
+let direction=
+price?.signal||
+null;
+
+strategies.RISEFALL={
+
+type:"RISEFALL",
+
+direction,
+
+score:
+price?.score||0,
+
+pulse:
+price?.score||0,
+
+validation:
+bt.validationRate,
+
+conservative:
+bt.conservative,
+
+samples:
+bt.validationTotal,
+
+backtest:bt,
+
+feature:price,
+
+eligible:
+!!direction
+
+};
+
+}
+
+
+/*
+ Digit strategies.
+*/
+
+const digitTypes=[
+"DIGITOVER",
+"DIGITUNDER",
+"DIGITEVEN",
+"DIGITODD"
+];
+
+digitTypes.forEach(
+type=>{
+
+/*
+ If contracts_for tells us this
+ contract isn't available, don't
+ display it as tradable.
+
+ If contracts_for hasn't supplied
+ data, allow it to be tested and
+ let proposal confirm.
+*/
+
+if(
+Object.keys(m.contracts).length &&
+!m.contracts[type]
+){
+
+return;
+
+}
+
+const ds=
+digitStrategy(
+m,
+type
+);
+
+const bt=
+strategyBacktest(
+m.prices,
+type
+);
+
+if(!ds)
+return;
+
+strategies[type]={
+
+type,
+
+direction:type,
+
+score:
+ds.score,
+
+pulse:
+ds.score,
+
+validation:
+bt.validationRate,
+
+conservative:
+bt.conservative,
+
+samples:
+bt.validationTotal,
+
+backtest:bt,
+
+feature:ds,
+
+eligible:
+ds.signal &&
+ds.trigger
+
+};
+
+});
+
+m.strategies=
+strategies;
+
+
+/*
+ Select best strategy according
+ to score + statistical quality.
+*/
+
+const candidates=
+Object.values(
+strategies
+)
+.filter(
+s=>
+s.eligible
+&&
+s.samples>=
+num($("minSamples").value)
+&&
+s.validation>=
+num($("minValidation").value)
+&&
+s.conservative>=
+num($("minConservative").value)
+&&
+s.score>=
+num($("minScore").value)
+);
+
+
+candidates.sort(
+(a,b)=>
+b.score-a.score
+);
+
+
+m.best=
+candidates[0]||
+null;
+
+
+/*
+ Don't calculate proposal here.
+ Proposal only happens when
+ trading and a complete setup
+ exists.
+*/
 
 }
 
 
 /* =========================
-   WALK-FORWARD BACKTEST
-========================= */
-
-function runBacktest(
- prices
-){
-
- const duration =
-   num(
-     $("duration").value
-   );
-
- const validationStart =
-   Math.max(
-     TRAINING_WINDOW,
-     prices.length-
-     VALIDATION_WINDOW
-   );
-
- let trainTotal=0;
- let trainWins=0;
-
- let valTotal=0;
- let valWins=0;
-
- /*
-    TRAINING
- */
-
- for(
-   let i=105;
-   i<validationStart-duration;
-   i++
- ){
-
-   const slice =
-     prices.slice(
-       0,
-       i+1
-     );
-
-   const feature =
-     directionFeature(
-       slice
-     );
-
-   if(
-     !feature ||
-     !feature.signal
-   ){
-
-     continue;
-
-   }
-
-   const entry =
-     prices[i];
-
-   const exit =
-     prices[i+duration];
-
-   /*
-      Only use signals satisfying
-      structural filters.
-   */
-
-   if(
-     feature.score<
-     num($("minScore").value)
-   ){
-
-     continue;
-
-   }
-
-   if(
-     feature.chop>
-     num($("maxChop").value)
-   ){
-
-     continue;
-
-   }
-
-   if(
-     feature.directionalPersistence<
-     num($("minPersistence").value)
-   ){
-
-     continue;
-
-   }
-
-   trainTotal++;
-
-   const win =
-     feature.signal==="CALL"
-     ? exit>entry
-     : exit<entry;
-
-   if(win){
-
-     trainWins++;
-
-   }
-
- }
-
-
- /*
-    VALIDATION
-
-    Walk forward through the final
-    100 ticks.
-
-    At each point, only past data
-    is used for the feature.
- */
-
- for(
-   let i=validationStart;
-   i<prices.length-duration;
-   i++
- ){
-
-   const slice =
-     prices.slice(
-       0,
-       i+1
-     );
-
-   const feature =
-     directionFeature(
-       slice
-     );
-
-   if(
-     !feature ||
-     !feature.signal
-   ){
-
-     continue;
-
-   }
-
-   if(
-     feature.score<
-     num($("minScore").value)
-   ){
-
-     continue;
-
-   }
-
-   if(
-     feature.chop>
-     num($("maxChop").value)
-   ){
-
-     continue;
-
-   }
-
-   if(
-     feature.directionalPersistence<
-     num($("minPersistence").value)
-   ){
-
-     continue;
-
-   }
-
-   valTotal++;
-
-   const entry =
-     prices[i];
-
-   const exit =
-     prices[i+duration];
-
-   const win =
-     feature.signal==="CALL"
-     ? exit>entry
-     : exit<entry;
-
-   if(win){
-
-     valWins++;
-
-   }
-
- }
-
-
- const trainRate =
-   trainTotal
-   ? trainWins/trainTotal*100
-   : 0;
-
- const validationRate =
-   valTotal
-   ? valWins/valTotal*100
-   : 0;
-
- const conservative =
-   wilsonLower(
-     valWins,
-     valTotal,
-     0.90
-   );
-
- return {
-
-   trainTotal,
-   trainWins,
-   trainRate,
-
-   validationTotal:
-     valTotal,
-
-   validationWins:
-     valWins,
-
-   validationLosses:
-     valTotal-valWins,
-
-   validationRate,
-
-   conservative,
-
-   duration
-
- };
-
-}
-
-
-/* =========================
-   MARKET EVALUATION
+   EVALUATION
 ========================= */
 
 function evaluateMarket(m){
 
- if(
-   !trading ||
-   !m ||
-   !m.ready ||
-   openTrade ||
-   tradeInFlight
- ){
-
-   return;
-
- }
-
- if(
-   Date.now()<cooldownUntil
- ){
-
-   return;
-
- }
-
- if(
-   totalTrades>=
-   num($("maxTrades").value)
- ){
-
-   stopWithReason(
-     "Maximum trades reached.",
-     "warn"
-   );
-
-   return;
-
- }
-
- if(
-   losses>=
-   num($("maxLosses").value)
- ){
-
-   stopWithReason(
-     "Maximum losses reached.",
-     "bad"
-   );
-
-   return;
-
- }
-
-
- /*
-    Market-specific lock.
- */
-
- if(
-   m.seq<
-   m.lockedUntilSeq
- ){
-
-   return;
-
- }
-
-
- const f =
-   m.feature ||
-   directionFeature(
-     m.prices
-   );
-
- if(!f){
-
-   return;
-
- }
-
-
- /*
-    Must have all 3 horizons.
- */
-
- if(
-   !f.signal ||
-   Math.abs(f.votes)!==3
- ){
-
-   return;
-
- }
-
-
- /*
-    Persistence.
- */
-
- if(
-   f.directionalPersistence<
-   num($("minPersistence").value)
- ){
-
-   return;
-
- }
-
-
- /*
-    Chop.
- */
-
- if(
-   f.chop>
-   num($("maxChop").value)
- ){
-
-   return;
-
- }
-
-
- /*
-    Volatility.
- */
-
- if(
-   f.volatilityRatio<
-   num($("minVol").value)
- ){
-
-   return;
-
- }
-
-
- /*
-    Overextension.
- */
-
- if(
-   f.extended
- ){
-
-   return;
-
- }
-
-
- /*
-    Score.
- */
-
- if(
-   f.score<
-   num($("minScore").value)
- ){
-
-   return;
-
- }
-
-
- /*
-    Backtest.
- */
-
- const b =
-   m.backtest;
-
- if(!b){
-
-   return;
-
- }
-
-
- if(
-   b.validationTotal<
-   num($("minSamples").value)
- ){
-
-   return;
-
- }
-
-
- if(
-   b.validationRate<
-   num($("minValidation").value)
- ){
-
-   return;
-
- }
-
-
- /*
-    Conservative estimate.
- */
-
- if(
-   b.conservative<
-   num($("minConservative").value)
- ){
-
-   return;
-
- }
-
-
- /*
-    Avoid immediately repeating
-    same market after a trade.
- */
-
- const minimumGap =
-   num(
-     $("cooldown").value
-   );
-
- if(
-   m.lastTradeTime &&
-   Date.now()-m.lastTradeTime<
-   minimumGap*1000
- ){
-
-   return;
-
- }
-
-
- /*
-    Request proposal.
- */
-
- requestProposal(
-   m,
-   f
- );
-
-}
-
-
-/* =========================
-   PROPOSAL
-========================= */
-
-async function requestProposal(
- m,
- feature
+if(
+!trading ||
+!m ||
+!m.ready ||
+openTrade ||
+tradeInFlight
+)
+return;
+
+if(
+Date.now()<cooldownUntil
+)
+return;
+
+if(
+totalTrades>=
+num($("maxTrades").value)
 ){
 
- if(
-   tradeInFlight ||
-   openTrade ||
-   !trading
- ){
+stopReason(
+"Maximum trades reached.",
+"warn"
+);
 
-   return;
+return;
 
- }
+}
 
- /*
-    Avoid proposal spam on the
-    same market.
- */
+if(
+losses>=
+num($("maxLosses").value)
+){
 
- if(
-   Date.now()-m.lastProposalAt<
-   1500
- ){
+stopReason(
+"Maximum losses reached.",
+"bad"
+);
 
-   return;
+return;
 
- }
+}
 
- m.lastProposalAt =
-   Date.now();
 
- tradeInFlight=true;
+/*
+ Recalculate so scanner uses
+ newest tick.
+*/
 
- const triggerSeq =
-   m.seq;
+calculateMarket(m);
 
- const triggerEpoch =
-   m.lastEpoch;
 
- const direction =
-   feature.signal;
+const selected=
+$("strategy").value;
 
- try{
+let candidates=[];
 
-   const stake =
-     num(
-       $("stake").value
-     );
 
-   const duration =
-     num(
-       $("duration").value
-     );
+/*
+ AUTO
+*/
 
-   const currency =
-     $("currency").value.trim()
-     || "USD";
+if(selected==="AUTO"){
 
+candidates=
+Object.values(
+m.strategies||{}
+)
+.filter(
+s=>
+s.eligible
+);
 
-   const data =
-     await sendRequest(
-       {
-         proposal:1,
+}else{
 
-         amount:stake,
+const s=
+m.strategies?.[selected];
 
-         basis:"stake",
+if(s && s.eligible){
 
-         contract_type:
-           direction,
+candidates=[s];
 
-         currency,
+}
 
-         duration,
+}
 
-         duration_unit:"t",
 
-         underlying_symbol:
-           m.symbol
+if(!candidates.length)
+return;
 
-       },
-       10000
-     );
 
+/*
+ Quality filters.
+*/
 
-   const proposal =
-     data.proposal;
+candidates=
+candidates.filter(
+s=>
+s.samples>=
+num($("minSamples").value)
+&&
+s.validation>=
+num($("minValidation").value)
+&&
+s.conservative>=
+num($("minConservative").value)
+&&
+s.score>=
+num($("minScore").value)
+);
 
-   if(!proposal){
 
-     throw new Error(
-       "No proposal returned."
-     );
+if(!candidates.length)
+return;
 
-   }
 
+candidates.sort(
+(a,b)=>
+b.score-a.score
+);
 
-   const ask =
-     num(
-       proposal.ask_price
-     );
 
-   const payout =
-     num(
-       proposal.payout
-     );
+const best=
+candidates[0];
 
 
-   if(
-     ask<=0 ||
-     payout<=0
-   ){
+/*
+ Market lock.
+*/
 
-     throw new Error(
-       "Proposal missing price/payout."
-     );
+if(
+m.seq<
+m.lockedUntilSeq
+)
+return;
 
-   }
 
+/*
+ Don't repeatedly propose
+ same market.
+*/
 
-   /*
-      Break-even probability.
+if(
+Date.now()-
+m.lastProposalAt<
+1500
+)
+return;
 
-      payout includes the return
-      used by this calculation.
-   */
 
-   const breakEven =
-     ask/payout;
+/*
+ Market cooldown.
+*/
 
+const cd=
+num(
+$("cooldown").value
+);
 
-   /*
-      Use conservative validation
-      estimate rather than raw rate.
-   */
+if(
+m.lastTradeTime &&
+Date.now()-
+m.lastTradeTime<
+cd*1000
+)
+return;
 
-   const probability =
-     m.backtest.conservative/100;
 
+requestProposal(
+m,
+best
+);
 
-   const expectedValue =
-     probability*payout-ask;
+}
 
 
-   m.payout =
-     payout;
+/* =========================================================
+   PROPOSAL
+========================================================= */
 
-   m.breakEven =
-     breakEven*100;
+async function requestProposal(
+m,
+strategy
+){
 
-   m.ev =
-     expectedValue;
+if(
+tradeInFlight ||
+openTrade ||
+!trading
+)
+return;
 
+tradeInFlight=true;
 
-   renderMarkets();
+m.lastProposalAt=
+Date.now();
 
 
-   log(
-     `${m.symbol} ${direction} | `+
-     `score ${feature.score} | `+
-     `val ${m.backtest.validationRate.toFixed(1)}% | `+
-     `LB ${m.backtest.conservative.toFixed(1)}% | `+
-     `payout ${payout.toFixed(2)} | `+
-     `BE ${(breakEven*100).toFixed(1)}% | `+
-     `EV ${expectedValue.toFixed(3)}`
-   );
+const triggerSeq=
+m.seq;
 
+const triggerEpoch=
+m.lastEpoch;
 
-   /*
-      CRITICAL:
+try{
 
-      If another tick arrived while
-      proposal was being requested,
-      abandon the proposal.
+const stake=
+num(
+$("stake").value
+);
 
-      We never want to buy an old
-      signal on a new tick.
-   */
+const duration=
+num(
+$("duration").value
+);
 
-   if(
-     m.seq!==triggerSeq ||
-     m.lastEpoch!==triggerEpoch
-   ){
+const currency=
+$("currency").value.trim()
+||"USD";
 
-     log(
-       m.symbol+
-       " skipped — signal changed."
-     );
 
-     return;
+const request={
 
-   }
+proposal:1,
 
+amount:stake,
 
-   /*
-      Re-check every safety condition.
-   */
+basis:"stake",
 
-   if(
-     !trading ||
-     openTrade ||
-     losses>=
-     num($("maxLosses").value)
-   ){
+currency,
 
-     return;
+duration,
 
-   }
+duration_unit:"t",
 
+underlying_symbol:
+m.symbol
 
-   if(
-     expectedValue<
-     num($("minEV").value)
-   ){
+};
 
-     log(
-       m.symbol+
-       " rejected — EV below minimum."
-     );
 
-     return;
+/*
+ Contract parameters.
+*/
 
-   }
+if(
+strategy.type==="RISEFALL"
+){
 
+request.contract_type=
+strategy.direction;
 
-   /*
-      PAPER
-   */
+}else{
 
-   if(
-     $("mode").value==="paper"
-   ){
+request.contract_type=
+strategy.type;
 
-     createPaperTrade(
-       m,
-       direction,
-       feature,
-       ask,
-       payout,
-       triggerSeq,
-       triggerEpoch
-     );
+}
 
-     return;
 
-   }
+/*
+ Digit barriers.
+*/
 
+if(
+strategy.type==="DIGITOVER"
+){
 
-   /*
-      LIVE
-   */
+request.barrier="3";
 
-   if(
-     $("mode").value==="live"
-   ){
+}
 
-     await buyLiveContract(
-       m,
-       direction,
-       feature,
-       proposal.id,
-       ask,
-       payout,
-       triggerSeq,
-       triggerEpoch
-     );
+if(
+strategy.type==="DIGITUNDER"
+){
 
-   }
+request.barrier="7";
 
+}
 
- }catch(error){
 
-   log(
-     m.symbol+
-     " proposal error: "+
-     error.message
-   );
+const data=
+await sendRequest(
+request,
+10000
+);
 
- }finally{
 
-   tradeInFlight=false;
+const p=
+data.proposal;
 
- }
+if(!p){
+
+throw new Error(
+"No proposal returned."
+);
+
+}
+
+
+const ask=
+num(p.ask_price);
+
+const payout=
+num(p.payout);
+
+
+if(
+ask<=0 ||
+payout<=0
+){
+
+throw new Error(
+"Proposal missing price/payout."
+);
+
+}
+
+
+const breakEven=
+ask/payout;
+
+
+/*
+ Use conservative probability.
+*/
+
+const probability=
+strategy.conservative/100;
+
+
+const ev=
+probability*
+payout-
+ask;
+
+
+strategy.ask=ask;
+
+strategy.payout=payout;
+
+strategy.breakEven=
+breakEven*100;
+
+strategy.ev=ev;
+
+
+renderAll();
+
+
+log(
+`${m.symbol} ${displayStrategy(strategy)} | `+
+`score ${strategy.score} | `val ${strategy.validation.toFixed(1)}% | `+
+`LB ${strategy.conservative.toFixed(1)}% | `+
+`payout ${payout.toFixed(2)} | `+
+`BE ${(breakEven*100).toFixed(1)}% | `+
+`EV ${ev.toFixed(3)}`
+);
+
+
+/*
+ Signal must still be valid.
+*/
+
+if(
+m.seq!==triggerSeq ||
+m.lastEpoch!==triggerEpoch
+){
+
+log(
+m.symbol+
+" cancelled — signal changed."
+);
+
+return;
+
+}
+
+
+if(
+ev<
+num($("minEV").value)
+){
+
+log(
+m.symbol+
+" rejected — EV too low."
+);
+
+return;
+
+}
+
+
+if(
+!trading ||
+openTrade ||
+losses>=
+num($("maxLosses").value)
+)
+return;
+
+
+/*
+ PAPER
+*/
+
+if(
+$("mode").value==="paper"
+){
+
+createPaperTrade(
+m,
+strategy,
+ask,
+payout,
+triggerSeq,
+triggerEpoch
+);
+
+return;
+
+}
+
+
+/*
+ LIVE
+*/
+
+if(
+$("mode").value==="live"
+){
+
+await buyLive(
+m,
+strategy,
+p.id,
+ask,
+payout,
+triggerSeq,
+triggerEpoch
+);
+
+}
+
+
+}catch(e){
+
+log(
+m.symbol+
+" proposal error: "+
+e.message
+);
+
+}finally{
+
+tradeInFlight=false;
+
+}
 
 }
 
 
 /* =========================
-   PAPER TRADE
+   DISPLAY STRATEGY
+========================= */
+
+function displayStrategy(s){
+
+if(
+s.type==="RISEFALL"
+)
+return s.direction;
+
+if(
+s.type==="DIGITOVER"
+)
+return "OVER 3";
+
+if(
+s.type==="DIGITUNDER"
+)
+return "UNDER 7";
+
+if(
+s.type==="DIGITEVEN"
+)
+return "EVEN";
+
+if(
+s.type==="DIGITODD"
+)
+return "ODD";
+
+return s.type;
+
+}
+
+
+/* =========================
+   PAPER
 ========================= */
 
 function createPaperTrade(
- m,
- direction,
- feature,
- ask,
- payout,
- triggerSeq,
- triggerEpoch
+m,
+strategy,
+ask,
+payout,
+seq,
+epoch
 ){
 
- if(
-   openTrade
- ){
+if(openTrade)
+return;
 
-   return;
+openTrade={
 
- }
+paper:true,
 
- openTrade={
+symbol:m.symbol,
 
-   paper:true,
+strategy:strategy.type,
 
-   symbol:m.symbol,
+direction:
+strategy.direction,
 
-   direction,
+stake:ask,
 
-   stake:ask,
+payout,
 
-   payout,
+entryPrice:
+m.lastTick,
 
-   entryPrice:
-     m.lastTick,
+entryDigit:
+lastDigit(
+m.lastTick
+),
 
-   entrySeq:
-     triggerSeq,
+entrySeq:seq,
 
-   entryEpoch:
-     triggerEpoch,
+entryEpoch:epoch,
 
-   duration:
-     num(
-       $("duration").value
-     ),
+duration:
+num(
+$("duration").value
+),
 
-   score:
-     feature.score,
+score:
+strategy.score
 
-   startedAt:
-     Date.now()
+};
 
- };
+m.lastTradeTime=
+Date.now();
 
+m.lastTradeSeq=
+m.seq;
 
- m.lastTradeSeq =
-   m.seq;
+$("openTrade").textContent=
+m.symbol+
+" "+
+displayStrategy(
+strategy
+);
 
- m.lastTradeTime =
-   Date.now();
-
- $("openTrade").textContent =
-   m.symbol+
-   " "+
-   direction;
-
- log(
-   `PAPER ENTRY ${m.symbol} `+
-   `${direction} | `+
-   `score ${feature.score}`
- );
+log(
+`PAPER ENTRY ${m.symbol} `+
+`${displayStrategy(strategy)} `+
+`score ${strategy.score}`
+);
 
 }
 
@@ -3472,92 +4188,130 @@ function createPaperTrade(
 
 function resolvePaperTrade(m){
 
- if(
-   !openTrade ||
-   !openTrade.paper
- ){
+if(
+!openTrade ||
+!openTrade.paper
+)
+return;
 
-   return;
-
- }
-
- if(
-   openTrade.symbol!==m.symbol
- ){
-
-   return;
-
- }
+if(
+openTrade.symbol!==m.symbol
+)
+return;
 
 
- /*
-    Number of ACTUAL ticks since
-    entry.
- */
-
- const ticksElapsed =
-   m.seq-
-   openTrade.entrySeq;
+const elapsed=
+m.seq-
+openTrade.entrySeq;
 
 
- if(
-   ticksElapsed<
-   openTrade.duration
- ){
-
-   return;
-
- }
+if(
+elapsed<
+openTrade.duration
+)
+return;
 
 
- const entry =
-   openTrade.entryPrice;
-
- const exit =
-   m.lastTick;
-
- let win=false;
-
- if(
-   openTrade.direction==="CALL"
- ){
-
-   win =
-     exit>entry;
-
- }
-
- if(
-   openTrade.direction==="PUT"
- ){
-
-   win =
-     exit<entry;
-
- }
+let won=false;
 
 
- const stake =
-   openTrade.stake;
+/*
+ Rise/Fall
+*/
 
- const payout =
-   openTrade.payout;
+if(
+openTrade.strategy==="RISEFALL"
+){
 
- const profit =
-   win
-   ? payout-stake
-   : -stake;
+if(
+openTrade.direction==="CALL"
+){
+
+won=
+m.lastTick>
+openTrade.entryPrice;
+
+}
+
+if(
+openTrade.direction==="PUT"
+){
+
+won=
+m.lastTick<
+openTrade.entryPrice;
+
+}
+
+}
 
 
- finishTrade(
-   m,
-   openTrade.direction,
-   stake,
-   payout,
-   win,
-   profit,
-   openTrade.score
- );
+/*
+ Digits
+
+ For digit contracts the relevant
+ digit is the final tick digit at
+ expiry.
+*/
+
+if(
+openTrade.strategy!=="RISEFALL"
+){
+
+const d=
+lastDigit(
+m.lastTick
+);
+
+if(d!==null){
+
+if(
+openTrade.strategy==="DIGITOVER"
+)
+won=d>3;
+
+if(
+openTrade.strategy==="DIGITUNDER"
+)
+won=d<7;
+
+if(
+openTrade.strategy==="DIGITEVEN"
+)
+won=d%2===0;
+
+if(
+openTrade.strategy==="DIGITODD"
+)
+won=d%2===1;
+
+}
+
+}
+
+
+const stake=
+openTrade.stake;
+
+const payout=
+openTrade.payout;
+
+const profit=
+won
+?payout-stake
+:-stake;
+
+
+finishTrade(
+m,
+openTrade.strategy,
+openTrade.direction,
+stake,
+payout,
+won,
+profit,
+openTrade.score
+);
 
 }
 
@@ -3566,442 +4320,408 @@ function resolvePaperTrade(m){
    LIVE BUY
 ========================= */
 
-async function buyLiveContract(
- m,
- direction,
- feature,
- proposalId,
- ask,
- payout,
- triggerSeq,
- triggerEpoch
+async function buyLive(
+m,
+strategy,
+proposalId,
+ask,
+payout,
+triggerSeq,
+triggerEpoch
 ){
 
- /*
-    One final check immediately
-    before buying.
- */
+/*
+ Never buy stale signal.
+*/
 
- if(
-   m.seq!==triggerSeq ||
-   m.lastEpoch!==triggerEpoch
- ){
+if(
+m.seq!==triggerSeq ||
+m.lastEpoch!==triggerEpoch
+){
 
-   log(
-     m.symbol+
-     " buy cancelled — tick changed."
-   );
+log(
+m.symbol+
+" live buy cancelled — tick changed."
+);
 
-   return;
+return;
 
- }
-
-
- if(
-   !trading ||
-   openTrade
- ){
-
-   return;
-
- }
+}
 
 
- const data =
-   await sendRequest(
-     {
-       buy:String(
-         proposalId
-       ),
-
-       price:ask
-
-     },
-     10000
-   );
+if(
+!trading ||
+openTrade
+)
+return;
 
 
- const buy =
-   data.buy;
-
- if(!buy){
-
-   throw new Error(
-     "Buy response missing."
-   );
-
- }
+const data=
+await sendRequest(
+{
+buy:String(proposalId),
+price:ask
+},
+10000
+);
 
 
- totalTrades++;
+const b=
+data.buy;
+
+if(!b){
+
+throw new Error(
+"Buy response missing."
+);
+
+}
 
 
- openTrade={
-
-   paper:false,
-
-   contractId:
-     buy.contract_id,
-
-   symbol:m.symbol,
-
-   direction,
-
-   stake:ask,
-
-   payout,
-
-   score:
-     feature.score,
-
-   entryPrice:
-     m.lastTick,
-
-   entrySeq:
-     triggerSeq
-
- };
+totalTrades++;
 
 
- m.lastTradeSeq =
-   m.seq;
+openTrade={
 
- m.lastTradeTime =
-   Date.now();
+paper:false,
+
+contractId:
+b.contract_id,
+
+symbol:m.symbol,
+
+strategy:
+strategy.type,
+
+direction:
+strategy.direction,
+
+stake:ask,
+
+payout,
+
+entryPrice:
+m.lastTick,
+
+entrySeq:
+triggerSeq,
+
+score:
+strategy.score
+
+};
 
 
- $("openTrade").textContent =
-   m.symbol+
-   " "+
-   direction;
+m.lastTradeTime=
+Date.now();
+
+m.lastTradeSeq=
+m.seq;
 
 
- updateStats();
+$("openTrade").textContent=
+m.symbol+
+" "+
+displayStrategy(
+strategy
+);
+
+updateStats();
 
 
- log(
-   `LIVE BUY ${m.symbol} `+
-   `${direction} `+
-   `#${buy.contract_id}`
- );
+log(
+`LIVE BUY ${m.symbol} `+
+`${displayStrategy(strategy)} `+
+`#${b.contract_id}`
+);
 
 
- /*
-    Monitor the contract.
- */
+/*
+ Subscribe to contract.
+*/
 
- ws.send(
-   JSON.stringify({
+ws.send(
+JSON.stringify({
 
-     proposal_open_contract:1,
+proposal_open_contract:1,
 
-     contract_id:
-       buy.contract_id,
+contract_id:
+b.contract_id,
 
-     subscribe:1,
+subscribe:1,
 
-     req_id:++reqId
+req_id:++reqId
 
-   })
- );
+})
+);
 
 }
 
 
 /* =========================
-   OPEN CONTRACT
+   CONTRACT UPDATE
 ========================= */
 
 function handleContract(data){
 
- const c =
-   data.proposal_open_contract;
+const c=
+data.proposal_open_contract;
 
- if(
-   !c ||
-   !openTrade ||
-   openTrade.paper
- ){
+if(
+!c ||
+!openTrade ||
+openTrade.paper
+)
+return;
 
-   return;
-
- }
-
-
- if(
-   String(c.contract_id)!==
-   String(openTrade.contractId)
- ){
-
-   return;
-
- }
+if(
+String(c.contract_id)!==
+String(openTrade.contractId)
+)
+return;
 
 
- /*
-    Contract has finished.
- */
+if(
+c.is_sold ||
+c.status==="won" ||
+c.status==="lost"
+){
 
- if(
-   c.is_sold ||
-   c.status==="won" ||
-   c.status==="lost"
- ){
+const profit=
+num(c.profit);
 
-   const profit =
-     num(c.profit);
-
-   const won =
-     profit>0 ||
-     c.status==="won";
+const won=
+profit>0 ||
+c.status==="won";
 
 
-   const m =
-     markets[
-       openTrade.symbol
-     ];
+const m=
+markets[
+openTrade.symbol
+];
 
+if(m){
 
-   if(m){
+finishTrade(
+m,
+openTrade.strategy,
+openTrade.direction,
+openTrade.stake,
+openTrade.payout,
+won,
+profit,
+openTrade.score
+);
 
-     finishTrade(
-       m,
-       openTrade.direction,
-       openTrade.stake,
-       openTrade.payout,
-       won,
-       profit,
-       openTrade.score
-     );
-
-   }
-
- }
+}
 
 }
 
 
 /* =========================
-   FINISH TRADE
+   FINISH
 ========================= */
 
 function finishTrade(
- m,
- direction,
- stake,
- payout,
- won,
- profit,
- score
+m,
+strategy,
+direction,
+stake,
+payout,
+won,
+profit,
+score
 ){
 
- /*
-    If live buy already incremented
-    totalTrades, paper hasn't.
+if(!openTrade)
+return;
 
-    Therefore:
- */
 
- if(
-   !openTrade
- ){
+/*
+ Paper increments here.
+ Live incremented when bought.
+*/
 
-   return;
+if(openTrade.paper){
 
- }
+totalTrades++;
 
- if(
-   openTrade.paper
- ){
+}
 
-   totalTrades++;
 
- }
+if(won){
 
+wins++;
 
- if(won){
+m.consecutiveLosses=0;
 
-   wins++;
+}else{
 
-   m.consecutiveLosses=0;
+losses++;
 
- }else{
+m.consecutiveLosses++;
 
-   losses++;
+}
 
-   m.consecutiveLosses++;
+sessionPL+=
+profit;
 
- }
 
+addHistory(
+m.symbol,
+strategy,
+direction,
+stake,
+payout,
+won,
+profit,
+score
+);
 
- sessionPL +=
-   profit;
 
+/*
+ Market loss lock.
+*/
 
- addHistory(
-   m.symbol,
-   direction,
-   stake,
-   payout,
-   won,
-   profit,
-   score
- );
+const lockAfter=
+num(
+$("marketLossLock").value
+);
 
+if(
+!won &&
+m.consecutiveLosses>=lockAfter
+){
 
- /*
-    Market lock after repeated losses.
- */
+const ticks=
+num(
+$("lockTicks").value
+);
 
- const lockAfter =
-   num(
-     $("marketLossLock").value
-   );
+m.lockedUntilSeq=
+m.seq+
+ticks;
 
- if(
-   !won &&
-   m.consecutiveLosses>=lockAfter
- ){
+log(
+`${m.symbol} locked for `+
+`${ticks} ticks.`
+);
 
-   const lockTicks =
-     num(
-       $("lockTicks").value
-     );
+}
 
-   m.lockedUntilSeq =
-     m.seq+
-     lockTicks;
 
-   log(
-     `${m.symbol} LOCKED for `+
-     `${lockTicks} ticks after `+
-     `${m.consecutiveLosses} losses.`
-   );
+/*
+ Global cooldown.
+*/
 
- }
+if(!won){
 
+const cd=
+num(
+$("cooldown").value
+);
 
- /*
-    Global cooldown after loss.
- */
+cooldownUntil=
+Date.now()+
+cd*1000;
 
- if(!won){
+log(
+`LOSS — cooldown ${cd}s`
+);
 
-   const seconds =
-     num(
-       $("cooldown").value
-     );
+}
 
-   cooldownUntil =
-     Date.now()+
-     seconds*1000;
 
-   log(
-     `LOSS — global cooldown `+
-     `${seconds}s`
-   );
+m.lastTradeTime=
+Date.now();
 
- }
+openTrade=null;
 
+$("openTrade").textContent=
+"None";
 
- m.lastTradeTime =
-   Date.now();
+updateStats();
 
 
- openTrade=null;
+/*
+ Global risk.
+*/
 
+if(
+losses>=
+num($("maxLosses").value)
+){
 
- $("openTrade").textContent =
-   "None";
+stopReason(
+"STOPPED — maximum losses reached.",
+"bad"
+);
 
+return;
 
- updateStats();
+}
 
+if(
+totalTrades>=
+num($("maxTrades").value)
+){
 
- /*
-    Maximum losses.
- */
+stopReason(
+"STOPPED — maximum trades reached.",
+"warn"
+);
 
- if(
-   losses>=
-   num($("maxLosses").value)
- ){
+return;
 
-   stopWithReason(
-     "STOPPED — maximum losses reached.",
-     "bad"
-   );
+}
 
-   return;
 
- }
+/*
+ TP
+*/
 
+const tp=
+num(
+$("takeProfit").value
+);
 
- /*
-    Maximum trades.
- */
+if(
+tp>0 &&
+sessionPL>=tp
+){
 
- if(
-   totalTrades>=
-   num($("maxTrades").value)
- ){
+stopReason(
+"STOPPED — take profit reached.",
+"good"
+);
 
-   stopWithReason(
-     "STOPPED — maximum trades reached.",
-     "warn"
-   );
+return;
 
-   return;
+}
 
- }
 
+/*
+ SL
+*/
 
- /*
-    Take profit.
- */
+const sl=
+num(
+$("stopLoss").value
+);
 
- const tp =
-   num(
-     $("takeProfit").value
-   );
+if(
+sl<0 &&
+sessionPL<=sl
+){
 
- if(
-   tp>0 &&
-   sessionPL>=tp
- ){
+stopReason(
+"STOPPED — stop loss reached.",
+"bad"
+);
 
-   stopWithReason(
-     "STOPPED — take profit reached.",
-     "good"
-   );
+return;
 
-   return;
-
- }
-
-
- /*
-    Stop loss.
- */
-
- const sl =
-   num(
-     $("stopLoss").value
-   );
-
- if(
-   sl<0 &&
-   sessionPL<=sl
- ){
-
-   stopWithReason(
-     "STOPPED — stop loss reached.",
-     "bad"
-   );
-
-   return;
-
- }
+}
 
 }
 
@@ -4010,102 +4730,91 @@ function finishTrade(
    STOP
 ========================= */
 
-function stopWithReason(
- message,
- cls
+function stopReason(
+message,
+cls
 ){
 
- trading=false;
+trading=false;
 
- setStatus(
-   message,
-   cls
- );
+status(
+message,
+cls
+);
 
- log(message);
+log(message);
 
 }
-
 
 function startTrading(){
 
- if(!connected){
+if(!connected){
 
-   setStatus(
-     "Connect account first.",
-     "warn"
-   );
+status(
+"Connect first.",
+"warn"
+);
 
-   return;
-
- }
-
-
- if(
-   totalTrades>=
-   num($("maxTrades").value)
- ){
-
-   setStatus(
-     "Maximum trades already reached.",
-     "warn"
-   );
-
-   return;
-
- }
-
-
- if(
-   losses>=
-   num($("maxLosses").value)
- ){
-
-   setStatus(
-     "Maximum losses already reached.",
-     "bad"
-   );
-
-   return;
-
- }
-
-
- trading=true;
-
-
- const mode =
-   $("mode").value;
-
-
- setStatus(
-   mode==="paper"
-   ? "PAPER TRADING ACTIVE"
-   : "LIVE TRADING ACTIVE",
-   "good"
- );
-
-
- log(
-   mode.toUpperCase()+
-   " trading started."
- );
+return;
 
 }
 
+if(
+totalTrades>=
+num($("maxTrades").value)
+){
+
+status(
+"Maximum trades reached.",
+"warn"
+);
+
+return;
+
+}
+
+if(
+losses>=
+num($("maxLosses").value)
+){
+
+status(
+"Maximum losses reached.",
+"bad"
+);
+
+return;
+
+}
+
+trading=true;
+
+status(
+$("mode").value==="paper"
+?"PAPER TRADING ACTIVE"
+:"LIVE TRADING ACTIVE",
+"good"
+);
+
+log(
+$("mode").value.toUpperCase()+
+" trading started."
+);
+
+}
 
 function stopTrading(){
 
- trading=false;
+trading=false;
 
- setStatus(
-   "STOPPED — no new entries.",
-   "warn"
- );
+status(
+"STOPPED — no new entries.",
+"warn"
+);
 
- log(
-   "Trading stopped."
- );
+log(
+"Trading stopped."
+);
 
 }
 
@@ -4116,49 +4825,49 @@ function stopTrading(){
 
 function resetSession(){
 
- trading=false;
+if(openTrade){
 
- if(openTrade){
+log(
+"Cannot reset while a trade is open."
+);
 
-   log(
-     "Reset ignored because a trade is open."
-   );
+return;
 
-   return;
+}
 
- }
+trading=false;
 
- totalTrades=0;
+totalTrades=0;
 
- wins=0;
+wins=0;
 
- losses=0;
+losses=0;
 
- sessionPL=0;
+sessionPL=0;
 
- cooldownUntil=0;
+cooldownUntil=0;
 
- Object.values(markets)
-   .forEach(
-     m=>{
-       m.consecutiveLosses=0;
-       m.lockedUntilSeq=0;
-       m.lastTradeTime=0;
-     }
-   );
+Object.values(markets)
+.forEach(
+m=>{
 
- $("history").innerHTML="";
+m.consecutiveLosses=0;
 
- updateStats();
+m.lockedUntilSeq=0;
 
- setStatus(
-   "Session reset.",
-   "good"
- );
+m.lastTradeTime=0;
 
- log(
-   "Session statistics reset."
- );
+}
+);
+
+$("history").innerHTML="";
+
+updateStats();
+
+status(
+"Session reset.",
+"good"
+);
 
 }
 
@@ -4169,28 +4878,27 @@ function resetSession(){
 
 function updateStats(){
 
- $("trades").textContent =
-   totalTrades;
+$("trades").textContent=
+totalTrades;
 
- $("wins").textContent =
-   wins;
+$("wins").textContent=
+wins;
 
- $("losses").textContent =
-   losses;
+$("losses").textContent=
+losses;
 
- const wr =
-   totalTrades
-   ? wins/totalTrades*100
-   : 0;
+const wr=
+totalTrades
+?wins/totalTrades*100
+:0;
 
- $("winRate").textContent =
-   wr.toFixed(1)+
-   "%";
+$("winRate").textContent=
+wr.toFixed(1)+"%";
 
- $("pl").textContent =
-   (sessionPL>=0?"+":"")+
-   "$"+
-   sessionPL.toFixed(2);
+$("pl").textContent=
+(sessionPL>=0?"+":"")+
+"$"+
+sessionPL.toFixed(2);
 
 }
 
@@ -4200,290 +4908,391 @@ function updateStats(){
 ========================= */
 
 function addHistory(
- symbol,
- direction,
- stake,
- payout,
- won,
- profit,
- score
+symbol,
+strategy,
+direction,
+stake,
+payout,
+won,
+profit,
+score
 ){
 
- const body =
-   $("history");
+const row=
+document.createElement("tr");
 
- const row =
-   document.createElement("tr");
+row.innerHTML=`
 
+<td>${totalTrades}</td>
 
- row.innerHTML=`
+<td>${symbol}</td>
 
- <td>${totalTrades}</td>
+<td>${strategyLabel(strategy)}</td>
 
- <td>${symbol}</td>
+<td>${direction||"-"}</td>
 
- <td>${direction}</td>
+<td>$${stake.toFixed(2)}</td>
 
- <td>$${num(stake).toFixed(2)}</td>
+<td>$${payout.toFixed(2)}</td>
 
- <td>$${num(payout).toFixed(2)}</td>
+<td class="${won?"good":"bad"}">
+${won?"WIN":"LOSS"}
+</td>
 
- <td class="${won?"good":"bad"}">
- ${won?"WIN":"LOSS"}
- </td>
+<td class="${profit>=0?"good":"bad"}">
+${profit>=0?"+":""}$${profit.toFixed(2)}
+</td>
 
- <td class="${profit>=0?"good":"bad"}">
- ${profit>=0?"+":""}
- $${profit.toFixed(2)}
- </td>
+<td>${score}</td>
 
- <td>${score}</td>
+`;
 
- `;
+$("history").prepend(row);
 
+while(
+$("history").children.length>50
+){
 
- body.prepend(row);
+$("history").removeChild(
+$("history").lastChild
+);
 
-
- while(
-   body.children.length>50
- ){
-
-   body.removeChild(
-     body.lastChild
-   );
-
- }
+}
 
 }
 
 
 /* =========================
-   MARKET TABLE
+   STRATEGY LABEL
 ========================= */
+
+function strategyLabel(type){
+
+if(type==="RISEFALL")
+return "Rise/Fall";
+
+if(type==="DIGITOVER")
+return "Over 3";
+
+if(type==="DIGITUNDER")
+return "Under 7";
+
+if(type==="DIGITEVEN")
+return "Even";
+
+if(type==="DIGITODD")
+return "Odd";
+
+return type;
+
+}
+
+
+/* =========================================================
+   MARKET TABLE
+========================================================= */
 
 function renderMarkets(){
 
- const body =
-   $("markets");
+const body=
+$("markets");
 
- body.innerHTML="";
+body.innerHTML="";
 
+
+marketList.forEach(
+symbol=>{
 
- marketList.forEach(
-   symbol=>{
+const m=
+markets[symbol];
 
-     const m =
-       markets[symbol];
+if(!m)
+return;
 
-     if(!m){
+const best=
+m.best;
 
-       return;
+const feature=
+m.features ||
+priceFeature(
+m.prices
+);
 
-     }
+const pulse=
+best
+?best.score
+:feature?.score||0;
 
 
-     const f =
-       m.feature;
+const bestName=
+best
+?displayStrategy(best)
+:"WAIT";
 
 
-     const b =
-       m.backtest;
+const validation=
+best
+?best.validation.toFixed(1)+"%"
+:"-";
 
+const lower=
+best
+?best.conservative.toFixed(1)+"%"
+:"-";
 
-     const signal =
-       f?.signal ||
-       "WAIT";
+const samples=
+best
+?best.samples
+:"-";
 
+const payout=
+best?.payout
+?best.payout.toFixed(2)
+:"-";
 
-     const score =
-       f
-       ? f.score
-       : 0;
+const ev=
+best?.ev!==undefined
+?best.ev.toFixed(3)
+:"-";
 
 
-     const p20 =
-       f
-       ? f.d20>0
-         ? "↑"
-         : f.d20<0
-         ? "↓"
-         : "→"
-       : "-";
+const p20=
+feature
+?feature.d20>0
+?"↑"
+:feature.d20<0
+?"↓"
+:"→"
+:"-";
 
 
-     const p50 =
-       f
-       ? f.d50>0
-         ? "↑"
-         : f.d50<0
-         ? "↓"
-         : "→"
-       : "-";
+const p50=
+feature
+?feature.d50>0
+?"↑"
+:feature.d50<0
+?"↓"
+:"→"
+:"-";
 
 
-     const p100 =
-       f
-       ? f.d100>0
-         ? "↑"
-         : f.d100<0
-         ? "↓"
-         : "→"
-       : "-";
+const p100=
+feature
+?feature.d100>0
+?"↑"
+:feature.d100<0
+?"↓"
+:"→"
+:"-";
 
 
-     const persistence =
-       f
-       ? f.directionalPersistence
-         .toFixed(1)+"%"
-       : "-";
+const persist=
+feature
+?(
+feature.directionalPersistence||
+feature.persistence?.up||
+0
+).toFixed(1)+"%"
+:"-";
 
 
-     const chop =
-       f
-       ? f.chop.toFixed(1)+"%"
-       : "-";
+const chop=
+feature
+?feature.chop.toFixed(1)+"%"
+:"-";
 
 
-     const vol =
-       f
-       ? f.volatilityRatio.toFixed(2)
-       : "-";
+const vol=
+feature
+?feature.volRatio.toFixed(2)
+:"-";
 
 
-     const run =
-       f
-       ? (
-         f.runDirection>0
-         ? "↑"
-         : f.runDirection<0
-         ? "↓"
-         : "-"
-       )+
-       f.runLength
-       : "-";
+let digitText="-";
 
+if(
+m.ready
+){
 
-     const validation =
-       b
-       ? b.validationRate
-         .toFixed(1)+"%"
-       : "-";
+const ds=
+digitStats(
+m.prices,
+num(
+$("digitWindow").value
+)
+);
 
+if(ds){
 
-     const lowerBound =
-       b
-       ? b.conservative
-         .toFixed(1)+"%"
-       : "-";
+digitText=
+`${ds.over3.toFixed(0)} / ${ds.under7.toFixed(0)}`;
 
+}
 
-     const sample =
-       b
-       ? b.validationTotal
-       : "-";
+}
 
 
-     const ev =
-       m.ev!==null &&
-       m.ev!==undefined
-       ? m.ev.toFixed(3)
-       : "-";
+let state="WAIT";
 
+if(
+m.lockedUntilSeq>
+m.seq
+){
 
-     let status="WAIT";
+state="LOCKED";
 
+}else if(best){
 
-     if(
-       m.lockedUntilSeq>
-       m.seq
-     ){
+state="QUALIFIED";
 
-       status="LOCKED";
+}
 
-     }else if(
-       signal &&
-       b &&
-       b.validationTotal>=
-       num($("minSamples").value) &&
-       b.conservative>=
-       num($("minConservative").value)
-     ){
 
-       status="QUALIFIED";
+const row=
+document.createElement("tr");
 
-     }
+row.innerHTML=`
 
+<td>
+<span class="badge">
+${symbol}
+</span>
+</td>
 
-     const row =
-       document.createElement("tr");
+<td>
+${m.lastTick??"-"}
+</td>
 
+<td class="${
+best?.direction==="CALL"
+?"good"
+:best?.direction==="PUT"
+?"bad"
+:""
+}">
+${bestName}
+</td>
 
-     row.innerHTML=`
+<td>
+${best?.type
+?strategyLabel(best.type)
+:"-"}
+</td>
 
-     <td>
-       <span class="badge">
-       ${symbol}
-       </span>
-     </td>
+<td class="pulse">
+${pulse}
+</td>
 
-     <td>
-       ${m.lastTick ?? "-"}
-     </td>
+<td>
+${pulse}
+</td>
 
-     <td class="${
-       signal==="CALL"
-       ? "good"
-       : signal==="PUT"
-       ? "bad"
-       : ""
-     }">
-       ${signal}
-     </td>
+<td>${p20}</td>
 
-     <td class="score">
-       ${score}
-     </td>
+<td>${p50}</td>
 
-     <td>${p20}</td>
+<td>${p100}</td>
 
-     <td>${p50}</td>
+<td>${persist}</td>
 
-     <td>${p100}</td>
+<td>${chop}</td>
 
-     <td>${persistence}</td>
+<td>${vol}</td>
 
-     <td>${chop}</td>
+<td>${digitText}</td>
 
-     <td>${vol}</td>
+<td>${validation}</td>
 
-     <td>${run}</td>
+<td>${lower}</td>
 
-     <td>${validation}</td>
+<td>${samples}</td>
 
-     <td>${lowerBound}</td>
+<td>${payout}</td>
 
-     <td>${sample}</td>
+<td>${ev}</td>
 
-     <td>${ev}</td>
+<td class="${
+state==="QUALIFIED"
+?"good"
+:state==="LOCKED"
+?"bad"
+:""
+}">
+${state}
+</td>
 
-     <td class="${
-       status==="QUALIFIED"
-       ? "good"
-       : status==="LOCKED"
-       ? "bad"
-       : ""
-     }">
-       ${status}
-     </td>
+`;
 
-     `;
+body.appendChild(row);
 
+});
 
-     body.appendChild(row);
+}
 
-   }
- );
+
+/* =========================
+   DIGIT TABLE
+========================= */
+
+function renderDigits(){
+
+const body=
+$("digits");
+
+body.innerHTML="";
+
+
+marketList.forEach(
+symbol=>{
+
+const m=
+markets[symbol];
+
+if(
+!m ||
+!m.ready
+)
+return;
+
+const ds=
+digitStats(
+m.prices,
+num(
+$("digitWindow").value
+)
+);
+
+const row=
+document.createElement("tr");
+
+let cells=
+`<td>${symbol}</td>`;
+
+ds.pct.forEach(
+p=>{
+
+cells+=
+`<td>${p.toFixed(1)}%</td>`;
+
+});
+
+cells+=
+`<td>${ds.even.toFixed(1)}%</td>`;
+
+cells+=
+`<td>${ds.odd.toFixed(1)}%</td>`;
+
+cells+=
+`<td>${ds.over3.toFixed(1)}%</td>`;
+
+cells+=
+`<td>${ds.under7.toFixed(1)}%</td>`;
+
+row.innerHTML=cells;
+
+body.appendChild(row);
+
+});
 
 }
 
@@ -4494,135 +5303,149 @@ function renderMarkets(){
 
 function renderBacktests(){
 
- const body =
-   $("backtests");
+const body=
+$("backtests");
 
- body.innerHTML="";
-
-
- marketList.forEach(
-   symbol=>{
-
-     const m =
-       markets[symbol];
-
-     if(
-       !m ||
-       !m.backtest
-     ){
-
-       return;
-
-     }
+body.innerHTML="";
 
 
-     const b =
-       m.backtest;
+marketList.forEach(
+symbol=>{
+
+const m=
+markets[symbol];
+
+if(!m)
+return;
+
+Object.values(
+m.strategies||{}
+)
+.forEach(
+s=>{
+
+const b=
+s.backtest;
+
+if(!b)
+return;
+
+const qualified=
+b.validationTotal>=
+num($("minSamples").value)
+&&
+b.validationRate>=
+num($("minValidation").value)
+&&
+b.conservative>=
+num($("minConservative").value)
+&&
+s.score>=
+num($("minScore").value);
 
 
-     const qualified =
-       b.validationTotal>=
-       num($("minSamples").value)
-       &&
-       b.validationRate>=
-       num($("minValidation").value)
-       &&
-       b.conservative>=
-       num($("minConservative").value);
+const row=
+document.createElement("tr");
 
+row.innerHTML=`
 
-     const row =
-       document.createElement("tr");
+<td>${symbol}</td>
 
+<td>${strategyLabel(s.type)}</td>
 
-     row.innerHTML=`
+<td>
+${b.trainRate.toFixed(1)}%
+(${b.trainTotal})
+</td>
 
-     <td>${symbol}</td>
+<td>
+${b.validationRate.toFixed(1)}%
+</td>
 
-     <td>${b.duration}T</td>
+<td>
+${b.validationWins}
+</td>
 
-     <td>
-       ${b.trainRate.toFixed(1)}%
-       (${b.trainTotal})
-     </td>
+<td>
+${b.validationTotal}
+</td>
 
-     <td>
-       ${b.validationRate.toFixed(1)}%
-     </td>
+<td>
+${b.conservative.toFixed(1)}%
+</td>
 
-     <td>
-       ${b.validationTotal}
-     </td>
+<td>
+${s.score}
+</td>
 
-     <td>
-       ${b.conservative.toFixed(1)}%
-     </td>
+<td class="${
+qualified
+?"good"
+:"warn"
+}">
+${qualified
+?"QUALIFIED"
+:"WAIT"}
+</td>
 
-     <td>
-       ${m.feature?.score ?? "-"}
-     </td>
+`;
 
-     <td class="${
-       qualified
-       ? "good"
-       : "warn"
-     }">
-       ${qualified
-       ? "QUALIFIED"
-       : "WAIT"}
-     </td>
+body.appendChild(row);
 
-     `;
+});
 
-
-     body.appendChild(row);
-
-   }
- );
-
+});
 
 }
 
 
 /* =========================
-   RENDER LOOP
+   ALL RENDER
+========================= */
+
+function renderAll(){
+
+renderMarkets();
+
+renderDigits();
+
+renderBacktests();
+
+updateStats();
+
+}
+
+
+/* =========================
+   REFRESH
 ========================= */
 
 setInterval(
- ()=>{
+()=>{
 
-   renderMarkets();
+renderAll();
 
-   renderBacktests();
-
-   updateStats();
-
- },
- 1000
+},
+1000
 );
 
 
 /* =========================
-   CONNECTION SAFETY
+   SAFETY
 ========================= */
 
 window.addEventListener(
- "beforeunload",
- ()=>{
+"beforeunload",
+()=>{
 
-   trading=false;
+trading=false;
 
-   /*
-      We intentionally do not attempt
-      to buy/sell during unload.
-   */
-
- }
+}
 );
 
 
 /* =========================
-   INITIAL UI
+   INITIAL
 ========================= */
 
 updateStats();
