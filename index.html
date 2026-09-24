@@ -3,98 +3,105 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>V21 - 100 Tick Adaptive Digit Trader</title>
+<title>V22 100 Tick Adaptive Trader</title>
 
 <style>
 *{box-sizing:border-box}
 
 body{
-  margin:0;
-  font-family:Arial,Helvetica,sans-serif;
-  background:#0b1020;
-  color:#eef2ff;
+margin:0;
+font-family:Arial,Helvetica,sans-serif;
+background:#0b1020;
+color:#eef2ff;
 }
 
 .container{
-  max-width:1400px;
-  margin:auto;
-  padding:16px;
+max-width:1400px;
+margin:auto;
+padding:16px;
 }
 
 h1{
-  margin:0 0 5px;
-  font-size:25px;
+margin:0 0 5px;
+font-size:25px;
 }
 
 .subtitle{
-  color:#94a3b8;
-  margin-bottom:18px;
+color:#94a3b8;
+margin-bottom:18px;
 }
 
 .card{
-  background:#121a2b;
-  border:1px solid #26334d;
-  border-radius:12px;
-  padding:15px;
-  margin-bottom:14px;
+background:#121a2b;
+border:1px solid #26334d;
+border-radius:12px;
+padding:15px;
+margin-bottom:14px;
 }
 
 h2{
-  font-size:17px;
-  margin:0 0 12px;
+font-size:17px;
+margin:0 0 12px;
 }
 
 .grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-  gap:10px;
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+gap:10px;
 }
 
 label{
-  display:block;
-  color:#94a3b8;
-  font-size:12px;
-  margin-bottom:5px;
+display:block;
+color:#94a3b8;
+font-size:12px;
+margin-bottom:5px;
 }
 
 input,select,button{
-  width:100%;
-  border:1px solid #334155;
-  background:#0b1220;
-  color:#fff;
-  border-radius:8px;
-  padding:10px;
+width:100%;
+border:1px solid #334155;
+background:#0b1220;
+color:#fff;
+border-radius:8px;
+padding:10px;
+font-size:14px;
 }
 
 button{
-  cursor:pointer;
-  font-weight:bold;
+cursor:pointer;
+font-weight:bold;
+min-height:44px;
 }
 
 button:hover{
-  background:#1e293b;
+background:#1e293b;
 }
 
 .primary{
-  background:#2563eb;
-  border-color:#2563eb;
+background:#2563eb;
+border-color:#2563eb;
 }
 
 .green{
-  background:#15803d;
-  border-color:#15803d;
+background:#15803d;
+border-color:#15803d;
 }
 
 .red{
-  background:#991b1b;
-  border-color:#991b1b;
+background:#991b1b;
+border-color:#991b1b;
+}
+
+.orange{
+background:#b45309;
+border-color:#b45309;
 }
 
 .status{
-  padding:9px;
-  border-radius:8px;
-  background:#0b1220;
-  margin-top:10px;
+padding:10px;
+border-radius:8px;
+background:#0b1220;
+margin-top:10px;
 }
 
 .good{color:#4ade80}
@@ -103,74 +110,95 @@ button:hover{
 .muted{color:#94a3b8}
 
 .big{
-  font-size:24px;
-  font-weight:bold;
+font-size:24px;
+font-weight:bold;
 }
 
 .stat{
-  background:#0d1525;
-  border-radius:9px;
-  padding:12px;
-}
-
-.checkbox{
-  display:flex;
-  align-items:center;
-  gap:8px;
-}
-
-.checkbox input{
-  width:auto;
-}
-
-table{
-  width:100%;
-  border-collapse:collapse;
-  font-size:12px;
-}
-
-th,td{
-  border-bottom:1px solid #253149;
-  padding:8px;
-  text-align:center;
-  white-space:nowrap;
-}
-
-th{
-  color:#94a3b8;
-  background:#0d1525;
-}
-
-.scroll{
-  overflow:auto;
-  max-height:500px;
-}
-
-.signal{
-  border:1px solid #334155;
-  border-radius:9px;
-  padding:10px;
-  margin-bottom:8px;
-  background:#0d1525;
-}
-
-.signal strong{
-  font-size:14px;
+background:#0d1525;
+border-radius:9px;
+padding:12px;
 }
 
 .small{
-  font-size:11px;
-  color:#94a3b8;
+font-size:11px;
+color:#94a3b8;
+}
+
+.checkbox{
+display:flex;
+align-items:center;
+gap:8px;
+}
+
+.checkbox input{
+width:auto;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+font-size:12px;
+}
+
+th,td{
+border-bottom:1px solid #253149;
+padding:8px;
+text-align:center;
+white-space:nowrap;
+}
+
+th{
+color:#94a3b8;
+background:#0d1525;
+}
+
+.scroll{
+overflow:auto;
+max-height:500px;
+}
+
+.signal{
+border:1px solid #334155;
+border-radius:9px;
+padding:10px;
+margin-bottom:8px;
+background:#0d1525;
+}
+
+.signal strong{
+font-size:14px;
 }
 
 .log{
-  height:220px;
-  overflow:auto;
-  background:#070c16;
-  border-radius:8px;
-  padding:10px;
-  font-family:monospace;
-  font-size:11px;
+height:240px;
+overflow:auto;
+background:#070c16;
+border-radius:8px;
+padding:10px;
+font-family:monospace;
+font-size:11px;
+line-height:1.5;
+}
+
+.trade-on{
+border:1px solid #16a34a;
+color:#4ade80;
+}
+
+.trade-off{
+border:1px solid #dc2626;
+color:#f87171;
+}
+
+.warning-box{
+background:#291b08;
+border:1px solid #92400e;
+border-radius:8px;
+padding:10px;
+font-size:12px;
+color:#fbbf24;
+margin-top:10px;
 }
 </style>
 </head>
@@ -179,10 +207,10 @@ th{
 
 <div class="container">
 
-<h1>V21 — 100 Tick Adaptive Digit Trader</h1>
+<h1>V22 — 100 Tick Adaptive Digit Trader</h1>
 
 <div class="subtitle">
-100-tick current regime • Previous 100-tick validation • OVER 3 / UNDER 7 • No Recovery • No Martingale
+100 current ticks • 100 validation ticks • live tick streams • OVER 3 / UNDER 7
 </div>
 
 
@@ -215,15 +243,15 @@ th{
 
 <div class="grid" style="margin-top:10px">
 
-<button class="primary" onclick="loadAccounts()">
+<button class="primary" id="loadAccountsBtn">
 LOAD ACCOUNTS
 </button>
 
-<button class="green" onclick="connectTrading()">
+<button class="green" id="connectBtn">
 CONNECT TRADING
 </button>
 
-<button onclick="disconnectTrading()">
+<button id="disconnectBtn">
 DISCONNECT
 </button>
 
@@ -236,7 +264,7 @@ Not connected
 </div>
 
 
-<!-- SETTINGS -->
+<!-- STRATEGY -->
 
 <div class="card">
 
@@ -245,103 +273,208 @@ Not connected
 <div class="grid">
 
 <div class="stat">
-<label>Current tick window</label>
-<div class="big">100</div>
+
+<label>Current Window</label>
+
+<div class="big">
+100
+</div>
+
 <div class="small">
-Latest 100 ticks determine current regime.
-</div>
-</div>
-
-<div>
-<label>Validation ticks</label>
-<input id="validationTicks"
-type="number"
-value="100"
-min="50"
-max="500">
+Latest 100 ticks
 </div>
 
+</div>
+
+
+<div class="stat">
+
+<label>Validation Window</label>
+
+<div class="big">
+100
+</div>
+
+<div class="small">
+Previous 100 ticks
+</div>
+
+</div>
+
+
 <div>
+
 <label>Stake</label>
-<input id="stake"
+
+<input
+id="stake"
 type="number"
 value="1"
 min="0.35"
 step="0.01">
+
 </div>
 
+
 <div>
-<label>Minimum trigger observations</label>
-<input id="minTriggers"
+
+<label>Minimum Trigger Sample</label>
+
+<input
+id="minTriggers"
 type="number"
 value="15"
 min="5">
+
 </div>
 
+
 <div>
-<label>Minimum validation win %</label>
-<input id="minWinRate"
+
+<label>Minimum Validation Win %</label>
+
+<input
+id="minWinRate"
 type="number"
 value="75"
 min="50"
 max="100">
+
 </div>
 
+
 <div>
-<label>Minimum recent win %</label>
-<input id="minRecentWinRate"
+
+<label>Minimum Recent Win %</label>
+
+<input
+id="minRecentWinRate"
 type="number"
 value="70"
 min="50"
 max="100">
+
 </div>
 
+
 <div>
+
 <label>Minimum EV %</label>
-<input id="minEV"
+
+<input
+id="minEV"
 type="number"
 value="2"
 step="0.1">
+
 </div>
 
+
 <div>
-<label>Maximum trades</label>
-<input id="maxTrades"
+
+<label>Maximum Trades</label>
+
+<input
+id="maxTrades"
 type="number"
 value="20"
 min="1">
+
 </div>
 
+
 <div>
-<label>Maximum losses</label>
-<input id="maxLosses"
+
+<label>Maximum Losses</label>
+
+<input
+id="maxLosses"
 type="number"
 value="2"
 min="1">
+
 </div>
 
+
 <div>
-<label>Take profit</label>
-<input id="takeProfit"
+
+<label>Take Profit</label>
+
+<input
+id="takeProfit"
 type="number"
 value="10"
 step="0.01">
+
 </div>
 
+
 <div>
-<label>Stop loss</label>
-<input id="stopLoss"
+
+<label>Stop Loss</label>
+
+<input
+id="stopLoss"
 type="number"
 value="-10"
 step="0.01">
-</div>
 
-<div class="checkbox">
-<input id="autoTrade" type="checkbox">
-<label for="autoTrade">AUTO TRADE</label>
 </div>
 
 </div>
+
+<div class="warning-box">
+
+The bot does NOT guarantee 18/20 or any fixed win rate.
+The filters only reject signals that fail the conditions.
+
+</div>
+
+</div>
+
+
+<!-- TRADING CONTROL -->
+
+<div class="card">
+
+<h2>3. Trading Control</h2>
+
+<div class="grid">
+
+<button
+class="primary"
+id="scanBtn">
+SCAN MARKETS
+</button>
+
+<button
+class="green"
+id="startTradeBtn">
+START TRADING
+</button>
+
+<button
+class="red"
+id="stopTradeBtn">
+STOP TRADING
+</button>
+
+<button
+id="refreshBtn">
+REFRESH MARKETS
+</button>
+
+</div>
+
+<div
+id="tradingStatus"
+class="status trade-off">
+
+TRADING STOPPED — scanner may analyse markets,
+but no new contracts will be opened.
+
+</div>
+
 </div>
 
 
@@ -349,7 +482,7 @@ step="0.01">
 
 <div class="card">
 
-<h2>3. Session</h2>
+<h2>4. Session</h2>
 
 <div class="grid">
 
@@ -384,6 +517,7 @@ step="0.01">
 </div>
 
 </div>
+
 </div>
 
 
@@ -391,26 +525,10 @@ step="0.01">
 
 <div class="card">
 
-<h2>4. Scanner Control</h2>
-
-<div class="grid">
-
-<button class="primary" onclick="scanAllMarkets()">
-SCAN ALL MARKETS
-</button>
-
-<button class="green" onclick="startScanner()">
-START AUTO SCANNER
-</button>
-
-<button class="red" onclick="stopScanner()">
-STOP SCANNER
-</button>
-
-</div>
+<h2>5. Scanner</h2>
 
 <div id="scannerStatus" class="status">
-Scanner stopped.
+Scanner not started.
 </div>
 
 </div>
@@ -420,7 +538,7 @@ Scanner stopped.
 
 <div class="card">
 
-<h2>5. Market Analysis</h2>
+<h2>6. Market Analysis</h2>
 
 <div class="scroll">
 
@@ -429,17 +547,19 @@ Scanner stopped.
 <thead>
 
 <tr>
+
 <th>Market</th>
 <th>Digit</th>
 <th>Strategy</th>
-<th>Unwanted %</th>
-<th>Expected %</th>
+<th>Unwanted</th>
+<th>Expected</th>
 <th>Imbalance</th>
 <th>Triggers</th>
 <th>Validation</th>
 <th>Recent</th>
 <th>EV</th>
 <th>Status</th>
+
 </tr>
 
 </thead>
@@ -457,10 +577,10 @@ Scanner stopped.
 
 <div class="card">
 
-<h2>6. Current 100-Tick Distribution</h2>
+<h2>7. Current 100-Tick Distribution</h2>
 
 <div id="distributionTitle" class="muted">
-Select a candidate from the table.
+Select a market.
 </div>
 
 <div class="scroll">
@@ -486,26 +606,28 @@ Select a candidate from the table.
 </div>
 
 
-<!-- SIGNALS -->
+<!-- QUALIFIED -->
 
 <div class="card">
 
-<h2>7. Qualified Signals</h2>
+<h2>8. Qualified Signals</h2>
 
 <div id="signals">
+
 <div class="muted">
 No qualified signals.
 </div>
-</div>
 
 </div>
 
+</div>
 
-<!-- TRADE HISTORY -->
+
+<!-- TRADES -->
 
 <div class="card">
 
-<h2>8. Trade History</h2>
+<h2>9. Trade History</h2>
 
 <div class="scroll">
 
@@ -539,7 +661,7 @@ No qualified signals.
 
 <div class="card">
 
-<h2>9. Log</h2>
+<h2>10. Log</h2>
 
 <div id="log" class="log"></div>
 
@@ -550,3499 +672,4375 @@ No qualified signals.
 
 <script>
 
+/* =========================================================
+   CONFIG
+========================================================= */
+
 const API_BASE =
 "https://api.derivws.com";
 
 const PUBLIC_WS =
 "wss://api.derivws.com/trading/v1/options/ws/public";
 
-const CURRENT_TICKS = 100;
+const CURRENT_WINDOW = 100;
+const VALIDATION_WINDOW = 100;
+
+const SCAN_INTERVAL = 5000;
+
+const MAX_MARKETS =
+80;
+
+
+/* =========================================================
+   STATE
+========================================================= */
 
 let publicWS = null;
 let tradingWS = null;
 
-let publicRequests = new Map();
-let tradingRequests = new Map();
+let publicRequests =
+new Map();
+
+let tradingRequests =
+new Map();
 
 let reqCounter = 1;
 
 let accounts = [];
+
 let selectedAccount = null;
 
 let markets = [];
-let marketCandidates = [];
+
+let eligibleMarkets = [];
+
+let marketState =
+new Map();
+
+let tradeMap =
+new Map();
 
 let scannerTimer = null;
-let scanning = false;
+
+let scannerRunning = false;
+
+let tradingEnabled = false;
+
+let currentScanRunning = false;
+
+let subscriptions = [];
 
 let session = {
-  trades:0,
-  wins:0,
-  losses:0,
-  pl:0,
-  open:0
+
+trades:0,
+
+wins:0,
+
+losses:0,
+
+pl:0,
+
+open:0
+
 };
 
-let tradeMap = new Map();
 
-let historyCache = new Map();
-
-let lastTrigger = new Map();
-
-
-/* =====================================================
+/* =========================================================
    HELPERS
-===================================================== */
+========================================================= */
 
 function $(id){
-  return document.getElementById(id);
-}
 
-function num(v){
-
-  const n = Number(v);
-
-  return Number.isFinite(n) ? n : 0;
+return document.getElementById(id);
 
 }
 
-function sleep(ms){
 
-  return new Promise(
-    resolve => setTimeout(resolve,ms)
-  );
+function num(value){
+
+const n =
+Number(value);
+
+return Number.isFinite(n)
+? n
+: 0;
 
 }
+
 
 function log(message){
 
-  const el = $("log");
+const box =
+$("log");
 
-  const time =
-    new Date().toLocaleTimeString();
+const time =
+new Date()
+.toLocaleTimeString();
 
-  el.innerHTML +=
-    `[${time}] ${message}<br>`;
+box.innerHTML +=
+`[${time}] ${message}<br>`;
 
-  el.scrollTop =
-    el.scrollHeight;
-
-}
-
-function setConnection(text,cls=""){
-
-  $("connectionStatus").innerHTML =
-    `<span class="${cls}">${text}</span>`;
-
-}
-
-function updateSessionUI(){
-
-  $("sessionTrades").textContent =
-    session.trades;
-
-  $("sessionWins").textContent =
-    session.wins;
-
-  $("sessionLosses").textContent =
-    session.losses;
-
-  const wr =
-    session.trades > 0
-      ? session.wins /
-        session.trades *
-        100
-      : 0;
-
-  $("sessionWinRate").textContent =
-    wr.toFixed(1) + "%";
-
-  $("sessionPL").textContent =
-    session.pl.toFixed(2);
-
-  $("openTrades").textContent =
-    session.open;
+box.scrollTop =
+box.scrollHeight;
 
 }
 
 
-/* =====================================================
+function updateSession(){
+
+$("sessionTrades")
+.textContent =
+session.trades;
+
+$("sessionWins")
+.textContent =
+session.wins;
+
+$("sessionLosses")
+.textContent =
+session.losses;
+
+const rate =
+session.trades > 0
+
+? session.wins /
+session.trades *
+100
+
+: 0;
+
+$("sessionWinRate")
+.textContent =
+rate.toFixed(1) + "%";
+
+$("sessionPL")
+.textContent =
+session.pl.toFixed(2);
+
+$("openTrades")
+.textContent =
+session.open;
+
+}
+
+
+function sleep(ms){
+
+return new Promise(
+resolve =>
+setTimeout(resolve,ms)
+);
+
+}
+
+
+/* =========================================================
    PUBLIC WEBSOCKET
-===================================================== */
+========================================================= */
 
 function createPublicWS(){
 
-  if(
-    publicWS &&
-    (
-      publicWS.readyState ===
-      WebSocket.OPEN ||
-      publicWS.readyState ===
-      WebSocket.CONNECTING
-    )
-  ){
+if(
+publicWS &&
+(
+publicWS.readyState ===
+WebSocket.OPEN ||
 
-    return Promise.resolve();
+publicWS.readyState ===
+WebSocket.CONNECTING
+)
+){
 
-  }
+return Promise.resolve();
 
-  return new Promise(
-    (resolve,reject)=>{
+}
 
-      publicWS =
-        new WebSocket(
-          PUBLIC_WS
-        );
 
-      publicWS.onopen = ()=>{
+return new Promise(
+(resolve,reject)=>{
 
-        log(
-          "Public market WebSocket connected."
-        );
+publicWS =
+new WebSocket(
+PUBLIC_WS
+);
 
-        resolve();
 
-      };
+publicWS.onopen =
+()=>{
 
-      publicWS.onerror = e=>{
+log(
+"Public WebSocket connected."
+);
 
-        log(
-          "Public WebSocket error."
-        );
+resolve();
 
-        reject(e);
+};
 
-      };
 
-      publicWS.onclose = ()=>{
+publicWS.onerror =
+event=>{
 
-        log(
-          "Public WebSocket closed."
-        );
+log(
+"Public WebSocket error."
+);
 
-        publicWS = null;
+reject(event);
 
-      };
+};
 
-      publicWS.onmessage =
-        event=>{
 
-          try{
+publicWS.onclose =
+()=>{
 
-            const data =
-              JSON.parse(
-                event.data
-              );
+log(
+"Public WebSocket closed."
+);
 
-            if(
-              data.req_id &&
-              publicRequests.has(
-                data.req_id
-              )
-            ){
+publicWS = null;
 
-              const item =
-                publicRequests.get(
-                  data.req_id
-                );
+};
 
-              if(data.error){
 
-                item.reject(
-                  data.error
-                );
+publicWS.onmessage =
+event=>{
 
-              }else{
+try{
 
-                item.resolve(
-                  data
-                );
+const data =
+JSON.parse(
+event.data
+);
 
-              }
 
-              publicRequests.delete(
-                data.req_id
-              );
+if(
+data.req_id &&
+publicRequests.has(
+data.req_id
+)
+){
 
-            }
+const request =
+publicRequests.get(
+data.req_id
+);
 
-          }catch(e){
 
-            console.error(e);
+if(data.error){
 
-          }
+request.reject(
+data.error
+);
 
-        };
+}else{
 
-    }
-  );
+request.resolve(
+data
+);
+
+}
+
+
+publicRequests.delete(
+data.req_id
+);
+
+}
+
+
+/*
+   Live tick subscription.
+*/
+
+if(
+data.tick &&
+data.subscription
+){
+
+handleLiveTick(
+data.tick
+);
+
+}
+
+}catch(error){
+
+console.error(error);
+
+}
+
+};
+
+}
+);
 
 }
 
 
 function publicRequest(
-  payload,
-  timeout=15000
+payload,
+timeout=15000
 ){
 
-  return new Promise(
-    async(resolve,reject)=>{
+return new Promise(
+async(resolve,reject)=>{
 
-      try{
+try{
 
-        await createPublicWS();
+await createPublicWS();
 
-        const req_id =
-          reqCounter++;
+const reqId =
+reqCounter++;
 
-        payload.req_id =
-          req_id;
+payload.req_id =
+reqId;
 
-        const timer =
-          setTimeout(
-            ()=>{
 
-              publicRequests.delete(
-                req_id
-              );
+const timer =
+setTimeout(
+()=>{
 
-              reject(
-                new Error(
-                  "Public request timeout"
-                )
-              );
+publicRequests.delete(
+reqId
+);
 
-            },
-            timeout
-          );
+reject(
+new Error(
+"Public request timeout"
+)
+);
 
-        publicRequests.set(
-          req_id,
-          {
+},
+timeout
+);
 
-            resolve:data=>{
 
-              clearTimeout(timer);
+publicRequests.set(
+reqId,
+{
 
-              resolve(data);
+resolve:data=>{
 
-            },
+clearTimeout(timer);
 
-            reject:error=>{
+resolve(data);
 
-              clearTimeout(timer);
+},
 
-              reject(error);
+reject:error=>{
 
-            }
+clearTimeout(timer);
 
-          }
-        );
+reject(error);
 
-        publicWS.send(
-          JSON.stringify(payload)
-        );
+}
 
-      }catch(e){
+}
+);
 
-        reject(e);
 
-      }
+publicWS.send(
+JSON.stringify(payload)
+);
 
-    }
-  );
+}catch(error){
+
+reject(error);
+
+}
+
+}
+);
 
 }
 
 
-/* =====================================================
+/* =========================================================
    TRADING WEBSOCKET
-===================================================== */
+========================================================= */
 
-function createTradingWS(url){
+function createTradingWS(
+url
+){
 
-  return new Promise(
-    (resolve,reject)=>{
+return new Promise(
+(resolve,reject)=>{
 
-      if(tradingWS){
+if(tradingWS){
 
-        try{
-          tradingWS.close();
-        }catch(e){}
+try{
 
-      }
+tradingWS.close();
 
-      tradingWS =
-        new WebSocket(url);
+}catch(e){}
 
-      tradingWS.onopen = ()=>{
+}
 
-        log(
-          "Trading WebSocket connected."
-        );
 
-        setConnection(
-          `Trading connected — ${
-            selectedAccount?.currency || ""
-          }`,
-          "good"
-        );
+tradingWS =
+new WebSocket(url);
 
-        resolve();
 
-      };
+tradingWS.onopen =
+()=>{
 
-      tradingWS.onerror = ()=>{
+log(
+"Trading WebSocket connected."
+);
 
-        log(
-          "Trading WebSocket error."
-        );
+$("connectionStatus")
+.innerHTML =
+`<span class="good">
+Trading connected
+</span>`;
 
-        reject(
-          new Error(
-            "Trading WebSocket error"
-          )
-        );
+resolve();
 
-      };
+};
 
-      tradingWS.onclose = ()=>{
 
-        log(
-          "Trading WebSocket closed."
-        );
+tradingWS.onerror =
+()=>{
 
-        setConnection(
-          "Trading disconnected",
-          "bad"
-        );
+reject(
+new Error(
+"Trading WebSocket error."
+)
+);
 
-      };
+};
 
-      tradingWS.onmessage =
-        event=>{
 
-          try{
+tradingWS.onclose =
+()=>{
 
-            const data =
-              JSON.parse(
-                event.data
-              );
+log(
+"Trading WebSocket closed."
+);
 
-            handleTradingMessage(
-              data
-            );
+$("connectionStatus")
+.innerHTML =
+`<span class="bad">
+Trading disconnected
+</span>`;
 
-          }catch(e){
+};
 
-            console.error(e);
 
-          }
+tradingWS.onmessage =
+event=>{
 
-        };
+try{
 
-    }
-  );
+const data =
+JSON.parse(
+event.data
+);
+
+handleTradingMessage(
+data
+);
+
+}catch(error){
+
+console.error(error);
+
+}
+
+};
+
+}
+);
 
 }
 
 
 function tradingRequest(
-  payload,
-  timeout=15000
+payload,
+timeout=15000
 ){
 
-  return new Promise(
-    (resolve,reject)=>{
+return new Promise(
+(resolve,reject)=>{
 
-      if(
-        !tradingWS ||
-        tradingWS.readyState !==
-        WebSocket.OPEN
-      ){
+if(
+!tradingWS ||
+tradingWS.readyState !==
+WebSocket.OPEN
+){
 
-        reject(
-          new Error(
-            "Trading WebSocket not connected"
-          )
-        );
+reject(
+new Error(
+"Trading connection not active."
+)
+);
 
-        return;
-
-      }
-
-      const req_id =
-        reqCounter++;
-
-      payload.req_id =
-        req_id;
-
-      const timer =
-        setTimeout(
-          ()=>{
-
-            tradingRequests.delete(
-              req_id
-            );
-
-            reject(
-              new Error(
-                "Trading request timeout"
-              )
-            );
-
-          },
-          timeout
-        );
-
-      tradingRequests.set(
-        req_id,
-        {
-
-          resolve:data=>{
-
-            clearTimeout(timer);
-
-            resolve(data);
-
-          },
-
-          reject:error=>{
-
-            clearTimeout(timer);
-
-            reject(error);
-
-          }
-
-        }
-      );
-
-      tradingWS.send(
-        JSON.stringify(payload)
-      );
-
-    }
-  );
+return;
 
 }
 
 
-/* =====================================================
-   LOAD ACCOUNTS
-===================================================== */
+const reqId =
+reqCounter++;
+
+payload.req_id =
+reqId;
+
+
+const timer =
+setTimeout(
+()=>{
+
+tradingRequests.delete(
+reqId
+);
+
+reject(
+new Error(
+"Trading request timeout."
+)
+);
+
+},
+timeout
+);
+
+
+tradingRequests.set(
+reqId,
+{
+
+resolve:data=>{
+
+clearTimeout(timer);
+
+resolve(data);
+
+},
+
+reject:error=>{
+
+clearTimeout(timer);
+
+reject(error);
+
+}
+
+}
+);
+
+
+tradingWS.send(
+JSON.stringify(payload)
+);
+
+}
+);
+
+}
+
+
+/* =========================================================
+   ACCOUNTS
+========================================================= */
 
 async function loadAccounts(){
 
-  const pat =
-    $("pat").value.trim();
+const pat =
+$("pat").value.trim();
 
-  const appId =
-    $("appId").value.trim();
+const appId =
+$("appId").value.trim();
 
-  if(!pat){
 
-    alert(
-      "Enter your Personal Access Token."
-    );
+if(!pat){
 
-    return;
+alert(
+"Enter your PAT."
+);
 
-  }
-
-  if(!appId){
-
-    alert(
-      "Enter your Deriv App ID."
-    );
-
-    return;
-
-  }
-
-  try{
-
-    setConnection(
-      "Loading accounts..."
-    );
-
-    const response =
-      await fetch(
-        API_BASE +
-        "/trading/v1/options/accounts",
-        {
-
-          headers:{
-
-            "Authorization":
-              "Bearer " + pat,
-
-            "Deriv-App-ID":
-              appId
-
-          }
-
-        }
-      );
-
-    const json =
-      await response.json();
-
-    if(!response.ok){
-
-      throw new Error(
-        json?.error?.message ||
-        "Unable to load accounts"
-      );
-
-    }
-
-    const data =
-      json?.data ?? json;
-
-    accounts =
-      Array.isArray(data)
-        ? data
-        : (
-          data.accounts ||
-          data.items ||
-          []
-        );
-
-    if(!accounts.length){
-
-      throw new Error(
-        "No Deriv accounts returned."
-      );
-
-    }
-
-    const select =
-      $("accountSelect");
-
-    select.innerHTML = "";
-
-    accounts.forEach(
-      (acc,i)=>{
-
-        const id =
-          acc.id ||
-          acc.account_id ||
-          acc.loginid ||
-          acc.login_id;
-
-        const currency =
-          acc.currency ||
-          "";
-
-        const type =
-          acc.account_type ||
-          acc.type ||
-          "";
-
-        const option =
-          document.createElement(
-            "option"
-          );
-
-        option.value =
-          id;
-
-        option.textContent =
-          `${type || "account"} • ${
-            currency
-          } • ${id}`;
-
-        select.appendChild(
-          option
-        );
-
-      }
-    );
-
-    select.selectedIndex = 0;
-
-    selectedAccount =
-      accounts[0];
-
-    setConnection(
-      `${accounts.length} account(s) loaded.`,
-      "good"
-    );
-
-    log(
-      `${accounts.length} account(s) loaded.`
-    );
-
-  }catch(e){
-
-    console.error(e);
-
-    setConnection(
-      e.message,
-      "bad"
-    );
-
-    log(
-      "Account error: " +
-      e.message
-    );
-
-  }
+return;
 
 }
 
 
-$("accountSelect").addEventListener(
-  "change",
-  ()=>{
+if(!appId){
 
-    selectedAccount =
-      accounts.find(
-        acc=>{
+alert(
+"Enter your App ID."
+);
 
-          const id =
-            acc.id ||
-            acc.account_id ||
-            acc.loginid ||
-            acc.login_id;
+return;
 
-          return id ===
-            $("accountSelect").value;
+}
 
-        }
-      ) || null;
 
-  }
+try{
+
+$("connectionStatus")
+.textContent =
+"Loading accounts...";
+
+
+const response =
+await fetch(
+API_BASE +
+"/trading/v1/options/accounts",
+{
+
+headers:{
+
+"Authorization":
+"Bearer " + pat,
+
+"Deriv-App-ID":
+appId
+
+}
+
+}
 );
 
 
-/* =====================================================
-   CONNECT TRADING
-===================================================== */
+const json =
+await response.json();
+
+
+if(!response.ok){
+
+throw new Error(
+json?.error?.message ||
+"Unable to load accounts."
+);
+
+}
+
+
+const data =
+json?.data ??
+json;
+
+
+accounts =
+Array.isArray(data)
+? data
+: (
+data.accounts ||
+data.items ||
+[]
+);
+
+
+if(!accounts.length){
+
+throw new Error(
+"No accounts returned."
+);
+
+}
+
+
+const select =
+$("accountSelect");
+
+select.innerHTML = "";
+
+
+accounts.forEach(
+account=>{
+
+const id =
+account.id ||
+account.account_id ||
+account.loginid ||
+account.login_id;
+
+const currency =
+account.currency ||
+"";
+
+const type =
+account.account_type ||
+account.type ||
+"";
+
+
+const option =
+document.createElement(
+"option"
+);
+
+option.value =
+id;
+
+option.textContent =
+`${type || "account"} • ${
+currency
+} • ${id}`;
+
+select.appendChild(
+option
+);
+
+}
+);
+
+
+select.selectedIndex =
+0;
+
+selectedAccount =
+accounts[0];
+
+
+$("connectionStatus")
+.innerHTML =
+`<span class="good">
+${accounts.length} account(s) loaded
+</span>`;
+
+
+log(
+`${accounts.length} account(s) loaded.`
+);
+
+
+}catch(error){
+
+$("connectionStatus")
+.innerHTML =
+`<span class="bad">
+${error.message}
+</span>`;
+
+log(
+"Account error: " +
+error.message
+);
+
+}
+
+}
+
+
+$("accountSelect")
+.addEventListener(
+"change",
+()=>{
+
+selectedAccount =
+accounts.find(
+account=>{
+
+const id =
+account.id ||
+account.account_id ||
+account.loginid ||
+account.login_id;
+
+return id ===
+$("accountSelect").value;
+
+}
+) || null;
+
+}
+);
+
+
+/* =========================================================
+   TRADING CONNECTION
+========================================================= */
 
 async function connectTrading(){
 
-  const pat =
-    $("pat").value.trim();
+const pat =
+$("pat").value.trim();
 
-  const appId =
-    $("appId").value.trim();
+const appId =
+$("appId").value.trim();
 
-  const accountId =
-    $("accountSelect").value;
+const accountId =
+$("accountSelect").value;
 
-  if(!pat){
 
-    alert("Enter PAT.");
+if(!pat){
 
-    return;
+alert(
+"Enter PAT."
+);
 
-  }
-
-  if(!appId){
-
-    alert("Enter App ID.");
-
-    return;
-
-  }
-
-  if(!accountId){
-
-    alert(
-      "Load accounts and select an account first."
-    );
-
-    return;
-
-  }
-
-  try{
-
-    selectedAccount =
-      accounts.find(
-        acc=>{
-
-          const id =
-            acc.id ||
-            acc.account_id ||
-            acc.loginid ||
-            acc.login_id;
-
-          return id === accountId;
-
-        }
-      ) || null;
-
-    setConnection(
-      "Requesting trading connection..."
-    );
-
-    const response =
-      await fetch(
-
-        API_BASE +
-        `/trading/v1/options/accounts/${
-          encodeURIComponent(accountId)
-        }/otp`,
-
-        {
-
-          method:"POST",
-
-          headers:{
-
-            "Authorization":
-              "Bearer " + pat,
-
-            "Deriv-App-ID":
-              appId,
-
-            "Content-Type":
-              "application/json"
-
-          }
-
-        }
-
-      );
-
-    const json =
-      await response.json();
-
-    if(!response.ok){
-
-      throw new Error(
-        json?.error?.message ||
-        "OTP request failed"
-      );
-
-    }
-
-    const wsUrl =
-      json?.data?.url ||
-      json?.data?.data?.url ||
-      json?.url;
-
-    if(!wsUrl){
-
-      console.log(json);
-
-      throw new Error(
-        "No authenticated trading WebSocket URL returned."
-      );
-
-    }
-
-    await createTradingWS(
-      wsUrl
-    );
-
-    try{
-
-      await tradingRequest({
-
-        balance:1,
-
-        subscribe:1
-
-      });
-
-    }catch(e){
-
-      log(
-        "Balance subscription warning: " +
-        e.message
-      );
-
-    }
-
-    log(
-      "Trading connection established."
-    );
-
-  }catch(e){
-
-    console.error(e);
-
-    setConnection(
-      e.message,
-      "bad"
-    );
-
-    log(
-      "Trading connection error: " +
-      e.message
-    );
-
-  }
+return;
 
 }
 
 
-/* =====================================================
+if(!appId){
+
+alert(
+"Enter App ID."
+);
+
+return;
+
+}
+
+
+if(!accountId){
+
+alert(
+"Load accounts first."
+);
+
+return;
+
+}
+
+
+try{
+
+selectedAccount =
+accounts.find(
+account=>{
+
+const id =
+account.id ||
+account.account_id ||
+account.loginid ||
+account.login_id;
+
+return id ===
+accountId;
+
+}
+) || null;
+
+
+$("connectionStatus")
+.textContent =
+"Requesting trading connection...";
+
+
+const response =
+await fetch(
+
+API_BASE +
+`/trading/v1/options/accounts/${
+encodeURIComponent(accountId)
+}/otp`,
+
+{
+
+method:"POST",
+
+headers:{
+
+"Authorization":
+"Bearer " + pat,
+
+"Deriv-App-ID":
+appId,
+
+"Content-Type":
+"application/json"
+
+}
+
+}
+);
+
+
+const json =
+await response.json();
+
+
+if(!response.ok){
+
+throw new Error(
+json?.error?.message ||
+"OTP request failed."
+);
+
+}
+
+
+const wsUrl =
+json?.data?.url ||
+json?.data?.data?.url ||
+json?.url;
+
+
+if(!wsUrl){
+
+console.log(json);
+
+throw new Error(
+"No trading WebSocket URL returned."
+);
+
+}
+
+
+await createTradingWS(
+wsUrl
+);
+
+
+try{
+
+await tradingRequest({
+
+balance:1,
+
+subscribe:1
+
+});
+
+}catch(error){
+
+log(
+"Balance subscription warning: " +
+error.message
+);
+
+}
+
+
+log(
+"Trading connection ready."
+);
+
+
+}catch(error){
+
+$("connectionStatus")
+.innerHTML =
+`<span class="bad">
+${error.message}
+</span>`;
+
+log(
+"Trading connection error: " +
+error.message
+);
+
+}
+
+}
+
+
+/* =========================================================
    DISCONNECT
-===================================================== */
+========================================================= */
 
-function disconnectTrading(){
+function disconnect(){
 
-  stopScanner();
+stopTrading();
 
-  if(tradingWS){
+stopScanner();
 
-    try{
-      tradingWS.close();
-    }catch(e){}
+forgetAllTickSubscriptions();
 
-    tradingWS = null;
 
-  }
+if(publicWS){
 
-  if(publicWS){
+try{
 
-    try{
-      publicWS.close();
-    }catch(e){}
+publicWS.close();
 
-    publicWS = null;
+}catch(e){}
 
-  }
-
-  setConnection(
-    "Disconnected"
-  );
-
-  log(
-    "Disconnected."
-  );
+publicWS = null;
 
 }
 
 
-/* =====================================================
-   ACTIVE MARKETS
-   IMPORTANT:
-   product_type HAS BEEN REMOVED.
-===================================================== */
+if(tradingWS){
+
+try{
+
+tradingWS.close();
+
+}catch(e){}
+
+tradingWS = null;
+
+}
+
+
+$("connectionStatus")
+.textContent =
+"Disconnected.";
+
+log(
+"Disconnected."
+);
+
+}
+
+
+/* =========================================================
+   ACTIVE SYMBOLS
+========================================================= */
 
 async function getActiveMarkets(){
 
-  const response =
-    await publicRequest({
+/*
+   product_type intentionally NOT USED.
+*/
 
-      active_symbols:"brief"
+const response =
+await publicRequest({
 
-    });
+active_symbols:
+"brief"
 
-  const data =
-    response?.active_symbols ||
-    response?.data ||
-    [];
+});
 
-  if(!Array.isArray(data)){
 
-    return [];
+const list =
+response?.active_symbols ||
+response?.data ||
+[];
 
-  }
 
-  return data.filter(
-    x=>{
+if(!Array.isArray(list)){
 
-      const symbol =
-        x.underlying_symbol ||
-        x.symbol;
-
-      const display =
-        x.display_name ||
-        symbol;
-
-      return symbol &&
-             display;
-
-    }
-  );
+return [];
 
 }
 
 
-/* =====================================================
-   HISTORY
-===================================================== */
+return list.filter(
+market=>{
 
-async function getHistory(
-  symbol
+const symbol =
+market.underlying_symbol ||
+market.symbol;
+
+const display =
+market.display_name ||
+symbol;
+
+
+return (
+symbol &&
+display
+);
+
+}
+);
+
+}
+
+
+/* =========================================================
+   CONTRACT AVAILABILITY
+========================================================= */
+
+function contractNames(
+response
 ){
 
-  const now =
-    Math.floor(
-      Date.now()/1000
-    );
+const output = [];
 
-  const cache =
-    historyCache.get(
-      symbol
-    );
-
-  /*
-    Only 3-second cache.
-    This keeps the 100-tick analysis fresh.
-  */
-
-  if(
-    cache &&
-    now - cache.time < 3
-  ){
-
-    return cache.prices;
-
-  }
-
-  const response =
-    await publicRequest({
-
-      ticks_history:symbol,
-
-      count:CURRENT_TICKS,
-
-      end:"latest",
-
-      style:"ticks"
-
-    });
-
-  const prices =
-    response?.history?.prices ||
-    [];
-
-  const clean =
-    prices
-      .map(Number)
-      .filter(
-        Number.isFinite
-      );
-
-  historyCache.set(
-    symbol,
-    {
-      time:now,
-      prices:clean
-    }
-  );
-
-  return clean;
-
-}
+const root =
+response?.contracts_for ||
+response?.data ||
+response ||
+{};
 
 
-/* =====================================================
-   PREVIOUS 100 TICKS
-===================================================== */
-
-async function getPreviousHistory(
-  symbol
+function walk(
+value,
+depth=0
 ){
 
-  const validationCount =
-    Math.max(
-      50,
-      num(
-        $("validationTicks").value
-      )
-    );
+if(depth > 6 ||
+value == null){
 
-  const response =
-    await publicRequest({
-
-      ticks_history:symbol,
-
-      count:
-        validationCount +
-        CURRENT_TICKS,
-
-      end:"latest",
-
-      style:"ticks"
-
-    });
-
-  const prices =
-    response?.history?.prices ||
-    [];
-
-  const clean =
-    prices
-      .map(Number)
-      .filter(
-        Number.isFinite
-      );
-
-  if(
-    clean.length <=
-    CURRENT_TICKS
-  ){
-
-    return clean;
-
-  }
-
-  return clean
-    .slice(
-      0,
-      clean.length -
-      CURRENT_TICKS
-    )
-    .slice(
-      -validationCount
-    );
+return;
 
 }
 
 
-/* =====================================================
-   LAST DIGIT
-===================================================== */
+if(Array.isArray(value)){
 
-function lastDigit(price){
+value.forEach(
+item=>walk(
+item,
+depth+1
+)
+);
 
-  const s =
-    String(price);
-
-  const parts =
-    s.split(".");
-
-  if(
-    parts.length < 2
-  ){
-
-    const digits =
-      s.replace(
-        /\D/g,
-        ""
-      );
-
-    return Number(
-      digits.slice(-1)
-    );
-
-  }
-
-  const decimal =
-    parts[1];
-
-  return Number(
-    decimal.charAt(
-      decimal.length-1
-    )
-  );
+return;
 
 }
 
 
-function getDigits(prices){
+if(typeof value !==
+"object"){
 
-  return prices
-    .map(lastDigit)
-    .filter(
-      d =>
-        Number.isInteger(d) &&
-        d >= 0 &&
-        d <= 9
-    );
+return;
 
 }
 
 
-/* =====================================================
+const type =
+value.contract_type ||
+value.contractType ||
+value.type;
+
+
+if(typeof type ===
+"string"){
+
+output.push(
+type.toUpperCase()
+);
+
+}
+
+
+Object.keys(value)
+.forEach(
+key=>{
+
+if(
+key ===
+"contract_type"
+){
+
+return;
+
+}
+
+walk(
+value[key],
+depth+1
+);
+
+}
+);
+
+}
+
+
+walk(root);
+
+return [
+...new Set(output)
+];
+
+}
+
+
+async function getContractAvailability(
+symbol
+){
+
+const response =
+await publicRequest({
+
+contracts_for:
+symbol
+
+});
+
+
+const names =
+contractNames(
+response
+);
+
+
+const over =
+names.includes(
+"DIGITOVER"
+);
+
+const under =
+names.includes(
+"DIGITUNDER"
+);
+
+return {
+
+over,
+
+under,
+
+names
+
+};
+
+}
+
+
+/* =========================================================
+   INITIAL MARKET DISCOVERY
+========================================================= */
+
+async function discoverEligibleMarkets(){
+
+log(
+"Loading active markets..."
+);
+
+
+markets =
+await getActiveMarkets();
+
+
+log(
+`${markets.length} active symbols returned.`
+);
+
+
+/*
+   Limit discovery work so mobile/API isn't flooded.
+*/
+
+const list =
+markets.slice(
+0,
+MAX_MARKETS
+);
+
+
+eligibleMarkets = [];
+
+
+$("scannerStatus")
+.textContent =
+`Checking contract availability...`;
+
+
+for(
+let i=0;
+i<list.length;
+i++
+){
+
+const market =
+list[i];
+
+const symbol =
+market.underlying_symbol ||
+market.symbol;
+
+
+try{
+
+const contracts =
+await getContractAvailability(
+symbol
+);
+
+
+if(
+contracts.over ||
+contracts.under
+){
+
+eligibleMarkets.push({
+
+...market,
+
+symbol,
+
+contracts
+
+});
+
+
+log(
+`${symbol}: ${
+contracts.over
+? "OVER3 "
+: ""
+}${
+contracts.under
+? "UNDER7"
+: ""
+}`
+);
+
+}
+
+
+$("scannerStatus")
+.textContent =
+`Checking contracts ${
+i+1
+}/${list.length}`;
+
+}catch(error){
+
+log(
+`${symbol}: contract check failed — ${
+error.message
+}`
+);
+
+}
+
+
+/*
+   Small delay prevents bursts.
+*/
+
+await sleep(100);
+
+}
+
+
+log(
+`Eligible markets: ${
+eligibleMarkets.length
+}`
+);
+
+
+return eligibleMarkets;
+
+}
+
+
+/* =========================================================
+   HISTORY — ONE INITIAL LOAD
+========================================================= */
+
+async function loadInitialHistory(
+symbol
+){
+
+const response =
+await publicRequest({
+
+ticks_history:
+symbol,
+
+count:
+CURRENT_WINDOW +
+VALIDATION_WINDOW,
+
+end:
+"latest",
+
+style:
+"ticks",
+
+subscribe:
+0
+
+});
+
+
+const prices =
+response?.history?.prices ||
+[];
+
+
+const clean =
+prices
+.map(Number)
+.filter(
+Number.isFinite
+);
+
+
+if(
+clean.length <
+CURRENT_WINDOW
+){
+
+throw new Error(
+"Not enough tick history."
+);
+
+}
+
+
+const current =
+clean.slice(
+-CURRENT_WINDOW
+);
+
+
+const validationEnd =
+clean.length -
+CURRENT_WINDOW;
+
+
+const validation =
+clean.slice(
+Math.max(
+0,
+validationEnd -
+VALIDATION_WINDOW
+),
+validationEnd
+);
+
+
+return {
+
+all:clean,
+
+current,
+
+validation
+
+};
+
+}
+
+
+/* =========================================================
+   DIGIT
+========================================================= */
+
+function lastDigit(
+price
+){
+
+const text =
+String(price);
+
+
+const parts =
+text.split(".");
+
+
+if(parts.length < 2){
+
+const digits =
+text.replace(
+/\D/g,
+""
+);
+
+return Number(
+digits.slice(-1)
+);
+
+}
+
+
+const decimal =
+parts[1];
+
+
+return Number(
+decimal.charAt(
+decimal.length-1
+)
+);
+
+}
+
+
+function digitsFromPrices(
+prices
+){
+
+return prices
+.map(lastDigit)
+.filter(
+digit =>
+Number.isInteger(digit) &&
+digit >= 0 &&
+digit <= 9
+);
+
+}
+
+
+/* =========================================================
    DISTRIBUTION
-===================================================== */
+========================================================= */
 
-function distribution(
-  prices
+function getDistribution(
+prices
 ){
 
-  const digits =
-    getDigits(prices);
+const digits =
+digitsFromPrices(
+prices
+);
 
-  const counts =
-    Array(10).fill(0);
 
-  digits.forEach(
-    d=>{
-      counts[d]++;
-    }
-  );
+const counts =
+Array(10).fill(0);
 
-  const total =
-    digits.length || 1;
 
-  return counts.map(
-    c=>({
+digits.forEach(
+digit=>{
+counts[digit]++;
+}
+);
 
-      count:c,
 
-      pct:
-        c /
-        total *
-        100
+const total =
+digits.length || 1;
 
-    })
-  );
+
+return counts.map(
+count=>({
+
+count,
+
+pct:
+count /
+total *
+100
+
+})
+);
 
 }
 
 
-function renderDistribution(
-  symbol,
-  prices
+/* =========================================================
+   STRATEGIES
+========================================================= */
+
+function makeCandidates(
+prices
 ){
 
-  const dist =
-    distribution(
-      prices
-    );
+const dist =
+getDistribution(
+prices
+);
 
-  $("distributionTitle")
-    .textContent =
-      `${symbol} — latest ${
-        prices.length
-      } ticks`;
 
-  const tbody =
-    $("distributionTable");
+/*
+   OVER 3
+   unwanted = 0,1,2,3
+   expected unwanted = 40%
+*/
 
-  tbody.innerHTML = "";
+const overUnwanted =
+dist[0].pct +
+dist[1].pct +
+dist[2].pct +
+dist[3].pct;
 
-  dist.forEach(
-    (x,d)=>{
 
-      const tr =
-        document.createElement(
-          "tr"
-        );
+const overImbalance =
+40 -
+overUnwanted;
 
-      tr.innerHTML = `
 
-        <td>${d}</td>
+/*
+   UNDER 7
+   unwanted = 7,8,9
+   expected unwanted = 30%
+*/
 
-        <td>${x.count}</td>
+const underUnwanted =
+dist[7].pct +
+dist[8].pct +
+dist[9].pct;
 
-        <td>${x.pct.toFixed(1)}%</td>
 
-      `;
+const underImbalance =
+30 -
+underUnwanted;
 
-      tbody.appendChild(
-        tr
-      );
 
-    }
-  );
+return [
+
+{
+
+type:
+"OVER 3",
+
+contract:
+"DIGITOVER",
+
+barrier:
+"3",
+
+unwanted:
+[0,1,2,3],
+
+unwantedPct:
+overUnwanted,
+
+expectedPct:
+40,
+
+imbalance:
+overImbalance
+
+},
+
+{
+
+type:
+"UNDER 7",
+
+contract:
+"DIGITUNDER",
+
+barrier:
+"7",
+
+unwanted:
+[7,8,9],
+
+unwantedPct:
+underUnwanted,
+
+expectedPct:
+30,
+
+imbalance:
+underImbalance
+
+}
+
+];
 
 }
 
 
-/* =====================================================
-   CANDIDATES
-===================================================== */
+/* =========================================================
+   BACKTEST
+========================================================= */
 
-function evaluateCandidates(
-  prices
+function testStrategy(
+prices,
+candidate
 ){
 
-  const dist =
-    distribution(
-      prices
-    );
-
-  /*
-    OVER 3
-    Unwanted = 0,1,2,3
-    Normal expected unwanted = 40%
-  */
-
-  const overUnwanted =
-    dist[0].pct +
-    dist[1].pct +
-    dist[2].pct +
-    dist[3].pct;
-
-  const overImbalance =
-    40 -
-    overUnwanted;
+const digits =
+digitsFromPrices(
+prices
+);
 
 
-  /*
-    UNDER 7
-    Unwanted = 7,8,9
-    Normal expected unwanted = 30%
-  */
-
-  const underUnwanted =
-    dist[7].pct +
-    dist[8].pct +
-    dist[9].pct;
-
-  const underImbalance =
-    30 -
-    underUnwanted;
+let triggers = 0;
+let wins = 0;
 
 
-  return [
+for(
+let i=0;
+i<digits.length-1;
+i++
+){
 
-    {
+const current =
+digits[i];
 
-      type:"OVER 3",
+const next =
+digits[i+1];
 
-      contract:"DIGITOVER",
 
-      barrier:"3",
+if(
+candidate.unwanted.includes(
+current
+)
+){
 
-      unwanted:[
-        0,1,2,3
-      ],
+triggers++;
 
-      unwantedPct:
-        overUnwanted,
 
-      expectedPct:40,
+let win = false;
 
-      imbalance:
-        overImbalance
 
-    },
+if(
+candidate.contract ===
+"DIGITOVER"
+){
 
-    {
-
-      type:"UNDER 7",
-
-      contract:"DIGITUNDER",
-
-      barrier:"7",
-
-      unwanted:[
-        7,8,9
-      ],
-
-      unwantedPct:
-        underUnwanted,
-
-      expectedPct:30,
-
-      imbalance:
-        underImbalance
-
-    }
-
-  ];
+win =
+next > 3;
 
 }
 
 
-/* =====================================================
-   TRIGGER TEST
-===================================================== */
-
-function testTriggers(
-  prices,
-  candidate
+if(
+candidate.contract ===
+"DIGITUNDER"
 ){
 
-  const digits =
-    getDigits(
-      prices
-    );
-
-  let triggers = 0;
-  let wins = 0;
-
-  for(
-    let i=0;
-    i<digits.length-1;
-    i++
-  ){
-
-    const current =
-      digits[i];
-
-    const next =
-      digits[i+1];
-
-    if(
-      candidate.unwanted.includes(
-        current
-      )
-    ){
-
-      triggers++;
-
-      let win = false;
-
-      if(
-        candidate.contract ===
-        "DIGITOVER"
-      ){
-
-        win =
-          next > 3;
-
-      }
-
-      if(
-        candidate.contract ===
-        "DIGITUNDER"
-      ){
-
-        win =
-          next < 7;
-
-      }
-
-      if(win){
-
-        wins++;
-
-      }
-
-    }
-
-  }
-
-  const winRate =
-    triggers > 0
-      ? wins /
-        triggers *
-        100
-      : 0;
-
-  return {
-
-    triggers,
-
-    wins,
-
-    winRate
-
-  };
+win =
+next < 7;
 
 }
 
 
-/* =====================================================
+if(win){
+
+wins++;
+
+}
+
+}
+
+}
+
+
+return {
+
+triggers,
+
+wins,
+
+winRate:
+triggers > 0
+? wins /
+triggers *
+100
+: 0
+
+};
+
+}
+
+
+/* =========================================================
    RECENT TEST
-===================================================== */
+========================================================= */
 
 function recentTest(
-  prices,
-  candidate
+prices,
+candidate
 ){
 
-  const digits =
-    getDigits(
-      prices
-    );
+const digits =
+digitsFromPrices(
+prices
+);
 
-  /*
-    Latest 30 ticks.
-  */
 
-  const sample =
-    digits.slice(
-      -30
-    );
+const recent =
+digits.slice(
+-30
+);
 
-  return testTriggers(
-    sample,
-    candidate
-  );
+
+return testStrategy(
+recent,
+candidate
+);
 
 }
 
 
-/* =====================================================
+/* =========================================================
    LIVE TICK
-===================================================== */
+========================================================= */
 
-async function getCurrentTick(
-  symbol
+function handleLiveTick(
+tick
 ){
 
-  const response =
-    await publicRequest({
+const symbol =
+tick.symbol ||
+tick.underlying_symbol;
 
-      ticks:symbol
 
-    });
+if(!symbol){
 
-  const tick =
-    response?.tick;
-
-  if(!tick){
-
-    throw new Error(
-      "No live tick returned."
-    );
-
-  }
-
-  return {
-
-    symbol,
-
-    quote:
-      num(
-        tick.quote
-      ),
-
-    digit:
-      lastDigit(
-        num(
-          tick.quote
-        )
-      ),
-
-    epoch:
-      num(
-        tick.epoch
-      )
-
-  };
+return;
 
 }
 
 
-/* =====================================================
-   LIVE PROPOSAL
-===================================================== */
+const state =
+marketState.get(
+symbol
+);
+
+
+if(!state){
+
+return;
+
+}
+
+
+const quote =
+num(
+tick.quote
+);
+
+
+if(!quote){
+
+return;
+
+}
+
+
+const digit =
+lastDigit(
+quote
+);
+
+
+state.currentPrices.push(
+quote
+);
+
+
+if(
+state.currentPrices.length >
+CURRENT_WINDOW
+){
+
+state.currentPrices.shift();
+
+}
+
+
+state.liveQuote =
+quote;
+
+state.liveDigit =
+digit;
+
+state.liveEpoch =
+num(
+tick.epoch
+);
+
+
+/*
+   Recalculate candidate locally.
+*/
+
+updateMarketAnalysis(
+state,
+false
+);
+
+}
+
+
+/* =========================================================
+   SUBSCRIBE TO TICKS
+========================================================= */
+
+async function subscribeMarket(
+symbol
+){
+
+const state =
+marketState.get(
+symbol
+);
+
+
+if(
+!state ||
+state.subscribed
+){
+
+return;
+
+}
+
+
+if(
+!publicWS ||
+publicWS.readyState !==
+WebSocket.OPEN
+){
+
+return;
+
+}
+
+
+const response =
+await publicRequest({
+
+ticks:
+symbol,
+
+subscribe:
+1
+
+});
+
+
+if(
+response.subscription
+){
+
+state.subscribed =
+true;
+
+state.subscriptionId =
+response.subscription.id;
+
+subscriptions.push(
+response.subscription.id
+);
+
+log(
+`Live stream started: ${
+symbol
+}`
+);
+
+}
+
+}
+
+
+/* =========================================================
+   FORGET TICKS
+========================================================= */
+
+function forgetAllTickSubscriptions(){
+
+if(
+!publicWS ||
+publicWS.readyState !==
+WebSocket.OPEN
+){
+
+return;
+
+}
+
+
+subscriptions.forEach(
+id=>{
+
+try{
+
+publicWS.send(
+JSON.stringify({
+
+forget:
+id
+
+})
+);
+
+}catch(e){}
+
+});
+
+
+subscriptions = [];
+
+}
+
+
+/* =========================================================
+   PROPOSAL
+========================================================= */
 
 async function getProposal(
-  candidate,
-  symbol
+candidate,
+symbol
 ){
 
-  const currency =
-    selectedAccount?.currency ||
-    "USD";
+if(
+!tradingWS ||
+tradingWS.readyState !==
+WebSocket.OPEN
+){
 
-  const stake =
-    num(
-      $("stake").value
-    );
-
-  const response =
-    await tradingRequest({
-
-      proposal:1,
-
-      amount:stake,
-
-      basis:"stake",
-
-      contract_type:
-        candidate.contract,
-
-      currency,
-
-      duration:1,
-
-      duration_unit:"t",
-
-      underlying_symbol:
-        symbol,
-
-      barrier:
-        String(
-          candidate.barrier
-        )
-
-    });
-
-  if(response.error){
-
-    throw new Error(
-      response.error.message
-    );
-
-  }
-
-  const p =
-    response.proposal;
-
-  if(!p){
-
-    throw new Error(
-      "No proposal returned."
-    );
-
-  }
-
-  const ask =
-    num(
-      p.ask_price
-    );
-
-  const payout =
-    num(
-      p.payout
-    );
-
-  if(
-    !ask ||
-    !payout
-  ){
-
-    throw new Error(
-      "Proposal did not contain valid ask/payout."
-    );
-
-  }
-
-  const breakEven =
-    ask /
-    payout *
-    100;
-
-  return {
-
-    proposalId:
-      p.id,
-
-    ask,
-
-    payout,
-
-    breakEven,
-
-    returnPct:
-      (
-        payout -
-        ask
-      ) /
-      ask *
-      100
-
-  };
+throw new Error(
+"Trading connection is not active."
+);
 
 }
 
 
-/* =====================================================
-   EXPECTED VALUE
-===================================================== */
+const stake =
+num(
+$("stake").value
+);
+
+
+const currency =
+selectedAccount?.currency ||
+"USD";
+
+
+const response =
+await tradingRequest({
+
+proposal:1,
+
+amount:
+stake,
+
+basis:
+"stake",
+
+contract_type:
+candidate.contract,
+
+currency:
+
+currency,
+
+duration:
+1,
+
+duration_unit:
+"t",
+
+underlying_symbol:
+symbol,
+
+barrier:
+String(
+candidate.barrier
+)
+
+});
+
+
+if(response.error){
+
+throw new Error(
+response.error.message
+);
+
+}
+
+
+const proposal =
+response.proposal;
+
+
+if(!proposal){
+
+throw new Error(
+"No proposal returned."
+);
+
+}
+
+
+const ask =
+num(
+proposal.ask_price
+);
+
+
+const payout =
+num(
+proposal.payout
+);
+
+
+if(
+ask <= 0 ||
+payout <= 0
+){
+
+throw new Error(
+"Invalid proposal price/payout."
+);
+
+}
+
+
+const breakEven =
+ask /
+payout *
+100;
+
+
+return {
+
+id:
+proposal.id,
+
+ask,
+
+payout,
+
+breakEven,
+
+returnPct:
+(
+payout -
+ask
+) /
+ask *
+100
+
+};
+
+}
+
+
+/* =========================================================
+   EV
+========================================================= */
 
 function calculateEV(
-  winRate,
-  payout,
-  ask
+winRate,
+payout,
+stake
 ){
 
-  const p =
-    winRate /
-    100;
+const p =
+winRate /
+100;
 
-  const evMoney =
-    p *
-    payout -
-    ask;
 
-  const evPct =
-    ask > 0
-      ? evMoney /
-        ask *
-        100
-      : -Infinity;
+const ev =
+p *
+payout -
+stake;
 
-  return {
 
-    evMoney,
+const evPct =
+stake > 0
+? ev /
+stake *
+100
+: -Infinity;
 
-    evPct
 
-  };
+return {
+
+ev,
+
+evPct
+
+};
 
 }
 
 
-/* =====================================================
-   CANDIDATE STATUS
-===================================================== */
+/* =========================================================
+   ANALYSIS STATUS
+========================================================= */
 
-function getCandidateStatus(
-  candidate,
-  validation,
-  recent,
-  ev,
-  trigger
+function getStatus(
+state,
+candidate,
+validation,
+recent,
+ev
 ){
 
-  const minTriggers =
-    num(
-      $("minTriggers").value
-    );
+const minTriggers =
+num(
+$("minTriggers").value
+);
 
-  const minWin =
-    num(
-      $("minWinRate").value
-    );
+const minWin =
+num(
+$("minWinRate").value
+);
 
-  const minRecent =
-    num(
-      $("minRecentWinRate").value
-    );
+const minRecent =
+num(
+$("minRecentWinRate").value
+);
 
-  const minEV =
-    num(
-      $("minEV").value
-    );
-
-
-  if(
-    validation.triggers <
-    minTriggers
-  ){
-
-    return "REJECT — LOW SAMPLE";
-
-  }
+const minEV =
+num(
+$("minEV").value
+);
 
 
-  if(
-    validation.winRate <
-    minWin
-  ){
-
-    return "REJECT — VALIDATION";
-
-  }
-
-
-  if(
-    recent.triggers >= 5 &&
-    recent.winRate <
-    minRecent
-  ){
-
-    return "REJECT — RECENT";
-
-  }
-
-
-  if(!ev){
-
-    return "WAIT — PAYOUT";
-
-  }
-
-
-  if(
-    ev.evPct <
-    minEV
-  ){
-
-    return "REJECT — EV";
-
-  }
-
-
-  if(!trigger){
-
-    return "WAIT — TRIGGER";
-
-  }
-
-
-  return "QUALIFIED";
-
-}
-
-
-/* =====================================================
-   SCORE
-===================================================== */
-
-function scoreCandidate(
-  x
+if(
+validation.triggers <
+minTriggers
 ){
 
-  if(!x){
-
-    return -Infinity;
-
-  }
-
-  const validation =
-    x.validation?.winRate ||
-    0;
-
-  const recent =
-    x.recent?.winRate ||
-    0;
-
-  const imbalance =
-    x.candidate?.imbalance ||
-    0;
-
-  const ev =
-    x.ev?.evPct ||
-    0;
-
-  const trigger =
-    x.trigger
-      ? 15
-      : 0;
-
-  return (
-
-    validation *
-    0.45 +
-
-    recent *
-    0.25 +
-
-    Math.max(
-      imbalance,
-      0
-    ) *
-    0.5 +
-
-    Math.max(
-      ev,
-      0
-    ) *
-    0.25 +
-
-    trigger
-
-  );
+return "REJECT — LOW SAMPLE";
 
 }
 
 
-/* =====================================================
-   ANALYZE MARKET
-===================================================== */
-
-async function analyzeMarket(
-  market
+if(
+validation.winRate <
+minWin
 ){
 
-  const symbol =
-    market.underlying_symbol ||
-    market.symbol;
-
-  try{
-
-    /*
-      CURRENT 100
-    */
-
-    const current =
-      await getHistory(
-        symbol
-      );
-
-    if(
-      current.length <
-      50
-    ){
-
-      return null;
-
-    }
-
-    const current100 =
-      current.slice(
-        -CURRENT_TICKS
-      );
-
-
-    /*
-      PREVIOUS 100
-    */
-
-    const previous100 =
-      await getPreviousHistory(
-        symbol
-      );
-
-    if(
-      previous100.length <
-      50
-    ){
-
-      return null;
-
-    }
-
-
-    /*
-      Evaluate OVER 3 / UNDER 7
-    */
-
-    const candidates =
-      evaluateCandidates(
-        current100
-      );
-
-    const analyzed = [];
-
-
-    for(
-      const candidate
-      of candidates
-    ){
-
-      const validation =
-        testTriggers(
-          previous100,
-          candidate
-        );
-
-      const recent =
-        recentTest(
-          current100,
-          candidate
-        );
-
-      let proposal = null;
-
-
-      /*
-        Only request payout if
-        there is enough evidence.
-      */
-
-      if(
-
-        validation.triggers >=
-        num(
-          $("minTriggers").value
-        ) &&
-
-        validation.winRate >=
-        num(
-          $("minWinRate").value
-        )
-
-      ){
-
-        try{
-
-          proposal =
-            await getProposal(
-              candidate,
-              symbol
-            );
-
-        }catch(e){
-
-          log(
-            `${symbol} ${
-              candidate.type
-            } proposal: ${
-              e.message
-            }`
-          );
-
-        }
-
-      }
-
-
-      let ev = null;
-
-      if(proposal){
-
-        ev =
-          calculateEV(
-            validation.winRate,
-            proposal.payout,
-            proposal.ask
-          );
-
-      }
-
-
-      const currentDigit =
-        lastDigit(
-          current100[
-            current100.length-1
-          ]
-        );
-
-
-      const trigger =
-        candidate.unwanted.includes(
-          currentDigit
-        );
-
-
-      const status =
-        getCandidateStatus(
-          candidate,
-          validation,
-          recent,
-          ev,
-          trigger
-        );
-
-
-      analyzed.push({
-
-        symbol,
-
-        candidate,
-
-        currentDigit,
-
-        validation,
-
-        recent,
-
-        proposal,
-
-        ev,
-
-        trigger,
-
-        status,
-
-        prices:
-          current100
-
-      });
-
-    }
-
-
-    analyzed.sort(
-      (a,b)=>
-        scoreCandidate(b) -
-        scoreCandidate(a)
-    );
-
-
-    return analyzed[0] || null;
-
-
-  }catch(e){
-
-    log(
-      `${symbol}: ${e.message}`
-    );
-
-    return null;
-
-  }
+return "REJECT — VALIDATION";
 
 }
 
 
-/* =====================================================
-   MARKET TABLE
-===================================================== */
-
-function renderMarketTable(
-  results
+if(
+recent.triggers >= 5 &&
+recent.winRate <
+minRecent
 ){
 
-  const tbody =
-    $("marketTable");
-
-  tbody.innerHTML = "";
-
-
-  results.forEach(
-    x=>{
-
-      if(!x){
-
-        return;
-
-      }
-
-      const c =
-        x.candidate;
-
-      const v =
-        x.validation;
-
-      const r =
-        x.recent;
-
-      const ev =
-        x.ev
-          ? x.ev.evPct
-          : null;
-
-
-      const tr =
-        document.createElement(
-          "tr"
-        );
-
-
-      const statusClass =
-        x.status ===
-        "QUALIFIED"
-
-          ? "good"
-
-          : x.status.startsWith(
-              "REJECT"
-            )
-
-            ? "bad"
-
-            : "warn";
-
-
-      tr.innerHTML = `
-
-        <td>${x.symbol}</td>
-
-        <td>${x.currentDigit}</td>
-
-        <td>${c.type}</td>
-
-        <td>
-          ${c.unwantedPct.toFixed(1)}%
-        </td>
-
-        <td>
-          ${c.expectedPct.toFixed(1)}%
-        </td>
-
-        <td>
-          ${c.imbalance.toFixed(1)} pp
-        </td>
-
-        <td>
-          ${v.triggers}
-        </td>
-
-        <td>
-          ${v.winRate.toFixed(1)}%
-          (${v.wins}/${v.triggers})
-        </td>
-
-        <td>
-          ${r.winRate.toFixed(1)}%
-          (${r.wins}/${r.triggers})
-        </td>
-
-        <td>
-          ${
-            ev === null
-              ? "-"
-              : ev.toFixed(2)+"%"
-          }
-        </td>
-
-        <td class="${statusClass}">
-          ${x.status}
-        </td>
-
-      `;
-
-
-      tr.onclick = ()=>{
-
-        renderDistribution(
-          x.symbol,
-          x.prices
-        );
-
-      };
-
-
-      tbody.appendChild(
-        tr
-      );
-
-    }
-  );
+return "REJECT — RECENT";
 
 }
 
 
-/* =====================================================
-   SIGNAL DISPLAY
-===================================================== */
+if(!ev){
 
-function renderSignals(
-  results
+return "WAIT — PAYOUT";
+
+}
+
+
+if(
+ev.evPct <
+minEV
 ){
 
-  const box =
-    $("signals");
-
-  box.innerHTML = "";
-
-
-  const qualified =
-    results.filter(
-      x =>
-        x &&
-        x.status ===
-        "QUALIFIED"
-    );
-
-
-  if(
-    !qualified.length
-  ){
-
-    box.innerHTML =
-      `<div class="muted">
-        No qualified signals right now.
-      </div>`;
-
-    return;
-
-  }
-
-
-  qualified.forEach(
-    x=>{
-
-      const c =
-        x.candidate;
-
-      const proposal =
-        x.proposal;
-
-      const ev =
-        x.ev;
-
-
-      const div =
-        document.createElement(
-          "div"
-        );
-
-      div.className =
-        "signal";
-
-
-      div.innerHTML = `
-
-        <strong>
-          ${x.symbol} —
-          ${c.type}
-        </strong>
-
-        <div class="small">
-          Current digit:
-          ${x.currentDigit}
-          |
-          Unwanted:
-          ${c.unwanted.join(",")}
-        </div>
-
-        <div class="small">
-          Validation:
-          ${x.validation.winRate.toFixed(1)}%
-          (${x.validation.wins}/${
-            x.validation.triggers
-          })
-        </div>
-
-        <div class="small">
-          Recent:
-          ${x.recent.winRate.toFixed(1)}%
-          (${x.recent.wins}/${
-            x.recent.triggers
-          })
-        </div>
-
-        <div class="small">
-          Imbalance:
-          ${c.imbalance.toFixed(2)} pp
-        </div>
-
-        <div class="small">
-          Break-even:
-          ${proposal.breakEven.toFixed(2)}%
-        </div>
-
-        <div class="small">
-          EV:
-          ${ev.evPct.toFixed(2)}%
-        </div>
-
-        <div style="margin-top:8px">
-
-          <button
-            class="green"
-            onclick="manualTradeBySymbol(
-              '${x.symbol}',
-              '${c.type}'
-            )"
-          >
-            TRADE THIS SIGNAL
-          </button>
-
-        </div>
-
-      `;
-
-
-      box.appendChild(
-        div
-      );
-
-    }
-  );
+return "REJECT — EV";
 
 }
 
 
-/* =====================================================
-   SCAN ALL MARKETS
-===================================================== */
-
-async function scanAllMarkets(){
-
-  if(scanning){
-
-    log(
-      "Scanner is already running."
-    );
-
-    return;
-
-  }
-
-
-  scanning = true;
-
-
-  $("scannerStatus").innerHTML =
-    `<span class="warn">
-      Scanning current 100-tick regimes...
-    </span>`;
-
-
-  try{
-
-    if(!publicWS){
-
-      await createPublicWS();
-
-    }
-
-
-    if(!markets.length){
-
-      log(
-        "Loading active markets..."
-      );
-
-      markets =
-        await getActiveMarkets();
-
-      log(
-        `${markets.length} active markets found.`
-      );
-
-    }
-
-
-    const results = [];
-
-
-    /*
-      Small batches prevent
-      excessive simultaneous requests.
-    */
-
-    const batchSize = 5;
-
-
-    for(
-      let i=0;
-      i<markets.length;
-      i+=batchSize
-    ){
-
-      const batch =
-        markets.slice(
-          i,
-          i+batchSize
-        );
-
-
-      const batchResults =
-        await Promise.all(
-          batch.map(
-            m =>
-              analyzeMarket(m)
-          )
-        );
-
-
-      batchResults.forEach(
-        x=>{
-
-          if(x){
-
-            results.push(x);
-
-          }
-
-        }
-      );
-
-
-      $("scannerStatus")
-        .textContent =
-          `Scanned ${
-            Math.min(
-              i+batchSize,
-              markets.length
-            )
-          }/${markets.length} markets`;
-
-    }
-
-
-    marketCandidates =
-      results;
-
-
-    renderMarketTable(
-      results
-    );
-
-
-    renderSignals(
-      results
-    );
-
-
-    /*
-      Display strongest candidate.
-    */
-
-    if(results.length){
-
-      const strongest =
-        [...results].sort(
-          (a,b)=>
-            scoreCandidate(b) -
-            scoreCandidate(a)
-        )[0];
-
-
-      renderDistribution(
-        strongest.symbol,
-        strongest.prices
-      );
-
-    }
-
-
-    /*
-      Check qualified signals.
-    */
-
-    for(
-      const result
-      of results
-    ){
-
-      if(
-        result &&
-        result.status ===
-        "QUALIFIED"
-      ){
-
-        await considerSignal(
-          result
-        );
-
-      }
-
-    }
-
-
-    $("scannerStatus")
-      .innerHTML =
-        `<span class="good">
-          Scan complete —
-          ${results.length}
-          candidate markets.
-        </span>`;
-
-
-  }catch(e){
-
-    console.error(e);
-
-
-    $("scannerStatus")
-      .innerHTML =
-        `<span class="bad">
-          ${e.message}
-        </span>`;
-
-
-    log(
-      "Scanner error: " +
-      e.message
-    );
-
-
-  }finally{
-
-    scanning = false;
-
-  }
+if(
+!candidate.unwanted.includes(
+state.liveDigit
+)
+){
+
+return "WAIT — TRIGGER";
 
 }
 
 
-/* =====================================================
-   AUTO SCANNER
-===================================================== */
+return "QUALIFIED";
+
+}
+
+
+/* =========================================================
+   ANALYZE STATE
+========================================================= */
+
+function updateMarketAnalysis(
+state,
+render=true
+){
+
+if(
+!state.currentPrices ||
+state.currentPrices.length < 50
+){
+
+return;
+
+}
+
+
+const candidates =
+makeCandidates(
+state.currentPrices
+);
+
+
+const results = [];
+
+
+for(
+const candidate
+of candidates
+){
+
+/*
+   Ignore unavailable contract.
+*/
+
+if(
+candidate.contract ===
+"DIGITOVER" &&
+!state.contracts.over
+){
+
+continue;
+
+}
+
+
+if(
+candidate.contract ===
+"DIGITUNDER" &&
+!state.contracts.under
+){
+
+continue;
+
+}
+
+
+const validation =
+testStrategy(
+state.validationPrices,
+candidate
+);
+
+
+const recent =
+recentTest(
+state.currentPrices,
+candidate
+);
+
+
+const result = {
+
+state,
+
+candidate,
+
+validation,
+
+recent,
+
+proposal:null,
+
+ev:null,
+
+status:
+"WAIT — PAYOUT",
+
+liveDigit:
+state.liveDigit
+
+};
+
+
+results.push(
+result
+);
+
+}
+
+
+results.sort(
+(a,b)=>
+scoreResult(b) -
+scoreResult(a)
+);
+
+
+state.results =
+results;
+
+state.best =
+results[0] || null;
+
+
+if(render){
+
+renderAll();
+
+}
+
+
+return state.best;
+
+}
+
+
+/* =========================================================
+   RESULT SCORE
+========================================================= */
+
+function scoreResult(
+result
+){
+
+if(!result){
+
+return -Infinity;
+
+}
+
+
+return (
+
+result.validation.winRate *
+0.5 +
+
+result.recent.winRate *
+0.3 +
+
+Math.max(
+result.candidate.imbalance,
+0
+) *
+0.5
+
+);
+
+}
+
+
+/* =========================================================
+   BUILD INITIAL STATE
+========================================================= */
+
+async function prepareMarket(
+market
+){
+
+const symbol =
+market.symbol ||
+market.underlying_symbol;
+
+
+try{
+
+const history =
+await loadInitialHistory(
+symbol
+);
+
+
+const state = {
+
+symbol,
+
+displayName:
+market.display_name ||
+symbol,
+
+contracts:
+market.contracts,
+
+validationPrices:
+history.validation,
+
+currentPrices:
+history.current.slice(),
+
+liveQuote:
+history.current[
+history.current.length-1
+],
+
+liveDigit:
+lastDigit(
+history.current[
+history.current.length-1
+]
+),
+
+liveEpoch:0,
+
+subscribed:false,
+
+subscriptionId:null,
+
+results:[],
+
+best:null
+
+};
+
+
+marketState.set(
+symbol,
+state
+);
+
+
+updateMarketAnalysis(
+state,
+false
+);
+
+
+return state;
+
+
+}catch(error){
+
+log(
+`${symbol}: history failed — ${
+error.message
+}`
+);
+
+return null;
+
+}
+
+
+/*
+   This delay is deliberately small.
+*/
+
+}
+
+
+/* =========================================================
+   REFRESH MARKETS
+========================================================= */
+
+async function refreshMarkets(){
+
+stopScanner();
+
+forgetAllTickSubscriptions();
+
+marketState.clear();
+
+eligibleMarkets = [];
+
+
+$("scannerStatus")
+.textContent =
+"Discovering eligible markets...";
+
+
+try{
+
+await createPublicWS();
+
+
+const eligible =
+await discoverEligibleMarkets();
+
+
+if(!eligible.length){
+
+throw new Error(
+"No markets with OVER/UNDER contracts were found."
+);
+
+}
+
+
+$("scannerStatus")
+.textContent =
+`Loading 200 ticks for ${
+eligible.length
+} eligible markets...`;
+
+
+/*
+   Load history sequentially to protect
+   against API rate limits.
+*/
+
+let loaded = 0;
+
+
+for(
+const market
+of eligible
+){
+
+const state =
+await prepareMarket(
+market
+);
+
+if(state){
+
+loaded++;
+
+}
+
+$("scannerStatus")
+.textContent =
+`Loading history ${
+loaded
+}/${eligible.length}`;
+
+await sleep(80);
+
+}
+
+
+/*
+   Now subscribe to live ticks.
+*/
+
+let subscribed = 0;
+
+
+for(
+const state
+of marketState.values()
+){
+
+try{
+
+await subscribeMarket(
+state.symbol
+);
+
+subscribed++;
+
+}catch(error){
+
+log(
+`${state.symbol}: subscription failed — ${
+error.message
+}`
+);
+
+}
+
+await sleep(60);
+
+}
+
+
+$("scannerStatus")
+.innerHTML =
+`<span class="good">
+Ready — ${loaded} markets loaded,
+${subscribed} live streams.
+</span>`;
+
+
+renderAll();
+
+
+}catch(error){
+
+$("scannerStatus")
+.innerHTML =
+`<span class="bad">
+${error.message}
+</span>`;
+
+log(
+"Market refresh error: " +
+error.message
+);
+
+}
+
+}
+
+
+/* =========================================================
+   SCAN
+========================================================= */
+
+async function scanMarkets(){
+
+if(currentScanRunning){
+
+log(
+"Scan already running."
+);
+
+return;
+
+}
+
+
+currentScanRunning =
+true;
+
+
+try{
+
+if(
+marketState.size === 0
+){
+
+await refreshMarkets();
+
+}else{
+
+/*
+   No ticks_history call here.
+   Live subscriptions already update
+   the rolling 100-tick windows.
+*/
+
+for(
+const state
+of marketState.values()
+){
+
+updateMarketAnalysis(
+state,
+false
+);
+
+}
+
+renderAll();
+
+}
+
+
+}catch(error){
+
+log(
+"Scan error: " +
+error.message
+);
+
+}finally{
+
+currentScanRunning =
+false;
+
+}
+
+}
+
+
+/* =========================================================
+   SCANNER START
+========================================================= */
 
 function startScanner(){
 
-  if(scannerTimer){
+if(scannerRunning){
 
-    return;
-
-  }
-
-
-  log(
-    "Auto scanner started."
-  );
-
-
-  scanAllMarkets();
-
-
-  /*
-    Re-scan every 5 seconds.
-  */
-
-  scannerTimer =
-    setInterval(
-      ()=>{
-
-        if(
-          !riskAllowsTrading()
-        ){
-
-          stopScanner();
-
-          return;
-
-        }
-
-        scanAllMarkets();
-
-      },
-      5000
-    );
-
-
-  $("scannerStatus")
-    .innerHTML =
-      `<span class="good">
-        Auto scanner running.
-      </span>`;
+return;
 
 }
 
+
+scannerRunning =
+true;
+
+
+$("scannerStatus")
+.innerHTML =
+`<span class="good">
+Scanner running.
+</span>`;
+
+
+scanMarkets();
+
+
+scannerTimer =
+setInterval(
+()=>{
+
+if(
+!scannerRunning
+){
+
+return;
+
+}
+
+scanMarkets();
+
+},
+SCAN_INTERVAL
+);
+
+
+log(
+"Scanner started."
+);
+
+}
+
+
+/* =========================================================
+   SCANNER STOP
+========================================================= */
 
 function stopScanner(){
 
-  if(scannerTimer){
-
-    clearInterval(
-      scannerTimer
-    );
-
-    scannerTimer = null;
-
-  }
+scannerRunning =
+false;
 
 
-  log(
-    "Scanner stopped."
-  );
+if(scannerTimer){
 
+clearInterval(
+scannerTimer
+);
 
-  $("scannerStatus")
-    .textContent =
-      "Scanner stopped.";
+scannerTimer =
+null;
 
 }
 
 
-/* =====================================================
-   RISK CONTROL
-===================================================== */
+$("scannerStatus")
+.textContent =
+"Scanner stopped.";
 
-function riskAllowsTrading(){
-
-  const maxTrades =
-    num(
-      $("maxTrades").value
-    );
-
-  const maxLosses =
-    num(
-      $("maxLosses").value
-    );
-
-  const tp =
-    num(
-      $("takeProfit").value
-    );
-
-  const sl =
-    num(
-      $("stopLoss").value
-    );
-
-
-  if(
-    session.trades >=
-    maxTrades
-  ){
-
-    log(
-      "Maximum trades reached."
-    );
-
-    return false;
-
-  }
-
-
-  if(
-    session.losses >=
-    maxLosses
-  ){
-
-    log(
-      "Maximum losses reached."
-    );
-
-    return false;
-
-  }
-
-
-  if(
-    tp > 0 &&
-    session.pl >= tp
-  ){
-
-    log(
-      "Take profit reached."
-    );
-
-    return false;
-
-  }
-
-
-  if(
-    sl < 0 &&
-    session.pl <= sl
-  ){
-
-    log(
-      "Stop loss reached."
-    );
-
-    return false;
-
-  }
-
-
-  return true;
+log(
+"Scanner stopped."
+);
 
 }
 
 
-/* =====================================================
-   CONSIDER SIGNAL
-===================================================== */
+/* =========================================================
+   TRADING START
+========================================================= */
 
-async function considerSignal(
-  result
+function startTrading(){
+
+if(
+!tradingWS ||
+tradingWS.readyState !==
+WebSocket.OPEN
 ){
 
-  if(
-    !riskAllowsTrading()
-  ){
+alert(
+"Connect your Deriv trading account first."
+);
 
-    return;
-
-  }
-
-
-  /*
-    Only one open trade.
-  */
-
-  if(
-    session.open >= 1
-  ){
-
-    return;
-
-  }
-
-
-  /*
-    Auto trade must be enabled.
-  */
-
-  if(
-    !$("autoTrade").checked
-  ){
-
-    return;
-
-  }
-
-
-  const symbol =
-    result.symbol;
-
-
-  let live;
-
-
-  try{
-
-    live =
-      await getCurrentTick(
-        symbol
-      );
-
-  }catch(e){
-
-    log(
-      `${symbol}: live tick failed — ${
-        e.message
-      }`
-    );
-
-    return;
-
-  }
-
-
-  const candidate =
-    result.candidate;
-
-
-  /*
-    The live digit MUST be
-    in the unwanted group.
-  */
-
-  if(
-    !candidate.unwanted.includes(
-      live.digit
-    )
-  ){
-
-    return;
-
-  }
-
-
-  /*
-    Prevent duplicate entry
-    on the exact same tick.
-  */
-
-  const triggerKey =
-    `${symbol}:${live.epoch}:${live.digit}`;
-
-
-  if(
-    lastTrigger.get(
-      symbol
-    ) === triggerKey
-  ){
-
-    return;
-
-  }
-
-
-  lastTrigger.set(
-    symbol,
-    triggerKey
-  );
-
-
-  try{
-
-    /*
-      Get fresh proposal immediately
-      before buying.
-    */
-
-    const proposal =
-      await getProposal(
-        candidate,
-        symbol
-      );
-
-
-    const ev =
-      calculateEV(
-        result.validation.winRate,
-        proposal.payout,
-        proposal.ask
-      );
-
-
-    const minEV =
-      num(
-        $("minEV").value
-      );
-
-
-    if(
-      ev.evPct < minEV
-    ){
-
-      log(
-        `${symbol} ${
-          candidate.type
-        }: live EV ${
-          ev.evPct.toFixed(2)
-        }% below minimum.`
-      );
-
-      return;
-
-    }
-
-
-    log(
-      `TRIGGER: ${symbol} ${
-        candidate.type
-      } | digit=${live.digit} | EV=${
-        ev.evPct.toFixed(2)
-      }%`
-    );
-
-
-    await buyContract(
-      symbol,
-      candidate,
-      live.digit,
-      proposal,
-      result.validation.winRate
-    );
-
-
-  }catch(e){
-
-    log(
-      `${symbol}: trade rejected — ${
-        e.message
-      }`
-    );
-
-  }
+return;
 
 }
 
 
-/* =====================================================
-   MANUAL SIGNAL TRADE
-===================================================== */
-
-async function manualTradeBySymbol(
-  symbol,
-  type
+if(
+session.trades >=
+num(
+$("maxTrades").value
+)
 ){
 
-  const result =
-    marketCandidates.find(
-      x =>
-        x &&
-        x.symbol === symbol &&
-        x.candidate.type === type
-    );
+alert(
+"Maximum trades already reached."
+);
 
-
-  if(!result){
-
-    alert(
-      "Signal is no longer available. Run another scan."
-    );
-
-    return;
-
-  }
-
-
-  await manualTrade(
-    result
-  );
+return;
 
 }
 
 
-async function manualTrade(
-  result
+tradingEnabled =
+true;
+
+
+$("tradingStatus")
+.className =
+"status trade-on";
+
+
+$("tradingStatus")
+.innerHTML =
+`<span class="good">
+TRADING ACTIVE — qualified signals may open trades.
+</span>`;
+
+
+log(
+"*** AUTOMATIC TRADING STARTED ***"
+);
+
+
+/*
+   Start scanner automatically.
+*/
+
+if(!scannerRunning){
+
+startScanner();
+
+}
+
+}
+
+
+/* =========================================================
+   TRADING STOP
+========================================================= */
+
+function stopTrading(){
+
+tradingEnabled =
+false;
+
+
+$("tradingStatus")
+.className =
+"status trade-off";
+
+
+$("tradingStatus")
+.innerHTML =
+`<span class="bad">
+TRADING STOPPED — no new contracts will be opened.
+</span>`;
+
+
+log(
+"*** AUTOMATIC TRADING STOPPED ***"
+);
+
+}
+
+
+/* =========================================================
+   RISK CHECK
+========================================================= */
+
+function riskAllowsTrade(){
+
+if(!tradingEnabled){
+
+return false;
+
+}
+
+
+if(
+session.trades >=
+num(
+$("maxTrades").value
+)
 ){
 
-  if(
-    !riskAllowsTrading()
-  ){
+log(
+"Maximum trade count reached."
+);
 
-    alert(
-      "Risk limit reached."
-    );
+stopTrading();
 
-    return;
-
-  }
-
-
-  try{
-
-    const live =
-      await getCurrentTick(
-        result.symbol
-      );
-
-
-    if(
-      !result.candidate.unwanted.includes(
-        live.digit
-      )
-    ){
-
-      alert(
-        `Current digit is ${live.digit}. ` +
-        `It is not in the unwanted group ` +
-        `(${result.candidate.unwanted.join(",")}).`
-      );
-
-      return;
-
-    }
-
-
-    const proposal =
-      await getProposal(
-        result.candidate,
-        result.symbol
-      );
-
-
-    const ev =
-      calculateEV(
-        result.validation.winRate,
-        proposal.payout,
-        proposal.ask
-      );
-
-
-    const minEV =
-      num(
-        $("minEV").value
-      );
-
-
-    if(
-      ev.evPct < minEV
-    ){
-
-      alert(
-        `EV ${ev.evPct.toFixed(2)}% ` +
-        `is below minimum ${minEV}%.`
-      );
-
-      return;
-
-    }
-
-
-    await buyContract(
-      result.symbol,
-      result.candidate,
-      live.digit,
-      proposal,
-      result.validation.winRate
-    );
-
-
-  }catch(e){
-
-    alert(
-      e.message
-    );
-
-  }
+return false;
 
 }
 
 
-/* =====================================================
-   BUY CONTRACT
-===================================================== */
+if(
+session.losses >=
+num(
+$("maxLosses").value
+)
+){
+
+log(
+"Maximum loss count reached."
+);
+
+stopTrading();
+
+return false;
+
+}
+
+
+const tp =
+num(
+$("takeProfit").value
+);
+
+const sl =
+num(
+$("stopLoss").value
+);
+
+
+if(
+tp > 0 &&
+session.pl >= tp
+){
+
+log(
+"Take profit reached."
+);
+
+stopTrading();
+
+return false;
+
+}
+
+
+if(
+sl < 0 &&
+session.pl <= sl
+){
+
+log(
+"Stop loss reached."
+);
+
+stopTrading();
+
+return false;
+
+}
+
+
+if(
+session.open >= 1
+){
+
+return false;
+
+}
+
+
+return true;
+
+}
+
+
+/* =========================================================
+   CHECK SIGNAL
+========================================================= */
+
+async function checkSignal(
+state
+){
+
+if(
+!tradingEnabled
+){
+
+return;
+
+}
+
+
+if(
+!riskAllowsTrade()
+){
+
+return;
+
+}
+
+
+if(
+!state.best
+){
+
+return;
+
+}
+
+
+const result =
+state.best;
+
+
+const candidate =
+result.candidate;
+
+
+/*
+   Need current unwanted digit.
+*/
+
+if(
+!candidate.unwanted.includes(
+state.liveDigit
+)
+){
+
+return;
+
+}
+
+
+/*
+   Need validation.
+*/
+
+const minTriggers =
+num(
+$("minTriggers").value
+);
+
+const minWin =
+num(
+$("minWinRate").value
+);
+
+const minRecent =
+num(
+$("minRecentWinRate").value
+);
+
+
+if(
+result.validation.triggers <
+minTriggers
+){
+
+return;
+
+}
+
+
+if(
+result.validation.winRate <
+minWin
+){
+
+return;
+
+}
+
+
+if(
+result.recent.triggers >= 5 &&
+result.recent.winRate <
+minRecent
+){
+
+return;
+
+}
+
+
+/*
+   Avoid repeated entry on same tick.
+*/
+
+const triggerKey =
+`${state.symbol}:${state.liveEpoch}:${state.liveDigit}`;
+
+
+if(
+state.lastTrigger ===
+triggerKey
+){
+
+return;
+
+}
+
+
+state.lastTrigger =
+triggerKey;
+
+
+/*
+   Get live proposal.
+*/
+
+try{
+
+const proposal =
+await getProposal(
+candidate,
+state.symbol
+);
+
+
+const ev =
+calculateEV(
+result.validation.winRate,
+proposal.payout,
+proposal.ask
+);
+
+
+const minEV =
+num(
+$("minEV").value
+);
+
+
+if(
+ev.evPct <
+minEV
+){
+
+log(
+`${state.symbol} ${
+candidate.type
+}: EV ${
+ev.evPct.toFixed(2)
+}% below ${
+minEV
+}%`
+);
+
+return;
+
+}
+
+
+/*
+   Final live trigger check.
+*/
+
+if(
+!candidate.unwanted.includes(
+state.liveDigit
+)
+){
+
+return;
+
+}
+
+
+log(
+`SIGNAL ${
+state.symbol
+} ${
+candidate.type
+} | digit ${
+state.liveDigit
+} | validation ${
+result.validation.winRate.toFixed(1)
+}% | payout ${
+proposal.payout.toFixed(2)
+} | EV ${
+ev.evPct.toFixed(2)
+}%`
+);
+
+
+await buyContract(
+state,
+candidate,
+proposal
+);
+
+
+}catch(error){
+
+log(
+`${state.symbol} ${
+candidate.type
+}: ${
+error.message
+}`
+);
+
+}
+
+}
+
+
+/* =========================================================
+   BUY
+========================================================= */
 
 async function buyContract(
-  symbol,
-  candidate,
-  triggerDigit,
-  proposal,
-  validationWinRate
+state,
+candidate,
+proposal
 ){
 
-  if(
-    !riskAllowsTrading()
-  ){
-
-    return;
-
-  }
-
-
-  if(
-    session.open >= 1
-  ){
-
-    log(
-      "Already have an open trade."
-    );
-
-    return;
-
-  }
-
-
-  if(
-    !tradingWS ||
-    tradingWS.readyState !==
-    WebSocket.OPEN
-  ){
-
-    throw new Error(
-      "Trading connection is not active."
-    );
-
-  }
-
-
-  const price =
-    proposal.ask;
-
-
-  log(
-    `Buying ${candidate.type} on ${
-      symbol
-    } | trigger=${triggerDigit} | stake=${price}`
-  );
-
-
-  const response =
-    await tradingRequest({
-
-      buy:
-        proposal.proposalId,
-
-      price
-
-    });
-
-
-  if(response.error){
-
-    throw new Error(
-      response.error.message
-    );
-
-  }
-
-
-  const buy =
-    response.buy;
-
-
-  if(!buy){
-
-    throw new Error(
-      "Buy response missing."
-    );
-
-  }
-
-
-  const contractId =
-    buy.contract_id;
-
-
-  session.trades++;
-
-  session.open++;
-
-
-  updateSessionUI();
-
-
-  const trade = {
-
-    contractId,
-
-    symbol,
-
-    contract:
-      candidate.type,
-
-    triggerDigit,
-
-    stake:price,
-
-    payout:
-      proposal.payout,
-
-    validationWinRate,
-
-    startTime:
-      new Date(),
-
-    settled:false
-
-  };
-
-
-  tradeMap.set(
-    String(contractId),
-    trade
-  );
-
-
-  log(
-    `OPENED contract ${contractId}`
-  );
-
-
-  /*
-    Subscribe to contract updates.
-  */
-
-  try{
-
-    tradingWS.send(
-      JSON.stringify({
-
-        proposal_open_contract:1,
-
-        contract_id:
-          contractId,
-
-        subscribe:1
-
-      })
-    );
-
-  }catch(e){
-
-    log(
-      "Contract subscription error: " +
-      e.message
-    );
-
-  }
-
-
-  renderTrade(
-    trade
-  );
+if(
+!tradingEnabled
+){
+
+return;
 
 }
 
 
-/* =====================================================
-   TRADING MESSAGE HANDLER
-===================================================== */
+if(
+session.open >= 1
+){
+
+return;
+
+}
+
+
+if(
+!tradingWS ||
+tradingWS.readyState !==
+WebSocket.OPEN
+){
+
+throw new Error(
+"Trading connection not active."
+);
+
+}
+
+
+if(
+!riskAllowsTrade()
+){
+
+return;
+
+}
+
+
+const response =
+await tradingRequest({
+
+buy:
+proposal.id,
+
+price:
+proposal.ask
+
+});
+
+
+if(response.error){
+
+throw new Error(
+response.error.message
+);
+
+}
+
+
+const buy =
+response.buy;
+
+
+if(!buy){
+
+throw new Error(
+"No buy response."
+);
+
+}
+
+
+const contractId =
+buy.contract_id;
+
+
+session.trades++;
+
+session.open++;
+
+
+updateSession();
+
+
+const trade = {
+
+contractId,
+
+symbol:
+state.symbol,
+
+contract:
+candidate.type,
+
+trigger:
+state.liveDigit,
+
+stake:
+proposal.ask,
+
+payout:
+proposal.payout,
+
+time:
+new Date(),
+
+settled:false
+
+};
+
+
+tradeMap.set(
+String(contractId),
+trade
+);
+
+
+renderTrade(
+trade
+);
+
+
+log(
+`TRADE OPENED ${
+state.symbol
+} ${
+candidate.type
+} #${
+contractId
+}`
+);
+
+
+/*
+   Subscribe to contract updates.
+*/
+
+tradingWS.send(
+JSON.stringify({
+
+proposal_open_contract:
+1,
+
+contract_id:
+contractId,
+
+subscribe:
+1
+
+})
+);
+
+}
+
+
+/* =========================================================
+   TRADING MESSAGE
+========================================================= */
 
 function handleTradingMessage(
-  data
+data
 ){
 
-  /*
-    Normal request response.
-  */
+if(
+data.req_id &&
+tradingRequests.has(
+data.req_id
+)
+){
 
-  if(
-    data.req_id &&
-    tradingRequests.has(
-      data.req_id
-    )
-  ){
-
-    const item =
-      tradingRequests.get(
-        data.req_id
-      );
+const request =
+tradingRequests.get(
+data.req_id
+);
 
 
-    if(data.error){
+if(data.error){
 
-      item.reject(
-        data.error
-      );
+request.reject(
+data.error
+);
 
-    }else{
+}else{
 
-      item.resolve(
-        data
-      );
-
-    }
-
-
-    tradingRequests.delete(
-      data.req_id
-    );
-
-  }
-
-
-  /*
-    Balance update.
-  */
-
-  if(data.balance){
-
-    const balance =
-      num(
-        data.balance.balance
-      );
-
-    const currency =
-      data.balance.currency ||
-      "";
-
-
-    setConnection(
-      `Trading connected — Balance ${
-        balance.toFixed(2)
-      } ${currency}`,
-      "good"
-    );
-
-  }
-
-
-  /*
-    Open contract update.
-  */
-
-  if(
-    data.proposal_open_contract
-  ){
-
-    handleContractUpdate(
-      data.proposal_open_contract
-    );
-
-  }
+request.resolve(
+data
+);
 
 }
 
 
-/* =====================================================
+tradingRequests.delete(
+data.req_id
+);
+
+}
+
+
+/*
+   Balance.
+*/
+
+if(data.balance){
+
+const balance =
+num(
+data.balance.balance
+);
+
+const currency =
+data.balance.currency ||
+"";
+
+
+$("connectionStatus")
+.innerHTML =
+`<span class="good">
+Connected — Balance ${
+balance.toFixed(2)
+} ${currency}
+</span>`;
+
+}
+
+
+/*
+   Open contract.
+*/
+
+if(
+data.proposal_open_contract
+){
+
+handleContract(
+data.proposal_open_contract
+);
+
+}
+
+}
+
+
+/* =========================================================
    CONTRACT RESULT
-===================================================== */
+========================================================= */
 
-function handleContractUpdate(
-  contract
+function handleContract(
+contract
 ){
 
-  const id =
-    String(
-      contract.contract_id
-    );
+const id =
+String(
+contract.contract_id
+);
 
 
-  const trade =
-    tradeMap.get(id);
+const trade =
+tradeMap.get(
+id
+);
 
 
-  if(!trade){
+if(!trade){
 
-    return;
-
-  }
-
-
-  if(trade.settled){
-
-    return;
-
-  }
-
-
-  const isSold =
-    Boolean(
-      contract.is_sold
-    );
-
-
-  const status =
-    contract.status;
-
-
-  if(
-    !isSold &&
-    status !== "sold"
-  ){
-
-    return;
-
-  }
-
-
-  trade.settled =
-    true;
-
-
-  const profit =
-    num(
-      contract.profit
-    );
-
-
-  session.open =
-    Math.max(
-      0,
-      session.open-1
-    );
-
-
-  session.pl +=
-    profit;
-
-
-  if(
-    profit > 0
-  ){
-
-    session.wins++;
-
-  }else{
-
-    session.losses++;
-
-  }
-
-
-  updateSessionUI();
-
-
-  updateTradeResult(
-    id,
-    profit
-  );
-
-
-  log(
-    `RESULT ${
-      trade.symbol
-    } ${
-      trade.contract
-    }: ${
-      profit >= 0
-        ? "WIN"
-        : "LOSS"
-    } ${
-      profit.toFixed(2)
-    }`
-  );
-
-
-  if(
-    !riskAllowsTrading()
-  ){
-
-    stopScanner();
-
-  }
+return;
 
 }
 
 
-/* =====================================================
-   TRADE TABLE
-===================================================== */
+if(trade.settled){
+
+return;
+
+}
+
+
+const sold =
+Boolean(
+contract.is_sold
+);
+
+
+const status =
+contract.status;
+
+
+if(
+!sold &&
+status !== "sold"
+){
+
+return;
+
+}
+
+
+trade.settled =
+true;
+
+
+const profit =
+num(
+contract.profit
+);
+
+
+session.open =
+Math.max(
+0,
+session.open - 1
+);
+
+
+session.pl +=
+profit;
+
+
+if(
+profit > 0
+){
+
+session.wins++;
+
+}else{
+
+session.losses++;
+
+}
+
+
+updateSession();
+
+updateTradeResult(
+id,
+profit
+);
+
+
+log(
+`RESULT ${
+trade.symbol
+} ${
+trade.contract
+} → ${
+profit > 0
+? "WIN"
+: "LOSS"
+} ${
+profit.toFixed(2)
+}`
+);
+
+
+/*
+   Automatically stop NEW trades when
+   the configured limits are reached.
+*/
+
+if(
+session.losses >=
+num(
+$("maxLosses").value
+)
+){
+
+stopTrading();
+
+}
+
+
+if(
+session.trades >=
+num(
+$("maxTrades").value
+)
+){
+
+stopTrading();
+
+}
+
+
+const tp =
+num(
+$("takeProfit").value
+);
+
+const sl =
+num(
+$("stopLoss").value
+);
+
+
+if(
+tp > 0 &&
+session.pl >= tp
+){
+
+stopTrading();
+
+}
+
+
+if(
+sl < 0 &&
+session.pl <= sl
+){
+
+stopTrading();
+
+}
+
+}
+
+
+/* =========================================================
+   RENDER TRADE
+========================================================= */
 
 function renderTrade(
-  trade
+trade
 ){
 
-  const tbody =
-    $("tradeTable");
+const tbody =
+$("tradeTable");
 
 
-  const tr =
-    document.createElement(
-      "tr"
-    );
+const row =
+document.createElement(
+"tr"
+);
 
 
-  tr.id =
-    "trade-" +
-    trade.contractId;
+row.id =
+"trade-" +
+trade.contractId;
 
 
-  tr.innerHTML = `
+row.innerHTML = `
 
-    <td>
-      ${
-        trade.startTime
-          .toLocaleTimeString()
-      }
-    </td>
+<td>
+${
+trade.time
+.toLocaleTimeString()
+}
+</td>
 
-    <td>
-      ${trade.symbol}
-    </td>
+<td>
+${trade.symbol}
+</td>
 
-    <td>
-      ${trade.contract}
-    </td>
+<td>
+${trade.contract}
+</td>
 
-    <td>
-      ${trade.triggerDigit}
-    </td>
+<td>
+${trade.trigger}
+</td>
 
-    <td>
-      ${trade.stake.toFixed(2)}
-    </td>
+<td>
+${trade.stake.toFixed(2)}
+</td>
 
-    <td>
-      ${trade.payout.toFixed(2)}
-    </td>
+<td>
+${trade.payout.toFixed(2)}
+</td>
 
-    <td class="warn">
-      OPEN
-    </td>
+<td class="warn">
+OPEN
+</td>
 
-    <td>
-      -
-    </td>
+<td>
+-
+</td>
 
-  `;
+`;
 
 
-  tbody.prepend(
-    tr
-  );
+tbody.prepend(
+row
+);
 
 }
 
+
+/* =========================================================
+   UPDATE TRADE
+========================================================= */
 
 function updateTradeResult(
-  contractId,
-  profit
+id,
+profit
 ){
 
-  const tr =
-    document.getElementById(
-      "trade-" +
-      contractId
-    );
+const row =
+document.getElementById(
+"trade-" + id
+);
 
 
-  if(!tr){
+if(!row){
 
-    return;
-
-  }
-
-
-  const cells =
-    tr.children;
-
-
-  cells[6].innerHTML =
-    profit > 0
-
-      ? `<span class="good">
-           WIN
-         </span>`
-
-      : `<span class="bad">
-           LOSS
-         </span>`;
-
-
-  cells[7].textContent =
-    profit.toFixed(2);
+return;
 
 }
 
 
-/* =====================================================
+const cells =
+row.children;
+
+
+cells[6].innerHTML =
+profit > 0
+
+? `<span class="good">
+WIN
+</span>`
+
+: `<span class="bad">
+LOSS
+</span>`;
+
+
+cells[7].textContent =
+profit.toFixed(2);
+
+}
+
+
+/* =========================================================
+   RENDER DISTRIBUTION
+========================================================= */
+
+function renderDistribution(
+state
+){
+
+if(!state){
+
+return;
+
+}
+
+
+const dist =
+getDistribution(
+state.currentPrices
+);
+
+
+$("distributionTitle")
+.textContent =
+`${state.symbol} — latest 100 ticks`;
+
+
+const tbody =
+$("distributionTable");
+
+
+tbody.innerHTML = "";
+
+
+dist.forEach(
+(item,digit)=>{
+
+const row =
+document.createElement(
+"tr"
+);
+
+
+row.innerHTML = `
+
+<td>${digit}</td>
+
+<td>${item.count}</td>
+
+<td>${item.pct.toFixed(1)}%</td>
+
+`;
+
+
+tbody.appendChild(
+row
+);
+
+}
+);
+
+}
+
+
+/* =========================================================
+   RENDER MARKET TABLE
+========================================================= */
+
+function renderMarketTable(){
+
+const tbody =
+$("marketTable");
+
+
+tbody.innerHTML = "";
+
+
+const states =
+Array.from(
+marketState.values()
+);
+
+
+states
+.sort(
+(a,b)=>
+scoreResult(b.best) -
+scoreResult(a.best)
+)
+.forEach(
+state=>{
+
+if(!state.best){
+
+return;
+
+}
+
+
+const result =
+state.best;
+
+
+const c =
+result.candidate;
+
+const v =
+result.validation;
+
+const r =
+result.recent;
+
+
+let evText =
+"-";
+
+
+let status =
+"WAIT — PAYOUT";
+
+
+let statusClass =
+"warn";
+
+
+if(result.proposal){
+
+result.ev =
+calculateEV(
+v.winRate,
+result.proposal.payout,
+result.proposal.ask
+);
+
+}
+
+
+status =
+getStatus(
+state,
+c,
+v,
+r,
+result.ev
+);
+
+
+if(
+status ===
+"QUALIFIED"
+){
+
+statusClass =
+"good";
+
+}else if(
+status.startsWith(
+"REJECT"
+)
+){
+
+statusClass =
+"bad";
+
+}
+
+
+const row =
+document.createElement(
+"tr"
+);
+
+
+if(result.ev){
+
+evText =
+result.ev.evPct
+.toFixed(2) +
+"%";
+
+}
+
+
+row.innerHTML = `
+
+<td>
+${state.symbol}
+</td>
+
+<td>
+${state.liveDigit}
+</td>
+
+<td>
+${c.type}
+</td>
+
+<td>
+${c.unwantedPct.toFixed(1)}%
+</td>
+
+<td>
+${c.expectedPct.toFixed(1)}%
+</td>
+
+<td>
+${c.imbalance.toFixed(1)} pp
+</td>
+
+<td>
+${v.triggers}
+</td>
+
+<td>
+${v.winRate.toFixed(1)}%
+(${v.wins}/${v.triggers})
+</td>
+
+<td>
+${r.winRate.toFixed(1)}%
+(${r.wins}/${r.triggers})
+</td>
+
+<td>
+${evText}
+</td>
+
+<td class="${statusClass}">
+${status}
+</td>
+
+`;
+
+
+row.onclick =
+()=>{
+
+renderDistribution(
+state
+);
+
+};
+
+
+tbody.appendChild(
+row
+);
+
+}
+);
+
+}
+
+
+/* =========================================================
+   RENDER SIGNALS
+========================================================= */
+
+function renderSignals(){
+
+const box =
+$("signals");
+
+
+box.innerHTML = "";
+
+
+const qualified =
+Array.from(
+marketState.values()
+)
+.filter(
+state=>
+state.best &&
+getStatus(
+state,
+state.best.candidate,
+state.best.validation,
+state.best.recent,
+state.best.ev
+) ===
+"QUALIFIED"
+);
+
+
+if(!qualified.length){
+
+box.innerHTML =
+`<div class="muted">
+No qualified signals right now.
+</div>`;
+
+return;
+
+}
+
+
+qualified
+.sort(
+(a,b)=>
+scoreResult(b.best) -
+scoreResult(a.best)
+)
+.slice(
+0,
+20
+)
+.forEach(
+state=>{
+
+const result =
+state.best;
+
+
+const c =
+result.candidate;
+
+
+const div =
+document.createElement(
+"div"
+);
+
+
+div.className =
+"signal";
+
+
+div.innerHTML = `
+
+<strong>
+${state.symbol} —
+${c.type}
+</strong>
+
+<div class="small">
+Live digit:
+${state.liveDigit}
+</div>
+
+<div class="small">
+Unwanted digits:
+${c.unwanted.join(", ")}
+</div>
+
+<div class="small">
+Validation:
+${result.validation.winRate.toFixed(1)}%
+(${result.validation.wins}/${
+result.validation.triggers
+})
+</div>
+
+<div class="small">
+Recent:
+${result.recent.winRate.toFixed(1)}%
+(${result.recent.wins}/${
+result.recent.triggers
+})
+</div>
+
+<div class="small">
+Imbalance:
+${c.imbalance.toFixed(2)} pp
+</div>
+
+<div class="small">
+EV:
+${
+result.ev
+? result.ev.evPct.toFixed(2)+"%"
+: "-"
+}
+</div>
+
+`;
+
+
+box.appendChild(
+div
+);
+
+}
+);
+
+}
+
+
+/* =========================================================
+   RENDER EVERYTHING
+========================================================= */
+
+function renderAll(){
+
+renderMarketTable();
+
+renderSignals();
+
+
+const states =
+Array.from(
+marketState.values()
+);
+
+
+if(states.length){
+
+const best =
+states
+.sort(
+(a,b)=>
+scoreResult(b.best) -
+scoreResult(a.best)
+)[0];
+
+
+if(best){
+
+renderDistribution(
+best
+);
+
+}
+
+}
+
+}
+
+
+/* =========================================================
+   LIVE TICK → CHECK SIGNAL
+========================================================= */
+
+function processLiveTrading(){
+
+if(!tradingEnabled){
+
+return;
+
+}
+
+
+for(
+const state
+of marketState.values()
+){
+
+checkSignal(
+state
+);
+
+}
+
+}
+
+
+/*
+   Every incoming tick changes the local
+   100-tick window.
+
+   We don't request ticks_history again.
+*/
+
+const originalHandleLiveTick =
+handleLiveTick;
+
+
+/*
+   Replace handler with version that
+   also checks trading.
+*/
+
+handleLiveTick =
+function(tick){
+
+originalHandleLiveTick(
+tick
+);
+
+
+/*
+   Update UI only occasionally.
+*/
+
+if(
+tradingEnabled
+){
+
+processLiveTrading();
+
+}
+
+};
+
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+$("loadAccountsBtn")
+.addEventListener(
+"click",
+loadAccounts
+);
+
+
+$("connectBtn")
+.addEventListener(
+"click",
+connectTrading
+);
+
+
+$("disconnectBtn")
+.addEventListener(
+"click",
+disconnect
+);
+
+
+$("scanBtn")
+.addEventListener(
+"click",
+scanMarkets
+);
+
+
+$("refreshBtn")
+.addEventListener(
+"click",
+refreshMarkets
+);
+
+
+$("startTradeBtn")
+.addEventListener(
+"click",
+startTrading
+);
+
+
+$("stopTradeBtn")
+.addEventListener(
+"click",
+stopTrading
+);
+
+
+/* =========================================================
    STARTUP
-===================================================== */
+========================================================= */
 
-window.addEventListener(
-  "beforeunload",
-  ()=>{
-
-    try{
-
-      if(publicWS){
-        publicWS.close();
-      }
-
-      if(tradingWS){
-        tradingWS.close();
-      }
-
-    }catch(e){}
-
-  }
-);
+updateSession();
 
 
 log(
-  "V21 loaded."
+"V22 loaded."
 );
 
 log(
-  "Current analysis window: 100 ticks."
+"100 current ticks + 100 validation ticks."
 );
 
 log(
-  "Validation window: previous 100 ticks."
+"History is loaded once per market."
 );
 
 log(
-  "Contracts: OVER 3 and UNDER 7."
+"Live ticks maintain the rolling 100 locally."
 );
 
 log(
-  "Recovery: OFF."
+"OVER 3 / UNDER 7 only."
 );
 
 log(
-  "Martingale: OFF."
+"Recovery OFF."
 );
 
 log(
-  "Active-symbol request fixed: product_type removed."
+"Martingale OFF."
+);
+
+log(
+"Trading is STOPPED by default."
 );
 
 </script>
