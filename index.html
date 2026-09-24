@@ -3,80 +3,218 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>V25 Rise/Fall Adaptive Trader</title>
+<title>V26 Adaptive Rise/Fall Trader</title>
 
 <style>
 *{box-sizing:border-box}
+
 body{
- margin:0;background:#08111f;color:#e8eef8;
- font-family:Arial,sans-serif;font-size:14px
+ margin:0;
+ background:#07111f;
+ color:#eaf1fb;
+ font-family:Arial,Helvetica,sans-serif;
+ font-size:14px;
 }
-.wrap{max-width:1100px;margin:auto;padding:14px}
-h1{font-size:22px;margin:5px 0}
-h2{font-size:16px;margin:12px 0 8px}
+
+.wrap{
+ max-width:1200px;
+ margin:auto;
+ padding:14px;
+}
+
+h1{
+ margin:4px 0;
+ font-size:22px;
+}
+
+h2{
+ font-size:16px;
+ margin:8px 0 10px;
+}
+
 .card{
- background:#101c2d;border:1px solid #263852;
- border-radius:12px;padding:12px;margin-bottom:12px
+ background:#101d30;
+ border:1px solid #29405e;
+ border-radius:14px;
+ padding:13px;
+ margin-bottom:12px;
 }
+
 .grid{
  display:grid;
  grid-template-columns:repeat(auto-fit,minmax(145px,1fr));
- gap:8px
+ gap:8px;
 }
-input,select,button{
- width:100%;padding:10px;border-radius:8px;
- border:1px solid #31445f;background:#0b1626;color:#fff
+
+input,
+select,
+button{
+ width:100%;
+ padding:10px;
+ border-radius:8px;
+ border:1px solid #344b68;
+ background:#0a1627;
+ color:#fff;
 }
-button{cursor:pointer;font-weight:bold}
-.start{background:#0c7d4d}
-.stop{background:#a92e3c}
-.paper{background:#235b9c}
-.small{font-size:12px;color:#9eacc0}
+
+button{
+ cursor:pointer;
+ font-weight:bold;
+}
+
+button:active{
+ transform:scale(.98);
+}
+
+.start{
+ background:#087b4b;
+}
+
+.stop{
+ background:#a92e3c;
+}
+
+.scan{
+ background:#245c96;
+}
+
+.reset{
+ background:#70438f;
+}
+
+.good{
+ color:#4fe39b;
+}
+
+.bad{
+ color:#ff6875;
+}
+
+.warn{
+ color:#ffd166;
+}
+
+.blue{
+ color:#70b8ff;
+}
+
+.small{
+ color:#98a8bc;
+ font-size:12px;
+}
+
 .status{
- padding:10px;border-radius:8px;background:#0b1626;
- margin-top:8px
+ margin-top:9px;
+ padding:10px;
+ border-radius:8px;
+ background:#091526;
 }
-.good{color:#52e39a}
-.bad{color:#ff6b78}
-.warn{color:#ffd166}
-table{width:100%;border-collapse:collapse;font-size:12px}
-th,td{
- padding:7px;border-bottom:1px solid #263852;
- text-align:left;white-space:nowrap
+
+.stats{
+ display:grid;
+ grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
+ gap:8px;
 }
-.scroll{overflow:auto}
+
 .stat{
- background:#0b1626;border-radius:8px;padding:10px
+ background:#091526;
+ padding:10px;
+ border-radius:9px;
 }
-.stat b{display:block;font-size:18px;margin-top:3px}
+
+.stat span{
+ color:#92a2b7;
+ font-size:12px;
+}
+
+.stat b{
+ display:block;
+ margin-top:4px;
+ font-size:18px;
+}
+
+.scroll{
+ overflow:auto;
+}
+
+table{
+ width:100%;
+ border-collapse:collapse;
+ font-size:12px;
+}
+
+th,
+td{
+ padding:7px;
+ border-bottom:1px solid #263b57;
+ text-align:left;
+ white-space:nowrap;
+}
+
+th{
+ color:#aebdd0;
+}
+
 pre{
- background:#050b14;padding:10px;border-radius:8px;
- max-height:250px;overflow:auto;white-space:pre-wrap;
- font-size:11px
+ margin:0;
+ background:#040b14;
+ border-radius:9px;
+ padding:10px;
+ max-height:320px;
+ overflow:auto;
+ white-space:pre-wrap;
+ font-size:11px;
+ line-height:1.35;
+}
+
+.badge{
+ padding:3px 6px;
+ border-radius:5px;
+ background:#182b42;
+}
+
+.score{
+ font-weight:bold;
+}
+
+input[type=checkbox]{
+ width:auto;
 }
 </style>
 </head>
 
 <body>
+
 <div class="wrap">
 
-<h1>⚡ V25 Rise/Fall Adaptive Trader</h1>
+<h1>⚡ V26 Adaptive Rise/Fall Trader</h1>
+
 <div class="small">
-Directional 20/50/100-tick engine • validation • payout • EV • no recovery
+20T + 50T + 100T • persistence • chop • volatility • walk-forward validation • EV
 </div>
 
+
+<!-- CONNECTION -->
+
 <div class="card">
+
 <h2>🔐 Connection</h2>
 
 <div class="grid">
+
 <div>
 <label>PAT</label>
-<input id="pat" type="password" placeholder="Deriv PAT">
+<input
+ id="pat"
+ type="password"
+ placeholder="Deriv PAT">
 </div>
 
 <div>
 <label>App ID</label>
-<input id="appid" placeholder="Deriv App ID">
+<input
+ id="appid"
+ placeholder="Deriv App ID">
 </div>
 
 <div>
@@ -89,21 +227,32 @@ Directional 20/50/100-tick engine • validation • payout • EV • no recove
 
 <div>
 <label>Currency</label>
-<input id="currency" value="USD">
+<input
+ id="currency"
+ value="USD">
 </div>
+
 </div>
 
 <br>
 
-<button onclick="connectAccount()">🔌 CONNECT</button>
+<button onclick="connectAccount()">
+🔌 CONNECT
+</button>
 
-<div id="accountInfo" class="status">
+<div
+ id="accountInfo"
+ class="status">
 Not connected
 </div>
+
 </div>
 
 
+<!-- STRATEGY -->
+
 <div class="card">
+
 <h2>⚙️ Strategy</h2>
 
 <div class="grid">
@@ -111,98 +260,233 @@ Not connected
 <div>
 <label>Mode</label>
 <select id="mode">
-<option value="paper">PAPER — no real trades</option>
-<option value="live">LIVE — real orders</option>
+<option value="paper">
+PAPER — no real trades
+</option>
+<option value="live">
+LIVE — real trades
+</option>
 </select>
 </div>
 
 <div>
 <label>Stake</label>
-<input id="stake" type="number" value="1" min="0.35" step="0.01">
+<input
+ id="stake"
+ type="number"
+ value="1"
+ min="0.35"
+ step="0.01">
 </div>
 
 <div>
-<label>Duration (ticks)</label>
+<label>Duration</label>
 <select id="duration">
-<option value="1">1</option>
-<option value="2">2</option>
-<option value="3" selected>3</option>
-<option value="5">5</option>
-<option value="10">10</option>
+<option value="1">1 tick</option>
+<option value="2">2 ticks</option>
+<option value="3" selected>3 ticks</option>
+<option value="5">5 ticks</option>
+<option value="10">10 ticks</option>
 </select>
 </div>
 
 <div>
-<label>Min validation %</label>
-<input id="minValidation" type="number" value="62" min="50" max="95">
+<label>Min Validation %</label>
+<input
+ id="minValidation"
+ type="number"
+ value="60"
+ min="50"
+ max="95">
+</div>
+
+<div>
+<label>Min Validation Samples</label>
+<input
+ id="minSamples"
+ type="number"
+ value="25"
+ min="5">
+</div>
+
+<div>
+<label>Min Conservative %</label>
+<input
+ id="minConservative"
+ type="number"
+ value="55"
+ min="50"
+ max="95">
 </div>
 
 <div>
 <label>Min EV</label>
-<input id="minEV" type="number" value="0.02" step="0.01">
+<input
+ id="minEV"
+ type="number"
+ value="0.05"
+ step="0.01">
+</div>
+
+<div>
+<label>Min Signal Score</label>
+<input
+ id="minScore"
+ type="number"
+ value="72"
+ min="50"
+ max="100">
+</div>
+
+<div>
+<label>Persistence %</label>
+<input
+ id="minPersistence"
+ type="number"
+ value="63"
+ min="50"
+ max="95">
+</div>
+
+<div>
+<label>Max Chop %</label>
+<input
+ id="maxChop"
+ type="number"
+ value="42"
+ min="0"
+ max="100">
+</div>
+
+<div>
+<label>Min Volatility Ratio</label>
+<input
+ id="minVol"
+ type="number"
+ value="0.55"
+ min="0"
+ step="0.05">
+</div>
+
+<div>
+<label>Max Run</label>
+<input
+ id="maxRun"
+ type="number"
+ value="8"
+ min="2">
 </div>
 
 <div>
 <label>Cooldown after loss</label>
-<input id="cooldown" type="number" value="10" min="0">
+<input
+ id="cooldown"
+ type="number"
+ value="10"
+ min="0">
 </div>
 
 <div>
-<label>Max trades</label>
-<input id="maxTrades" type="number" value="20">
+<label>Market loss lock</label>
+<input
+ id="marketLossLock"
+ type="number"
+ value="2"
+ min="1">
 </div>
 
 <div>
-<label>Max losses</label>
-<input id="maxLosses" type="number" value="2">
+<label>Lock ticks</label>
+<input
+ id="lockTicks"
+ type="number"
+ value="50"
+ min="1">
+</div>
+
+<div>
+<label>Max Trades</label>
+<input
+ id="maxTrades"
+ type="number"
+ value="20">
+</div>
+
+<div>
+<label>Max Losses</label>
+<input
+ id="maxLosses"
+ type="number"
+ value="2">
 </div>
 
 <div>
 <label>Take Profit</label>
-<input id="takeProfit" type="number" value="10" step="0.01">
+<input
+ id="takeProfit"
+ type="number"
+ value="10"
+ step="0.01">
 </div>
 
 <div>
 <label>Stop Loss</label>
-<input id="stopLoss" type="number" value="-5" step="0.01">
+<input
+ id="stopLoss"
+ type="number"
+ value="-5"
+ step="0.01">
 </div>
 
 </div>
+
 </div>
 
+
+<!-- CONTROL -->
 
 <div class="card">
 
-<div class="grid">
+<div class="stats">
 
 <div class="stat">
-Balance
+<span>Balance</span>
 <b id="balance">—</b>
 </div>
 
 <div class="stat">
-Trades
+<span>Trades</span>
 <b id="trades">0</b>
 </div>
 
 <div class="stat">
-Wins
+<span>Wins</span>
 <b id="wins">0</b>
 </div>
 
 <div class="stat">
-Losses
+<span>Losses</span>
 <b id="losses">0</b>
 </div>
 
 <div class="stat">
-P/L
+<span>Win Rate</span>
+<b id="winRate">0%</b>
+</div>
+
+<div class="stat">
+<span>Session P/L</span>
 <b id="pl">$0.00</b>
 </div>
 
 <div class="stat">
-Open
+<span>Open Trade</span>
 <b id="openTrade">None</b>
+</div>
+
+<div class="stat">
+<span>Markets</span>
+<b id="marketCount">0</b>
 </div>
 
 </div>
@@ -210,50 +494,137 @@ Open
 <br>
 
 <div class="grid">
-<button class="paper" onclick="scanMarkets()">🔎 SCAN MARKETS</button>
-<button class="start" onclick="startTrading()">▶ START TRADING</button>
-<button class="stop" onclick="stopTrading()">⏹ STOP TRADING</button>
+
+<button
+ class="scan"
+ onclick="scanMarkets()">
+🔎 SCAN / REFRESH
+</button>
+
+<button
+ class="start"
+ onclick="startTrading()">
+▶ START TRADING
+</button>
+
+<button
+ class="stop"
+ onclick="stopTrading()">
+⏹ STOP TRADING
+</button>
+
+<button
+ class="reset"
+ onclick="resetSession()">
+♻ RESET SESSION
+</button>
+
 </div>
 
-<div id="status" class="status">
+<div
+ id="status"
+ class="status">
 Disconnected
 </div>
 
 </div>
 
 
+<!-- MARKET TABLE -->
+
 <div class="card">
-<h2>📊 Market Analysis</h2>
+
+<h2>📊 Live Market Engine</h2>
+
+<div class="small">
+WAIT = no qualifying setup. Score is calculated from the current
+statistical conditions; it is not a guarantee.
+</div>
+
+<br>
 
 <div class="scroll">
+
 <table>
+
 <thead>
+
 <tr>
 <th>Market</th>
 <th>Price</th>
 <th>Signal</th>
+<th>Score</th>
 <th>20T</th>
 <th>50T</th>
 <th>100T</th>
+<th>Persist</th>
+<th>Chop</th>
+<th>Vol</th>
+<th>Run</th>
 <th>Validation</th>
-<th>Backtest</th>
-<th>Payout</th>
+<th>LB</th>
+<th>N</th>
 <th>EV</th>
+<th>Status</th>
 </tr>
+
 </thead>
 
 <tbody id="markets"></tbody>
+
 </table>
-</div>
+
 </div>
 
+</div>
+
+
+<!-- BACKTEST -->
 
 <div class="card">
+
+<h2>🧪 Backtest Lab</h2>
+
+<div class="scroll">
+
+<table>
+
+<thead>
+
+<tr>
+<th>Market</th>
+<th>Duration</th>
+<th>Training</th>
+<th>Validation</th>
+<th>Val N</th>
+<th>Conservative</th>
+<th>Score</th>
+<th>Result</th>
+</tr>
+
+</thead>
+
+<tbody id="backtests"></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+
+<!-- HISTORY -->
+
+<div class="card">
+
 <h2>📜 Trade History</h2>
 
 <div class="scroll">
+
 <table>
+
 <thead>
+
 <tr>
 <th>#</th>
 <th>Market</th>
@@ -262,18 +633,28 @@ Disconnected
 <th>Payout</th>
 <th>Result</th>
 <th>P/L</th>
+<th>Score</th>
 </tr>
+
 </thead>
 
 <tbody id="history"></tbody>
+
 </table>
-</div>
+
 </div>
 
+</div>
+
+
+<!-- LOG -->
 
 <div class="card">
+
 <h2>🧠 Engine Log</h2>
+
 <pre id="log"></pre>
+
 </div>
 
 </div>
@@ -281,176 +662,317 @@ Disconnected
 
 <script>
 
-const API_BASE="https://api.derivws.com";
+/* =========================================================
+   V26
+   =========================================================
 
-let ws=null;
-let pat="";
-let appId="";
-let account=null;
+   IMPORTANT:
 
-let connected=false;
-let trading=false;
-let scanning=false;
+   This browser app uses a PAT entered by the user.
 
-let markets={};
-let marketList=[];
+   Do not hard-code your PAT into this file or publish it
+   inside a public GitHub repository.
 
-let reqId=0;
-let pending={};
-
-let openTrade=null;
-let tradeInFlight=false;
-
-let totalTrades=0;
-let wins=0;
-let losses=0;
-let sessionPL=0;
-
-let cooldownUntil=0;
+   V26:
+   - Rise/Fall CALL/PUT
+   - 400 tick rolling window
+   - 20/50/100 trend
+   - persistence
+   - chop
+   - volatility
+   - overextension
+   - walk-forward validation
+   - Wilson lower bound
+   - payout / break-even
+   - EV
+   - score
+   - market locks
+   - paper/live
+   - duplicate subscription protection
+   - no recovery
+   - no Martingale
+   ========================================================= */
 
 
 /* =========================
-   UI
+   CONFIG
+========================= */
+
+const API_BASE =
+ "https://api.derivws.com";
+
+const HISTORY_SIZE = 400;
+
+const MAX_MARKETS = 30;
+
+const VALIDATION_WINDOW = 100;
+
+const TRAINING_WINDOW = 200;
+
+const PERSISTENCE_WINDOW = 30;
+
+let ws = null;
+
+let pat = "";
+
+let appId = "";
+
+let account = null;
+
+let connected = false;
+
+let scanning = false;
+
+let trading = false;
+
+let reqId = 0;
+
+let pending = {};
+
+let markets = {};
+
+let marketList = [];
+
+let openTrade = null;
+
+let tradeInFlight = false;
+
+let totalTrades = 0;
+
+let wins = 0;
+
+let losses = 0;
+
+let sessionPL = 0;
+
+let cooldownUntil = 0;
+
+
+/* =========================
+   HELPERS
 ========================= */
 
 function $(id){
  return document.getElementById(id);
 }
 
-function log(x){
- const el=$("log");
- el.textContent=
-   `[${new Date().toLocaleTimeString()}] ${x}\n`
-   +el.textContent;
-}
+function num(v){
 
-function status(x,cls=""){
- $("status").textContent=x;
- $("status").className="status "+cls;
+ const n = Number(v);
+
+ return Number.isFinite(n)
+   ? n
+   : 0;
+
 }
 
 function sleep(ms){
- return new Promise(r=>setTimeout(r,ms));
+
+ return new Promise(
+   resolve=>setTimeout(resolve,ms)
+ );
+
 }
 
-function num(v){
- const n=Number(v);
- return Number.isFinite(n)?n:0;
+function now(){
+
+ return Date.now();
+
+}
+
+function log(message){
+
+ const box = $("log");
+
+ box.textContent =
+   `[${new Date().toLocaleTimeString()}] ${message}\n`
+   + box.textContent;
+
+}
+
+function setStatus(message, cls=""){
+
+ $("status").textContent = message;
+
+ $("status").className =
+   "status " + cls;
+
 }
 
 
 /* =========================
-   REST ACCOUNT
+   ACCOUNT CONNECTION
 ========================= */
 
 async function connectAccount(){
 
- pat=$("pat").value.trim();
- appId=$("appid").value.trim();
+ stopTrading();
+
+ pat =
+   $("pat").value.trim();
+
+ appId =
+   $("appid").value.trim();
 
  if(!pat || !appId){
-   alert("Enter PAT and App ID.");
-   return;
- }
 
- status("Getting account list...");
- log("Requesting Options accounts...");
+   alert(
+     "Enter your Deriv PAT and App ID."
+   );
+
+   return;
+
+ }
 
  try{
 
-   const r=await fetch(
-     API_BASE+"/trading/v1/options/accounts",
-     {
-       headers:{
-         "Authorization":"Bearer "+pat,
-         "Deriv-App-ID":appId
+   setStatus(
+     "Getting account list..."
+   );
+
+   const response =
+     await fetch(
+       API_BASE+
+       "/trading/v1/options/accounts",
+       {
+         headers:{
+           "Authorization":
+             "Bearer "+pat,
+           "Deriv-App-ID":
+             appId
+         }
        }
-     }
-   );
-
-   const j=await r.json();
-
-   if(!r.ok){
-     throw new Error(
-       j?.errors?.[0]?.message ||
-       j?.error?.message ||
-       "Account request failed"
      );
+
+   const data =
+     await response.json();
+
+   if(!response.ok){
+
+     throw new Error(
+       data?.errors?.[0]?.message ||
+       data?.error?.message ||
+       "Account request failed."
+     );
+
    }
 
-   const accounts=extractAccounts(j);
+   const accounts =
+     extractAccounts(data);
 
-   const wanted=$("accountMode").value;
+   const wanted =
+     $("accountMode").value;
 
-   account=accounts.find(
-     a=>String(a.account_type||"").toLowerCase()===wanted
-   );
+   account =
+     accounts.find(
+       a =>
+       String(
+         a.account_type || ""
+       ).toLowerCase()
+       === wanted
+     );
 
    if(!account){
-     account=accounts.find(
-       a=>String(a.type||"").toLowerCase()===wanted
-     );
+
+     account =
+       accounts.find(
+         a =>
+         String(
+           a.type || ""
+         ).toLowerCase()
+         === wanted
+       );
+
    }
 
    if(!account){
+
      throw new Error(
-       "No "+wanted+" Options account found."
+       "No "+wanted+
+       " Options account was found."
      );
+
    }
 
-   $("accountInfo").innerHTML=
-     `<span class="good">Connected account:</span>
-      ${account.account_id}
-      (${account.account_type||wanted})`;
+   $("accountInfo").innerHTML =
+     `<span class="good">
+       Selected ${wanted} account:
+      </span>
+      ${account.account_id}`;
 
    log(
-     "Selected "+wanted+
+     "Selected "+
+     wanted+
      " account automatically: "+
      account.account_id
    );
 
    await connectWebSocket(account);
 
- }catch(e){
+ }catch(error){
 
-   console.error(e);
+   console.error(error);
 
-   status("Connection error: "+e.message,"bad");
-   log("ERROR: "+e.message);
+   connected=false;
+
+   setStatus(
+     "Connection error: "+
+     error.message,
+     "bad"
+   );
+
+   log(
+     "CONNECTION ERROR: "+
+     error.message
+   );
 
  }
 
 }
 
 
+/* =========================
+   ACCOUNT EXTRACTION
+========================= */
+
 function extractAccounts(obj){
 
- const found=[];
- const seen=new Set();
+ const result = [];
 
- function walk(x){
+ const seen = new Set();
 
-   if(!x || typeof x!=="object") return;
+ function walk(value){
 
    if(
-     x.account_id &&
-     !seen.has(String(x.account_id))
+     !value ||
+     typeof value !== "object"
    ){
+     return;
+   }
 
-     seen.add(String(x.account_id));
-     found.push(x);
+   if(value.account_id){
+
+     const id =
+       String(value.account_id);
+
+     if(!seen.has(id)){
+
+       seen.add(id);
+
+       result.push(value);
+
+     }
 
    }
 
-   if(Array.isArray(x)){
+   if(Array.isArray(value)){
 
-     x.forEach(walk);
+     value.forEach(walk);
 
    }else{
 
-     Object.values(x).forEach(v=>{
-       if(v && typeof v==="object") walk(v);
-     });
+     Object.values(value)
+       .forEach(walk);
 
    }
 
@@ -458,7 +980,8 @@ function extractAccounts(obj){
 
  walk(obj);
 
- return found;
+ return result;
+
 }
 
 
@@ -468,43 +991,53 @@ function extractAccounts(obj){
 
 async function getOTP(accountId){
 
- const r=await fetch(
-   API_BASE+
-   "/trading/v1/options/accounts/"+
-   encodeURIComponent(accountId)+
-   "/otp",
-   {
-     method:"POST",
-     headers:{
-       "Authorization":"Bearer "+pat,
-       "Deriv-App-ID":appId
+ const response =
+   await fetch(
+     API_BASE+
+     "/trading/v1/options/accounts/"+
+     encodeURIComponent(accountId)+
+     "/otp",
+     {
+       method:"POST",
+       headers:{
+         "Authorization":
+           "Bearer "+pat,
+         "Deriv-App-ID":
+           appId
+       }
      }
-   }
- );
+   );
 
- const j=await r.json();
+ const data =
+   await response.json();
 
- if(!r.ok){
+ if(!response.ok){
 
    throw new Error(
-     j?.errors?.[0]?.message ||
-     j?.error?.message ||
-     "OTP request failed"
+     data?.errors?.[0]?.message ||
+     data?.error?.message ||
+     "OTP request failed."
    );
 
  }
 
- const url=
-   j?.data?.url ||
-   j?.url ||
-   j?.data?.data?.url;
+ const url =
+   data?.data?.url ||
+   data?.url ||
+   data?.data?.data?.url;
 
  if(!url){
-   console.log(j);
-   throw new Error("No WebSocket URL returned.");
+
+   console.log(data);
+
+   throw new Error(
+     "No authenticated WebSocket URL returned."
+   );
+
  }
 
  return url;
+
 }
 
 
@@ -515,25 +1048,41 @@ async function getOTP(accountId){
 async function connectWebSocket(acc){
 
  if(ws){
-   try{ws.close()}catch(e){}
+
+   try{
+
+     ws.close();
+
+   }catch(e){}
+
  }
 
- status("Getting authenticated WebSocket...");
+ const url =
+   await getOTP(
+     acc.account_id
+   );
 
- const url=await getOTP(acc.account_id);
+ setStatus(
+   "Connecting authenticated WebSocket..."
+ );
 
- ws=new WebSocket(url);
+ ws =
+   new WebSocket(url);
 
- ws.onopen=async()=>{
+ ws.onopen =
+ async function(){
 
    connected=true;
 
-   status(
-     "CONNECTED — "+acc.account_id,
+   setStatus(
+     "CONNECTED — "+
+     acc.account_id,
      "good"
    );
 
-   log("Authenticated WebSocket connected.");
+   log(
+     "Authenticated WebSocket connected."
+   );
 
    await requestBalance();
 
@@ -541,42 +1090,54 @@ async function connectWebSocket(acc){
 
  };
 
- ws.onmessage=e=>{
+ ws.onmessage =
+ function(event){
 
-   let d;
+   let data;
 
    try{
-     d=JSON.parse(e.data);
-   }catch{
-     return;
-   }
 
-   if(d.error){
+     data =
+       JSON.parse(event.data);
 
-     log(
-       "API ERROR: "+
-       (d.error.message||JSON.stringify(d.error))
-     );
+   }catch(e){
 
-     handleResponse(d);
      return;
 
    }
 
-   handleResponse(d);
+   handleMessage(data);
 
  };
 
- ws.onerror=()=>{
-   status("WebSocket error","bad");
+ ws.onerror =
+ function(){
+
+   setStatus(
+     "WebSocket error.",
+     "bad"
+   );
+
  };
 
- ws.onclose=()=>{
+ ws.onclose =
+ function(){
+
    connected=false;
+
    trading=false;
+
    scanning=false;
-   status("WebSocket disconnected","bad");
-   log("WebSocket closed.");
+
+   setStatus(
+     "WebSocket disconnected.",
+     "bad"
+   );
+
+   log(
+     "WebSocket closed."
+   );
+
  };
 
 }
@@ -586,87 +1147,167 @@ async function connectWebSocket(acc){
    REQUEST SYSTEM
 ========================= */
 
-function send(req,timeout=12000){
+function sendRequest(
+ request,
+ timeout=12000
+){
 
- return new Promise((resolve,reject)=>{
+ return new Promise(
+   (resolve,reject)=>{
 
-   if(!ws || ws.readyState!==1){
-     reject(new Error("WebSocket not connected"));
-     return;
+     if(
+       !ws ||
+       ws.readyState!==1
+     ){
+
+       reject(
+         new Error(
+           "WebSocket not connected."
+         )
+       );
+
+       return;
+
+     }
+
+     const id =
+       ++reqId;
+
+     request.req_id = id;
+
+     const timer =
+       setTimeout(
+         ()=>{
+           if(
+             pending[id]
+           ){
+
+             delete pending[id];
+
+             reject(
+               new Error(
+                 "Request timeout."
+               )
+             );
+
+           }
+         },
+         timeout
+       );
+
+     pending[id]={
+       resolve,
+       reject,
+       timer
+     };
+
+     ws.send(
+       JSON.stringify(request)
+     );
+
    }
-
-   const id=++reqId;
-
-   req.req_id=id;
-
-   pending[id]={
-     resolve,
-     reject,
-     timer:setTimeout(()=>{
-       delete pending[id];
-       reject(new Error("Request timeout"));
-     },timeout)
-   };
-
-   ws.send(JSON.stringify(req));
-
- });
+ );
 
 }
 
 
-function handleResponse(d){
+/* =========================
+   MESSAGE ROUTER
+========================= */
 
- if(d.req_id && pending[d.req_id]){
+function handleMessage(data){
 
-   const p=pending[d.req_id];
+ if(data.error){
 
-   clearTimeout(p.timer);
+   log(
+     "API ERROR: "+
+     (
+       data.error.message ||
+       JSON.stringify(data.error)
+     )
+   );
 
-   delete pending[d.req_id];
+   if(
+     data.req_id &&
+     pending[data.req_id]
+   ){
 
-   if(d.error){
-     p.reject(new Error(d.error.message));
-   }else{
-     p.resolve(d);
+     const p =
+       pending[data.req_id];
+
+     clearTimeout(
+       p.timer
+     );
+
+     delete pending[data.req_id];
+
+     p.reject(
+       new Error(
+         data.error.message
+       )
+     );
+
    }
 
- }
-
- if(d.msg_type==="tick"){
-
-   handleTick(d);
+   return;
 
  }
 
- if(d.msg_type==="proposal"){
 
-   handleProposal(d);
+ /* Resolve request */
+
+ if(
+   data.req_id &&
+   pending[data.req_id]
+ ){
+
+   const p =
+     pending[data.req_id];
+
+   clearTimeout(
+     p.timer
+   );
+
+   delete pending[data.req_id];
+
+   p.resolve(data);
+
+ }
+
+
+ /* Tick */
+
+ if(
+   data.msg_type==="tick"
+ ){
+
+   handleTick(data);
 
  }
 
- if(d.msg_type==="buy"){
 
-   handleBuy(d);
+ /* Balance */
+
+ if(
+   data.msg_type==="balance"
+ ){
+
+   updateBalance(data);
+
+ }
+
+
+ /* Contract */
+
+ if(
+   data.msg_type===
+   "proposal_open_contract"
+ ){
+
+   handleContract(data);
 
  }
 
- if(d.msg_type==="proposal_open_contract"){
-
-   handleContract(d);
-
- }
-
- if(d.msg_type==="balance"){
-
-   const b=num(d.balance?.balance);
-
-   if(b){
-     $("balance").textContent=
-       "$"+b.toFixed(2);
-   }
-
- }
 
 }
 
@@ -679,18 +1320,36 @@ async function requestBalance(){
 
  try{
 
-   const d=await send({
-     balance:1
-   });
+   const data =
+     await sendRequest({
+       balance:1
+     });
 
-   const b=num(d.balance?.balance);
+   updateBalance(data);
 
-   $("balance").textContent=
-     b ? "$"+b.toFixed(2) : "—";
+ }catch(error){
 
- }catch(e){
+   log(
+     "Balance error: "+
+     error.message
+   );
 
-   log("Balance: "+e.message);
+ }
+
+}
+
+function updateBalance(data){
+
+ const balance =
+   num(
+     data.balance?.balance
+   );
+
+ if(balance){
+
+   $("balance").textContent =
+     "$"+
+     balance.toFixed(2);
 
  }
 
@@ -698,124 +1357,286 @@ async function requestBalance(){
 
 
 /* =========================
-   MARKET DISCOVERY
+   MARKET SCAN
 ========================= */
 
 async function scanMarkets(){
 
  if(!connected){
-   status("Connect first","warn");
+
+   setStatus(
+     "Connect first.",
+     "warn"
+   );
+
    return;
+
  }
 
- if(scanning) return;
+ if(scanning){
+
+   log(
+     "Scan already running."
+   );
+
+   return;
+
+ }
 
  scanning=true;
 
- status("Scanning synthetic markets...");
+ setStatus(
+   "Scanning markets..."
+ );
 
  try{
 
-   const d=await send({
-     active_symbols:"brief",
-     contract_type:["CALL","PUT"]
-   });
+   const response =
+     await sendRequest({
+       active_symbols:"brief"
+     });
 
-   const all=d.active_symbols||[];
-
-   let candidates=all.filter(x=>
-     String(x.market||"").toLowerCase()
-       .includes("synthetic")
-     &&
-     Number(x.exchange_is_open??1)!==0
-     &&
-     Number(x.is_trading_suspended??0)===0
-   );
+   const all =
+     response.active_symbols || [];
 
    /*
-      Keep the number manageable.
-      This avoids hammering ticks_history.
+      Synthetic market detection.
    */
 
-   candidates=candidates.slice(0,30);
+   const candidates =
+     all.filter(
+       x => {
 
-   marketList=[];
+         const market =
+           String(
+             x.market || ""
+           ).toLowerCase();
 
-   for(const x of candidates){
+         const submarket =
+           String(
+             x.submarket || ""
+           ).toLowerCase();
 
-     const symbol=
-       x.underlying_symbol;
+         const display =
+           String(
+             x.display_name || ""
+           ).toLowerCase();
 
-     if(!symbol) continue;
+         const synthetic =
+           market.includes(
+             "synthetic"
+           ) ||
+           submarket.includes(
+             "synthetic"
+           ) ||
+           display.includes(
+             "synthetic"
+           );
 
-     markets[symbol]={
-       symbol,
-       name:x.underlying_symbol_name||symbol,
-       prices:[],
-       ready:false,
-       signal:null,
-       validation:0,
-       backtest:null,
-       payout:null,
-       ev:null,
-       lastTick:null,
-       sub:false
-     };
+         const symbol =
+           String(
+             x.underlying_symbol ||
+             x.symbol ||
+             ""
+           );
 
-     marketList.push(symbol);
+         return (
+           synthetic &&
+           symbol
+         );
 
-   }
+       }
+     )
+     .slice(
+       0,
+       MAX_MARKETS
+     );
+
+   /*
+      IMPORTANT:
+
+      Do NOT replace existing market
+      objects.
+
+      That was the cause of the
+      duplicate subscription errors
+      seen in the screenshot.
+   */
+
+   const nextSymbols =
+     candidates.map(
+       x =>
+       x.underlying_symbol ||
+       x.symbol
+     );
+
+   marketList =
+     [...new Set(nextSymbols)];
+
+   $("marketCount").textContent =
+     marketList.length;
 
    log(
      "Found "+
      marketList.length+
-     " synthetic CALL/PUT markets."
+     " synthetic markets."
    );
+
+
+   /*
+      Create objects only if they
+      don't already exist.
+   */
+
+   for(
+     const symbol of marketList
+   ){
+
+     if(
+       !markets[symbol]
+     ){
+
+       markets[symbol]={
+         symbol,
+         prices:[],
+         epochs:[],
+         seq:0,
+
+         ready:false,
+
+         lastTick:null,
+         lastEpoch:null,
+
+         subscriptionId:null,
+
+         signal:null,
+         score:0,
+
+         feature:null,
+
+         backtest:null,
+
+         payout:null,
+         ev:null,
+         breakEven:null,
+
+         lastProposalAt:0,
+
+         consecutiveLosses:0,
+
+         lockedUntilSeq:0,
+
+         lastTradeSeq:0
+       };
+
+     }
+
+   }
 
    renderMarkets();
 
+
    /*
-      Load history sequentially.
+      Load history.
+
       One request per market.
    */
 
-   for(const symbol of marketList){
+   for(
+     const symbol of marketList
+   ){
+
+     const m =
+       markets[symbol];
+
+     /*
+        Already loaded recently?
+        Don't hammer ticks_history.
+     */
+
+     if(
+       m.ready &&
+       m.prices.length>=HISTORY_SIZE
+     ){
+
+       ensureTickSubscription(m);
+
+       continue;
+
+     }
 
      try{
 
-       const d=await send({
-         ticks_history:symbol,
-         end:"latest",
-         count:200,
-         style:"ticks"
-       },15000);
+       const data =
+         await sendRequest(
+           {
+             ticks_history:symbol,
+             end:"latest",
+             count:HISTORY_SIZE,
+             style:"ticks"
+           },
+           15000
+         );
 
-       const prices=(d.history?.prices||[])
+       const prices =
+         (
+           data.history?.prices ||
+           []
+         )
          .map(Number)
-         .filter(Number.isFinite);
+         .filter(
+           Number.isFinite
+         );
 
-       if(prices.length>=120){
+       const times =
+         (
+           data.history?.times ||
+           []
+         )
+         .map(Number);
 
-         markets[symbol].prices=
-           prices.slice(-200);
+       if(
+         prices.length>=220
+       ){
 
-         markets[symbol].ready=true;
+         m.prices =
+           prices.slice(
+             -HISTORY_SIZE
+           );
 
-         markets[symbol].backtest=
-           backtest(markets[symbol].prices);
+         m.epochs =
+           times.slice(
+             -HISTORY_SIZE
+           );
 
-         markets[symbol].validation=
-           markets[symbol]
-             .backtest
-             .validationRate;
+         m.ready=true;
 
-         subscribeTicks(symbol);
+         m.backtest =
+           runBacktest(
+             m.prices
+           );
+
+         updateLiveFeature(m);
+
+         ensureTickSubscription(m);
+
+       }else{
+
+         log(
+           symbol+
+           " insufficient history: "+
+           prices.length
+         );
 
        }
 
-     }catch(e){
+     }catch(error){
 
-       log(symbol+" history failed: "+e.message);
+       log(
+         symbol+
+         " history error: "+
+         error.message
+       );
 
      }
 
@@ -825,15 +1646,26 @@ async function scanMarkets(){
 
    }
 
-   status(
-     "READY — "+marketList.length+" markets loaded",
+
+   setStatus(
+     "READY — "+
+     marketList.length+
+     " markets",
      "good"
    );
 
- }catch(e){
+ }catch(error){
 
-   log("Scanner error: "+e.message);
-   status("Scanner error: "+e.message,"bad");
+   log(
+     "SCAN ERROR: "+
+     error.message
+   );
+
+   setStatus(
+     "Scan error: "+
+     error.message,
+     "bad"
+   );
 
  }finally{
 
@@ -845,88 +1677,259 @@ async function scanMarkets(){
 
 
 /* =========================
-   LIVE TICKS
+   SUBSCRIPTIONS
 ========================= */
 
-function subscribeTicks(symbol){
+function ensureTickSubscription(m){
 
  if(
+   !m ||
    !ws ||
-   ws.readyState!==1 ||
-   markets[symbol].sub
- ) return;
-
- markets[symbol].sub=true;
-
- ws.send(JSON.stringify({
-   ticks:symbol,
-   subscribe:1,
-   req_id:++reqId
- }));
-
-}
-
-
-function handleTick(d){
-
- const symbol=d.tick?.symbol;
-
- if(!symbol || !markets[symbol]) return;
-
- const price=num(d.tick.quote);
-
- if(!price) return;
-
- const m=markets[symbol];
-
- m.lastTick=price;
-
- m.prices.push(price);
-
- if(m.prices.length>200)
-   m.prices.shift();
-
- if(m.prices.length>=120){
-
-   m.ready=true;
-
-   m.backtest=backtest(m.prices);
-
-   m.validation=
-     m.backtest.validationRate;
-
+   ws.readyState!==1
+ ){
+   return;
  }
 
- renderMarkets();
+ /*
+    The key duplicate-subscription fix.
+ */
 
- if(trading){
-
-   evaluateMarket(m);
-
+ if(
+   m.subscriptionId
+ ){
+   return;
  }
+
+ /*
+    Also prevent repeated requests
+    while one subscription is being
+    established.
+ */
+
+ if(
+   m.subscribing
+ ){
+   return;
+ }
+
+ m.subscribing=true;
+
+ ws.send(
+   JSON.stringify({
+     ticks:m.symbol,
+     subscribe:1,
+     req_id:++reqId
+   })
+ );
 
 }
 
 
 /* =========================
-   DIRECTION ENGINE
+   TICK HANDLER
 ========================= */
 
-function directionFeature(prices){
+function handleTick(data){
 
- if(prices.length<101) return null;
+ const tick =
+   data.tick;
 
- const p=prices;
+ if(!tick){
 
- const last=p[p.length-1];
+   return;
 
- const p20=p[p.length-21];
- const p50=p[p.length-51];
- const p100=p[p.length-101];
+ }
 
- const d20=last-p20;
- const d50=last-p50;
- const d100=last-p100;
+ const symbol =
+   tick.symbol;
+
+ const m =
+   markets[symbol];
+
+ if(!m){
+
+   return;
+
+ }
+
+ const price =
+   num(tick.quote);
+
+ if(
+   !Number.isFinite(price)
+ ){
+
+   return;
+
+ }
+
+ const epoch =
+   num(tick.epoch);
+
+
+ /* Save subscription ID */
+
+ if(
+   data.subscription?.id
+ ){
+
+   m.subscriptionId =
+     data.subscription.id;
+
+   m.subscribing=false;
+
+ }
+
+
+ /*
+    Prevent duplicate tick messages.
+ */
+
+ if(
+   epoch &&
+   m.lastEpoch===epoch
+ ){
+
+   return;
+
+ }
+
+
+ m.lastEpoch =
+   epoch;
+
+
+ /*
+    Sequence number = actual tick.
+ */
+
+ m.seq++;
+
+
+ m.lastTick =
+   price;
+
+
+ m.prices.push(
+   price
+ );
+
+ if(
+   epoch
+ ){
+
+   m.epochs.push(
+     epoch
+   );
+
+ }
+
+
+ while(
+   m.prices.length>
+   HISTORY_SIZE
+ ){
+
+   m.prices.shift();
+
+ }
+
+ while(
+   m.epochs.length>
+   HISTORY_SIZE
+ ){
+
+   m.epochs.shift();
+
+ }
+
+
+ if(
+   m.prices.length>=220
+ ){
+
+   m.ready=true;
+
+   updateLiveFeature(m);
+
+ }
+
+
+ /*
+    Paper trade resolution happens
+    ONLY here — once per real tick.
+ */
+
+ if(
+   openTrade &&
+   openTrade.paper &&
+   openTrade.symbol===symbol
+ ){
+
+   resolvePaperTrade(m);
+
+ }
+
+
+ /*
+    Live strategy.
+ */
+
+ if(
+   trading
+ ){
+
+   evaluateMarket(m);
+
+ }
+
+
+ renderMarkets();
+
+}
+
+
+/* =========================
+   DIRECTION FEATURE
+========================= */
+
+function directionFeature(
+ prices
+){
+
+ if(
+   prices.length<105
+ ){
+
+   return null;
+
+ }
+
+ const last =
+   prices.length-1;
+
+ const p20 =
+   prices[last-20];
+
+ const p50 =
+   prices[last-50];
+
+ const p100 =
+   prices[last-100];
+
+ const current =
+   prices[last];
+
+
+ const d20 =
+   current-p20;
+
+ const d50 =
+   current-p50;
+
+ const d100 =
+   current-p100;
+
 
  let votes=0;
 
@@ -939,21 +1942,475 @@ function directionFeature(prices){
  if(d100>0) votes++;
  if(d100<0) votes--;
 
+
  /*
-    Linear regression slope over 50 ticks.
+    20-tick persistence.
  */
 
- const n=50;
+ const persistence =
+   calcPersistence(
+     prices,
+     PERSISTENCE_WINDOW
+   );
+
+
+ /*
+    Chop.
+ */
+
+ const chop =
+   calcChop(
+     prices,
+     PERSISTENCE_WINDOW
+   );
+
+
+ /*
+    Volatility.
+
+    Compare short movement against
+    longer movement.
+ */
+
+ const shortVol =
+   avgAbsMove(
+     prices,
+     20
+   );
+
+ const longVol =
+   avgAbsMove(
+     prices,
+     100
+   );
+
+ const volatilityRatio =
+   longVol>0
+   ? shortVol/longVol
+   : 0;
+
+
+ /*
+    Directional slope.
+ */
+
+ const slope =
+   linearSlope(
+     prices,
+     50
+   );
+
+ const normalizedSlope =
+   longVol>0
+   ? slope/longVol
+   : 0;
+
+
+ /*
+    Current run.
+ */
+
+ const run =
+   currentRun(
+     prices
+   );
+
+
+ /*
+    Signal.
+
+    All three horizons must agree.
+ */
+
+ let signal=null;
+
+ if(
+   d20>0 &&
+   d50>0 &&
+   d100>0 &&
+   normalizedSlope>0
+ ){
+
+   signal="CALL";
+
+ }
+
+ if(
+   d20<0 &&
+   d50<0 &&
+   d100<0 &&
+   normalizedSlope<0
+ ){
+
+   signal="PUT";
+
+ }
+
+
+ /*
+    Directional persistence for
+    the selected direction.
+ */
+
+ let directionalPersistence=0;
+
+ if(signal==="CALL"){
+
+   directionalPersistence =
+     persistence.up;
+
+ }
+
+ if(signal==="PUT"){
+
+   directionalPersistence =
+     persistence.down;
+
+ }
+
+
+ /*
+    Overextension.
+ */
+
+ const maxRun =
+   num(
+     $("maxRun").value
+   );
+
+ const extended =
+   run.length>=maxRun;
+
+
+ /*
+    Score.
+
+    Maximum 100.
+ */
+
+ let score=0;
+
+ if(
+   signal &&
+   Math.abs(votes)===3
+ ){
+
+   score+=25;
+
+ }else if(
+   signal &&
+   Math.abs(votes)===2
+ ){
+
+   score+=15;
+
+ }
+
+ if(
+   directionalPersistence>=
+   num($("minPersistence").value)
+ ){
+
+   score+=20;
+
+ }else if(
+   directionalPersistence>=55
+ ){
+
+   score+=10;
+
+ }
+
+ if(
+   chop<=num($("maxChop").value)
+ ){
+
+   score+=15;
+
+ }else if(
+   chop<=50
+ ){
+
+   score+=7;
+
+ }
+
+ if(
+   volatilityRatio>=
+   num($("minVol").value)
+ ){
+
+   score+=10;
+
+ }
+
+ if(
+   !extended
+ ){
+
+   score+=10;
+
+ }
+
+ if(
+   Math.abs(normalizedSlope)>=0.08
+ ){
+
+   score+=10;
+
+ }
+
+
+ return {
+
+   signal,
+
+   votes,
+
+   d20,
+
+   d50,
+
+   d100,
+
+   persistence,
+   directionalPersistence,
+
+   chop,
+
+   shortVol,
+   longVol,
+   volatilityRatio,
+
+   slope,
+   normalizedSlope,
+
+   runLength:run.length,
+   runDirection:run.direction,
+
+   extended,
+
+   score
+
+ };
+
+}
+
+
+/* =========================
+   PERSISTENCE
+========================= */
+
+function calcPersistence(
+ prices,
+ window
+){
+
+ const start =
+   Math.max(
+     1,
+     prices.length-window
+   );
+
+ let up=0;
+ let down=0;
+ let total=0;
+
+ for(
+   let i=start;
+   i<prices.length;
+   i++
+ ){
+
+   const diff =
+     prices[i]-prices[i-1];
+
+   if(diff>0){
+
+     up++;
+
+     total++;
+
+   }else if(diff<0){
+
+     down++;
+
+     total++;
+
+   }
+
+ }
+
+ return {
+
+   up:
+     total
+     ? up/total*100
+     : 0,
+
+   down:
+     total
+     ? down/total*100
+     : 0,
+
+   upCount:up,
+   downCount:down,
+   total
+
+ };
+
+}
+
+
+/* =========================
+   CHOP
+========================= */
+
+function calcChop(
+ prices,
+ window
+){
+
+ const start =
+   Math.max(
+     1,
+     prices.length-window
+   );
+
+ let changes=0;
+
+ let previous=null;
+
+ let total=0;
+
+ for(
+   let i=start;
+   i<prices.length;
+   i++
+ ){
+
+   const diff =
+     prices[i]-prices[i-1];
+
+   if(diff===0){
+
+     continue;
+
+   }
+
+   const dir =
+     diff>0
+     ? 1
+     : -1;
+
+   if(
+     previous!==null &&
+     dir!==previous
+   ){
+
+     changes++;
+
+   }
+
+   previous=dir;
+
+   total++;
+
+ }
+
+ if(total<=1){
+
+   return 100;
+
+ }
+
+ return (
+   changes/
+   (total-1)
+ )*100;
+
+}
+
+
+/* =========================
+   AVERAGE ABS MOVEMENT
+========================= */
+
+function avgAbsMove(
+ prices,
+ window
+){
+
+ const start =
+   Math.max(
+     1,
+     prices.length-window
+   );
+
+ let sum=0;
+
+ let count=0;
+
+ for(
+   let i=start;
+   i<prices.length;
+   i++
+ ){
+
+   sum+=
+     Math.abs(
+       prices[i]-prices[i-1]
+     );
+
+   count++;
+
+ }
+
+ return count
+   ? sum/count
+   : 0;
+
+}
+
+
+/* =========================
+   SLOPE
+========================= */
+
+function linearSlope(
+ prices,
+ window
+){
+
+ const n =
+   Math.min(
+     window,
+     prices.length
+   );
+
+ if(n<2){
+
+   return 0;
+
+ }
 
  let sx=0;
  let sy=0;
  let sxy=0;
  let sx2=0;
 
- for(let i=0;i<n;i++){
+ for(
+   let i=0;
+   i<n;
+   i++
+ ){
 
    const x=i;
-   const y=p[p.length-n+i];
+
+   const y=
+     prices[
+       prices.length-n+i
+     ];
 
    sx+=x;
    sy+=y;
@@ -962,134 +2419,318 @@ function directionFeature(prices){
 
  }
 
- const denom=n*sx2-sx*sx;
+ const denominator =
+   n*sx2-sx*sx;
 
- const slope=
-   denom!==0
-   ? (n*sxy-sx*sy)/denom
-   : 0;
+ if(
+   denominator===0
+ ){
 
- /*
-    Normalize slope by average tick movement.
- */
-
- let movement=0;
-
- for(let i=p.length-49;i<p.length;i++){
-
-   movement+=Math.abs(
-     p[i]-p[i-1]
-   );
+   return 0;
 
  }
 
- movement/=49;
+ return (
+   n*sxy-sx*sy
+ )/denominator;
 
- const normalizedSlope=
-   movement>0
-   ? slope/movement
-   : 0;
+}
 
- let signal=null;
+
+/* =========================
+   CURRENT RUN
+========================= */
+
+function currentRun(
+ prices
+){
 
  if(
-   votes>=2 &&
-   normalizedSlope>0
+   prices.length<2
  ){
-   signal="CALL";
+
+   return {
+     direction:0,
+     length:0
+   };
+
  }
 
- if(
-   votes<=-2 &&
-   normalizedSlope<0
+ const last =
+   prices[prices.length-1];
+
+ const previous =
+   prices[prices.length-2];
+
+ if(last===previous){
+
+   return {
+     direction:0,
+     length:0
+   };
+
+ }
+
+ const direction =
+   last>previous
+   ? 1
+   : -1;
+
+ let length=0;
+
+ for(
+   let i=prices.length-1;
+   i>0;
+   i--
  ){
-   signal="PUT";
+
+   const diff =
+     prices[i]-prices[i-1];
+
+   const dir =
+     diff>0
+     ? 1
+     : diff<0
+     ? -1
+     : 0;
+
+   if(
+     dir!==direction
+   ){
+
+     break;
+
+   }
+
+   length++;
+
  }
 
  return {
-   signal,
-   votes,
-   d20,
-   d50,
-   d100,
-   slope,
-   normalizedSlope
+   direction,
+   length
  };
 
 }
 
 
 /* =========================
-   BACKTEST
+   LIVE FEATURE UPDATE
 ========================= */
 
-function backtest(prices){
+function updateLiveFeature(m){
 
- const duration=num($("duration").value);
+ if(
+   !m ||
+   !m.ready
+ ){
 
- if(prices.length<150){
+   return;
 
-   return {
-     validationRate:0,
-     total:0,
-     wins:0,
-     losses:0
-   };
+ }
+
+ m.feature =
+   directionFeature(
+     m.prices
+   );
+
+ if(
+   m.backtest
+ ){
+
+   /*
+      Do not overwrite backtest
+      with live results.
+   */
+
+ }
+
+ if(
+   m.feature
+ ){
+
+   m.signal =
+     m.feature.signal;
+
+   m.score =
+     m.feature.score;
+
+ }
+
+}
+
+
+/* =========================
+   WILSON LOWER BOUND
+========================= */
+
+function wilsonLower(
+ winsCount,
+ total,
+ confidence=0.90
+){
+
+ if(
+   total<=0
+ ){
+
+   return 0;
 
  }
 
  /*
-    Last 100 ticks = validation area.
-
-    Everything before that is the
-    historical/training area.
+    z for approximately 90% confidence.
  */
 
- const validationStart=
-   Math.max(
-     100,
-     prices.length-100
+ const z=1.645;
+
+ const p =
+   winsCount/total;
+
+ const denominator =
+   1+
+   (z*z)/total;
+
+ const centre =
+   p+
+   (z*z)/(2*total);
+
+ const margin =
+   z*
+   Math.sqrt(
+     (
+       p*(1-p)+
+       (z*z)/(4*total)
+     )/total
    );
 
- let total=0;
- let win=0;
- let loss=0;
+ return (
+   (
+     centre-margin
+   )/denominator
+ )*100;
+
+}
+
+
+/* =========================
+   WALK-FORWARD BACKTEST
+========================= */
+
+function runBacktest(
+ prices
+){
+
+ const duration =
+   num(
+     $("duration").value
+   );
+
+ const validationStart =
+   Math.max(
+     TRAINING_WINDOW,
+     prices.length-
+     VALIDATION_WINDOW
+   );
 
  let trainTotal=0;
- let trainWin=0;
+ let trainWins=0;
+
+ let valTotal=0;
+ let valWins=0;
 
  /*
-    Training region
+    TRAINING
  */
 
  for(
-   let i=100;
+   let i=105;
    i<validationStart-duration;
    i++
  ){
 
-   const slice=prices.slice(0,i+1);
+   const slice =
+     prices.slice(
+       0,
+       i+1
+     );
 
-   const f=directionFeature(slice);
+   const feature =
+     directionFeature(
+       slice
+     );
 
-   if(!f || !f.signal) continue;
+   if(
+     !feature ||
+     !feature.signal
+   ){
 
-   const entry=prices[i];
-   const exit=prices[i+duration];
+     continue;
 
-   const good=
-     f.signal==="CALL"
-     ? exit>entry
-     : exit<entry;
+   }
+
+   const entry =
+     prices[i];
+
+   const exit =
+     prices[i+duration];
+
+   /*
+      Only use signals satisfying
+      structural filters.
+   */
+
+   if(
+     feature.score<
+     num($("minScore").value)
+   ){
+
+     continue;
+
+   }
+
+   if(
+     feature.chop>
+     num($("maxChop").value)
+   ){
+
+     continue;
+
+   }
+
+   if(
+     feature.directionalPersistence<
+     num($("minPersistence").value)
+   ){
+
+     continue;
+
+   }
 
    trainTotal++;
 
-   if(good) trainWin++;
+   const win =
+     feature.signal==="CALL"
+     ? exit>entry
+     : exit<entry;
+
+   if(win){
+
+     trainWins++;
+
+   }
 
  }
 
+
  /*
-    Validation region
+    VALIDATION
+
+    Walk forward through the final
+    100 ticks.
+
+    At each point, only past data
+    is used for the feature.
  */
 
  for(
@@ -1098,44 +2739,112 @@ function backtest(prices){
    i++
  ){
 
-   const slice=prices.slice(0,i+1);
+   const slice =
+     prices.slice(
+       0,
+       i+1
+     );
 
-   const f=directionFeature(slice);
+   const feature =
+     directionFeature(
+       slice
+     );
 
-   if(!f || !f.signal) continue;
+   if(
+     !feature ||
+     !feature.signal
+   ){
 
-   const entry=prices[i];
-   const exit=prices[i+duration];
+     continue;
 
-   const good=
-     f.signal==="CALL"
+   }
+
+   if(
+     feature.score<
+     num($("minScore").value)
+   ){
+
+     continue;
+
+   }
+
+   if(
+     feature.chop>
+     num($("maxChop").value)
+   ){
+
+     continue;
+
+   }
+
+   if(
+     feature.directionalPersistence<
+     num($("minPersistence").value)
+   ){
+
+     continue;
+
+   }
+
+   valTotal++;
+
+   const entry =
+     prices[i];
+
+   const exit =
+     prices[i+duration];
+
+   const win =
+     feature.signal==="CALL"
      ? exit>entry
      : exit<entry;
 
-   total++;
+   if(win){
 
-   if(good) win++;
-   else loss++;
+     valWins++;
+
+   }
 
  }
 
+
+ const trainRate =
+   trainTotal
+   ? trainWins/trainTotal*100
+   : 0;
+
+ const validationRate =
+   valTotal
+   ? valWins/valTotal*100
+   : 0;
+
+ const conservative =
+   wilsonLower(
+     valWins,
+     valTotal,
+     0.90
+   );
+
  return {
 
-   validationRate:
-     total
-     ? (win/total)*100
-     : 0,
+   trainTotal,
+   trainWins,
+   trainRate,
 
-   total,
-   wins:win,
-   losses:loss,
+   validationTotal:
+     valTotal,
 
-   trainRate:
-     trainTotal
-     ? (trainWin/trainTotal)*100
-     : 0,
+   validationWins:
+     valWins,
 
-   trainTotal
+   validationLosses:
+     valTotal-valWins,
+
+   validationRate,
+
+   conservative,
+
+   duration
 
  };
 
@@ -1149,66 +2858,239 @@ function backtest(prices){
 function evaluateMarket(m){
 
  if(
+   !trading ||
+   !m ||
    !m.ready ||
    openTrade ||
    tradeInFlight
- ) return;
-
- if(Date.now()<cooldownUntil)
-   return;
-
- if(totalTrades>=num($("maxTrades").value))
-   return;
-
- if(losses>=num($("maxLosses").value))
-   return;
-
- const f=directionFeature(m.prices);
-
- if(!f || !f.signal)
-   return;
-
- /*
-    Require directional agreement.
- */
-
- if(Math.abs(f.votes)<2)
-   return;
-
- /*
-    Validation requirement.
- */
-
- const minValidation=
-   num($("minValidation").value);
-
- if(
-   !m.backtest ||
-   m.backtest.total<5 ||
-   m.validation<minValidation
  ){
+
    return;
+
  }
 
+ if(
+   Date.now()<cooldownUntil
+ ){
+
+   return;
+
+ }
+
+ if(
+   totalTrades>=
+   num($("maxTrades").value)
+ ){
+
+   stopWithReason(
+     "Maximum trades reached.",
+     "warn"
+   );
+
+   return;
+
+ }
+
+ if(
+   losses>=
+   num($("maxLosses").value)
+ ){
+
+   stopWithReason(
+     "Maximum losses reached.",
+     "bad"
+   );
+
+   return;
+
+ }
+
+
  /*
-    Avoid entering when the current
-    signal is already changing.
+    Market-specific lock.
  */
 
- const currentSignal=f.signal;
+ if(
+   m.seq<
+   m.lockedUntilSeq
+ ){
 
- const lastPrice=
-   m.prices[m.prices.length-1];
+   return;
+
+ }
+
+
+ const f =
+   m.feature ||
+   directionFeature(
+     m.prices
+   );
+
+ if(!f){
+
+   return;
+
+ }
+
 
  /*
-    Proposal is requested only when
-    a complete signal exists.
+    Must have all 3 horizons.
+ */
+
+ if(
+   !f.signal ||
+   Math.abs(f.votes)!==3
+ ){
+
+   return;
+
+ }
+
+
+ /*
+    Persistence.
+ */
+
+ if(
+   f.directionalPersistence<
+   num($("minPersistence").value)
+ ){
+
+   return;
+
+ }
+
+
+ /*
+    Chop.
+ */
+
+ if(
+   f.chop>
+   num($("maxChop").value)
+ ){
+
+   return;
+
+ }
+
+
+ /*
+    Volatility.
+ */
+
+ if(
+   f.volatilityRatio<
+   num($("minVol").value)
+ ){
+
+   return;
+
+ }
+
+
+ /*
+    Overextension.
+ */
+
+ if(
+   f.extended
+ ){
+
+   return;
+
+ }
+
+
+ /*
+    Score.
+ */
+
+ if(
+   f.score<
+   num($("minScore").value)
+ ){
+
+   return;
+
+ }
+
+
+ /*
+    Backtest.
+ */
+
+ const b =
+   m.backtest;
+
+ if(!b){
+
+   return;
+
+ }
+
+
+ if(
+   b.validationTotal<
+   num($("minSamples").value)
+ ){
+
+   return;
+
+ }
+
+
+ if(
+   b.validationRate<
+   num($("minValidation").value)
+ ){
+
+   return;
+
+ }
+
+
+ /*
+    Conservative estimate.
+ */
+
+ if(
+   b.conservative<
+   num($("minConservative").value)
+ ){
+
+   return;
+
+ }
+
+
+ /*
+    Avoid immediately repeating
+    same market after a trade.
+ */
+
+ const minimumGap =
+   num(
+     $("cooldown").value
+   );
+
+ if(
+   m.lastTradeTime &&
+   Date.now()-m.lastTradeTime<
+   minimumGap*1000
+ ){
+
+   return;
+
+ }
+
+
+ /*
+    Request proposal.
  */
 
  requestProposal(
-   m.symbol,
-   currentSignal,
-   lastPrice,
+   m,
    f
  );
 
@@ -1220,55 +3102,95 @@ function evaluateMarket(m){
 ========================= */
 
 async function requestProposal(
- symbol,
- direction,
- triggerPrice,
+ m,
  feature
 ){
 
- if(tradeInFlight || openTrade)
+ if(
+   tradeInFlight ||
+   openTrade ||
+   !trading
+ ){
+
    return;
+
+ }
+
+ /*
+    Avoid proposal spam on the
+    same market.
+ */
+
+ if(
+   Date.now()-m.lastProposalAt<
+   1500
+ ){
+
+   return;
+
+ }
+
+ m.lastProposalAt =
+   Date.now();
 
  tradeInFlight=true;
 
- const m=markets[symbol];
+ const triggerSeq =
+   m.seq;
 
- const triggerLength=m.prices.length;
+ const triggerEpoch =
+   m.lastEpoch;
+
+ const direction =
+   feature.signal;
 
  try{
 
-   const stake=
-     num($("stake").value);
+   const stake =
+     num(
+       $("stake").value
+     );
 
-   const duration=
-     num($("duration").value);
+   const duration =
+     num(
+       $("duration").value
+     );
 
-   const currency=
-     $("currency").value.trim()||"USD";
+   const currency =
+     $("currency").value.trim()
+     || "USD";
 
-   const d=await send({
 
-     proposal:1,
+   const data =
+     await sendRequest(
+       {
+         proposal:1,
 
-     amount:stake,
+         amount:stake,
 
-     basis:"stake",
+         basis:"stake",
 
-     contract_type:direction,
+         contract_type:
+           direction,
 
-     currency,
+         currency,
 
-     duration:duration,
+         duration,
 
-     duration_unit:"t",
+         duration_unit:"t",
 
-     underlying_symbol:symbol
+         underlying_symbol:
+           m.symbol
 
-   },10000);
+       },
+       10000
+     );
 
-   const p=d.proposal;
 
-   if(!p){
+   const proposal =
+     data.proposal;
+
+   if(!proposal){
 
      throw new Error(
        "No proposal returned."
@@ -1276,10 +3198,22 @@ async function requestProposal(
 
    }
 
-   const ask=num(p.ask_price);
-   const payout=num(p.payout);
 
-   if(!ask || !payout){
+   const ask =
+     num(
+       proposal.ask_price
+     );
+
+   const payout =
+     num(
+       proposal.payout
+     );
+
+
+   if(
+     ask<=0 ||
+     payout<=0
+   ){
 
      throw new Error(
        "Proposal missing price/payout."
@@ -1287,50 +3221,96 @@ async function requestProposal(
 
    }
 
-   const breakEven=
-     ask/payout;
 
    /*
-      Estimated probability comes from
-      the out-of-sample validation.
+      Break-even probability.
+
+      payout includes the return
+      used by this calculation.
    */
 
-   const probability=
-     m.validation/100;
+   const breakEven =
+     ask/payout;
 
-   const expectedValue=
+
+   /*
+      Use conservative validation
+      estimate rather than raw rate.
+   */
+
+   const probability =
+     m.backtest.conservative/100;
+
+
+   const expectedValue =
      probability*payout-ask;
 
-   m.payout=payout;
-   m.ev=expectedValue;
+
+   m.payout =
+     payout;
+
+   m.breakEven =
+     breakEven*100;
+
+   m.ev =
+     expectedValue;
+
 
    renderMarkets();
 
+
    log(
-     `${symbol} ${direction} | `+
-     `validation ${m.validation.toFixed(1)}% | `+
+     `${m.symbol} ${direction} | `+
+     `score ${feature.score} | `+
+     `val ${m.backtest.validationRate.toFixed(1)}% | `+
+     `LB ${m.backtest.conservative.toFixed(1)}% | `+
      `payout ${payout.toFixed(2)} | `+
      `BE ${(breakEven*100).toFixed(1)}% | `+
      `EV ${expectedValue.toFixed(3)}`
    );
 
+
    /*
-      Make sure no ticks arrived while
-      proposal was being requested.
+      CRITICAL:
+
+      If another tick arrived while
+      proposal was being requested,
+      abandon the proposal.
+
+      We never want to buy an old
+      signal on a new tick.
    */
 
    if(
-     m.prices.length!==triggerLength
+     m.seq!==triggerSeq ||
+     m.lastEpoch!==triggerEpoch
    ){
 
      log(
-       symbol+
-       " skipped — price changed during proposal."
+       m.symbol+
+       " skipped — signal changed."
      );
 
      return;
 
    }
+
+
+   /*
+      Re-check every safety condition.
+   */
+
+   if(
+     !trading ||
+     openTrade ||
+     losses>=
+     num($("maxLosses").value)
+   ){
+
+     return;
+
+   }
+
 
    if(
      expectedValue<
@@ -1338,56 +3318,66 @@ async function requestProposal(
    ){
 
      log(
-       symbol+
-       " rejected — EV too low."
+       m.symbol+
+       " rejected — EV below minimum."
      );
 
      return;
 
    }
 
+
    /*
-      PAPER MODE
+      PAPER
    */
 
-   if($("mode").value==="paper"){
+   if(
+     $("mode").value==="paper"
+   ){
 
-     recordPaperTrade(
+     createPaperTrade(
        m,
        direction,
-       probability,
-       payout,
-       triggerPrice
-     );
-
-     return;
-
-   }
-
-   /*
-      LIVE MODE
-   */
-
-   if($("mode").value==="live"){
-
-     await buyContract(
-       p.id,
+       feature,
        ask,
+       payout,
+       triggerSeq,
+       triggerEpoch
+     );
+
+     return;
+
+   }
+
+
+   /*
+      LIVE
+   */
+
+   if(
+     $("mode").value==="live"
+   ){
+
+     await buyLiveContract(
        m,
        direction,
-       probability,
+       feature,
+       proposal.id,
+       ask,
        payout,
-       triggerPrice
+       triggerSeq,
+       triggerEpoch
      );
 
    }
 
- }catch(e){
+
+ }catch(error){
 
    log(
-     symbol+
-     " proposal rejected: "+
-     e.message
+     m.symbol+
+     " proposal error: "+
+     error.message
    );
 
  }finally{
@@ -1400,46 +3390,173 @@ async function requestProposal(
 
 
 /* =========================
-   PAPER TRADING
+   PAPER TRADE
 ========================= */
 
-function recordPaperTrade(
+function createPaperTrade(
  m,
  direction,
- probability,
+ feature,
+ ask,
  payout,
- triggerPrice
+ triggerSeq,
+ triggerEpoch
 ){
 
- /*
-    Paper trade is resolved from the
-    next N live ticks.
- */
+ if(
+   openTrade
+ ){
 
- const duration=
-   num($("duration").value);
+   return;
 
- const entryLength=
-   m.prices.length;
+ }
 
  openTrade={
+
    paper:true,
+
    symbol:m.symbol,
+
    direction,
-   stake:num($("stake").value),
+
+   stake:ask,
+
    payout,
-   probability,
-   entryPrice:triggerPrice,
-   startLength:entryLength,
-   duration,
-   ticks:0
+
+   entryPrice:
+     m.lastTick,
+
+   entrySeq:
+     triggerSeq,
+
+   entryEpoch:
+     triggerEpoch,
+
+   duration:
+     num(
+       $("duration").value
+     ),
+
+   score:
+     feature.score,
+
+   startedAt:
+     Date.now()
+
  };
 
- $("openTrade").textContent=
-   m.symbol+" "+direction;
+
+ m.lastTradeSeq =
+   m.seq;
+
+ m.lastTradeTime =
+   Date.now();
+
+ $("openTrade").textContent =
+   m.symbol+
+   " "+
+   direction;
 
  log(
-   `PAPER ENTRY ${m.symbol} ${direction}`
+   `PAPER ENTRY ${m.symbol} `+
+   `${direction} | `+
+   `score ${feature.score}`
+ );
+
+}
+
+
+/* =========================
+   PAPER RESOLUTION
+========================= */
+
+function resolvePaperTrade(m){
+
+ if(
+   !openTrade ||
+   !openTrade.paper
+ ){
+
+   return;
+
+ }
+
+ if(
+   openTrade.symbol!==m.symbol
+ ){
+
+   return;
+
+ }
+
+
+ /*
+    Number of ACTUAL ticks since
+    entry.
+ */
+
+ const ticksElapsed =
+   m.seq-
+   openTrade.entrySeq;
+
+
+ if(
+   ticksElapsed<
+   openTrade.duration
+ ){
+
+   return;
+
+ }
+
+
+ const entry =
+   openTrade.entryPrice;
+
+ const exit =
+   m.lastTick;
+
+ let win=false;
+
+ if(
+   openTrade.direction==="CALL"
+ ){
+
+   win =
+     exit>entry;
+
+ }
+
+ if(
+   openTrade.direction==="PUT"
+ ){
+
+   win =
+     exit<entry;
+
+ }
+
+
+ const stake =
+   openTrade.stake;
+
+ const payout =
+   openTrade.payout;
+
+ const profit =
+   win
+   ? payout-stake
+   : -stake;
+
+
+ finishTrade(
+   m,
+   openTrade.direction,
+   stake,
+   payout,
+   win,
+   profit,
+   openTrade.score
  );
 
 }
@@ -1449,163 +3566,180 @@ function recordPaperTrade(
    LIVE BUY
 ========================= */
 
-async function buyContract(
- proposalId,
- ask,
+async function buyLiveContract(
  m,
  direction,
- probability,
+ feature,
+ proposalId,
+ ask,
  payout,
- triggerPrice
+ triggerSeq,
+ triggerEpoch
 ){
 
  /*
-    Ask price is used as buy price cap.
+    One final check immediately
+    before buying.
  */
 
- const d=await send({
+ if(
+   m.seq!==triggerSeq ||
+   m.lastEpoch!==triggerEpoch
+ ){
 
-   buy:String(proposalId),
+   log(
+     m.symbol+
+     " buy cancelled — tick changed."
+   );
 
-   price:ask
+   return;
 
- },10000);
-
- const b=d.buy;
-
- if(!b){
-   throw new Error("Buy failed.");
  }
 
- openTrade={
-   paper:false,
-   contractId:b.contract_id,
-   symbol:m.symbol,
-   direction,
-   stake:ask,
-   payout,
-   probability,
-   entryPrice:triggerPrice
- };
+
+ if(
+   !trading ||
+   openTrade
+ ){
+
+   return;
+
+ }
+
+
+ const data =
+   await sendRequest(
+     {
+       buy:String(
+         proposalId
+       ),
+
+       price:ask
+
+     },
+     10000
+   );
+
+
+ const buy =
+   data.buy;
+
+ if(!buy){
+
+   throw new Error(
+     "Buy response missing."
+   );
+
+ }
+
 
  totalTrades++;
 
+
+ openTrade={
+
+   paper:false,
+
+   contractId:
+     buy.contract_id,
+
+   symbol:m.symbol,
+
+   direction,
+
+   stake:ask,
+
+   payout,
+
+   score:
+     feature.score,
+
+   entryPrice:
+     m.lastTick,
+
+   entrySeq:
+     triggerSeq
+
+ };
+
+
+ m.lastTradeSeq =
+   m.seq;
+
+ m.lastTradeTime =
+   Date.now();
+
+
+ $("openTrade").textContent =
+   m.symbol+
+   " "+
+   direction;
+
+
  updateStats();
 
- $("openTrade").textContent=
-   m.symbol+" "+direction;
 
  log(
-   `LIVE BUY ${m.symbol} ${direction} `+
-   `#${b.contract_id}`
+   `LIVE BUY ${m.symbol} `+
+   `${direction} `+
+   `#${buy.contract_id}`
  );
 
+
  /*
-    Subscribe to the contract.
+    Monitor the contract.
  */
 
- ws.send(JSON.stringify({
+ ws.send(
+   JSON.stringify({
 
-   proposal_open_contract:1,
+     proposal_open_contract:1,
 
-   contract_id:b.contract_id,
+     contract_id:
+       buy.contract_id,
 
-   subscribe:1,
+     subscribe:1,
 
-   req_id:++reqId
+     req_id:++reqId
 
- }));
-
-}
-
-
-/* =========================
-   PAPER TICK RESOLUTION
-========================= */
-
-function resolvePaperTick(m){
-
- if(!openTrade || !openTrade.paper)
-   return;
-
- if(openTrade.symbol!==m.symbol)
-   return;
-
- openTrade.ticks++;
-
- const needed=
-   openTrade.duration;
-
- if(openTrade.ticks<needed)
-   return;
-
- const exit=
-   m.prices[m.prices.length-1];
-
- const entry=
-   openTrade.entryPrice;
-
- let win=false;
-
- if(openTrade.direction==="CALL")
-   win=exit>entry;
-
- if(openTrade.direction==="PUT")
-   win=exit<entry;
-
- const payout=
-   openTrade.payout;
-
- const stake=
-   openTrade.stake;
-
- const pl=
-   win
-   ? payout-stake
-   : -stake;
-
- finishTrade(
-   openTrade.symbol,
-   openTrade.direction,
-   stake,
-   payout,
-   win,
-   pl
+   })
  );
 
 }
 
 
 /* =========================
-   LIVE CONTRACT
+   OPEN CONTRACT
 ========================= */
 
-function handleBuy(d){
+function handleContract(data){
 
- /*
-    Buy is already processed by the
-    request promise, so nothing needed.
- */
+ const c =
+   data.proposal_open_contract;
 
-}
+ if(
+   !c ||
+   !openTrade ||
+   openTrade.paper
+ ){
 
-
-function handleContract(d){
-
- const c=d.proposal_open_contract;
-
- if(!c || !openTrade)
    return;
+
+ }
+
 
  if(
    String(c.contract_id)!==
    String(openTrade.contractId)
- )
+ ){
+
    return;
 
+ }
+
+
  /*
-    When the contract finishes,
-    is_sold becomes true.
+    Contract has finished.
  */
 
  if(
@@ -1614,20 +3748,33 @@ function handleContract(d){
    c.status==="lost"
  ){
 
-   const profit=num(c.profit);
+   const profit =
+     num(c.profit);
 
-   const win=
+   const won =
      profit>0 ||
      c.status==="won";
 
-   finishTrade(
-     openTrade.symbol,
-     openTrade.direction,
-     openTrade.stake,
-     openTrade.payout,
-     win,
-     profit
-   );
+
+   const m =
+     markets[
+       openTrade.symbol
+     ];
+
+
+   if(m){
+
+     finishTrade(
+       m,
+       openTrade.direction,
+       openTrade.stake,
+       openTrade.payout,
+       won,
+       profit,
+       openTrade.score
+     );
+
+   }
 
  }
 
@@ -1639,124 +3786,220 @@ function handleContract(d){
 ========================= */
 
 function finishTrade(
- symbol,
+ m,
  direction,
  stake,
  payout,
- win,
- pl
+ won,
+ profit,
+ score
 ){
 
- totalTrades++;
+ /*
+    If live buy already incremented
+    totalTrades, paper hasn't.
 
- if(win)
-   wins++;
- else
-   losses++;
+    Therefore:
+ */
 
- sessionPL+=pl;
+ if(
+   !openTrade
+ ){
 
- addHistory(
-   symbol,
-   direction,
-   stake,
-   payout,
-   win,
-   pl
- );
-
- openTrade=null;
-
- $("openTrade").textContent="None";
-
- updateStats();
-
- if(!win){
-
-   const cd=
-     num($("cooldown").value);
-
-   cooldownUntil=
-     Date.now()+cd*1000;
-
-   log(
-     `LOSS — cooldown ${cd}s`
-   );
+   return;
 
  }
 
  if(
-   losses>=num($("maxLosses").value)
+   openTrade.paper
  ){
 
-   trading=false;
+   totalTrades++;
 
-   status(
+ }
+
+
+ if(won){
+
+   wins++;
+
+   m.consecutiveLosses=0;
+
+ }else{
+
+   losses++;
+
+   m.consecutiveLosses++;
+
+ }
+
+
+ sessionPL +=
+   profit;
+
+
+ addHistory(
+   m.symbol,
+   direction,
+   stake,
+   payout,
+   won,
+   profit,
+   score
+ );
+
+
+ /*
+    Market lock after repeated losses.
+ */
+
+ const lockAfter =
+   num(
+     $("marketLossLock").value
+   );
+
+ if(
+   !won &&
+   m.consecutiveLosses>=lockAfter
+ ){
+
+   const lockTicks =
+     num(
+       $("lockTicks").value
+     );
+
+   m.lockedUntilSeq =
+     m.seq+
+     lockTicks;
+
+   log(
+     `${m.symbol} LOCKED for `+
+     `${lockTicks} ticks after `+
+     `${m.consecutiveLosses} losses.`
+   );
+
+ }
+
+
+ /*
+    Global cooldown after loss.
+ */
+
+ if(!won){
+
+   const seconds =
+     num(
+       $("cooldown").value
+     );
+
+   cooldownUntil =
+     Date.now()+
+     seconds*1000;
+
+   log(
+     `LOSS — global cooldown `+
+     `${seconds}s`
+   );
+
+ }
+
+
+ m.lastTradeTime =
+   Date.now();
+
+
+ openTrade=null;
+
+
+ $("openTrade").textContent =
+   "None";
+
+
+ updateStats();
+
+
+ /*
+    Maximum losses.
+ */
+
+ if(
+   losses>=
+   num($("maxLosses").value)
+ ){
+
+   stopWithReason(
      "STOPPED — maximum losses reached.",
      "bad"
    );
 
+   return;
+
  }
 
+
+ /*
+    Maximum trades.
+ */
+
  if(
-   totalTrades>=num($("maxTrades").value)
+   totalTrades>=
+   num($("maxTrades").value)
  ){
 
-   trading=false;
-
-   status(
+   stopWithReason(
      "STOPPED — maximum trades reached.",
      "warn"
    );
 
+   return;
+
  }
 
- const tp=
-   num($("takeProfit").value);
 
- const sl=
-   num($("stopLoss").value);
+ /*
+    Take profit.
+ */
 
- if(tp>0 && sessionPL>=tp){
+ const tp =
+   num(
+     $("takeProfit").value
+   );
 
-   trading=false;
+ if(
+   tp>0 &&
+   sessionPL>=tp
+ ){
 
-   status(
+   stopWithReason(
      "STOPPED — take profit reached.",
      "good"
    );
 
+   return;
+
  }
 
- if(sl<0 && sessionPL<=sl){
 
-   trading=false;
+ /*
+    Stop loss.
+ */
 
-   status(
+ const sl =
+   num(
+     $("stopLoss").value
+   );
+
+ if(
+   sl<0 &&
+   sessionPL<=sl
+ ){
+
+   stopWithReason(
      "STOPPED — stop loss reached.",
      "bad"
    );
 
- }
-
-}
-
-
-/* =========================
-   PAPER TICK HOOK
-========================= */
-
-function processPaper(){
-
- if(
-   openTrade &&
-   openTrade.paper
- ){
-
-   const m=markets[openTrade.symbol];
-
-   if(m)
-     resolvePaperTick(m);
+   return;
 
  }
 
@@ -1764,14 +4007,31 @@ function processPaper(){
 
 
 /* =========================
-   START / STOP
+   STOP
 ========================= */
+
+function stopWithReason(
+ message,
+ cls
+){
+
+ trading=false;
+
+ setStatus(
+   message,
+   cls
+ );
+
+ log(message);
+
+}
+
 
 function startTrading(){
 
  if(!connected){
 
-   status(
+   setStatus(
      "Connect account first.",
      "warn"
    );
@@ -1780,11 +4040,13 @@ function startTrading(){
 
  }
 
+
  if(
-   totalTrades>=num($("maxTrades").value)
+   totalTrades>=
+   num($("maxTrades").value)
  ){
 
-   status(
+   setStatus(
      "Maximum trades already reached.",
      "warn"
    );
@@ -1793,11 +4055,13 @@ function startTrading(){
 
  }
 
+
  if(
-   losses>=num($("maxLosses").value)
+   losses>=
+   num($("maxLosses").value)
  ){
 
-   status(
+   setStatus(
      "Maximum losses already reached.",
      "bad"
    );
@@ -1806,17 +4070,24 @@ function startTrading(){
 
  }
 
+
  trading=true;
 
- status(
-   $("mode").value==="paper"
+
+ const mode =
+   $("mode").value;
+
+
+ setStatus(
+   mode==="paper"
    ? "PAPER TRADING ACTIVE"
    : "LIVE TRADING ACTIVE",
    "good"
  );
 
+
  log(
-   $("mode").value.toUpperCase()+
+   mode.toUpperCase()+
    " trading started."
  );
 
@@ -1827,102 +4098,99 @@ function stopTrading(){
 
  trading=false;
 
- status(
-   "STOPPED — existing trade will finish normally.",
+ setStatus(
+   "STOPPED — no new entries.",
    "warn"
  );
 
- log("Trading stopped. No new entries.");
+ log(
+   "Trading stopped."
+ );
 
 }
 
 
 /* =========================
-   MARKET TABLE
+   RESET
 ========================= */
 
-function renderMarkets(){
+function resetSession(){
 
- const body=$("markets");
+ trading=false;
 
- body.innerHTML="";
+ if(openTrade){
 
- marketList.forEach(symbol=>{
+   log(
+     "Reset ignored because a trade is open."
+   );
 
-   const m=markets[symbol];
+   return;
 
-   if(!m) return;
+ }
 
-   const f=
-     m.ready
-     ? directionFeature(m.prices)
-     : null;
+ totalTrades=0;
 
-   const signal=
-     f?.signal||"WAIT";
+ wins=0;
 
-   const d20=
-     f
-     ? f.d20>0
-       ?"↑"
-       :"↓"
-     :"-";
+ losses=0;
 
-   const d50=
-     f
-     ? f.d50>0
-       ?"↑"
-       :"↓"
-     :"-";
+ sessionPL=0;
 
-   const d100=
-     f
-     ? f.d100>0
-       ?"↑"
-       :"↓"
-     :"-";
+ cooldownUntil=0;
 
-   const validation=
-     m.validation
-     ? m.validation.toFixed(1)+"%"
-     :"-";
+ Object.values(markets)
+   .forEach(
+     m=>{
+       m.consecutiveLosses=0;
+       m.lockedUntilSeq=0;
+       m.lastTradeTime=0;
+     }
+   );
 
-   const back=
-     m.backtest
-     ? m.backtest.wins+
-       "/"+
-       m.backtest.total
-     :"-";
+ $("history").innerHTML="";
 
-   const payout=
-     m.payout
-     ? m.payout.toFixed(2)
-     :"-";
+ updateStats();
 
-   const ev=
-     m.ev!==null &&
-     m.ev!==undefined
-     ? m.ev.toFixed(3)
-     :"-";
+ setStatus(
+   "Session reset.",
+   "good"
+ );
 
-   const tr=document.createElement("tr");
+ log(
+   "Session statistics reset."
+ );
 
-   tr.innerHTML=`
-   <td>${symbol}</td>
-   <td>${m.lastTick ?? "-"}</td>
-   <td>${signal}</td>
-   <td>${d20}</td>
-   <td>${d50}</td>
-   <td>${d100}</td>
-   <td>${validation}</td>
-   <td>${back}</td>
-   <td>${payout}</td>
-   <td>${ev}</td>
-   `;
+}
 
-   body.appendChild(tr);
 
- });
+/* =========================
+   STATS
+========================= */
+
+function updateStats(){
+
+ $("trades").textContent =
+   totalTrades;
+
+ $("wins").textContent =
+   wins;
+
+ $("losses").textContent =
+   losses;
+
+ const wr =
+   totalTrades
+   ? wins/totalTrades*100
+   : 0;
+
+ $("winRate").textContent =
+   wr.toFixed(1)+
+   "%";
+
+ $("pl").textContent =
+   (sessionPL>=0?"+":"")+
+   "$"+
+   sessionPL.toFixed(2);
 
 }
 
@@ -1936,81 +4204,428 @@ function addHistory(
  direction,
  stake,
  payout,
- win,
- pl
+ won,
+ profit,
+ score
 ){
 
- const body=$("history");
+ const body =
+   $("history");
 
- const tr=document.createElement("tr");
+ const row =
+   document.createElement("tr");
 
- tr.innerHTML=`
+
+ row.innerHTML=`
+
  <td>${totalTrades}</td>
+
  <td>${symbol}</td>
+
  <td>${direction}</td>
- <td>$${stake.toFixed(2)}</td>
- <td>$${payout.toFixed(2)}</td>
- <td class="${win?"good":"bad"}">
- ${win?"WIN":"LOSS"}
+
+ <td>$${num(stake).toFixed(2)}</td>
+
+ <td>$${num(payout).toFixed(2)}</td>
+
+ <td class="${won?"good":"bad"}">
+ ${won?"WIN":"LOSS"}
  </td>
- <td class="${pl>=0?"good":"bad"}">
- ${pl>=0?"+":""}$${pl.toFixed(2)}
+
+ <td class="${profit>=0?"good":"bad"}">
+ ${profit>=0?"+":""}
+ $${profit.toFixed(2)}
  </td>
+
+ <td>${score}</td>
+
  `;
 
- body.prepend(tr);
 
- while(body.children.length>50)
-   body.removeChild(body.lastChild);
-
-}
+ body.prepend(row);
 
 
-/* =========================
-   STATS
-========================= */
+ while(
+   body.children.length>50
+ ){
 
-function updateStats(){
+   body.removeChild(
+     body.lastChild
+   );
 
- $("trades").textContent=
-   totalTrades;
-
- $("wins").textContent=
-   wins;
-
- $("losses").textContent=
-   losses;
-
- $("pl").textContent=
-   (sessionPL>=0?"+":"")+
-   "$"+
-   sessionPL.toFixed(2);
+ }
 
 }
 
 
 /* =========================
-   PERIODIC PAPER PROCESSOR
+   MARKET TABLE
 ========================= */
 
-setInterval(()=>{
+function renderMarkets(){
 
- if(trading && openTrade?.paper)
-   processPaper();
+ const body =
+   $("markets");
 
-},250);
+ body.innerHTML="";
+
+
+ marketList.forEach(
+   symbol=>{
+
+     const m =
+       markets[symbol];
+
+     if(!m){
+
+       return;
+
+     }
+
+
+     const f =
+       m.feature;
+
+
+     const b =
+       m.backtest;
+
+
+     const signal =
+       f?.signal ||
+       "WAIT";
+
+
+     const score =
+       f
+       ? f.score
+       : 0;
+
+
+     const p20 =
+       f
+       ? f.d20>0
+         ? "↑"
+         : f.d20<0
+         ? "↓"
+         : "→"
+       : "-";
+
+
+     const p50 =
+       f
+       ? f.d50>0
+         ? "↑"
+         : f.d50<0
+         ? "↓"
+         : "→"
+       : "-";
+
+
+     const p100 =
+       f
+       ? f.d100>0
+         ? "↑"
+         : f.d100<0
+         ? "↓"
+         : "→"
+       : "-";
+
+
+     const persistence =
+       f
+       ? f.directionalPersistence
+         .toFixed(1)+"%"
+       : "-";
+
+
+     const chop =
+       f
+       ? f.chop.toFixed(1)+"%"
+       : "-";
+
+
+     const vol =
+       f
+       ? f.volatilityRatio.toFixed(2)
+       : "-";
+
+
+     const run =
+       f
+       ? (
+         f.runDirection>0
+         ? "↑"
+         : f.runDirection<0
+         ? "↓"
+         : "-"
+       )+
+       f.runLength
+       : "-";
+
+
+     const validation =
+       b
+       ? b.validationRate
+         .toFixed(1)+"%"
+       : "-";
+
+
+     const lowerBound =
+       b
+       ? b.conservative
+         .toFixed(1)+"%"
+       : "-";
+
+
+     const sample =
+       b
+       ? b.validationTotal
+       : "-";
+
+
+     const ev =
+       m.ev!==null &&
+       m.ev!==undefined
+       ? m.ev.toFixed(3)
+       : "-";
+
+
+     let status="WAIT";
+
+
+     if(
+       m.lockedUntilSeq>
+       m.seq
+     ){
+
+       status="LOCKED";
+
+     }else if(
+       signal &&
+       b &&
+       b.validationTotal>=
+       num($("minSamples").value) &&
+       b.conservative>=
+       num($("minConservative").value)
+     ){
+
+       status="QUALIFIED";
+
+     }
+
+
+     const row =
+       document.createElement("tr");
+
+
+     row.innerHTML=`
+
+     <td>
+       <span class="badge">
+       ${symbol}
+       </span>
+     </td>
+
+     <td>
+       ${m.lastTick ?? "-"}
+     </td>
+
+     <td class="${
+       signal==="CALL"
+       ? "good"
+       : signal==="PUT"
+       ? "bad"
+       : ""
+     }">
+       ${signal}
+     </td>
+
+     <td class="score">
+       ${score}
+     </td>
+
+     <td>${p20}</td>
+
+     <td>${p50}</td>
+
+     <td>${p100}</td>
+
+     <td>${persistence}</td>
+
+     <td>${chop}</td>
+
+     <td>${vol}</td>
+
+     <td>${run}</td>
+
+     <td>${validation}</td>
+
+     <td>${lowerBound}</td>
+
+     <td>${sample}</td>
+
+     <td>${ev}</td>
+
+     <td class="${
+       status==="QUALIFIED"
+       ? "good"
+       : status==="LOCKED"
+       ? "bad"
+       : ""
+     }">
+       ${status}
+     </td>
+
+     `;
+
+
+     body.appendChild(row);
+
+   }
+ );
+
+}
 
 
 /* =========================
-   SAFETY
+   BACKTEST TABLE
+========================= */
+
+function renderBacktests(){
+
+ const body =
+   $("backtests");
+
+ body.innerHTML="";
+
+
+ marketList.forEach(
+   symbol=>{
+
+     const m =
+       markets[symbol];
+
+     if(
+       !m ||
+       !m.backtest
+     ){
+
+       return;
+
+     }
+
+
+     const b =
+       m.backtest;
+
+
+     const qualified =
+       b.validationTotal>=
+       num($("minSamples").value)
+       &&
+       b.validationRate>=
+       num($("minValidation").value)
+       &&
+       b.conservative>=
+       num($("minConservative").value);
+
+
+     const row =
+       document.createElement("tr");
+
+
+     row.innerHTML=`
+
+     <td>${symbol}</td>
+
+     <td>${b.duration}T</td>
+
+     <td>
+       ${b.trainRate.toFixed(1)}%
+       (${b.trainTotal})
+     </td>
+
+     <td>
+       ${b.validationRate.toFixed(1)}%
+     </td>
+
+     <td>
+       ${b.validationTotal}
+     </td>
+
+     <td>
+       ${b.conservative.toFixed(1)}%
+     </td>
+
+     <td>
+       ${m.feature?.score ?? "-"}
+     </td>
+
+     <td class="${
+       qualified
+       ? "good"
+       : "warn"
+     }">
+       ${qualified
+       ? "QUALIFIED"
+       : "WAIT"}
+     </td>
+
+     `;
+
+
+     body.appendChild(row);
+
+   }
+ );
+
+
+}
+
+
+/* =========================
+   RENDER LOOP
+========================= */
+
+setInterval(
+ ()=>{
+
+   renderMarkets();
+
+   renderBacktests();
+
+   updateStats();
+
+ },
+ 1000
+);
+
+
+/* =========================
+   CONNECTION SAFETY
 ========================= */
 
 window.addEventListener(
  "beforeunload",
  ()=>{
+
    trading=false;
+
+   /*
+      We intentionally do not attempt
+      to buy/sell during unload.
+   */
+
  }
 );
+
+
+/* =========================
+   INITIAL UI
+========================= */
+
+updateStats();
 
 </script>
 
