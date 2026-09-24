@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
 
-<title>V12 Synthetic Digit Trader</title>
+<title>V13 Synthetic Digit Trader</title>
 
 <style>
 *{
@@ -204,7 +204,7 @@ button:disabled{
 }
 
 .marketList{
-  max-height:330px;
+  max-height:400px;
   overflow:auto;
 }
 
@@ -232,6 +232,11 @@ button:disabled{
 .badge.vol{
   background:#124d47;
   color:#5ff0c3;
+}
+
+.badge.digit{
+  background:#183f63;
+  color:#63b9ff;
 }
 
 .badge.boom{
@@ -376,9 +381,9 @@ hr{
 <body>
 
 <header>
-  <h1>V12 Synthetic Digit Trader</h1>
+  <h1>V13 Synthetic Digit Trader</h1>
   <div class="subtitle">
-    Volatility digit scanner • fixed stake • recovery mode • no Martingale
+    Dynamic digit-market scanner • fixed stake • recovery mode • no Martingale
   </div>
 </header>
 
@@ -754,6 +759,20 @@ hr{
 
     <div class="stat">
       <div class="statTitle">
+        DIGIT ELIGIBLE
+      </div>
+
+      <div
+        id="digitMarketsStat"
+        class="statValue"
+      >
+        0
+      </div>
+    </div>
+
+
+    <div class="stat">
+      <div class="statTitle">
         VOLATILITY
       </div>
 
@@ -917,6 +936,22 @@ hr{
 
       <div
         id="allSyntheticText"
+        class="statValue"
+      >
+        0
+      </div>
+
+    </div>
+
+
+    <div class="stat">
+
+      <div class="statTitle">
+        DIGIT ELIGIBLE
+      </div>
+
+      <div
+        id="digitEligibleText"
         class="statValue"
       >
         0
@@ -1101,7 +1136,7 @@ System ready.
 <script>
 
 /* =========================================================
-   V12 STATE
+   V13 STATE
 ========================================================= */
 
 const API_BASE =
@@ -1111,7 +1146,9 @@ const PUBLIC_WS =
   "wss://api.derivws.com/trading/v1/options/ws/public";
 
 
-/* PUBLIC SOCKET */
+/* =========================================================
+   PUBLIC SOCKET
+========================================================= */
 
 let publicWS = null;
 
@@ -1123,8 +1160,12 @@ let publicWatchdogTimer = null;
 
 let publicGeneration = 0;
 
+let lastPublicMessage = Date.now();
 
-/* TRADING SOCKET */
+
+/* =========================================================
+   TRADING SOCKET
+========================================================= */
 
 let tradingWS = null;
 
@@ -1139,12 +1180,19 @@ let tradingWanted = false;
 let tradingConnecting = false;
 
 
-/* REQUEST */
+/* =========================================================
+   REQUESTS
+========================================================= */
 
 let reqCounter = 1000;
 
+const publicRequestMap =
+  new Map();
 
-/* ACCOUNTS */
+
+/* =========================================================
+   ACCOUNTS
+========================================================= */
 
 let accounts = [];
 
@@ -1153,25 +1201,60 @@ let accountMap = new Map();
 let selectedAccount = null;
 
 
-/* MARKETS */
+/* =========================================================
+   MARKETS
+========================================================= */
 
-let allSyntheticMarkets = new Map();
+let allSyntheticMarkets =
+  new Map();
 
-let volatilityMarkets = new Map();
+let volatilityMarkets =
+  new Map();
+
+/*
+  NEW V13:
+  Markets confirmed by Deriv to support
+  the required digit contract types.
+*/
+let digitEligibleMarkets =
+  new Map();
+
+/*
+  Contract availability for each symbol.
+*/
+let digitContractsBySymbol =
+  new Map();
+
 
 let marketTicks = {};
 
 let marketLastTick = {};
 
-let marketSubscriptions = new Set();
+let marketSubscriptions =
+  new Set();
 
 
-/* SCANNER */
+/*
+  Queue used to check contracts_for
+  one market at a time.
+*/
+let contractsForQueue = [];
+
+let contractsForRunning = false;
+
+let contractsForGeneration = 0;
+
+
+/* =========================================================
+   SCANNER
+========================================================= */
 
 let scannerRunning = false;
 
 
-/* TRADING */
+/* =========================================================
+   TRADING
+========================================================= */
 
 let autoTradingEnabled = false;
 
@@ -1184,7 +1267,9 @@ let pendingSignal = null;
 let lastCompletedSignal = null;
 
 
-/* STATS */
+/* =========================================================
+   STATS
+========================================================= */
 
 let signalsFound = 0;
 
@@ -1203,17 +1288,13 @@ let recoveryTrades = 0;
 let lastTradeTime = 0;
 
 
-/* HISTORY */
+/* =========================================================
+   HISTORY
+========================================================= */
 
 let signalHistory = [];
 
 let actualTrades = [];
-
-
-/* PUBLIC */
-
-let lastPublicMessage =
-  Date.now();
 
 
 /* =========================================================
@@ -1226,24 +1307,19 @@ function $(id){
 
 
 function req(){
-
   reqCounter++;
-
   return reqCounter;
 }
 
 
 function nowTime(){
-
-  return new Date()
-    .toLocaleTimeString();
+  return new Date().toLocaleTimeString();
 }
 
 
 function log(message){
 
-  const box =
-    $("systemLog");
+  const box = $("systemLog");
 
   const line =
     "[" +
@@ -1262,12 +1338,13 @@ function log(message){
   ){
 
     box.textContent =
-      box.textContent
-        .substring(
-          0,
-          35000
-        );
+      box.textContent.substring(
+        0,
+        35000
+      );
+
   }
+
 }
 
 
@@ -1275,6 +1352,7 @@ function clearLog(){
 
   $("systemLog").textContent =
     "Log cleared.";
+
 }
 
 
@@ -1283,12 +1361,12 @@ function num(
   fallback=0
 ){
 
-  const n =
-    Number(value);
+  const n = Number(value);
 
   return Number.isFinite(n)
     ? n
     : fallback;
+
 }
 
 
@@ -1297,6 +1375,7 @@ function getPAT(){
   return $("pat")
     .value
     .trim();
+
 }
 
 
@@ -1305,6 +1384,7 @@ function getAppId(){
   return $("appId")
     .value
     .trim();
+
 }
 
 
@@ -1317,6 +1397,7 @@ function getStake(){
       1
     )
   );
+
 }
 
 
@@ -1331,6 +1412,7 @@ function getMinMatches(){
       )
     )
   );
+
 }
 
 
@@ -1345,6 +1427,7 @@ function getHistoryCount(){
       )
     )
   );
+
 }
 
 
@@ -1359,6 +1442,7 @@ function getMaxTrades(){
       )
     )
   );
+
 }
 
 
@@ -1370,6 +1454,7 @@ function getSessionTP(){
       10
     )
   );
+
 }
 
 
@@ -1381,32 +1466,19 @@ function getSessionSL(){
       10
     )
   );
+
 }
 
 
 function escapeHTML(value){
 
   return String(value)
-    .replaceAll(
-      "&",
-      "&amp;"
-    )
-    .replaceAll(
-      "<",
-      "&lt;"
-    )
-    .replaceAll(
-      ">",
-      "&gt;"
-    )
-    .replaceAll(
-      '"',
-      "&quot;"
-    )
-    .replaceAll(
-      "'",
-      "&#039;"
-    );
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+
 }
 
 
@@ -1425,6 +1497,7 @@ function getAccountType(){
     selectedAccount.type ||
     ""
   ).toLowerCase();
+
 }
 
 
@@ -1432,6 +1505,7 @@ function isRealAccount(){
 
   return getAccountType()
     .includes("real");
+
 }
 
 
@@ -1439,11 +1513,12 @@ function isDemoAccount(){
 
   return getAccountType()
     .includes("demo");
+
 }
 
 
 /* =========================================================
-   UI UPDATE
+   UI
 ========================================================= */
 
 function updateUI(){
@@ -1451,17 +1526,20 @@ function updateUI(){
   $("allMarketsStat").textContent =
     allSyntheticMarkets.size;
 
+  $("digitMarketsStat").textContent =
+    digitEligibleMarkets.size;
+
   $("volMarketsStat").textContent =
     volatilityMarkets.size;
 
   $("tickStat").textContent =
-    Object.keys(
-      marketTicks
-    ).filter(
-      symbol =>
-        marketTicks[symbol] &&
-        marketTicks[symbol].length
-    ).length;
+    Object.keys(marketTicks)
+      .filter(
+        symbol =>
+          marketTicks[symbol] &&
+          marketTicks[symbol].length
+      )
+      .length;
 
   $("signalsStat").textContent =
     signalsFound;
@@ -1486,6 +1564,9 @@ function updateUI(){
 
   $("allSyntheticText").textContent =
     allSyntheticMarkets.size;
+
+  $("digitEligibleText").textContent =
+    digitEligibleMarkets.size;
 
   $("volatilityText").textContent =
     volatilityMarkets.size;
@@ -1514,6 +1595,7 @@ function updateUI(){
     autoTradingEnabled
       ? '<span class="ok">Qualified signals are allowed to place trades.</span>'
       : '<span class="warn">New trades are currently blocked.</span>';
+
 }
 
 
@@ -1523,12 +1605,9 @@ function updateUI(){
 
 async function loadAccounts(){
 
-  const pat =
-    getPAT();
+  const pat = getPAT();
 
-  const appId =
-    getAppId();
-
+  const appId = getAppId();
 
   if(!pat){
 
@@ -1536,12 +1615,11 @@ async function loadAccounts(){
       '<span class="bad">Enter your PAT first.</span>';
 
     return;
+
   }
 
 
-  $("loadAccountsBtn")
-    .disabled = true;
-
+  $("loadAccountsBtn").disabled = true;
 
   $("accountStatus").textContent =
     "Loading Options accounts...";
@@ -1550,10 +1628,8 @@ async function loadAccounts(){
   try{
 
     const headers = {
-
       "Authorization":
         "Bearer " + pat
-
     };
 
 
@@ -1583,36 +1659,24 @@ async function loadAccounts(){
     if(!response.ok){
 
       throw new Error(
-        extractApiError(
-          json
-        )
+        extractApiError(json)
       );
 
     }
 
 
-    let returned =
-      [];
+    let returned = [];
 
-
-    /*
-      Current API returns accounts
-      under data.
-    */
 
     if(
-      Array.isArray(
-        json?.data
-      )
+      Array.isArray(json?.data)
     ){
 
       returned =
         json.data;
 
     }else if(
-      Array.isArray(
-        json?.accounts
-      )
+      Array.isArray(json?.accounts)
     ){
 
       returned =
@@ -1620,8 +1684,7 @@ async function loadAccounts(){
 
     }else if(
       json?.data &&
-      typeof json.data ===
-      "object"
+      typeof json.data === "object"
     ){
 
       returned = [
@@ -1640,9 +1703,7 @@ async function loadAccounts(){
     }
 
 
-    accounts =
-      returned;
-
+    accounts = returned;
 
     accountMap.clear();
 
@@ -1656,11 +1717,9 @@ async function loadAccounts(){
           account.loginid ||
           account.login_id;
 
-
         if(!id){
           return;
         }
-
 
         accountMap.set(
           String(id),
@@ -1674,14 +1733,8 @@ async function loadAccounts(){
     const select =
       $("accountSelect");
 
+    select.innerHTML = "";
 
-    select.innerHTML =
-      "";
-
-
-    /*
-      Put DEMO accounts first.
-    */
 
     const sorted =
       [...accountMap.values()]
@@ -1690,16 +1743,14 @@ async function loadAccounts(){
 
             const ad =
               String(
-                a.account_type ||
-                ""
+                a.account_type || ""
               )
               .toLowerCase()
               .includes("demo");
 
             const bd =
               String(
-                b.account_type ||
-                ""
+                b.account_type || ""
               )
               .toLowerCase()
               .includes("demo");
@@ -1713,12 +1764,10 @@ async function loadAccounts(){
             }
 
             return String(
-              a.account_id ||
-              ""
+              a.account_id || ""
             ).localeCompare(
               String(
-                b.account_id ||
-                ""
+                b.account_id || ""
               )
             );
 
@@ -1735,7 +1784,6 @@ async function loadAccounts(){
           account.loginid ||
           account.login_id;
 
-
         const type =
           String(
             account.account_type ||
@@ -1743,22 +1791,17 @@ async function loadAccounts(){
           )
           .toUpperCase();
 
-
         const option =
           document.createElement(
             "option"
           );
 
-
-        option.value =
-          id;
-
+        option.value = id;
 
         option.textContent =
           id +
           " — " +
           type;
-
 
         select.appendChild(
           option
@@ -1768,17 +1811,11 @@ async function loadAccounts(){
     );
 
 
-    /*
-      Automatically choose DEMO
-      if one exists.
-    */
-
     const demo =
       sorted.find(
         account =>
           String(
-            account.account_type ||
-            ""
+            account.account_type || ""
           )
           .toLowerCase()
           .includes("demo")
@@ -1798,14 +1835,9 @@ async function loadAccounts(){
         first.loginid ||
         first.login_id;
 
+      select.value = id;
 
-      select.value =
-        id;
-
-
-      setSelectedAccount(
-        id
-      );
+      setSelectedAccount(id);
 
     }
 
@@ -1842,27 +1874,23 @@ async function loadAccounts(){
 
     console.error(error);
 
-
     $("accountStatus").innerHTML =
       '<span class="bad">' +
-      escapeHTML(
-        error.message
-      ) +
+      escapeHTML(error.message) +
       "</span>";
-
 
     log(
       "ACCOUNT ERROR: " +
       error.message
     );
 
-
   }finally{
 
-    $("loadAccountsBtn")
-      .disabled = false;
+    $("loadAccountsBtn").disabled =
+      false;
 
   }
+
 }
 
 
@@ -1870,21 +1898,15 @@ async function loadAccounts(){
    API ERROR
 ========================================================= */
 
-function extractApiError(
-  json
-){
+function extractApiError(json){
 
-  if(
-    json?.error?.message
-  ){
+  if(json?.error?.message){
     return json.error.message;
   }
 
 
   if(
-    Array.isArray(
-      json?.errors
-    ) &&
+    Array.isArray(json?.errors) &&
     json.errors.length
   ){
 
@@ -1902,6 +1924,7 @@ function extractApiError(
     json?.message ||
     "API request failed"
   );
+
 }
 
 
@@ -1914,20 +1937,15 @@ $("accountSelect")
     "change",
     event => {
 
-      const id =
-        event.target.value;
-
       setSelectedAccount(
-        id
+        event.target.value
       );
 
     }
   );
 
 
-function setSelectedAccount(
-  id
-){
+function setSelectedAccount(id){
 
   const account =
     accountMap.get(
@@ -1937,28 +1955,21 @@ function setSelectedAccount(
 
   if(!account){
 
-    selectedAccount =
-      null;
+    selectedAccount = null;
 
-    $("accountType")
-      .textContent = "—";
+    $("accountType").textContent =
+      "—";
 
-    $("accountIdDisplay")
-      .textContent = "—";
+    $("accountIdDisplay").textContent =
+      "—";
 
-    $("balanceDisplay")
-      .textContent =
-        "$0.00 USD";
+    $("balanceDisplay").textContent =
+      "$0.00 USD";
 
     return;
 
   }
 
-
-  /*
-    If trading is connected to another
-    account, disconnect it first.
-  */
 
   if(
     tradingWS &&
@@ -1986,8 +1997,7 @@ function setSelectedAccount(
   }
 
 
-  selectedAccount =
-    account;
+  selectedAccount = account;
 
 
   const accountId =
@@ -2005,14 +2015,11 @@ function setSelectedAccount(
     .toUpperCase();
 
 
-  $("accountType")
-    .textContent =
-      type;
+  $("accountType").textContent =
+    type;
 
-
-  $("accountIdDisplay")
-    .textContent =
-      accountId;
+  $("accountIdDisplay").textContent =
+    accountId;
 
 
   const initialBalance =
@@ -2023,61 +2030,43 @@ function setSelectedAccount(
     initialBalance !== undefined
   ){
 
-    $("balanceDisplay")
-      .textContent =
-        "$" +
-        Number(
-          initialBalance
-        ).toFixed(2) +
-        " " +
-        (
-          account.currency ||
-          "USD"
-        );
+    $("balanceDisplay").textContent =
+      "$" +
+      Number(
+        initialBalance
+      ).toFixed(2) +
+      " " +
+      (
+        account.currency ||
+        "USD"
+      );
 
   }else{
 
-    $("balanceDisplay")
-      .textContent =
-        "$0.00 USD";
+    $("balanceDisplay").textContent =
+      "$0.00 USD";
 
   }
 
-
-  /*
-    Automatically update mode information
-    from account itself.
-  */
-
-  if(
-    isRealAccount()
-  ){
-
-    log(
-      "Selected REAL account: " +
-      accountId
-    );
-
-  }else{
-
-    log(
-      "Selected DEMO account: " +
-      accountId
-    );
-
-  }
-
-
-  /*
-    Trading must be stopped when
-    changing accounts.
-  */
 
   autoTradingEnabled =
     false;
 
 
+  log(
+    "Selected " +
+    (
+      isRealAccount()
+        ? "REAL"
+        : "DEMO"
+    ) +
+    " account: " +
+    accountId
+  );
+
+
   updateUI();
+
 }
 
 
@@ -2091,41 +2080,35 @@ function clearCredentials(){
 
   disconnectTrading();
 
-  $("pat").value =
-    "";
+  $("pat").value = "";
 
-  $("appId").value =
-    "";
+  $("appId").value = "";
 
   accounts = [];
 
   accountMap.clear();
 
-  selectedAccount =
-    null;
+  selectedAccount = null;
 
   $("accountSelect").innerHTML =
     '<option value="">Load accounts first</option>';
 
-  $("accountType")
-    .textContent =
+  $("accountType").textContent =
     "—";
 
-  $("accountIdDisplay")
-    .textContent =
+  $("accountIdDisplay").textContent =
     "—";
 
-  $("balanceDisplay")
-    .textContent =
+  $("balanceDisplay").textContent =
     "$0.00 USD";
 
-  $("accountStatus")
-    .textContent =
+  $("accountStatus").textContent =
     "Credentials cleared.";
 
   log(
     "Credentials cleared."
   );
+
 }
 
 
@@ -2142,14 +2125,13 @@ async function connectTrading(){
     );
 
     return;
+
   }
 
 
-  const pat =
-    getPAT();
+  const pat = getPAT();
 
-  const appId =
-    getAppId();
+  const appId = getAppId();
 
   const accountId =
     $("accountSelect").value;
@@ -2163,6 +2145,7 @@ async function connectTrading(){
     );
 
     return;
+
   }
 
 
@@ -2174,16 +2157,11 @@ async function connectTrading(){
     );
 
     return;
+
   }
 
 
-  /*
-    Make sure selectedAccount is current.
-  */
-
-  setSelectedAccount(
-    accountId
-  );
+  setSelectedAccount(accountId);
 
 
   if(!selectedAccount){
@@ -2194,6 +2172,7 @@ async function connectTrading(){
     );
 
     return;
+
   }
 
 
@@ -2212,19 +2191,18 @@ async function connectTrading(){
     );
 
     return;
+
   }
 
 
-  tradingWanted =
-    true;
+  tradingWanted = true;
 
 
   clearTimeout(
     tradingReconnectTimer
   );
 
-  tradingReconnectTimer =
-    null;
+  tradingReconnectTimer = null;
 
 
   await openTradingConnection(
@@ -2232,11 +2210,12 @@ async function connectTrading(){
     appId,
     accountId
   );
+
 }
 
 
 /* =========================================================
-   OPEN AUTHENTICATED TRADING SOCKET
+   OPEN TRADING SOCKET
 ========================================================= */
 
 async function openTradingConnection(
@@ -2250,8 +2229,7 @@ async function openTradingConnection(
   }
 
 
-  tradingConnecting =
-    true;
+  tradingConnecting = true;
 
 
   const generation =
@@ -2272,10 +2250,8 @@ async function openTradingConnection(
   try{
 
     const headers = {
-
       "Authorization":
         "Bearer " + pat
-
     };
 
 
@@ -2291,9 +2267,7 @@ async function openTradingConnection(
       await fetch(
         API_BASE +
         "/trading/v1/options/accounts/" +
-        encodeURIComponent(
-          accountId
-        ) +
+        encodeURIComponent(accountId) +
         "/otp",
         {
           method:"POST",
@@ -2309,9 +2283,7 @@ async function openTradingConnection(
     if(!response.ok){
 
       throw new Error(
-        extractApiError(
-          json
-        )
+        extractApiError(json)
       );
 
     }
@@ -2347,23 +2319,13 @@ async function openTradingConnection(
         tradingWS.close();
       }catch(e){}
 
-      tradingWS =
-        null;
+      tradingWS = null;
 
     }
 
 
-    /*
-      IMPORTANT:
-      We use Deriv's returned URL directly.
-      It already points to the correct DEMO
-      or REAL endpoint for the selected account.
-    */
-
     tradingWS =
-      new WebSocket(
-        url
-      );
+      new WebSocket(url);
 
 
     tradingWS.onopen =
@@ -2379,8 +2341,7 @@ async function openTradingConnection(
         }
 
 
-        tradingConnecting =
-          false;
+        tradingConnecting = false;
 
 
         setTradingStatus(
@@ -2411,15 +2372,15 @@ async function openTradingConnection(
         */
 
         sendTrading({
+
           balance:1,
+
           subscribe:1,
+
           req_id:req()
+
         });
 
-
-        /*
-          Heartbeat.
-        */
 
         clearInterval(
           tradingHeartbeatTimer
@@ -2437,8 +2398,11 @@ async function openTradingConnection(
               ){
 
                 sendTrading({
+
                   ping:1,
+
                   req_id:req()
+
                 });
 
               }
@@ -2513,10 +2477,8 @@ async function openTradingConnection(
           tradingHeartbeatTimer
         );
 
-
         tradingHeartbeatTimer =
           null;
-
 
         tradingConnecting =
           false;
@@ -2534,8 +2496,7 @@ async function openTradingConnection(
         );
 
 
-        tradingWS =
-          null;
+        tradingWS = null;
 
 
         setTradingStatus(
@@ -2544,14 +2505,7 @@ async function openTradingConnection(
         );
 
 
-        /*
-          Existing open trade must not
-          be forgotten.
-        */
-
-        if(
-          tradingWanted
-        ){
+        if(tradingWanted){
 
           scheduleTradingReconnect();
 
@@ -2562,8 +2516,7 @@ async function openTradingConnection(
 
   }catch(error){
 
-    tradingConnecting =
-      false;
+    tradingConnecting = false;
 
 
     if(
@@ -2589,9 +2542,7 @@ async function openTradingConnection(
     );
 
 
-    if(
-      tradingWanted
-    ){
+    if(tradingWanted){
 
       scheduleTradingReconnect();
 
@@ -2605,17 +2556,17 @@ async function openTradingConnection(
       WebSocket.OPEN
     ){
 
-      tradingConnecting =
-        false;
+      tradingConnecting = false;
 
     }
 
   }
+
 }
 
 
 /* =========================================================
-   RECONNECT
+   TRADING RECONNECT
 ========================================================= */
 
 function scheduleTradingReconnect(){
@@ -2643,11 +2594,9 @@ function scheduleTradingReconnect(){
         }
 
 
-        const pat =
-          getPAT();
+        const pat = getPAT();
 
-        const appId =
-          getAppId();
+        const appId = getAppId();
 
         const accountId =
           $("accountSelect").value;
@@ -2677,6 +2626,7 @@ function scheduleTradingReconnect(){
       },
       5000
     );
+
 }
 
 
@@ -2686,13 +2636,9 @@ function scheduleTradingReconnect(){
 
 function disconnectTrading(){
 
-  tradingWanted =
-    false;
+  tradingWanted = false;
 
-
-  tradingConnecting =
-    false;
-
+  tradingConnecting = false;
 
   ++tradingGeneration;
 
@@ -2701,18 +2647,14 @@ function disconnectTrading(){
     tradingReconnectTimer
   );
 
-
-  tradingReconnectTimer =
-    null;
+  tradingReconnectTimer = null;
 
 
   clearInterval(
     tradingHeartbeatTimer
   );
 
-
-  tradingHeartbeatTimer =
-    null;
+  tradingHeartbeatTimer = null;
 
 
   if(tradingWS){
@@ -2724,8 +2666,7 @@ function disconnectTrading(){
   }
 
 
-  tradingWS =
-    null;
+  tradingWS = null;
 
 
   setTradingStatus(
@@ -2737,6 +2678,7 @@ function disconnectTrading(){
   log(
     "Trading connection disconnected."
   );
+
 }
 
 
@@ -2771,16 +2713,15 @@ function setTradingStatus(
       "</span>";
 
   }
+
 }
 
 
 /* =========================================================
-   SEND TRADING MESSAGE
+   SEND TRADING
 ========================================================= */
 
-function sendTrading(
-  payload
-){
+function sendTrading(payload){
 
   if(
     !tradingWS ||
@@ -2800,9 +2741,7 @@ function sendTrading(
   try{
 
     tradingWS.send(
-      JSON.stringify(
-        payload
-      )
+      JSON.stringify(payload)
     );
 
     return true;
@@ -2817,6 +2756,7 @@ function sendTrading(
     return false;
 
   }
+
 }
 
 
@@ -2824,9 +2764,7 @@ function sendTrading(
    TRADING MESSAGE
 ========================================================= */
 
-function handleTradingMessage(
-  raw
-){
+function handleTradingMessage(raw){
 
   let data;
 
@@ -2853,9 +2791,7 @@ function handleTradingMessage(
 
     log(
       "DERIV ERROR: " +
-      extractApiError(
-        data
-      )
+      extractApiError(data)
     );
 
     return;
@@ -2868,9 +2804,7 @@ function handleTradingMessage(
     "balance"
   ){
 
-    handleBalance(
-      data
-    );
+    handleBalance(data);
 
     return;
 
@@ -2882,9 +2816,7 @@ function handleTradingMessage(
     "proposal"
   ){
 
-    handleProposal(
-      data
-    );
+    handleProposal(data);
 
     return;
 
@@ -2896,9 +2828,7 @@ function handleTradingMessage(
     "buy"
   ){
 
-    handleBuy(
-      data
-    );
+    handleBuy(data);
 
     return;
 
@@ -2910,9 +2840,7 @@ function handleTradingMessage(
     "proposal_open_contract"
   ){
 
-    handleOpenContract(
-      data
-    );
+    handleOpenContract(data);
 
     return;
 
@@ -2925,20 +2853,14 @@ function handleTradingMessage(
    BALANCE
 ========================================================= */
 
-function handleBalance(
-  data
-){
+function handleBalance(data){
 
   const balance =
     data?.balance?.balance;
 
 
-  if(
-    balance === undefined
-  ){
-
+  if(balance === undefined){
     return;
-
   }
 
 
@@ -2948,24 +2870,20 @@ function handleBalance(
     "USD";
 
 
-  $("balanceDisplay")
-    .textContent =
-      "$" +
-      Number(
-        balance
-      ).toFixed(2) +
-      " " +
-      currency;
+  $("balanceDisplay").textContent =
+    "$" +
+    Number(balance).toFixed(2) +
+    " " +
+    currency;
 
 
   log(
     "Balance: $" +
-    Number(
-      balance
-    ).toFixed(2) +
+    Number(balance).toFixed(2) +
     " " +
     currency
   );
+
 }
 
 
@@ -2986,9 +2904,7 @@ function startAutoTrading(){
   }
 
 
-  if(
-    !selectedAccount
-  ){
+  if(!selectedAccount){
 
     log(
       "Cannot start trading: select an account first."
@@ -3028,8 +2944,7 @@ function startAutoTrading(){
   }
 
 
-  autoTradingEnabled =
-    true;
+  autoTradingEnabled = true;
 
 
   log(
@@ -3053,15 +2968,8 @@ function stopAutoTrading(){
   }
 
 
-  autoTradingEnabled =
-    false;
+  autoTradingEnabled = false;
 
-
-  /*
-    Do not cancel an already purchased
-    contract. This button only prevents
-    NEW trades.
-  */
 
   log(
     "AUTO TRADING DISABLED — no new trades will be placed."
@@ -3143,6 +3051,19 @@ const RECOVERY_CONTRACTS = {
 };
 
 
+/*
+  These are the exact contract types
+  required by the user's strategy.
+*/
+
+const REQUIRED_DIGIT_TYPES = [
+  "DIGITOVER",
+  "DIGITUNDER",
+  "DIGITEVEN",
+  "DIGITODD"
+];
+
+
 /* =========================================================
    SETUP SCORE
 ========================================================= */
@@ -3166,8 +3087,7 @@ function setupScore(
     digits.slice(-30);
 
 
-  let hits =
-    0;
+  let hits = 0;
 
 
   recent.forEach(
@@ -3190,8 +3110,7 @@ function setupScore(
     recent.length;
 
 
-  let streak =
-    0;
+  let streak = 0;
 
 
   for(
@@ -3269,8 +3188,7 @@ function historicalTest(
     digits.slice(-30);
 
 
-  let currentHits =
-    0;
+  let currentHits = 0;
 
 
   currentWindow.forEach(
@@ -3299,11 +3217,9 @@ function historicalTest(
     );
 
 
-  let matches =
-    0;
+  let matches = 0;
 
-  let winsFound =
-    0;
+  let winsFound = 0;
 
 
   for(
@@ -3321,8 +3237,7 @@ function historicalTest(
       );
 
 
-    let hits =
-      0;
+    let hits = 0;
 
 
     window.forEach(
@@ -3414,8 +3329,7 @@ function getPrimarySignal(
   }
 
 
-  const candidates =
-    [];
+  const candidates = [];
 
 
   Object.values(
@@ -3432,9 +3346,7 @@ function getPrimarySignal(
 
 
       if(score < 55){
-
         return;
-
       }
 
 
@@ -3444,12 +3356,6 @@ function getPrimarySignal(
           contract
         );
 
-
-      /*
-        EXACT REQUIREMENT:
-        >=80%
-        >=50 matches
-      */
 
       if(
         historical.validation < 80 ||
@@ -3464,11 +3370,9 @@ function getPrimarySignal(
 
       candidates.push({
 
-        market:
-          symbol,
+        market:symbol,
 
-        label:
-          contract.label,
+        label:contract.label,
 
         contract_type:
           contract.contract_type,
@@ -3485,8 +3389,7 @@ function getPrimarySignal(
         setupScore:
           score,
 
-        mode:
-          "PRIMARY"
+        mode:"PRIMARY"
 
       });
 
@@ -3494,12 +3397,8 @@ function getPrimarySignal(
   );
 
 
-  if(
-    !candidates.length
-  ){
-
+  if(!candidates.length){
     return null;
-
   }
 
 
@@ -3534,7 +3433,7 @@ function getPrimarySignal(
 
 
 /* =========================================================
-   RECOVERY SIGNAL
+   RECOVERY SCORE
 ========================================================= */
 
 function recoverySetupScore(
@@ -3556,8 +3455,7 @@ function recoverySetupScore(
     digits.slice(-30);
 
 
-  let hits =
-    0;
+  let hits = 0;
 
 
   recent.forEach(
@@ -3580,8 +3478,7 @@ function recoverySetupScore(
     recent.length;
 
 
-  let streak =
-    0;
+  let streak = 0;
 
 
   for(
@@ -3622,6 +3519,10 @@ function recoverySetupScore(
 }
 
 
+/* =========================================================
+   RECOVERY SIGNAL
+========================================================= */
+
 function getRecoverySignal(
   symbol,
   digits
@@ -3637,8 +3538,7 @@ function getRecoverySignal(
   }
 
 
-  const candidates =
-    [];
+  const candidates = [];
 
 
   Object.values(
@@ -3655,9 +3555,7 @@ function getRecoverySignal(
 
 
       if(score < 55){
-
         return;
-
       }
 
 
@@ -3667,12 +3565,6 @@ function getRecoverySignal(
           contract
         );
 
-
-      /*
-        EXACT RECOVERY REQUIREMENT:
-        >=80%
-        >=50 matches
-      */
 
       if(
         historical.validation < 80 ||
@@ -3687,11 +3579,9 @@ function getRecoverySignal(
 
       candidates.push({
 
-        market:
-          symbol,
+        market:symbol,
 
-        label:
-          contract.label,
+        label:contract.label,
 
         contract_type:
           contract.contract_type,
@@ -3708,8 +3598,7 @@ function getRecoverySignal(
         setupScore:
           score,
 
-        mode:
-          "RECOVERY"
+        mode:"RECOVERY"
 
       });
 
@@ -3717,12 +3606,8 @@ function getRecoverySignal(
   );
 
 
-  if(
-    !candidates.length
-  ){
-
+  if(!candidates.length){
     return null;
-
   }
 
 
@@ -3760,38 +3645,25 @@ function getRecoverySignal(
    EVALUATE MARKET
 ========================================================= */
 
-function evaluateMarket(
-  symbol
-){
+function evaluateMarket(symbol){
 
-  if(
-    !scannerRunning
-  ){
-
+  if(!scannerRunning){
     return;
+  }
 
+
+  if(tradeInFlight){
+    return;
   }
 
 
   if(
-    tradeInFlight
+    !digitEligibleMarkets.has(
+      symbol
+    )
   ){
 
     return;
-
-  }
-
-
-  if(
-    !tradingWS ||
-    tradingWS.readyState !==
-    WebSocket.OPEN
-  ){
-
-    /*
-      Scanner can continue without
-      trading connection.
-    */
 
   }
 
@@ -3838,9 +3710,7 @@ function evaluateMarket(
 
 
   const digits =
-    marketTicks[
-      symbol
-    ];
+    marketTicks[symbol];
 
 
   if(
@@ -3853,8 +3723,7 @@ function evaluateMarket(
   }
 
 
-  let signal =
-    null;
+  let signal = null;
 
 
   if(recoveryMode){
@@ -3877,16 +3746,9 @@ function evaluateMarket(
 
 
   if(!signal){
-
     return;
-
   }
 
-
-  /*
-    Prevent the same signal from
-    firing repeatedly on every tick.
-  */
 
   if(
     lastCompletedSignal &&
@@ -3933,19 +3795,9 @@ function evaluateMarket(
   );
 
 
-  /*
-    IMPORTANT:
-    Scanner does NOT trade unless
-    Auto Trading is ON.
-  */
+  if(autoTradingEnabled){
 
-  if(
-    autoTradingEnabled
-  ){
-
-    executeSignal(
-      signal
-    );
+    executeSignal(signal);
 
   }
 
@@ -3960,13 +3812,10 @@ function renderCurrentSignal(){
 
   if(!pendingSignal){
 
-    $("signalName")
-      .textContent =
+    $("signalName").textContent =
       "NO SIGNAL";
 
-
-    $("signalMeta")
-      .textContent =
+    $("signalMeta").textContent =
       "Waiting for a qualified setup.";
 
     return;
@@ -3974,41 +3823,32 @@ function renderCurrentSignal(){
   }
 
 
-  $("signalName")
-    .textContent =
-      pendingSignal.market +
-      " " +
-      pendingSignal.label;
+  $("signalName").textContent =
+    pendingSignal.market +
+    " " +
+    pendingSignal.label;
 
 
-  $("signalMeta")
-    .innerHTML =
-
-      "Validation: <strong>" +
-      pendingSignal.validation
-        .toFixed(1) +
-      "%</strong>" +
-
-      " | Matches: <strong>" +
-      pendingSignal.matches +
-      "</strong>" +
-
-      " | Setup: <strong>" +
-      pendingSignal.setupScore
-        .toFixed(1) +
-      "</strong>" +
-
-      " | Mode: <strong>" +
-      pendingSignal.mode +
-      "</strong>" +
-
-      " | Auto Trading: <strong>" +
-      (
-        autoTradingEnabled
-          ? "ON"
-          : "OFF"
-      ) +
-      "</strong>";
+  $("signalMeta").innerHTML =
+    "Validation: <strong>" +
+    pendingSignal.validation.toFixed(1) +
+    "%</strong>" +
+    " | Matches: <strong>" +
+    pendingSignal.matches +
+    "</strong>" +
+    " | Setup: <strong>" +
+    pendingSignal.setupScore.toFixed(1) +
+    "</strong>" +
+    " | Mode: <strong>" +
+    pendingSignal.mode +
+    "</strong>" +
+    " | Auto Trading: <strong>" +
+    (
+      autoTradingEnabled
+        ? "ON"
+        : "OFF"
+    ) +
+    "</strong>";
 
 }
 
@@ -4017,32 +3857,20 @@ function renderCurrentSignal(){
    EXECUTE SIGNAL
 ========================================================= */
 
-function executeSignal(
-  signal
-){
+function executeSignal(signal){
 
   if(!autoTradingEnabled){
-
     return;
-
   }
 
 
-  if(
-    !signal
-  ){
-
+  if(!signal){
     return;
-
   }
 
 
-  if(
-    tradeInFlight
-  ){
-
+  if(tradeInFlight){
     return;
-
   }
 
 
@@ -4054,6 +3882,21 @@ function executeSignal(
 
     log(
       "Signal qualified but trading socket is not connected."
+    );
+
+    return;
+
+  }
+
+
+  if(
+    !digitEligibleMarkets.has(
+      signal.market
+    )
+  ){
+
+    log(
+      "Trade blocked: market is no longer digit eligible."
     );
 
     return;
@@ -4109,9 +3952,7 @@ function executeSignal(
   }
 
 
-  tradeInFlight =
-    true;
-
+  tradeInFlight = true;
 
   lastTradeTime =
     Date.now();
@@ -4133,32 +3974,25 @@ function executeSignal(
 
   const payload = {
 
-    proposal:
-      1,
+    proposal:1,
 
-    amount:
-      stake,
+    amount:stake,
 
-    basis:
-      "stake",
+    basis:"stake",
 
     contract_type:
       signal.contract_type,
 
-    currency:
-      "USD",
+    currency:"USD",
 
-    duration:
-      1,
+    duration:1,
 
-    duration_unit:
-      "t",
+    duration_unit:"t",
 
     underlying_symbol:
       signal.market,
 
-    req_id:
-      req()
+    req_id:req()
 
   };
 
@@ -4174,9 +4008,7 @@ function executeSignal(
   }
 
 
-  sendTrading(
-    payload
-  );
+  sendTrading(payload);
 
 }
 
@@ -4185,9 +4017,7 @@ function executeSignal(
    PROPOSAL
 ========================================================= */
 
-function handleProposal(
-  data
-){
+function handleProposal(data){
 
   const proposal =
     data.proposal;
@@ -4199,8 +4029,7 @@ function handleProposal(
       "Proposal response missing proposal object."
     );
 
-    tradeInFlight =
-      false;
+    tradeInFlight = false;
 
     return;
 
@@ -4223,8 +4052,7 @@ function handleProposal(
       "Proposal rejected: missing ID."
     );
 
-    tradeInFlight =
-      false;
+    tradeInFlight = false;
 
     return;
 
@@ -4232,9 +4060,7 @@ function handleProposal(
 
 
   if(
-    !Number.isFinite(
-      askPrice
-    ) ||
+    !Number.isFinite(askPrice) ||
     askPrice <= 0
   ){
 
@@ -4242,8 +4068,7 @@ function handleProposal(
       "Proposal rejected: invalid ask_price."
     );
 
-    tradeInFlight =
-      false;
+    tradeInFlight = false;
 
     return;
 
@@ -4258,16 +4083,11 @@ function handleProposal(
 
   sendTrading({
 
-    buy:
-      String(
-        proposalId
-      ),
+    buy:String(proposalId),
 
-    price:
-      askPrice,
+    price:askPrice,
 
-    req_id:
-      req()
+    req_id:req()
 
   });
 
@@ -4278,9 +4098,7 @@ function handleProposal(
    BUY
 ========================================================= */
 
-function handleBuy(
-  data
-){
+function handleBuy(data){
 
   const buy =
     data.buy;
@@ -4292,8 +4110,7 @@ function handleBuy(
       "BUY response missing."
     );
 
-    tradeInFlight =
-      false;
+    tradeInFlight = false;
 
     return;
 
@@ -4311,8 +4128,7 @@ function handleBuy(
       "BUY response has no contract ID."
     );
 
-    tradeInFlight =
-      false;
+    tradeInFlight = false;
 
     return;
 
@@ -4320,30 +4136,20 @@ function handleBuy(
 
 
   openContractId =
-    String(
-      contractId
-    );
+    String(contractId);
 
 
   totalTrades++;
 
 
-  if(
-    recoveryMode
-  ){
-
+  if(recoveryMode){
     recoveryTrades++;
-
   }
 
 
   const signal =
     pendingSignal;
 
-
-  /*
-    Save the signal before clearing it.
-  */
 
   if(signal){
 
@@ -4370,83 +4176,60 @@ function handleBuy(
 
   addTradeRecord({
 
-    time:
-      nowTime(),
+    time:nowTime(),
 
     market:
-      signal?.market ||
-      "-",
+      signal?.market || "-",
 
     contract:
-      signal?.label ||
-      "-",
+      signal?.label || "-",
 
     stake:
       getStake(),
 
     mode:
-      signal?.mode ||
-      "-",
+      signal?.mode || "-",
 
-    result:
-      "OPEN",
+    result:"OPEN",
 
-    pl:
-      0,
+    pl:0,
 
     contractId:
-      String(
-        contractId
-      )
+      String(contractId)
 
   });
 
-
-  /*
-    Save signal for completed result.
-  */
 
   pendingSignal =
     signal
-      ? {
-          ...signal
-        }
+      ? {...signal}
       : null;
 
 
-  /*
-    Subscribe to contract result.
-  */
-
   sendTrading({
 
-    proposal_open_contract:
-      1,
+    proposal_open_contract:1,
 
-    contract_id:
-      contractId,
+    contract_id:contractId,
 
-    subscribe:
-      1,
+    subscribe:1,
 
-    req_id:
-      req()
+    req_id:req()
 
   });
 
 
   /*
-    Balance is already subscribed.
-    DO NOT send subscribe:1 again.
+    Balance was already subscribed
+    when the trading socket opened.
+    DO NOT subscribe again.
   */
 
   sendTrading({
 
-    balance:
-      1,
+    balance:1,
 
-    req_id:
-      req()
+    req_id:req()
 
   });
 
@@ -4457,21 +4240,17 @@ function handleBuy(
 
 
 /* =========================================================
-   CONTRACT RESULT
+   OPEN CONTRACT
 ========================================================= */
 
-function handleOpenContract(
-  data
-){
+function handleOpenContract(data){
 
   const contract =
     data.proposal_open_contract;
 
 
   if(!contract){
-
     return;
-
   }
 
 
@@ -4485,9 +4264,7 @@ function handleOpenContract(
   if(
     openContractId &&
     contractId !==
-    String(
-      openContractId
-    )
+    String(openContractId)
   ){
 
     return;
@@ -4497,8 +4274,7 @@ function handleOpenContract(
 
   const status =
     String(
-      contract.status ||
-      ""
+      contract.status || ""
     )
     .toLowerCase();
 
@@ -4556,9 +4332,7 @@ function handleOpenContract(
 
 
   const pl =
-    Number.isFinite(
-      profit
-    )
+    Number.isFinite(profit)
       ? profit
       : 0;
 
@@ -4581,36 +4355,25 @@ function finishTrade(
 ){
 
   if(!tradeInFlight){
-
     return;
-
   }
 
 
-  tradeInFlight =
-    false;
+  tradeInFlight = false;
+
+  openContractId = null;
 
 
-  openContractId =
-    null;
-
-
-  sessionPL +=
-    pl;
+  sessionPL += pl;
 
 
   const finishedSignal =
     pendingSignal
-      ? {
-          ...pendingSignal
-        }
+      ? {...pendingSignal}
       : null;
 
 
-  if(
-    result ===
-    "WON"
-  ){
+  if(result === "WON"){
 
     wins++;
 
@@ -4621,15 +4384,11 @@ function finishTrade(
     );
 
 
-    if(
-      recoveryMode
-    ){
+    if(recoveryMode){
 
-      recoveryMode =
-        false;
+      recoveryMode = false;
 
-      recoveryTrades =
-        0;
+      recoveryTrades = 0;
 
 
       log(
@@ -4649,15 +4408,11 @@ function finishTrade(
     );
 
 
-    if(
-      !recoveryMode
-    ){
+    if(!recoveryMode){
 
-      recoveryMode =
-        true;
+      recoveryMode = true;
 
-      recoveryTrades =
-        0;
+      recoveryTrades = 0;
 
 
       log(
@@ -4666,11 +4421,9 @@ function finishTrade(
 
     }else{
 
-      recoveryMode =
-        false;
+      recoveryMode = false;
 
-      recoveryTrades =
-        0;
+      recoveryTrades = 0;
 
 
       log(
@@ -4682,13 +4435,7 @@ function finishTrade(
   }
 
 
-  /*
-    Correct signal history.
-  */
-
-  if(
-    finishedSignal
-  ){
+  if(finishedSignal){
 
     addSignalHistory(
       finishedSignal,
@@ -4704,19 +4451,12 @@ function finishTrade(
   );
 
 
-  pendingSignal =
-    null;
-
+  pendingSignal = null;
 
   renderCurrentSignal();
 
-
   updateUI();
 
-
-  /*
-    Session limits.
-  */
 
   if(
     sessionPL >=
@@ -4728,9 +4468,7 @@ function finishTrade(
       sessionPL.toFixed(2)
     );
 
-
     stopAutoTrading();
-
 
     return;
 
@@ -4747,9 +4485,7 @@ function finishTrade(
       sessionPL.toFixed(2)
     );
 
-
     stopAutoTrading();
-
 
     return;
 
@@ -4765,7 +4501,6 @@ function finishTrade(
       "MAXIMUM SESSION TRADES REACHED."
     );
 
-
     stopAutoTrading();
 
   }
@@ -4777,13 +4512,9 @@ function finishTrade(
    TRADE HISTORY
 ========================================================= */
 
-function addTradeRecord(
-  record
-){
+function addTradeRecord(record){
 
-  actualTrades.unshift(
-    record
-  );
+  actualTrades.unshift(record);
 
 
   if(
@@ -4806,22 +4537,7 @@ function updateTradeRecord(
   pl
 ){
 
-  const trade =
-    actualTrades.find(
-      item =>
-        item.contractId &&
-        openContractId === null
-          ? true
-          : false
-    );
-
-
-  /*
-    More reliable:
-    find latest OPEN trade.
-  */
-
-  const openTrade =
+  const target =
     actualTrades.find(
       item =>
         item.result ===
@@ -4829,15 +4545,8 @@ function updateTradeRecord(
     );
 
 
-  const target =
-    openTrade ||
-    actualTrades[0];
-
-
   if(!target){
-
     return;
-
   }
 
 
@@ -4859,9 +4568,7 @@ function renderTrades(){
     $("tradeHistory");
 
 
-  if(
-    !actualTrades.length
-  ){
+  if(!actualTrades.length){
 
     body.innerHTML =
       '<tr><td colspan="7" class="small">No trades yet.</td></tr>';
@@ -4871,8 +4578,7 @@ function renderTrades(){
   }
 
 
-  body.innerHTML =
-    "";
+  body.innerHTML = "";
 
 
   actualTrades.forEach(
@@ -4885,33 +4591,25 @@ function renderTrades(){
 
 
       const resultClass =
-        trade.result ===
-        "WON"
+        trade.result === "WON"
           ? "win"
-          : trade.result ===
-            "LOST"
-              ? "loss"
-              : "neutral";
+          : trade.result === "LOST"
+            ? "loss"
+            : "neutral";
 
 
       row.innerHTML = `
 
         <td>
-          ${escapeHTML(
-            trade.time
-          )}
+          ${escapeHTML(trade.time)}
         </td>
 
         <td>
-          ${escapeHTML(
-            trade.market
-          )}
+          ${escapeHTML(trade.market)}
         </td>
 
         <td>
-          ${escapeHTML(
-            trade.contract
-          )}
+          ${escapeHTML(trade.contract)}
         </td>
 
         <td>
@@ -4921,22 +4619,16 @@ function renderTrades(){
         </td>
 
         <td>
-          ${escapeHTML(
-            trade.mode
-          )}
+          ${escapeHTML(trade.mode)}
         </td>
 
         <td class="${resultClass}">
-          ${escapeHTML(
-            trade.result
-          )}
+          ${escapeHTML(trade.result)}
         </td>
 
         <td class="${resultClass}">
           ${
-            Number(
-              trade.pl
-            ) >= 0
+            Number(trade.pl) >= 0
               ? "+"
               : ""
           }$${Number(
@@ -4947,9 +4639,7 @@ function renderTrades(){
       `;
 
 
-      body.appendChild(
-        row
-      );
+      body.appendChild(row);
 
     }
   );
@@ -4967,16 +4657,13 @@ function addSignalHistory(
 ){
 
   if(!signal){
-
     return;
-
   }
 
 
   signalHistory.unshift({
 
-    time:
-      nowTime(),
+    time:nowTime(),
 
     market:
       signal.market,
@@ -4993,8 +4680,7 @@ function addSignalHistory(
     mode:
       signal.mode,
 
-    result:
-      result
+    result:result
 
   });
 
@@ -5020,9 +4706,7 @@ function renderSignalHistory(){
     $("signalHistory");
 
 
-  if(
-    !signalHistory.length
-  ){
+  if(!signalHistory.length){
 
     body.innerHTML =
       '<tr><td colspan="7" class="small">No completed signals.</td></tr>';
@@ -5032,8 +4716,7 @@ function renderSignalHistory(){
   }
 
 
-  body.innerHTML =
-    "";
+  body.innerHTML = "";
 
 
   signalHistory.forEach(
@@ -5046,8 +4729,7 @@ function renderSignalHistory(){
 
 
       const cls =
-        signal.result ===
-        "WON"
+        signal.result === "WON"
           ? "win"
           : "loss";
 
@@ -5055,21 +4737,15 @@ function renderSignalHistory(){
       row.innerHTML = `
 
         <td>
-          ${escapeHTML(
-            signal.time
-          )}
+          ${escapeHTML(signal.time)}
         </td>
 
         <td>
-          ${escapeHTML(
-            signal.market
-          )}
+          ${escapeHTML(signal.market)}
         </td>
 
         <td>
-          ${escapeHTML(
-            signal.contract
-          )}
+          ${escapeHTML(signal.contract)}
         </td>
 
         <td>
@@ -5083,23 +4759,17 @@ function renderSignalHistory(){
         </td>
 
         <td>
-          ${escapeHTML(
-            signal.mode
-          )}
+          ${escapeHTML(signal.mode)}
         </td>
 
         <td class="${cls}">
-          ${escapeHTML(
-            signal.result
-          )}
+          ${escapeHTML(signal.result)}
         </td>
 
       `;
 
 
-      body.appendChild(
-        row
-      );
+      body.appendChild(row);
 
     }
   );
@@ -5108,12 +4778,10 @@ function renderSignalHistory(){
 
 
 /* =========================================================
-   PUBLIC MARKET CLASSIFICATION
+   MARKET CLASSIFICATION
 ========================================================= */
 
-function marketClass(
-  item
-){
+function marketClass(item){
 
   const symbol =
     String(
@@ -5165,53 +4833,29 @@ function marketClass(
 
 
   const knownSynthetic =
-    /^r_\d+$/i.test(
-      symbol
-    ) ||
+    /^r_\d+$/i.test(symbol) ||
 
-    /^1hz\d+v$/i.test(
-      symbol
-    ) ||
+    /^1hz\d+v$/i.test(symbol) ||
 
-    /^boom\d+/i.test(
-      symbol
-    ) ||
+    /^boom\d+/i.test(symbol) ||
 
-    /^crash\d+/i.test(
-      symbol
-    ) ||
+    /^crash\d+/i.test(symbol) ||
 
-    /^jd\d+/i.test(
-      symbol
-    ) ||
+    /^jd\d+/i.test(symbol) ||
 
-    /^stp/i.test(
-      symbol
-    ) ||
+    /^stp/i.test(symbol) ||
 
-    /^rb/i.test(
-      symbol
-    ) ||
+    /^rb/i.test(symbol) ||
 
-    text.includes(
-      "volatility"
-    ) ||
+    text.includes("volatility") ||
 
-    text.includes(
-      "boom"
-    ) ||
+    text.includes("boom") ||
 
-    text.includes(
-      "crash"
-    ) ||
+    text.includes("crash") ||
 
-    text.includes(
-      "range break"
-    ) ||
+    text.includes("range break") ||
 
-    text.includes(
-      "step index"
-    );
+    text.includes("step index");
 
 
   if(
@@ -5225,17 +4869,9 @@ function marketClass(
 
 
   if(
-    /^r_\d+$/i.test(
-      symbol
-    ) ||
-
-    /^1hz\d+v$/i.test(
-      symbol
-    ) ||
-
-    text.includes(
-      "volatility"
-    )
+    /^r_\d+$/i.test(symbol) ||
+    /^1hz\d+v$/i.test(symbol) ||
+    text.includes("volatility")
   ){
 
     return "VOLATILITY";
@@ -5244,13 +4880,8 @@ function marketClass(
 
 
   if(
-    /^boom\d+/i.test(
-      symbol
-    ) ||
-
-    text.includes(
-      "boom"
-    )
+    /^boom\d+/i.test(symbol) ||
+    text.includes("boom")
   ){
 
     return "BOOM";
@@ -5259,13 +4890,8 @@ function marketClass(
 
 
   if(
-    /^crash\d+/i.test(
-      symbol
-    ) ||
-
-    text.includes(
-      "crash"
-    )
+    /^crash\d+/i.test(symbol) ||
+    text.includes("crash")
   ){
 
     return "CRASH";
@@ -5308,21 +4934,25 @@ function connectPublic(){
     publicReconnectTimer
   );
 
-
   clearInterval(
     publicHeartbeatTimer
   );
-
 
   clearInterval(
     publicWatchdogTimer
   );
 
 
+  /*
+    A new WebSocket needs fresh
+    subscriptions.
+  */
+
+  marketSubscriptions.clear();
+
+
   publicWS =
-    new WebSocket(
-      PUBLIC_WS
-    );
+    new WebSocket(PUBLIC_WS);
 
 
   publicWS.onopen =
@@ -5353,8 +4983,7 @@ function connectPublic(){
           active_symbols:
             "brief",
 
-          req_id:
-            req()
+          req_id:req()
 
         })
       );
@@ -5373,11 +5002,9 @@ function connectPublic(){
               publicWS.send(
                 JSON.stringify({
 
-                  ping:
-                    1,
+                  ping:1,
 
-                  req_id:
-                    req()
+                  req_id:req()
 
                 })
               );
@@ -5477,7 +5104,6 @@ function connectPublic(){
         publicHeartbeatTimer
       );
 
-
       clearInterval(
         publicWatchdogTimer
       );
@@ -5485,7 +5111,6 @@ function connectPublic(){
 
       publicHeartbeatTimer =
         null;
-
 
       publicWatchdogTimer =
         null;
@@ -5503,13 +5128,10 @@ function connectPublic(){
       );
 
 
-      publicWS =
-        null;
+      publicWS = null;
 
 
-      if(
-        scannerRunning
-      ){
+      if(scannerRunning){
 
         schedulePublicReconnect();
 
@@ -5526,21 +5148,13 @@ function connectPublic(){
 
 function schedulePublicReconnect(){
 
-  if(
-    !scannerRunning
-  ){
-
+  if(!scannerRunning){
     return;
-
   }
 
 
-  if(
-    publicReconnectTimer
-  ){
-
+  if(publicReconnectTimer){
     return;
-
   }
 
 
@@ -5552,9 +5166,7 @@ function schedulePublicReconnect(){
           null;
 
 
-        if(
-          scannerRunning
-        ){
+        if(scannerRunning){
 
           connectPublic();
 
@@ -5573,9 +5185,7 @@ function reconnectPublic(){
     publicReconnectTimer
   );
 
-
-  publicReconnectTimer =
-    null;
+  publicReconnectTimer = null;
 
 
   if(publicWS){
@@ -5587,13 +5197,10 @@ function reconnectPublic(){
   }
 
 
-  publicWS =
-    null;
+  publicWS = null;
 
 
-  if(
-    scannerRunning
-  ){
+  if(scannerRunning){
 
     connectPublic();
 
@@ -5615,27 +5222,21 @@ function stopPublic(){
     publicReconnectTimer
   );
 
-
-  publicReconnectTimer =
-    null;
+  publicReconnectTimer = null;
 
 
   clearInterval(
     publicHeartbeatTimer
   );
 
-
   clearInterval(
     publicWatchdogTimer
   );
 
 
-  publicHeartbeatTimer =
-    null;
+  publicHeartbeatTimer = null;
 
-
-  publicWatchdogTimer =
-    null;
+  publicWatchdogTimer = null;
 
 
   if(publicWS){
@@ -5647,11 +5248,17 @@ function stopPublic(){
   }
 
 
-  publicWS =
-    null;
+  publicWS = null;
 
 
   marketSubscriptions.clear();
+
+
+  contractsForQueue = [];
+
+  contractsForRunning = false;
+
+  ++contractsForGeneration;
 
 }
 
@@ -5660,9 +5267,7 @@ function stopPublic(){
    PUBLIC MESSAGE
 ========================================================= */
 
-function handlePublicMessage(
-  raw
-){
+function handlePublicMessage(raw){
 
   let data;
 
@@ -5670,8 +5275,7 @@ function handlePublicMessage(
   try{
 
     data =
-      typeof raw ===
-      "string"
+      typeof raw === "string"
         ? JSON.parse(raw)
         : raw;
 
@@ -5682,13 +5286,56 @@ function handlePublicMessage(
   }
 
 
+  /*
+    NEW V13:
+    Contract availability errors need to
+    release the queue and continue.
+  */
+
   if(data.error){
+
+    const errorReq =
+      data?.echo_req?.req_id ||
+      data?.req_id;
+
+    const requestInfo =
+      publicRequestMap.get(
+        Number(errorReq)
+      );
+
+
+    if(
+      requestInfo?.type ===
+      "contracts_for"
+    ){
+
+      publicRequestMap.delete(
+        Number(errorReq)
+      );
+
+
+      log(
+        "contracts_for failed: " +
+        requestInfo.symbol +
+        " | " +
+        extractApiError(data)
+      );
+
+
+      setTimeout(
+        processNextContractsFor,
+        60
+      );
+
+
+      return;
+
+    }
+
 
     log(
       "PUBLIC API ERROR: " +
-      extractApiError(
-        data
-      )
+      extractApiError(data)
     );
 
     return;
@@ -5711,14 +5358,31 @@ function handlePublicMessage(
   }
 
 
+  /*
+    NEW V13:
+    Contract availability response.
+  */
+
+  if(
+    data.msg_type ===
+    "contracts_for"
+  ){
+
+    handleContractsFor(
+      data
+    );
+
+    return;
+
+  }
+
+
   if(
     data.msg_type ===
     "history"
   ){
 
-    handleHistory(
-      data
-    );
+    handleHistory(data);
 
     return;
 
@@ -5730,9 +5394,7 @@ function handlePublicMessage(
     "tick"
   ){
 
-    handleTick(
-      data
-    );
+    handleTick(data);
 
     return;
 
@@ -5745,13 +5407,15 @@ function handlePublicMessage(
    ACTIVE SYMBOLS
 ========================================================= */
 
-function processActiveSymbols(
-  items
-){
+function processActiveSymbols(items){
 
   allSyntheticMarkets.clear();
 
   volatilityMarkets.clear();
+
+  digitEligibleMarkets.clear();
+
+  digitContractsBySymbol.clear();
 
 
   items.forEach(
@@ -5766,22 +5430,16 @@ function processActiveSymbols(
 
 
       if(!symbol){
-
         return;
-
       }
 
 
       const cls =
-        marketClass(
-          item
-        );
+        marketClass(item);
 
 
       if(!cls){
-
         return;
-
       }
 
 
@@ -5789,19 +5447,14 @@ function processActiveSymbols(
 
         ...item,
 
-        symbol:
-
-          symbol,
+        symbol:symbol,
 
         name:
-
           item?.underlying_symbol_name ||
           item?.display_name ||
           symbol,
 
-        class:
-
-          cls
+        class:cls
 
       };
 
@@ -5840,15 +5493,359 @@ function processActiveSymbols(
 
   renderMarkets();
 
+  updateUI();
+
+
+  /*
+    IMPORTANT:
+    Before subscribing to ticks,
+    dynamically check which synthetic
+    markets actually support the digit
+    contracts required by the strategy.
+  */
+
+  checkDigitEligibility();
+
+}
+
+
+/* =========================================================
+   CHECK DIGIT ELIGIBILITY
+========================================================= */
+
+function checkDigitEligibility(){
 
   if(
-    scannerRunning
+    !publicWS ||
+    publicWS.readyState !==
+    WebSocket.OPEN
   ){
 
-    subscribeVolatilityMarkets();
+    return;
 
   }
 
+
+  contractsForQueue =
+    Array.from(
+      allSyntheticMarkets.keys()
+    );
+
+
+  contractsForRunning = false;
+
+
+  ++contractsForGeneration;
+
+
+  const generation =
+    contractsForGeneration;
+
+
+  log(
+    "Checking digit contract availability for " +
+    contractsForQueue.length +
+    " synthetic markets..."
+  );
+
+
+  processNextContractsFor(
+    generation
+  );
+
+}
+
+
+/* =========================================================
+   PROCESS CONTRACTS_FOR QUEUE
+========================================================= */
+
+function processNextContractsFor(
+  generation = contractsForGeneration
+){
+
+  if(
+    generation !==
+    contractsForGeneration
+  ){
+
+    return;
+
+  }
+
+
+  if(!scannerRunning){
+
+    /*
+      We can still finish checking if
+      manually refreshing while scanner is
+      not running, so don't cancel here.
+    */
+
+  }
+
+
+  if(contractsForRunning){
+
+    return;
+
+  }
+
+
+  if(
+    !contractsForQueue.length
+  ){
+
+    log(
+      "Digit contract scan complete: " +
+      digitEligibleMarkets.size +
+      " / " +
+      allSyntheticMarkets.size +
+      " markets are digit eligible."
+    );
+
+
+    renderMarkets();
+
+    updateUI();
+
+
+    if(scannerRunning){
+
+      subscribeDigitEligibleMarkets();
+
+    }
+
+
+    return;
+
+  }
+
+
+  if(
+    !publicWS ||
+    publicWS.readyState !==
+    WebSocket.OPEN
+  ){
+
+    return;
+
+  }
+
+
+  contractsForRunning = true;
+
+
+  const symbol =
+    contractsForQueue.shift();
+
+
+  const requestId =
+    req();
+
+
+  publicRequestMap.set(
+    requestId,
+    {
+      type:"contracts_for",
+      symbol:symbol,
+      generation:generation
+    }
+  );
+
+
+  try{
+
+    publicWS.send(
+      JSON.stringify({
+
+        contracts_for:
+          symbol,
+
+        req_id:
+          requestId
+
+      })
+    );
+
+
+  }catch(error){
+
+    publicRequestMap.delete(
+      requestId
+    );
+
+    log(
+      "contracts_for send error: " +
+      symbol +
+      " | " +
+      error.message
+    );
+
+  }
+
+
+  /*
+    Small delay between requests.
+    This keeps the public API traffic
+    controlled when many synthetic markets
+    are returned.
+  */
+
+  setTimeout(
+    () => {
+
+      contractsForRunning = false;
+
+      processNextContractsFor(
+        generation
+      );
+
+    },
+    100
+  );
+
+}
+
+
+/* =========================================================
+   HANDLE CONTRACTS_FOR
+========================================================= */
+
+function handleContractsFor(data){
+
+  const echoReq =
+    data?.echo_req?.req_id ||
+    data?.req_id;
+
+
+  const requestInfo =
+    publicRequestMap.get(
+      Number(echoReq)
+    );
+
+
+  if(requestInfo){
+
+    publicRequestMap.delete(
+      Number(echoReq)
+    );
+
+  }
+
+
+  const contracts =
+    data?.contracts_for?.available;
+
+
+  let symbol =
+    requestInfo?.symbol ||
+    data?.echo_req?.contracts_for ||
+    data?.contracts_for?.underlying_symbol ||
+    "";
+
+
+  symbol =
+    String(symbol);
+
+
+  if(!symbol){
+
+    log(
+      "contracts_for response received without symbol."
+    );
+
+    return;
+
+  }
+
+
+  const availableTypes =
+    Array.isArray(contracts)
+      ? contracts
+          .map(
+            contract =>
+              String(
+                contract?.contract_type ||
+                ""
+              )
+          )
+          .filter(Boolean)
+      : [];
+
+
+  const uniqueTypes =
+    [...new Set(
+      availableTypes
+    )];
+
+
+  digitContractsBySymbol.set(
+    symbol,
+    uniqueTypes
+  );
+
+
+  const hasAllRequired =
+    REQUIRED_DIGIT_TYPES.every(
+      type =>
+        uniqueTypes.includes(type)
+    );
+
+
+  const market =
+    allSyntheticMarkets.get(
+      symbol
+    );
+
+
+  if(
+    hasAllRequired &&
+    market
+  ){
+
+    digitEligibleMarkets.set(
+      symbol,
+      market
+    );
+
+
+    log(
+      "DIGIT ELIGIBLE: " +
+      symbol +
+      " | " +
+      uniqueTypes
+        .filter(
+          type =>
+            REQUIRED_DIGIT_TYPES.includes(
+              type
+            )
+        )
+        .join(", ")
+    );
+
+  }else{
+
+    digitEligibleMarkets.delete(
+      symbol
+    );
+
+
+    log(
+      "NOT DIGIT ELIGIBLE: " +
+      symbol +
+      " | Available: " +
+      (
+        uniqueTypes.length
+          ? uniqueTypes.join(", ")
+          : "none"
+      )
+    );
+
+  }
+
+
+  renderMarkets();
 
   updateUI();
 
@@ -5887,8 +5884,7 @@ function renderMarkets(){
   }
 
 
-  box.innerHTML =
-    "";
+  box.innerHTML = "";
 
 
   markets.forEach(
@@ -5909,6 +5905,15 @@ function renderMarkets(){
 
 
       if(
+        digitEligibleMarkets.has(
+          market.symbol
+        )
+      ){
+
+        badgeClass =
+          "digit";
+
+      }else if(
         market.class ===
         "VOLATILITY"
       ){
@@ -5945,6 +5950,32 @@ function renderMarkets(){
           : 0;
 
 
+      const contractTypes =
+        digitContractsBySymbol.get(
+          market.symbol
+        ) || [];
+
+
+      let statusText =
+        "Checking contracts...";
+
+
+      if(
+        digitContractsBySymbol.has(
+          market.symbol
+        )
+      ){
+
+        statusText =
+          digitEligibleMarkets.has(
+            market.symbol
+          )
+            ? "DIGIT ELIGIBLE"
+            : "Digits unavailable";
+
+      }
+
+
       row.innerHTML = `
 
         <div>
@@ -5961,15 +5992,27 @@ function renderMarkets(){
             )}
           </div>
 
+          <div class="small">
+            ${escapeHTML(
+              statusText
+            )}
+          </div>
+
         </div>
 
 
         <div style="text-align:right">
 
           <span class="badge ${badgeClass}">
-            ${escapeHTML(
-              market.class
-            )}
+            ${
+              digitEligibleMarkets.has(
+                market.symbol
+              )
+                ? "DIGITS"
+                : escapeHTML(
+                    market.class
+                  )
+            }
           </span>
 
           <div class="small">
@@ -5981,9 +6024,7 @@ function renderMarkets(){
       `;
 
 
-      box.appendChild(
-        row
-      );
+      box.appendChild(row);
 
     }
   );
@@ -5992,10 +6033,10 @@ function renderMarkets(){
 
 
 /* =========================================================
-   SUBSCRIBE VOLATILITY
+   SUBSCRIBE DIGIT ELIGIBLE MARKETS
 ========================================================= */
 
-function subscribeVolatilityMarkets(){
+function subscribeDigitEligibleMarkets(){
 
   if(
     !publicWS ||
@@ -6008,7 +6049,10 @@ function subscribeVolatilityMarkets(){
   }
 
 
-  volatilityMarkets.forEach(
+  let subscribedNow = 0;
+
+
+  digitEligibleMarkets.forEach(
     (market,symbol) => {
 
       if(
@@ -6022,28 +6066,31 @@ function subscribeVolatilityMarkets(){
       }
 
 
-      requestHistory(
-        symbol
-      );
+      requestHistory(symbol);
 
-
-      requestTicks(
-        symbol
-      );
+      requestTicks(symbol);
 
 
       marketSubscriptions.add(
         symbol
       );
 
+
+      subscribedNow++;
+
     }
   );
 
 
   log(
-    "Volatility subscriptions active: " +
-    volatilityMarkets.size
+    "Digit-eligible subscriptions active: " +
+    digitEligibleMarkets.size +
+    " | New subscriptions: " +
+    subscribedNow
   );
+
+
+  updateUI();
 
 }
 
@@ -6052,9 +6099,7 @@ function subscribeVolatilityMarkets(){
    HISTORY REQUEST
 ========================================================= */
 
-function requestHistory(
-  symbol
-){
+function requestHistory(symbol){
 
   if(
     !publicWS ||
@@ -6076,14 +6121,11 @@ function requestHistory(
       count:
         getHistoryCount(),
 
-      end:
-        "latest",
+      end:"latest",
 
-      style:
-        "ticks",
+      style:"ticks",
 
-      req_id:
-        req()
+      req_id:req()
 
     })
   );
@@ -6095,9 +6137,7 @@ function requestHistory(
    TICK REQUEST
 ========================================================= */
 
-function requestTicks(
-  symbol
-){
+function requestTicks(symbol){
 
   if(
     !publicWS ||
@@ -6116,11 +6156,9 @@ function requestTicks(
       ticks:
         symbol,
 
-      subscribe:
-        1,
+      subscribe:1,
 
-      req_id:
-        req()
+      req_id:req()
 
     })
   );
@@ -6132,9 +6170,7 @@ function requestTicks(
    HISTORY HANDLER
 ========================================================= */
 
-function handleHistory(
-  data
-){
+function handleHistory(data){
 
   const symbol =
     String(
@@ -6145,9 +6181,7 @@ function handleHistory(
 
 
   if(!symbol){
-
     return;
-
   }
 
 
@@ -6156,9 +6190,7 @@ function handleHistory(
 
 
   if(!history){
-
     return;
-
   }
 
 
@@ -6171,9 +6203,7 @@ function handleHistory(
 
 
   if(!prices.length){
-
     return;
-
   }
 
 
@@ -6194,41 +6224,30 @@ function handleHistory(
 
 
   if(!digits.length){
-
     return;
-
   }
 
 
-  marketTicks[
-    symbol
-  ] =
+  marketTicks[symbol] =
     digits.slice(
       -getHistoryCount()
     );
 
 
-  marketLastTick[
-    symbol
-  ] =
-    marketTicks[
-      symbol
-    ].at(-1);
+  marketLastTick[symbol] =
+    marketTicks[symbol].at(-1);
 
 
   log(
     "History loaded: " +
     symbol +
     " | " +
-    marketTicks[
-      symbol
-    ].length +
+    marketTicks[symbol].length +
     " digits"
   );
 
 
   renderMarkets();
-
 
   updateUI();
 
@@ -6239,18 +6258,14 @@ function handleHistory(
    TICK HANDLER
 ========================================================= */
 
-function handleTick(
-  data
-){
+function handleTick(data){
 
   const tick =
     data.tick;
 
 
   if(!tick){
-
     return;
-
   }
 
 
@@ -6263,6 +6278,20 @@ function handleTick(
 
 
   if(!symbol){
+    return;
+  }
+
+
+  /*
+    Ignore tick streams for markets that
+    are not digit eligible.
+  */
+
+  if(
+    !digitEligibleMarkets.has(
+      symbol
+    )
+  ){
 
     return;
 
@@ -6286,44 +6315,27 @@ function handleTick(
   }
 
 
-  if(
-    !marketTicks[
-      symbol
-    ]
-  ){
+  if(!marketTicks[symbol]){
 
-    marketTicks[
-      symbol
-    ] =
-      [];
+    marketTicks[symbol] = [];
 
   }
 
 
-  marketTicks[
-    symbol
-  ].push(
-    digit
-  );
+  marketTicks[symbol].push(digit);
 
 
   if(
-    marketTicks[
-      symbol
-    ].length >
+    marketTicks[symbol].length >
     getHistoryCount()
   ){
 
-    marketTicks[
-      symbol
-    ].shift();
+    marketTicks[symbol].shift();
 
   }
 
 
-  marketLastTick[
-    symbol
-  ] =
+  marketLastTick[symbol] =
     digit;
 
 
@@ -6338,14 +6350,12 @@ function handleTick(
 
   if(
     scannerRunning &&
-    volatilityMarkets.has(
+    digitEligibleMarkets.has(
       symbol
     )
   ){
 
-    evaluateMarket(
-      symbol
-    );
+    evaluateMarket(symbol);
 
   }
 
@@ -6356,7 +6366,7 @@ function handleTick(
 
 
 /* =========================================================
-   DIGIT
+   DIGIT EXTRACTION
 ========================================================= */
 
 function extractDigit(
@@ -6365,9 +6375,7 @@ function extractDigit(
 ){
 
   const q =
-    Number(
-      quote
-    );
+    Number(quote);
 
 
   if(
@@ -6381,13 +6389,9 @@ function extractDigit(
 
   const p =
     Number.isFinite(
-      Number(
-        pipSize
-      )
+      Number(pipSize)
     )
-      ? Number(
-          pipSize
-        )
+      ? Number(pipSize)
       : 2;
 
 
@@ -6400,8 +6404,7 @@ function extractDigit(
 
   const scaled =
     Math.round(
-      q *
-      factor
+      q * factor
     );
 
 
@@ -6427,13 +6430,11 @@ function addLiveDigit(
 
   if(
     box.children.length === 1 &&
-    box.children[0]
-      .textContent ===
+    box.children[0].textContent ===
       "Waiting..."
   ){
 
-    box.innerHTML =
-      "";
+    box.innerHTML = "";
 
   }
 
@@ -6456,9 +6457,7 @@ function addLiveDigit(
     symbol;
 
 
-  box.prepend(
-    element
-  );
+  box.prepend(element);
 
 
   while(
@@ -6481,9 +6480,7 @@ function addLiveDigit(
 
 function startScanner(){
 
-  if(
-    scannerRunning
-  ){
+  if(scannerRunning){
 
     log(
       "Scanner already running."
@@ -6494,12 +6491,11 @@ function startScanner(){
   }
 
 
-  scannerRunning =
-    true;
+  scannerRunning = true;
 
 
   log(
-    "SCANNER STARTED — signal generation active."
+    "SCANNER STARTED — checking all synthetic markets for digit contracts."
   );
 
 
@@ -6512,7 +6508,7 @@ function startScanner(){
     WebSocket.OPEN
   ){
 
-    subscribeVolatilityMarkets();
+    refreshMarkets();
 
   }
 
@@ -6528,24 +6524,20 @@ function startScanner(){
 
 function stopScanner(){
 
-  scannerRunning =
-    false;
+  scannerRunning = false;
 
 
   stopPublic();
 
 
-  pendingSignal =
-    null;
+  pendingSignal = null;
 
 
-  $("signalName")
-    .textContent =
+  $("signalName").textContent =
     "NO SIGNAL";
 
 
-  $("signalMeta")
-    .textContent =
+  $("signalMeta").textContent =
     "Scanner stopped.";
 
 
@@ -6583,17 +6575,31 @@ function refreshMarkets(){
   );
 
 
+  /*
+    Clear old eligibility because the
+    active-symbol list may have changed.
+  */
+
+  digitEligibleMarkets.clear();
+
+  digitContractsBySymbol.clear();
+
+  marketSubscriptions.clear();
+
+
   publicWS.send(
     JSON.stringify({
 
       active_symbols:
         "brief",
 
-      req_id:
-        req()
+      req_id:req()
 
     })
   );
+
+
+  updateUI();
 
 }
 
@@ -6606,18 +6612,24 @@ updateUI();
 
 
 log(
-  "V12 ready."
+  "V13 ready."
 );
 
 
 log(
-  "Scanner and Auto Trading are separate."
+  "Dynamic digit eligibility enabled."
+);
+
+
+log(
+  "All synthetic markets will be checked with contracts_for."
 );
 
 
 log(
   "Auto Trading is OFF by default."
 );
+
 
 </script>
 
