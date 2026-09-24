@@ -99,11 +99,11 @@ button:hover{
 
 .btnrow{
   display:grid;
-  grid-template-columns:repeat(4,1fr);
+  grid-template-columns:repeat(5,1fr);
   gap:7px;
 }
 
-@media(max-width:600px){
+@media(max-width:700px){
   .btnrow{
     grid-template-columns:1fr 1fr;
   }
@@ -313,6 +313,7 @@ hr{
     <button class="start" onclick="startTrading()">Start Trading</button>
     <button class="stop" onclick="stopTrading()">Stop Trading</button>
     <button class="warn" onclick="disconnect()">Disconnect</button>
+    <button onclick="resetTradeSession()">Reset Trade Session</button>
   </div>
 
   <br>
@@ -687,13 +688,9 @@ let historyLoading = false;
 
 let proposalInFlight = false;
 let lastProposalAt = 0;
-
 let proposalCooldownMs = 2000;
-
 let proposalBackoffUntil = 0;
-
 let proposalRateLimitHits = 0;
-
 let lastEvaluationByMarket = {};
 
 
@@ -841,8 +838,6 @@ function setupSocketHandlers(){
     }
 
 
-    /* ---------------- ERROR ---------------- */
-
     if(msg.error){
 
       const id = msg.req_id;
@@ -875,15 +870,10 @@ function setupSocketHandlers(){
     }
 
 
-    /* ---------------- TICK ---------------- */
-
     if(msg.msg_type === "tick"){
-
       processTick(msg.tick);
     }
 
-
-    /* ---------------- OPEN CONTRACT ---------------- */
 
     if(
       msg.msg_type ===
@@ -895,8 +885,6 @@ function setupSocketHandlers(){
       );
     }
 
-
-    /* ---------------- PENDING REQUEST ---------------- */
 
     if(msg.req_id && pending.has(msg.req_id)){
 
@@ -973,10 +961,6 @@ async function connectAccount(){
 
     log("Getting Deriv Options accounts...");
 
-
-    /* --------------------------------------------
-       GET ACCOUNTS
-       -------------------------------------------- */
 
     const accountResponse =
       await fetch(
@@ -1077,10 +1061,6 @@ async function connectAccount(){
     );
 
 
-    /* --------------------------------------------
-       OTP
-       -------------------------------------------- */
-
     log("Requesting authenticated WebSocket URL...");
 
 
@@ -1138,10 +1118,6 @@ async function connectAccount(){
       "Authenticated WebSocket URL received."
     );
 
-
-    /* --------------------------------------------
-       CONNECT WS
-       -------------------------------------------- */
 
     ws =
       new WebSocket(wsUrl);
@@ -1214,7 +1190,6 @@ async function connectAccount(){
 
 
     await refreshBalance();
-
 
     await initialScanner();
 
@@ -1651,12 +1626,6 @@ async function initialScanner(){
     let loaded = 0;
 
 
-    /*
-      IMPORTANT:
-      History calls are sequential and paced.
-      This avoids the burst/rate-limit problem.
-    */
-
     for(const item of list){
 
       if(!connected){
@@ -1694,10 +1663,6 @@ async function initialScanner(){
       }
     }
 
-
-    /*
-      Subscribe only after history has loaded.
-    */
 
     let streams = 0;
 
@@ -1845,11 +1810,6 @@ function detectPipSize(prices,metadata){
     Number(metadata);
 
 
-  /*
-    Deriv New API pip_size can be numeric.
-    Some feeds use a decimal value.
-  */
-
   if(
     Number.isFinite(md)
   ){
@@ -1882,10 +1842,6 @@ function detectPipSize(prices,metadata){
     }
   }
 
-
-  /*
-    Infer decimal places from the price string.
-  */
 
   const p =
     prices[
@@ -2048,10 +2004,6 @@ function processTick(tick){
       ];
 
 
-    /*
-      Avoid adding the same tick twice.
-    */
-
     if(
       Number(lastTime) ===
       epoch
@@ -2074,10 +2026,6 @@ function processTick(tick){
   );
 
 
-  /*
-    Rolling local window.
-  */
-
   const maxKeep = 300;
 
 
@@ -2097,11 +2045,6 @@ function processTick(tick){
   renderDigitRow(m);
 
 
-  /*
-    Evaluate at most once per market
-    every 750ms.
-  */
-
   if(running){
 
     evaluateMarket(
@@ -2109,10 +2052,6 @@ function processTick(tick){
     );
   }
 
-
-  /*
-    Paper trade resolution.
-  */
 
   if(
     trade &&
@@ -2365,7 +2304,6 @@ function persistenceScore(prices){
 
   let same = 0;
   let valid = 0;
-
 
   let prevDir = 0;
 
@@ -2704,10 +2642,6 @@ function findBestLocalStrategy(x){
   const candidates = [];
 
 
-  /*
-    RISE
-  */
-
   if(
     x.direction20.upPct >= 55 &&
     x.direction50.upPct >= 53 &&
@@ -2740,10 +2674,6 @@ function findBestLocalStrategy(x){
   }
 
 
-  /*
-    FALL
-  */
-
   if(
     x.direction20.downPct >= 55 &&
     x.direction50.downPct >= 53 &&
@@ -2775,13 +2705,6 @@ function findBestLocalStrategy(x){
     });
   }
 
-
-  /*
-    OVER 3
-    Desired digits: 4-9
-    Unwanted digits: 0-3
-    Expected unwanted probability: 40%
-  */
 
   const over =
     x.digitStats.over3Pct;
@@ -2822,13 +2745,6 @@ function findBestLocalStrategy(x){
   }
 
 
-  /*
-    UNDER 7
-    Desired digits: 0-6
-    Unwanted digits: 7-9
-    Expected unwanted probability: 30%
-  */
-
   const under =
     x.digitStats.under7Pct;
 
@@ -2864,10 +2780,6 @@ function findBestLocalStrategy(x){
   }
 
 
-  /*
-    EVEN
-  */
-
   if(
     x.digitStats.evenPct >= 56 &&
     x.prevDigitStats.evenPct >= 50 &&
@@ -2896,10 +2808,6 @@ function findBestLocalStrategy(x){
     });
   }
 
-
-  /*
-    ODD
-  */
 
   if(
     x.digitStats.oddPct >= 56 &&
@@ -3086,18 +2994,10 @@ async function evaluateMarket(m){
   }
 
 
-  /*
-    Only one trade at a time.
-  */
-
   if(trade){
     return;
   }
 
-
-  /*
-    Global protections.
-  */
 
   if(
     totalTrades >=
@@ -3163,10 +3063,6 @@ async function evaluateMarket(m){
     Date.now();
 
 
-  /*
-    Per-market evaluation throttle.
-  */
-
   if(
     lastEvaluationByMarket[m.symbol] &&
     now -
@@ -3182,10 +3078,6 @@ async function evaluateMarket(m){
   lastEvaluationByMarket[m.symbol] =
     now;
 
-
-  /*
-    Market-specific cooldown.
-  */
 
   if(
     marketCooldownUntil[m.symbol] &&
@@ -3219,11 +3111,6 @@ async function evaluateMarket(m){
   const selectedStrategy =
     $("strategy").value;
 
-
-  /*
-    AUTO = accept best.
-    Otherwise require exact strategy.
-  */
 
   if(
     selectedStrategy !== "AUTO"
@@ -3299,21 +3186,10 @@ async function evaluateMarket(m){
   }
 
 
-  /*
-    IMPORTANT:
-    Do not flood proposals.
-  */
-
   if(!proposalAllowed()){
     return;
   }
 
-
-  /*
-    Lock BEFORE await.
-    This prevents many markets from
-    entering getProposal simultaneously.
-  */
 
   proposalInFlight = true;
 
@@ -3326,10 +3202,6 @@ async function evaluateMarket(m){
     const mode =
       $("mode").value;
 
-
-    /*
-      PAPER MODE
-    */
 
     if(mode === "paper"){
 
@@ -3371,10 +3243,6 @@ async function evaluateMarket(m){
       return;
     }
 
-
-    /*
-      LIVE MODE
-    */
 
     const proposal =
       await getProposal(
@@ -3452,10 +3320,6 @@ async function evaluateMarket(m){
     }
 
 
-    /*
-      Snapshot the price.
-    */
-
     const snapshotPrice =
       m.prices[
         m.prices.length - 1
@@ -3470,11 +3334,6 @@ async function evaluateMarket(m){
         m.prices.length - 1
       ];
 
-
-    /*
-      Don't buy if market moved too much
-      while proposal was being fetched.
-    */
 
     if(
       snapshotPrice &&
@@ -3508,10 +3367,6 @@ async function evaluateMarket(m){
     }
 
 
-    /*
-      BUY
-    */
-
     const buy =
       await buyContract(
         proposal.id,
@@ -3520,7 +3375,6 @@ async function evaluateMarket(m){
 
 
     if(!buy){
-
       return;
     }
 
@@ -3573,10 +3427,6 @@ async function evaluateMarket(m){
     );
 
 
-    /*
-      Subscribe to open contract.
-    */
-
     await monitorContract(
       contractId
     );
@@ -3602,10 +3452,6 @@ async function evaluateMarket(m){
       $("rateHits").textContent =
         proposalRateLimitHits;
 
-
-      /*
-        Back off aggressively.
-      */
 
       proposalBackoffUntil =
         Date.now() +
@@ -3680,10 +3526,6 @@ async function getProposal(
   };
 
 
-  /*
-    Digit contracts need a barrier.
-  */
-
   if(
     contractType ===
     "DIGITOVER"
@@ -3732,11 +3574,6 @@ function calculateEV(
   payout,
   stake
 ){
-
-  /*
-    payout = total payout returned on win.
-    profit on win = payout - stake.
-  */
 
   const p =
     winRate / 100;
@@ -4006,11 +3843,6 @@ function updatePaperTrade(
   }
 
 
-  /*
-    Don't resolve on the same tick
-    used to open the trade.
-  */
-
   if(
     epoch <=
     Math.floor(
@@ -4174,11 +4006,9 @@ function finishTrade(
 
 
   if(won){
-
     wins++;
   }
   else{
-
     losses++;
   }
 
@@ -4188,10 +4018,6 @@ function finishTrade(
   totalPnL +=
     Number(profit) || 0;
 
-
-  /*
-    Market loss tracking.
-  */
 
   if(!won){
 
@@ -4272,7 +4098,6 @@ function finishTrade(
 
 
   updateStatsUI();
-
 
   updateTradeUI();
 
@@ -4397,12 +4222,6 @@ async function startTrading(){
   }
 
 
-  /*
-    Slow scanner refresh.
-    We do NOT repeatedly request history.
-    Existing streams provide fresh data.
-  */
-
   if(scannerTimer){
 
     clearInterval(
@@ -4420,12 +4239,6 @@ async function startTrading(){
           connected &&
           !historyLoading
         ){
-
-          /*
-            Re-discover markets every 60s.
-            This is deliberately slow to avoid
-            active-symbol request bursts.
-          */
 
           try{
 
@@ -4546,6 +4359,41 @@ function stopTrading(reason){
       "Trading engine STOPPED."
     );
   }
+}
+
+
+/* ============================================================
+   RESET TRADE SESSION
+   ============================================================ */
+
+function resetTradeSession(){
+
+  /*
+    SESSION RESET ONLY.
+
+    Does NOT:
+    - close active trade
+    - change balance
+    - change stake
+    - change strategy
+    - change scanner
+    - reconnect
+    - change trading logic
+  */
+
+  totalTrades = 0;
+  wins = 0;
+  losses = 0;
+  totalPnL = 0;
+
+  marketLosses = {};
+  marketCooldownUntil = {};
+
+  updateStatsUI();
+
+  log(
+    "Trade session reset. Trading settings and engine unchanged."
+  );
 }
 
 
@@ -5143,10 +4991,6 @@ function buildBacktestCandidates(
     };
 
 
-  /*
-    Rise/Fall.
-  */
-
   add(
     "RISEFALL",
     "CALL",
@@ -5183,10 +5027,6 @@ function buildBacktestCandidates(
   );
 
 
-  /*
-    Digit Over 3.
-  */
-
   add(
     "OVER3",
     "DIGITOVER",
@@ -5202,10 +5042,6 @@ function buildBacktestCandidates(
     )
   );
 
-
-  /*
-    Digit Under 7.
-  */
 
   add(
     "UNDER7",
@@ -5223,10 +5059,6 @@ function buildBacktestCandidates(
   );
 
 
-  /*
-    Even.
-  */
-
   add(
     "EVEN",
     "DIGITEVEN",
@@ -5242,10 +5074,6 @@ function buildBacktestCandidates(
     )
   );
 
-
-  /*
-    Odd.
-  */
 
   add(
     "ODD",
@@ -5383,10 +5211,6 @@ function addHistory(
   body.prepend(tr);
 
 
-  /*
-    Keep UI manageable.
-  */
-
   while(
     body.children.length >
     100
@@ -5431,6 +5255,7 @@ function renderAll(){
 setInterval(
   ()=>{
     if(connected){
+
       updateStatsUI();
 
       $("proposalCooldown").textContent =
@@ -5464,11 +5289,6 @@ setInterval(
    ============================================================ */
 
 (function(){
-
-  /*
-    Add a paper payout input dynamically
-    without making the main form larger.
-  */
 
   const grid =
     document.querySelector(
@@ -5527,9 +5347,11 @@ window.addEventListener(
   "beforeunload",
   ()=>{
     try{
+
       if(ws){
         ws.close();
       }
+
     }
     catch(e){}
   }
