@@ -4,9 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
 
-<title>V15 Synthetic Digit Trader</title>
+<title>V16 Synthetic Digit Trader</title>
 
 <style>
+
 *{
   box-sizing:border-box;
 }
@@ -192,7 +193,7 @@ button:disabled{
 }
 
 .log{
-  height:300px;
+  height:320px;
   overflow:auto;
   background:#030a12;
   border-radius:8px;
@@ -375,49 +376,83 @@ hr{
 .checkboxRow input{
   width:auto;
 }
+
+.priorityBox{
+  background:#07111f;
+  border:1px solid #203851;
+  border-radius:8px;
+  padding:9px;
+  font-size:11px;
+  line-height:1.6;
+}
+
+.highlight{
+  color:#63b9ff;
+  font-weight:bold;
+}
+
 </style>
 </head>
 
 <body>
 
 <header>
-  <h1>V15 Synthetic Digit Trader</h1>
+
+  <h1>
+    V16 Synthetic Digit Trader
+  </h1>
+
   <div class="subtitle">
-    EVEN/ODD priority • fixed stake • recovery mode • no Martingale
+    Highest validation first • fast recovery • fixed stake • no Martingale
   </div>
+
 </header>
 
+
 <div class="container">
+
 
 <!-- API -->
 
 <div class="card">
 
-  <h2>1. Deriv API</h2>
+  <h2>
+    1. Deriv API
+  </h2>
 
   <div class="grid">
 
     <div>
-      <label>Personal Access Token</label>
+
+      <label>
+        Personal Access Token
+      </label>
 
       <input
         id="pat"
         type="password"
         placeholder="Paste your PAT"
       >
+
     </div>
 
+
     <div>
-      <label>Deriv App ID</label>
+
+      <label>
+        Deriv App ID
+      </label>
 
       <input
         id="appId"
         type="text"
         placeholder="Your App ID"
       >
+
     </div>
 
   </div>
+
 
   <div class="inline" style="margin-top:9px">
 
@@ -437,7 +472,11 @@ hr{
 
   </div>
 
-  <div id="accountStatus" class="status">
+
+  <div
+    id="accountStatus"
+    class="status"
+  >
     Waiting for credentials.
   </div>
 
@@ -448,17 +487,28 @@ hr{
 
 <div class="card">
 
-  <h2>2. Trading Account</h2>
+  <h2>
+    2. Trading Account
+  </h2>
 
-  <label>Select Account</label>
+
+  <label>
+    Select Account
+  </label>
 
   <select id="accountSelect">
+
     <option value="">
       Load accounts first
     </option>
+
   </select>
 
-  <div class="grid" style="margin-top:9px">
+
+  <div
+    class="grid"
+    style="margin-top:9px"
+  >
 
     <div class="accountBox">
 
@@ -474,6 +524,7 @@ hr{
       </div>
 
     </div>
+
 
     <div class="accountBox">
 
@@ -492,7 +543,11 @@ hr{
 
   </div>
 
-  <div class="accountBox" style="margin-top:8px">
+
+  <div
+    class="accountBox"
+    style="margin-top:8px"
+  >
 
     <div class="accountLabel">
       AVAILABLE BALANCE
@@ -507,7 +562,11 @@ hr{
 
   </div>
 
-  <div class="inline" style="margin-top:9px">
+
+  <div
+    class="inline"
+    style="margin-top:9px"
+  >
 
     <button onclick="connectTrading()">
       Connect Trading
@@ -522,6 +581,7 @@ hr{
 
   </div>
 
+
   <div
     id="tradingStatus"
     class="status"
@@ -532,16 +592,22 @@ hr{
 </div>
 
 
-<!-- CONTROLS -->
+<!-- TRADING CONTROLS -->
 
 <div class="card">
 
-  <h2>3. Trading Controls</h2>
+  <h2>
+    3. Trading Controls
+  </h2>
+
 
   <div class="grid3">
 
     <div>
-      <label>Fixed Stake USD</label>
+
+      <label>
+        Fixed Stake USD
+      </label>
 
       <input
         id="stake"
@@ -550,10 +616,15 @@ hr{
         step="0.01"
         value="1"
       >
+
     </div>
 
+
     <div>
-      <label>Session Take Profit</label>
+
+      <label>
+        Session Take Profit
+      </label>
 
       <input
         id="sessionTP"
@@ -561,10 +632,15 @@ hr{
         step="0.01"
         value="10"
       >
+
     </div>
 
+
     <div>
-      <label>Session Stop Loss</label>
+
+      <label>
+        Session Stop Loss
+      </label>
 
       <input
         id="sessionSL"
@@ -572,10 +648,15 @@ hr{
         step="0.01"
         value="10"
       >
+
     </div>
 
+
     <div>
-      <label>Maximum Trades</label>
+
+      <label>
+        Maximum Trades
+      </label>
 
       <input
         id="maxTrades"
@@ -584,10 +665,15 @@ hr{
         step="1"
         value="20"
       >
+
     </div>
 
+
     <div>
-      <label>History Per Market</label>
+
+      <label>
+        History Per Market
+      </label>
 
       <input
         id="historyCount"
@@ -596,10 +682,15 @@ hr{
         step="50"
         value="500"
       >
+
     </div>
 
+
     <div>
-      <label>Minimum Matches</label>
+
+      <label>
+        Minimum Matches
+      </label>
 
       <input
         id="minMatches"
@@ -608,9 +699,11 @@ hr{
         step="1"
         value="50"
       >
+
     </div>
 
   </div>
+
 
   <div class="checkboxRow">
 
@@ -628,7 +721,10 @@ hr{
 
   </div>
 
-  <div class="tradeControl">
+
+  <div
+    class="tradeControl"
+  >
 
     <div
       id="autoTradingState"
@@ -636,6 +732,7 @@ hr{
     >
       AUTO TRADING: OFF
     </div>
+
 
     <div class="inline">
 
@@ -646,6 +743,7 @@ hr{
         START AUTO TRADING
       </button>
 
+
       <button
         class="tradeOff"
         onclick="stopAutoTrading()"
@@ -654,6 +752,7 @@ hr{
       </button>
 
     </div>
+
 
     <div
       id="autoTradingStatus"
@@ -664,20 +763,51 @@ hr{
 
   </div>
 
-  <div class="small" style="margin-top:8px">
 
-    Primary order:
-    <strong>EVEN → ODD → OVER3 → UNDER7</strong>
+  <div
+    class="priorityBox"
+    style="margin-top:9px"
+  >
+
+    <strong>
+      Selection logic:
+    </strong>
+
+    highest validation percentage first →
+
+    highest matches second →
+
+    contract preference only if tied.
+
+    <br><br>
+
+    <span class="highlight">
+      PRIMARY:
+    </span>
+
+    EVEN → ODD → OVER3 → UNDER7
 
     <br>
 
-    Recovery order:
-    <strong>EVEN → ODD → OVER5 → UNDER5</strong>
+    <span class="highlight">
+      RECOVERY:
+    </span>
+
+    EVEN → ODD → OVER5 → UNDER5
+
+    <br><br>
+
+    Minimum:
+    <strong>
+      80% validation + 50 matches
+    </strong>
 
     <br>
 
-    All selected contracts still require
-    <strong>≥80% validation + ≥50 matches.</strong>
+    Recovery:
+    <strong>
+      NO EXTRA 3.5-second cooldown
+    </strong>
 
   </div>
 
@@ -688,7 +818,10 @@ hr{
 
 <div class="card">
 
-  <h2>4. Scanner</h2>
+  <h2>
+    4. Scanner
+  </h2>
+
 
   <div class="inline">
 
@@ -699,6 +832,7 @@ hr{
       START SCANNER
     </button>
 
+
     <button
       class="danger"
       onclick="stopScanner()"
@@ -708,6 +842,7 @@ hr{
 
   </div>
 
+
   <button
     class="secondary"
     onclick="refreshMarkets()"
@@ -715,6 +850,7 @@ hr{
   >
     REFRESH MARKETS
   </button>
+
 
   <div
     id="scannerStatus"
@@ -726,11 +862,14 @@ hr{
 </div>
 
 
-<!-- STATS -->
+<!-- STATISTICS -->
 
 <div class="card">
 
-  <h2>Live Statistics</h2>
+  <h2>
+    Live Statistics
+  </h2>
+
 
   <div class="grid3">
 
@@ -749,6 +888,7 @@ hr{
 
     </div>
 
+
     <div class="stat">
 
       <div class="statTitle">
@@ -763,6 +903,7 @@ hr{
       </div>
 
     </div>
+
 
     <div class="stat">
 
@@ -779,6 +920,7 @@ hr{
 
     </div>
 
+
     <div class="stat">
 
       <div class="statTitle">
@@ -793,6 +935,7 @@ hr{
       </div>
 
     </div>
+
 
     <div class="stat">
 
@@ -809,6 +952,7 @@ hr{
 
     </div>
 
+
     <div class="stat">
 
       <div class="statTitle">
@@ -823,6 +967,7 @@ hr{
       </div>
 
     </div>
+
 
     <div class="stat">
 
@@ -841,9 +986,11 @@ hr{
 
   </div>
 
+
   <div class="status">
 
     Session P/L:
+
     <strong id="sessionPL">
       $0.00
     </strong>
@@ -851,6 +998,7 @@ hr{
     &nbsp; | &nbsp;
 
     Trades:
+
     <strong id="tradeCount">
       0
     </strong>
@@ -858,6 +1006,7 @@ hr{
     &nbsp; | &nbsp;
 
     Recovery:
+
     <strong id="recoveryStatus">
       OFF
     </strong>
@@ -871,7 +1020,10 @@ hr{
 
 <div class="card">
 
-  <h2>Current Signal</h2>
+  <h2>
+    Current Signal
+  </h2>
+
 
   <div class="signalBox">
 
@@ -881,6 +1033,7 @@ hr{
     >
       NO SIGNAL
     </div>
+
 
     <div
       id="signalMeta"
@@ -894,19 +1047,24 @@ hr{
 </div>
 
 
-<!-- TICKS -->
+<!-- TICK STREAM -->
 
 <div class="card">
 
-  <h2>Live Tick Stream</h2>
+  <h2>
+    Live Tick Stream
+  </h2>
+
 
   <div
     id="tickStream"
     class="tickStream"
   >
+
     <span class="small">
       Waiting...
     </span>
+
   </div>
 
 </div>
@@ -916,7 +1074,10 @@ hr{
 
 <div class="card">
 
-  <h2>Markets</h2>
+  <h2>
+    Markets
+  </h2>
+
 
   <div class="grid3">
 
@@ -935,6 +1096,7 @@ hr{
 
     </div>
 
+
     <div class="stat">
 
       <div class="statTitle">
@@ -950,6 +1112,7 @@ hr{
 
     </div>
 
+
     <div class="stat">
 
       <div class="statTitle">
@@ -964,6 +1127,7 @@ hr{
       </div>
 
     </div>
+
 
     <div class="stat">
 
@@ -982,15 +1146,19 @@ hr{
 
   </div>
 
+
   <hr>
+
 
   <div
     id="marketList"
     class="marketList"
   >
+
     <div class="small">
       No markets loaded.
     </div>
+
   </div>
 
 </div>
@@ -1000,7 +1168,10 @@ hr{
 
 <div class="card">
 
-  <h2>Signal History</h2>
+  <h2>
+    Signal History
+  </h2>
+
 
   <div style="overflow:auto">
 
@@ -1009,16 +1180,39 @@ hr{
       <thead>
 
         <tr>
-          <th>Time</th>
-          <th>Market</th>
-          <th>Contract</th>
-          <th>Validation</th>
-          <th>Matches</th>
-          <th>Mode</th>
-          <th>Result</th>
+
+          <th>
+            Time
+          </th>
+
+          <th>
+            Market
+          </th>
+
+          <th>
+            Contract
+          </th>
+
+          <th>
+            Validation
+          </th>
+
+          <th>
+            Matches
+          </th>
+
+          <th>
+            Mode
+          </th>
+
+          <th>
+            Result
+          </th>
+
         </tr>
 
       </thead>
+
 
       <tbody id="signalHistory">
 
@@ -1046,7 +1240,10 @@ hr{
 
 <div class="card">
 
-  <h2>Actual Trades</h2>
+  <h2>
+    Actual Trades
+  </h2>
+
 
   <div style="overflow:auto">
 
@@ -1055,16 +1252,39 @@ hr{
       <thead>
 
         <tr>
-          <th>Time</th>
-          <th>Market</th>
-          <th>Contract</th>
-          <th>Stake</th>
-          <th>Mode</th>
-          <th>Result</th>
-          <th>P/L</th>
+
+          <th>
+            Time
+          </th>
+
+          <th>
+            Market
+          </th>
+
+          <th>
+            Contract
+          </th>
+
+          <th>
+            Stake
+          </th>
+
+          <th>
+            Mode
+          </th>
+
+          <th>
+            Result
+          </th>
+
+          <th>
+            P/L
+          </th>
+
         </tr>
 
       </thead>
+
 
       <tbody id="tradeHistory">
 
@@ -1092,13 +1312,18 @@ hr{
 
 <div class="card">
 
-  <h2>System Log</h2>
+  <h2>
+    System Log
+  </h2>
+
 
   <div
     id="systemLog"
     class="log"
-  >System ready.
+  >
+System ready.
   </div>
+
 
   <button
     class="secondary"
@@ -1110,13 +1335,14 @@ hr{
 
 </div>
 
+
 </div>
 
 
 <script>
 
 /* =========================================================
-   V15 STATE
+   API
 ========================================================= */
 
 const API_BASE =
@@ -1126,32 +1352,64 @@ const PUBLIC_WS =
   "wss://api.derivws.com/trading/v1/options/ws/public";
 
 
+/* =========================================================
+   SOCKET STATE
+========================================================= */
+
 let publicWS = null;
+
 let publicReconnectTimer = null;
+
 let publicHeartbeatTimer = null;
+
 let publicWatchdogTimer = null;
+
 let publicGeneration = 0;
-let lastPublicMessage = Date.now();
+
+let lastPublicMessage =
+  Date.now();
 
 
 let tradingWS = null;
+
 let tradingReconnectTimer = null;
+
 let tradingHeartbeatTimer = null;
+
 let tradingGeneration = 0;
+
 let tradingWanted = false;
+
 let tradingConnecting = false;
 
 
-let reqCounter = 1000;
+/* =========================================================
+   REQUEST STATE
+========================================================= */
+
+let reqCounter =
+  1000;
 
 const publicRequestMap =
   new Map();
 
 
-let accounts = [];
-let accountMap = new Map();
-let selectedAccount = null;
+/* =========================================================
+   ACCOUNTS
+========================================================= */
 
+let accounts = [];
+
+let accountMap =
+  new Map();
+
+let selectedAccount =
+  null;
+
+
+/* =========================================================
+   MARKET STATE
+========================================================= */
 
 let allSyntheticMarkets =
   new Map();
@@ -1165,61 +1423,96 @@ let digitEligibleMarkets =
 let digitContractsBySymbol =
   new Map();
 
+
 let marketTicks = {};
+
 let marketLastTick = {};
+
 let marketSubscriptions =
   new Set();
 
 
+/* =========================================================
+   CONTRACTS_FOR STATE
+========================================================= */
+
 let contractsForQueue = [];
-let contractsForRunning = false;
-let contractsForGeneration = 0;
 
+let contractsForRunning =
+  false;
 
-let scannerRunning = false;
-
-let autoTradingEnabled = false;
-
-let tradeInFlight = false;
-
-let openContractId = null;
-
-let pendingSignal = null;
-
-let lastCompletedSignal = null;
-
-
-let signalsFound = 0;
-let wins = 0;
-let losses = 0;
-let totalTrades = 0;
-let sessionPL = 0;
-
-let recoveryMode = false;
-let recoveryTrades = 0;
-
-let lastTradeTime = 0;
+let contractsForGeneration =
+  0;
 
 
 /* =========================================================
-   CONTRACT PRIORITY
+   TRADING STATE
 ========================================================= */
 
+let scannerRunning =
+  false;
+
+let autoTradingEnabled =
+  false;
+
+let tradeInFlight =
+  false;
+
+let openContractId =
+  null;
+
+let pendingSignal =
+  null;
+
+let lastCompletedSignal =
+  null;
+
+let signalsFound =
+  0;
+
+let wins =
+  0;
+
+let losses =
+  0;
+
+let totalTrades =
+  0;
+
+let sessionPL =
+  0;
+
+let recoveryMode =
+  false;
+
+let recoveryTrades =
+  0;
+
+let lastTradeTime =
+  0;
+
+
 /*
-   LOWER NUMBER = HIGHER PRIORITY
-
-   PRIMARY:
-   0 EVEN
-   1 ODD
-   2 OVER3
-   3 UNDER7
-
-   RECOVERY:
-   0 EVEN
-   1 ODD
-   2 OVER5
-   3 UNDER5
+  Prevents the same exact signal/tick from
+  being bought repeatedly.
 */
+
+let lastBoughtSignalKey =
+  "";
+
+
+/* =========================================================
+   HISTORY
+========================================================= */
+
+let signalHistory = [];
+
+let actualTrades = [];
+
+
+/* =========================================================
+   CONTRACT PRIORITIES
+========================================================= */
 
 const PRIMARY_PRIORITY = {
 
@@ -1248,11 +1541,94 @@ const RECOVERY_PRIORITY = {
 
 
 /* =========================================================
-   HISTORY
+   CONTRACT DEFINITIONS
 ========================================================= */
 
-let signalHistory = [];
-let actualTrades = [];
+const PRIMARY_CONTRACTS = {
+
+  EVEN:{
+    label:"EVEN",
+    contract_type:"DIGITEVEN",
+    barrier:null,
+    test:d =>
+      d % 2 === 0
+  },
+
+  ODD:{
+    label:"ODD",
+    contract_type:"DIGITODD",
+    barrier:null,
+    test:d =>
+      d % 2 === 1
+  },
+
+  OVER3:{
+    label:"OVER3",
+    contract_type:"DIGITOVER",
+    barrier:"3",
+    test:d =>
+      d >= 4
+  },
+
+  UNDER7:{
+    label:"UNDER7",
+    contract_type:"DIGITUNDER",
+    barrier:"7",
+    test:d =>
+      d <= 6
+  }
+
+};
+
+
+const RECOVERY_CONTRACTS = {
+
+  EVEN:{
+    label:"EVEN",
+    contract_type:"DIGITEVEN",
+    barrier:null,
+    test:d =>
+      d % 2 === 0
+  },
+
+  ODD:{
+    label:"ODD",
+    contract_type:"DIGITODD",
+    barrier:null,
+    test:d =>
+      d % 2 === 1
+  },
+
+  OVER5:{
+    label:"OVER5",
+    contract_type:"DIGITOVER",
+    barrier:"5",
+    test:d =>
+      d >= 6
+  },
+
+  UNDER5:{
+    label:"UNDER5",
+    contract_type:"DIGITUNDER",
+    barrier:"5",
+    test:d =>
+      d <= 4
+  }
+
+};
+
+
+const REQUIRED_DIGIT_TYPES = [
+
+  "DIGITOVER",
+
+  "DIGITUNDER",
+
+  "DIGITEVEN",
+
+  "DIGITODD"
+
+];
 
 
 /* =========================================================
@@ -1260,7 +1636,9 @@ let actualTrades = [];
 ========================================================= */
 
 function $(id){
+
   return document.getElementById(id);
+
 }
 
 
@@ -1292,20 +1670,22 @@ function log(message){
     "] " +
     message;
 
+
   box.textContent =
     line +
     "\n" +
     box.textContent;
 
+
   if(
     box.textContent.length >
-    40000
+    45000
   ){
 
     box.textContent =
       box.textContent.substring(
         0,
-        40000
+        45000
       );
 
   }
@@ -1439,24 +1819,59 @@ function getSessionSL(){
 function escapeHTML(value){
 
   return String(value)
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
+    .replaceAll(
+      "&",
+      "&amp;"
+    )
+    .replaceAll(
+      "<",
+      "&lt;"
+    )
+    .replaceAll(
+      ">",
+      "&gt;"
+    )
+    .replaceAll(
+      '"',
+      "&quot;"
+    )
+    .replaceAll(
+      "'",
+      "&#039;"
+    );
 
 }
 
 
 /* =========================================================
-   ACCOUNT
+   API ERROR
+========================================================= */
+
+function extractApiError(
+  json
+){
+
+  return (
+    json?.error?.message ||
+    json?.message ||
+    "API request failed"
+  );
+
+}
+
+
+/* =========================================================
+   ACCOUNT HELPERS
 ========================================================= */
 
 function getAccountType(){
 
   if(!selectedAccount){
+
     return "";
+
   }
+
 
   return String(
     selectedAccount.account_type ||
@@ -1475,16 +1890,23 @@ function isRealAccount(){
 }
 
 
+/* =========================================================
+   UI UPDATE
+========================================================= */
+
 function updateUI(){
 
   $("allMarketsStat").textContent =
     allSyntheticMarkets.size;
 
+
   $("digitMarketsStat").textContent =
     digitEligibleMarkets.size;
 
+
   $("volMarketsStat").textContent =
     volatilityMarkets.size;
+
 
   $("tickStat").textContent =
     Object.keys(
@@ -1497,35 +1919,45 @@ function updateUI(){
     )
     .length;
 
+
   $("signalsStat").textContent =
     signalsFound;
+
 
   $("winsStat").textContent =
     wins;
 
+
   $("lossesStat").textContent =
     losses;
+
 
   $("sessionPL").textContent =
     "$" +
     sessionPL.toFixed(2);
 
+
   $("tradeCount").textContent =
     totalTrades;
+
 
   $("recoveryStatus").textContent =
     recoveryMode
       ? "ON"
       : "OFF";
 
+
   $("allSyntheticText").textContent =
     allSyntheticMarkets.size;
+
 
   $("digitEligibleText").textContent =
     digitEligibleMarkets.size;
 
+
   $("volatilityText").textContent =
     volatilityMarkets.size;
+
 
   $("otherSyntheticText").textContent =
     Math.max(
@@ -1549,7 +1981,7 @@ function updateUI(){
 
   $("autoTradingStatus").innerHTML =
     autoTradingEnabled
-      ? '<span class="ok">Qualified signals are allowed to place trades.</span>'
+      ? '<span class="ok">Qualified signals can place trades.</span>'
       : '<span class="warn">New trades are currently blocked.</span>';
 
 }
@@ -1722,6 +2154,7 @@ async function loadAccounts(){
             .toLowerCase()
             .includes("demo");
 
+
           const bd =
             String(
               b.account_type ||
@@ -1730,18 +2163,32 @@ async function loadAccounts(){
             .toLowerCase()
             .includes("demo");
 
-          if(ad && !bd){
+
+          if(
+            ad &&
+            !bd
+          ){
+
             return -1;
+
           }
 
-          if(!ad && bd){
+
+          if(
+            !ad &&
+            bd
+          ){
+
             return 1;
+
           }
+
 
           return String(
             a.account_id ||
             ""
-          ).localeCompare(
+          )
+          .localeCompare(
             String(
               b.account_id ||
               ""
@@ -1866,32 +2313,7 @@ async function loadAccounts(){
 
 
 /* =========================================================
-   API ERROR
-========================================================= */
-
-function extractApiError(
-  json
-){
-
-  if(
-    json?.error?.message
-  ){
-
-    return json.error.message;
-
-  }
-
-
-  return (
-    json?.message ||
-    "API request failed"
-  );
-
-}
-
-
-/* =========================================================
-   SELECT ACCOUNT
+   ACCOUNT SELECT
 ========================================================= */
 
 $("accountSelect")
@@ -1921,15 +2343,6 @@ function setSelectedAccount(
 
     selectedAccount =
       null;
-
-    $("accountType").textContent =
-      "—";
-
-    $("accountIdDisplay").textContent =
-      "—";
-
-    $("balanceDisplay").textContent =
-      "$0.00 USD";
 
     return;
 
@@ -2022,7 +2435,7 @@ function setSelectedAccount(
 
 
 /* =========================================================
-   CLEAR
+   CLEAR CREDENTIALS
 ========================================================= */
 
 function clearCredentials(){
@@ -2031,25 +2444,37 @@ function clearCredentials(){
 
   disconnectTrading();
 
-  $("pat").value = "";
 
-  $("appId").value = "";
+  $("pat").value =
+    "";
+
+  $("appId").value =
+    "";
+
 
   accounts = [];
 
   accountMap.clear();
 
-  selectedAccount = null;
+  selectedAccount =
+    null;
+
 
   $("accountSelect").innerHTML =
     '<option value="">Load accounts first</option>';
 
-  $("accountType").textContent = "—";
 
-  $("accountIdDisplay").textContent = "—";
+  $("accountType").textContent =
+    "—";
+
+
+  $("accountIdDisplay").textContent =
+    "—";
+
 
   $("balanceDisplay").textContent =
     "$0.00 USD";
+
 
   $("accountStatus").textContent =
     "Credentials cleared.";
@@ -2064,7 +2489,9 @@ function clearCredentials(){
 async function connectTrading(){
 
   if(tradingConnecting){
+
     return;
+
   }
 
 
@@ -2145,7 +2572,7 @@ async function connectTrading(){
 
 
 /* =========================================================
-   OPEN TRADING SOCKET
+   OPEN TRADING CONNECTION
 ========================================================= */
 
 async function openTradingConnection(
@@ -2155,7 +2582,9 @@ async function openTradingConnection(
 ){
 
   if(tradingConnecting){
+
     return;
+
   }
 
 
@@ -2213,9 +2642,7 @@ async function openTradingConnection(
     if(!response.ok){
 
       throw new Error(
-        extractApiError(
-          json
-        )
+        extractApiError(json)
       );
 
     }
@@ -2248,7 +2675,9 @@ async function openTradingConnection(
     if(tradingWS){
 
       try{
+
         tradingWS.close();
+
       }catch(e){}
 
     }
@@ -2289,10 +2718,6 @@ async function openTradingConnection(
           " trading connection established."
         );
 
-
-        /*
-          Subscribe to balance ONCE.
-        */
 
         sendTrading({
 
@@ -2486,8 +2911,12 @@ function scheduleTradingReconnect(){
           null;
 
 
-        if(!tradingWanted){
+        if(
+          !tradingWanted
+        ){
+
           return;
+
         }
 
 
@@ -2522,7 +2951,7 @@ function scheduleTradingReconnect(){
 
 
 /* =========================================================
-   DISCONNECT
+   DISCONNECT TRADING
 ========================================================= */
 
 function disconnectTrading(){
@@ -2559,7 +2988,9 @@ function disconnectTrading(){
   if(tradingWS){
 
     try{
+
       tradingWS.close();
+
     }catch(e){}
 
   }
@@ -2578,7 +3009,7 @@ function disconnectTrading(){
 
 
 /* =========================================================
-   STATUS
+   TRADING STATUS
 ========================================================= */
 
 function setTradingStatus(
@@ -2643,7 +3074,9 @@ function sendTrading(
       )
     );
 
+
     return true;
+
 
   }catch(error){
 
@@ -2651,6 +3084,7 @@ function sendTrading(
       "TRADING SEND ERROR: " +
       error.message
     );
+
 
     return false;
 
@@ -2692,8 +3126,10 @@ function handleTradingMessage(
       extractApiError(data)
     );
 
+
     tradeInFlight =
       false;
+
 
     return;
 
@@ -2810,9 +3246,7 @@ function handleBalance(
 
 function startAutoTrading(){
 
-  if(
-    !selectedAccount
-  ){
+  if(!selectedAccount){
 
     log(
       "Select an account first."
@@ -2883,100 +3317,6 @@ function stopAutoTrading(){
 
 
 /* =========================================================
-   CONTRACT DEFINITIONS
-========================================================= */
-
-const PRIMARY_CONTRACTS = {
-
-  EVEN:{
-    label:"EVEN",
-    contract_type:"DIGITEVEN",
-    barrier:null,
-    test:d =>
-      d % 2 === 0,
-    priority:0
-  },
-
-  ODD:{
-    label:"ODD",
-    contract_type:"DIGITODD",
-    barrier:null,
-    test:d =>
-      d % 2 === 1,
-    priority:1
-  },
-
-  OVER3:{
-    label:"OVER3",
-    contract_type:"DIGITOVER",
-    barrier:"3",
-    test:d =>
-      d >= 4,
-    priority:2
-  },
-
-  UNDER7:{
-    label:"UNDER7",
-    contract_type:"DIGITUNDER",
-    barrier:"7",
-    test:d =>
-      d <= 6,
-    priority:3
-  }
-
-};
-
-
-const RECOVERY_CONTRACTS = {
-
-  EVEN:{
-    label:"EVEN",
-    contract_type:"DIGITEVEN",
-    barrier:null,
-    test:d =>
-      d % 2 === 0,
-    priority:0
-  },
-
-  ODD:{
-    label:"ODD",
-    contract_type:"DIGITODD",
-    barrier:null,
-    test:d =>
-      d % 2 === 1,
-    priority:1
-  },
-
-  OVER5:{
-    label:"OVER5",
-    contract_type:"DIGITOVER",
-    barrier:"5",
-    test:d =>
-      d >= 6,
-    priority:2
-  },
-
-  UNDER5:{
-    label:"UNDER5",
-    contract_type:"DIGITUNDER",
-    barrier:"5",
-    test:d =>
-      d <= 4,
-    priority:3
-  }
-
-};
-
-
-const REQUIRED_DIGIT_TYPES = [
-  "DIGITOVER",
-  "DIGITUNDER",
-  "DIGITEVEN",
-  "DIGITODD"
-];
-
-
-/* =========================================================
    SETUP SCORE
 ========================================================= */
 
@@ -2999,7 +3339,8 @@ function setupScore(
     digits.slice(-30);
 
 
-  let hits = 0;
+  let hits =
+    0;
 
 
   recent.forEach(
@@ -3022,7 +3363,8 @@ function setupScore(
     recent.length;
 
 
-  let streak = 0;
+  let streak =
+    0;
 
 
   for(
@@ -3074,6 +3416,95 @@ function setupScore(
 
 
 /* =========================================================
+   RECOVERY SETUP SCORE
+========================================================= */
+
+function recoverySetupScore(
+  digits,
+  contract
+){
+
+  if(
+    !digits ||
+    digits.length < 30
+  ){
+
+    return 0;
+
+  }
+
+
+  const recent =
+    digits.slice(-30);
+
+
+  let hits =
+    0;
+
+
+  recent.forEach(
+    d => {
+
+      if(
+        contract.test(d)
+      ){
+
+        hits++;
+
+      }
+
+    }
+  );
+
+
+  const frequency =
+    hits /
+    recent.length;
+
+
+  let streak =
+    0;
+
+
+  for(
+    let i =
+      recent.length - 1;
+
+    i >= 0;
+
+    i--
+  ){
+
+    if(
+      contract.test(
+        recent[i]
+      )
+    ){
+
+      streak++;
+
+    }else{
+
+      break;
+
+    }
+
+  }
+
+
+  return Math.min(
+    100,
+    frequency * 80 +
+    Math.min(
+      20,
+      streak * 4
+    )
+  );
+
+}
+
+
+/* =========================================================
    HISTORICAL VALIDATION
 ========================================================= */
 
@@ -3088,9 +3519,13 @@ function historicalTest(
   ){
 
     return {
+
       validation:0,
+
       matches:0,
+
       wins:0
+
     };
 
   }
@@ -3100,7 +3535,8 @@ function historicalTest(
     digits.slice(-30);
 
 
-  let currentHits = 0;
+  let currentHits =
+    0;
 
 
   currentWindow.forEach(
@@ -3129,8 +3565,11 @@ function historicalTest(
     );
 
 
-  let matches = 0;
-  let winsFound = 0;
+  let matches =
+    0;
+
+  let winsFound =
+    0;
 
 
   for(
@@ -3148,7 +3587,8 @@ function historicalTest(
       );
 
 
-    let hits = 0;
+    let hits =
+      0;
 
 
     window.forEach(
@@ -3227,10 +3667,10 @@ function historicalTest(
 
 
 /* =========================================================
-   PRIMARY SIGNAL
+   CREATE PRIMARY CANDIDATES
 ========================================================= */
 
-function getPrimarySignal(
+function getPrimaryCandidates(
   symbol,
   digits
 ){
@@ -3240,7 +3680,7 @@ function getPrimarySignal(
     digits.length < 100
   ){
 
-    return null;
+    return [];
 
   }
 
@@ -3262,7 +3702,7 @@ function getPrimarySignal(
 
 
       /*
-        Primary still keeps the existing
+        PRIMARY keeps the original
         setup-score requirement.
       */
 
@@ -3330,163 +3770,16 @@ function getPrimarySignal(
   );
 
 
-  if(
-    !candidates.length
-  ){
-
-    return null;
-
-  }
-
-
-  /*
-    IMPORTANT:
-
-    Priority is evaluated FIRST.
-
-    EVEN always beats ODD,
-    ODD beats OVER3,
-    OVER3 beats UNDER7.
-
-    Only when the priority is equal
-    do validation and matches decide.
-  */
-
-  candidates.sort(
-    (a,b) => {
-
-      if(
-        a.priority !==
-        b.priority
-      ){
-
-        return (
-          a.priority -
-          b.priority
-        );
-
-      }
-
-
-      if(
-        b.validation !==
-        a.validation
-      ){
-
-        return (
-          b.validation -
-          a.validation
-        );
-
-      }
-
-
-      return (
-        b.matches -
-        a.matches
-      );
-
-    }
-  );
-
-
-  return candidates[0];
+  return candidates;
 
 }
 
 
 /* =========================================================
-   RECOVERY SETUP SCORE
+   CREATE RECOVERY CANDIDATES
 ========================================================= */
 
-function recoverySetupScore(
-  digits,
-  contract
-){
-
-  if(
-    !digits ||
-    digits.length < 30
-  ){
-
-    return 0;
-
-  }
-
-
-  const recent =
-    digits.slice(-30);
-
-
-  let hits = 0;
-
-
-  recent.forEach(
-    d => {
-
-      if(
-        contract.test(d)
-      ){
-
-        hits++;
-
-      }
-
-    }
-  );
-
-
-  const frequency =
-    hits /
-    recent.length;
-
-
-  let streak = 0;
-
-
-  for(
-    let i =
-      recent.length - 1;
-
-    i >= 0;
-
-    i--
-  ){
-
-    if(
-      contract.test(
-        recent[i]
-      )
-    ){
-
-      streak++;
-
-    }else{
-
-      break;
-
-    }
-
-  }
-
-
-  return Math.min(
-    100,
-    frequency * 80 +
-    Math.min(
-      20,
-      streak * 4
-    )
-  );
-
-}
-
-
-/* =========================================================
-   RECOVERY SIGNAL
-========================================================= */
-
-function getRecoverySignal(
+function getRecoveryCandidates(
   symbol,
   digits
 ){
@@ -3496,7 +3789,7 @@ function getRecoverySignal(
     digits.length < 100
   ){
 
-    return null;
+    return [];
 
   }
 
@@ -3510,22 +3803,24 @@ function getRecoverySignal(
   .forEach(
     contract => {
 
+      /*
+        IMPORTANT:
+
+        Recovery does NOT have the
+        old 55 setup-score blocker.
+
+        Only:
+
+        >=80% validation
+        >=50 matches
+      */
+
       const historical =
         historicalTest(
           digits,
           contract
         );
 
-
-      /*
-        RECOVERY HAS NO 55 SETUP-SCORE
-        BLOCKER.
-
-        Requirements are:
-
-        >=80% validation
-        >=50 matches
-      */
 
       if(
         historical.validation < 80 ||
@@ -3582,8 +3877,138 @@ function getRecoverySignal(
   );
 
 
+  return candidates;
+
+}
+
+
+/* =========================================================
+   GLOBAL CANDIDATE COMPARISON
+========================================================= */
+
+/*
+   THIS IS THE IMPORTANT CHANGE.
+
+   The bot does NOT simply trade the market
+   whose tick arrived first.
+
+   It gathers qualifying candidates from
+   ALL digit-eligible markets and then chooses:
+
+   1. Highest validation %
+   2. Highest matches
+   3. Contract preference
+*/
+
+function compareCandidates(
+  a,
+  b
+){
+
   if(
-    !candidates.length
+    b.validation !==
+    a.validation
+  ){
+
+    return (
+      b.validation -
+      a.validation
+    );
+
+  }
+
+
+  if(
+    b.matches !==
+    a.matches
+  ){
+
+    return (
+      b.matches -
+      a.matches
+    );
+
+  }
+
+
+  if(
+    a.priority !==
+    b.priority
+  ){
+
+    return (
+      a.priority -
+      b.priority
+    );
+
+  }
+
+
+  if(
+    b.setupScore !==
+    a.setupScore
+  ){
+
+    return (
+      b.setupScore -
+      a.setupScore
+    );
+
+  }
+
+
+  return a.market.localeCompare(
+    b.market
+  );
+
+}
+
+
+/* =========================================================
+   FIND BEST PRIMARY
+========================================================= */
+
+function findBestPrimarySignal(){
+
+  const allCandidates = [];
+
+
+  digitEligibleMarkets.forEach(
+    (market,symbol) => {
+
+      const digits =
+        marketTicks[
+          symbol
+        ];
+
+
+      if(
+        !digits ||
+        digits.length < 100
+      ){
+
+        return;
+
+      }
+
+
+      const candidates =
+        getPrimaryCandidates(
+          symbol,
+          digits
+        );
+
+
+      allCandidates.push(
+        ...candidates
+      );
+
+    }
+  );
+
+
+  if(
+    !allCandidates.length
   ){
 
     return null;
@@ -3591,78 +4016,83 @@ function getRecoverySignal(
   }
 
 
-  /*
-    RECOVERY PRIORITY:
+  allCandidates.sort(
+    compareCandidates
+  );
 
-    EVEN
-    ODD
-    OVER5
-    UNDER5
-  */
 
-  candidates.sort(
-    (a,b) => {
+  return allCandidates[0];
+
+}
+
+
+/* =========================================================
+   FIND BEST RECOVERY
+========================================================= */
+
+function findBestRecoverySignal(){
+
+  const allCandidates = [];
+
+
+  digitEligibleMarkets.forEach(
+    (market,symbol) => {
+
+      const digits =
+        marketTicks[
+          symbol
+        ];
+
 
       if(
-        a.priority !==
-        b.priority
+        !digits ||
+        digits.length < 100
       ){
 
-        return (
-          a.priority -
-          b.priority
-        );
+        return;
 
       }
 
 
-      if(
-        b.validation !==
-        a.validation
-      ){
-
-        return (
-          b.validation -
-          a.validation
+      const candidates =
+        getRecoveryCandidates(
+          symbol,
+          digits
         );
 
-      }
 
-
-      if(
-        b.matches !==
-        a.matches
-      ){
-
-        return (
-          b.matches -
-          a.matches
-        );
-
-      }
-
-
-      return (
-        b.setupScore -
-        a.setupScore
+      allCandidates.push(
+        ...candidates
       );
 
     }
   );
 
 
-  return candidates[0];
+  if(
+    !allCandidates.length
+  ){
+
+    return null;
+
+  }
+
+
+  allCandidates.sort(
+    compareCandidates
+  );
+
+
+  return allCandidates[0];
 
 }
 
 
 /* =========================================================
-   EVALUATE MARKET
+   GLOBAL SCAN
 ========================================================= */
 
-function evaluateMarket(
-  symbol
-){
+function scanForBestSignal(){
 
   if(
     !scannerRunning
@@ -3683,9 +4113,7 @@ function evaluateMarket(
 
 
   if(
-    !digitEligibleMarkets.has(
-      symbol
-    )
+    !digitEligibleMarkets.size
   ){
 
     return;
@@ -3723,26 +4151,21 @@ function evaluateMarket(
   }
 
 
+  /*
+    PRIMARY keeps a 3.5 second
+    spacing between normal trades.
+
+    RECOVERY DOES NOT WAIT.
+
+    This is the fix for the delayed
+    recovery trade.
+  */
+
   if(
+    !recoveryMode &&
     Date.now() -
     lastTradeTime <
     3500
-  ){
-
-    return;
-
-  }
-
-
-  const digits =
-    marketTicks[
-      symbol
-    ];
-
-
-  if(
-    !digits ||
-    digits.length < 100
   ){
 
     return;
@@ -3758,18 +4181,12 @@ function evaluateMarket(
   ){
 
     signal =
-      getRecoverySignal(
-        symbol,
-        digits
-      );
+      findBestRecoverySignal();
 
   }else{
 
     signal =
-      getPrimarySignal(
-        symbol,
-        digits
-      );
+      findBestPrimarySignal();
 
   }
 
@@ -3781,16 +4198,52 @@ function evaluateMarket(
   }
 
 
+  /*
+    Prevent duplicate buying of the exact
+    same signal on the exact same tick.
+  */
+
+  const signalKey =
+    [
+      signal.mode,
+      signal.market,
+      signal.label,
+      signal.tick
+    ]
+    .join("|");
+
+
   if(
-    lastCompletedSignal &&
-    lastCompletedSignal.market ===
-      signal.market &&
-    lastCompletedSignal.label ===
-      signal.label &&
-    lastCompletedSignal.mode ===
-      signal.mode &&
-    lastCompletedSignal.tick ===
-      digits.at(-1)
+    signalKey ===
+    lastBoughtSignalKey
+  ){
+
+    return;
+
+  }
+
+
+  /*
+    Do not repeatedly re-log the same
+    qualifying candidate before a trade.
+  */
+
+  const currentKey =
+    [
+      signal.mode,
+      signal.market,
+      signal.label,
+      signal.validation.toFixed(3),
+      signal.matches,
+      signal.tick
+    ]
+    .join("|");
+
+
+  if(
+    pendingSignal &&
+    pendingSignal.scanKey ===
+    currentKey
   ){
 
     return;
@@ -3799,7 +4252,13 @@ function evaluateMarket(
 
 
   signal.tick =
-    digits.at(-1);
+    marketLastTick[
+      signal.market
+    ];
+
+
+  signal.scanKey =
+    currentKey;
 
 
   pendingSignal =
@@ -3825,11 +4284,7 @@ function evaluateMarket(
       " | " +
       signal.validation.toFixed(1) +
       "% | n=" +
-      signal.matches +
-      " | PRIORITY " +
-      (
-        signal.priority + 1
-      )
+      signal.matches
     );
 
   }else{
@@ -3843,10 +4298,7 @@ function evaluateMarket(
       signal.validation.toFixed(1) +
       "% | n=" +
       signal.matches +
-      " | PRIMARY | PRIORITY " +
-      (
-        signal.priority + 1
-      )
+      " | PRIMARY"
     );
 
   }
@@ -3882,6 +4334,7 @@ function renderCurrentSignal(){
       .textContent =
       "Waiting for a qualified setup.";
 
+
     return;
 
   }
@@ -3905,14 +4358,14 @@ function renderCurrentSignal(){
       pendingSignal.matches +
       "</strong>" +
 
-      " | Priority: <strong>#" +
+      " | Mode: <strong>" +
+      pendingSignal.mode +
+      "</strong>" +
+
+      " | Priority: <strong>" +
       (
         pendingSignal.priority + 1
       ) +
-      "</strong>" +
-
-      " | Mode: <strong>" +
-      pendingSignal.mode +
       "</strong>";
 
 }
@@ -3944,7 +4397,7 @@ function executeSignal(
   ){
 
     log(
-      "Signal qualified but trading socket is offline."
+      "SIGNAL QUALIFIED but trading socket is offline."
     );
 
     return;
@@ -3999,6 +4452,21 @@ function executeSignal(
     getStake();
 
 
+  /*
+    Record the signal immediately so the
+    same tick cannot be bought twice.
+  */
+
+  lastBoughtSignalKey =
+    [
+      signal.mode,
+      signal.market,
+      signal.label,
+      signal.tick
+    ]
+    .join("|");
+
+
   if(
     signal.mode ===
     "RECOVERY"
@@ -4009,6 +4477,10 @@ function executeSignal(
       signal.market +
       " " +
       signal.label +
+      " | " +
+      signal.validation.toFixed(1) +
+      "% | n=" +
+      signal.matches +
       " | $" +
       stake.toFixed(2)
     );
@@ -4016,10 +4488,14 @@ function executeSignal(
   }else{
 
     log(
-      "TRADE: " +
+      "PRIMARY TRADE: " +
       signal.market +
       " " +
       signal.label +
+      " | " +
+      signal.validation.toFixed(1) +
+      "% | n=" +
+      signal.matches +
       " | $" +
       stake.toFixed(2)
     );
@@ -4128,8 +4604,10 @@ function handleProposal(
       "Proposal rejected: invalid proposal price/ID."
     );
 
+
     tradeInFlight =
       false;
+
 
     return;
 
@@ -4302,8 +4780,8 @@ function handleBuy(
 
 
   /*
-    Balance is already subscribed.
-    Do not subscribe again.
+    IMPORTANT:
+    Do NOT subscribe to balance again.
   */
 
   sendTrading({
@@ -4405,7 +4883,9 @@ function handleOpenContract(
 
   finishTrade(
     result,
-    Number.isFinite(profit)
+    Number.isFinite(
+      profit
+    )
       ? profit
       : 0
   );
@@ -4470,6 +4950,7 @@ function finishTrade(
       recoveryMode =
         false;
 
+
       recoveryTrades =
         0;
 
@@ -4498,9 +4979,18 @@ function finishTrade(
       recoveryMode =
         true;
 
+
       recoveryTrades =
         0;
 
+
+      /*
+        THIS IS THE IMPORTANT PART.
+
+        Recovery becomes active immediately.
+        There is NO 3.5 second recovery
+        cooldown.
+      */
 
       log(
         "PRIMARY LOSS — recovery mode activated."
@@ -4515,13 +5005,24 @@ function finishTrade(
 
 
       log(
-        "RECOVERY PRIORITY: EVEN → ODD → OVER5 → UNDER5"
+        "RECOVERY WILL TRADE THE HIGHEST QUALIFYING VALIDATION %."
       );
+
+
+      /*
+        Clear previous duplicate key so the
+        recovery system can immediately act
+        on the next qualifying tick.
+      */
+
+      lastBoughtSignalKey =
+        "";
 
     }else{
 
       recoveryMode =
         false;
+
 
       recoveryTrades =
         0;
@@ -4558,7 +5059,80 @@ function finishTrade(
 
   renderCurrentSignal();
 
+
   updateUI();
+
+
+  /*
+    Immediately perform a recovery scan after
+    a primary loss instead of waiting for a
+    separate cooldown timer.
+  */
+
+  if(
+    recoveryMode &&
+    scannerRunning
+  ){
+
+    const immediateRecovery =
+      findBestRecoverySignal();
+
+
+    if(
+      immediateRecovery
+    ){
+
+      immediateRecovery.tick =
+        marketLastTick[
+          immediateRecovery.market
+        ];
+
+
+      immediateRecovery.scanKey =
+        "IMMEDIATE-" +
+        Date.now();
+
+
+      log(
+        "IMMEDIATE RECOVERY CANDIDATE: " +
+        immediateRecovery.market +
+        " " +
+        immediateRecovery.label +
+        " | " +
+        immediateRecovery.validation.toFixed(1) +
+        "% | n=" +
+        immediateRecovery.matches
+      );
+
+
+      pendingSignal =
+        immediateRecovery;
+
+
+      renderCurrentSignal();
+
+
+      if(
+        autoTradingEnabled
+      ){
+
+        executeSignal(
+          immediateRecovery
+        );
+
+      }
+
+    }else{
+
+      log(
+        "No recovery candidate currently meets 80% / " +
+        getMinMatches() +
+        " matches — continuing scan."
+      );
+
+    }
+
+  }
 
 
   if(
@@ -4572,6 +5146,7 @@ function finishTrade(
 
 
     stopAutoTrading();
+
 
     return;
 
@@ -4589,6 +5164,7 @@ function finishTrade(
 
 
     stopAutoTrading();
+
 
     return;
 
@@ -4662,6 +5238,7 @@ function updateTradeRecord(
 
   target.result =
     result;
+
 
   target.pl =
     pl;
@@ -4927,7 +5504,7 @@ function renderSignalHistory(){
 
 
 /* =========================================================
-   MARKET CLASS
+   MARKET CLASSIFICATION
 ========================================================= */
 
 function marketClass(
@@ -5055,6 +5632,7 @@ function connectPublic(){
     (
       publicWS.readyState ===
       WebSocket.OPEN ||
+
       publicWS.readyState ===
       WebSocket.CONNECTING
     )
@@ -5116,6 +5694,16 @@ function connectPublic(){
             req()
 
         })
+      );
+
+
+      clearInterval(
+        publicHeartbeatTimer
+      );
+
+
+      clearInterval(
+        publicWatchdogTimer
       );
 
 
@@ -5304,7 +5892,9 @@ function reconnectPublic(){
   if(publicWS){
 
     try{
+
       publicWS.close();
+
     }catch(e){}
 
   }
@@ -5362,7 +5952,9 @@ function stopPublic(){
   if(publicWS){
 
     try{
+
       publicWS.close();
+
     }catch(e){}
 
   }
@@ -5374,7 +5966,8 @@ function stopPublic(){
 
   marketSubscriptions.clear();
 
-  contractsForQueue = [];
+  contractsForQueue =
+    [];
 
   contractsForRunning =
     false;
@@ -5419,7 +6012,9 @@ function handlePublicMessage(
 
     const info =
       publicRequestMap.get(
-        Number(errorReq)
+        Number(
+          errorReq
+        )
       );
 
 
@@ -5429,7 +6024,9 @@ function handlePublicMessage(
     ){
 
       publicRequestMap.delete(
-        Number(errorReq)
+        Number(
+          errorReq
+        )
       );
 
 
@@ -5472,6 +6069,7 @@ function handlePublicMessage(
       []
     );
 
+
     return;
 
   }
@@ -5486,6 +6084,7 @@ function handlePublicMessage(
       data
     );
 
+
     return;
 
   }
@@ -5499,6 +6098,7 @@ function handlePublicMessage(
     handleHistory(
       data
     );
+
 
     return;
 
@@ -5625,7 +6225,7 @@ function processActiveSymbols(
 
 
 /* =========================================================
-   DIGIT ELIGIBILITY
+   CHECK DIGIT ELIGIBILITY
 ========================================================= */
 
 function checkDigitEligibility(){
@@ -5673,7 +6273,7 @@ function checkDigitEligibility(){
 
 
 /* =========================================================
-   CONTRACTS FOR
+   PROCESS CONTRACTS_FOR
 ========================================================= */
 
 function processNextContractsFor(
@@ -5732,6 +6332,7 @@ function processNextContractsFor(
     contractsForRunning =
       false;
 
+
     return;
 
   }
@@ -5761,6 +6362,7 @@ function processNextContractsFor(
   publicRequestMap.set(
     requestId,
     {
+
       type:
         "contracts_for",
 
@@ -5863,14 +6465,18 @@ function handleContractsFor(
 
   const info =
     publicRequestMap.get(
-      Number(echoReq)
+      Number(
+        echoReq
+      )
     );
 
 
   if(info){
 
     publicRequestMap.delete(
-      Number(echoReq)
+      Number(
+        echoReq
+      )
     );
 
   }
@@ -5901,6 +6507,7 @@ function handleContractsFor(
       );
 
     }
+
 
     return;
 
@@ -5984,7 +6591,7 @@ function handleContractsFor(
 
 
 /* =========================================================
-   MARKETS UI
+   MARKET UI
 ========================================================= */
 
 function renderMarkets(){
@@ -6035,6 +6642,7 @@ function renderMarkets(){
       let badgeClass =
         "other";
 
+
       let badgeText =
         market.class;
 
@@ -6047,6 +6655,7 @@ function renderMarkets(){
 
         badgeClass =
           "digit";
+
 
         badgeText =
           "DIGITS";
@@ -6134,7 +6743,7 @@ function renderMarkets(){
 
 
 /* =========================================================
-   SUBSCRIBE
+   SUBSCRIBE DIGIT MARKETS
 ========================================================= */
 
 function subscribeDigitEligibleMarkets(){
@@ -6150,7 +6759,8 @@ function subscribeDigitEligibleMarkets(){
   }
 
 
-  let count = 0;
+  let count =
+    0;
 
 
   digitEligibleMarkets.forEach(
@@ -6199,7 +6809,7 @@ function subscribeDigitEligibleMarkets(){
 
 
 /* =========================================================
-   HISTORY
+   REQUEST HISTORY
 ========================================================= */
 
 function requestHistory(
@@ -6240,6 +6850,10 @@ function requestHistory(
 
 }
 
+
+/* =========================================================
+   REQUEST TICKS
+========================================================= */
 
 function requestTicks(
   symbol
@@ -6370,7 +6984,7 @@ function handleHistory(
 
 
 /* =========================================================
-   TICK
+   TICK HANDLER
 ========================================================= */
 
 function handleTick(
@@ -6478,13 +7092,18 @@ function handleTick(
   );
 
 
+  /*
+    GLOBAL SCAN.
+
+    Every new tick gives the bot a chance
+    to compare ALL currently eligible markets.
+  */
+
   if(
     scannerRunning
   ){
 
-    evaluateMarket(
-      symbol
-    );
+    scanForBestSignal();
 
   }
 
@@ -6638,12 +7257,17 @@ function startScanner(){
 
 
   log(
-    "PRIMARY PRIORITY: EVEN → ODD → OVER3 → UNDER7"
+    "PRIMARY: highest validation % → matches → EVEN/ODD/OVER3/UNDER7 tie-break."
   );
 
 
   log(
-    "RECOVERY PRIORITY: EVEN → ODD → OVER5 → UNDER5"
+    "RECOVERY: highest validation % → matches → EVEN/ODD/OVER5/UNDER5 tie-break."
+  );
+
+
+  log(
+    "RECOVERY HAS NO 3.5 SECOND COOLDOWN."
   );
 
 
@@ -6691,7 +7315,7 @@ function stopScanner(){
 
 
 /* =========================================================
-   REFRESH
+   REFRESH MARKETS
 ========================================================= */
 
 function refreshMarkets(){
@@ -6740,39 +7364,54 @@ function refreshMarkets(){
 
 
 /* =========================================================
-   INITIALIZATION
+   INITIALIZE
 ========================================================= */
 
 updateUI();
 
 
 log(
-  "V15 ready."
+  "V16 ready."
 );
 
 
 log(
-  "Primary priority: EVEN → ODD → OVER3 → UNDER7."
+  "Highest validation % is now the primary selection rule."
 );
 
 
 log(
-  "Recovery priority: EVEN → ODD → OVER5 → UNDER5."
+  "Minimum validation: 80%."
 );
 
 
 log(
-  "Primary: >=80% validation + >=50 matches + existing setup filter."
+  "Minimum matches: 50."
 );
 
 
 log(
-  "Recovery: >=80% validation + >=50 matches."
+  "Primary setup score requirement remains unchanged."
 );
 
 
 log(
-  "Fixed stake only. No Martingale."
+  "Recovery has no extra setup-score blocker."
+);
+
+
+log(
+  "Recovery has no 3.5-second cooldown."
+);
+
+
+log(
+  "Fixed stake only."
+);
+
+
+log(
+  "No Martingale."
 );
 
 
