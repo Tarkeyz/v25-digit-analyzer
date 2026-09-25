@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>V37 LIVE Pulse / Surge Multi Trader</title>
+<title>V38 LIVE Pulse / Surge Multi Trader</title>
 
 <style>
 *{
@@ -221,6 +221,7 @@ th{
 }
 
 @media(max-width:600px){
+
   h1{
     font-size:20px;
   }
@@ -244,385 +245,642 @@ th{
 
 <div class="container">
 
-  <h1>V37 LIVE Pulse / Surge Multi Trader</h1>
-  <div class="subtitle">
-    Statistical synthetic-market scanner with live execution, validation, payout/EV filtering and market protection.
-  </div>
-
-  <!-- SETTINGS -->
-  <div class="panel">
-
-    <div class="sectiontitle">Connection</div>
-
-    <div class="grid">
-
-      <div>
-        <label>Personal Access Token</label>
-        <input id="pat" type="password" placeholder="Enter Deriv PAT">
-      </div>
-
-      <div>
-        <label>Deriv App ID</label>
-        <input id="appId" value="" placeholder="App ID">
-      </div>
-
-      <div>
-        <label>Account Type</label>
-        <select id="accountType">
-          <option value="demo">DEMO</option>
-          <option value="real">REAL</option>
-        </select>
-      </div>
-
-      <div>
-        <label>Currency</label>
-        <input id="currency" value="USD" readonly>
-      </div>
-
-    </div>
-
-    <div class="sectiontitle" style="margin-top:15px;">Strategy</div>
-
-    <div class="grid">
-
-      <div>
-        <label>Strategy</label>
-        <select id="strategy">
-          <option value="AUTO">AUTO</option>
-          <option value="CALL">RISE</option>
-          <option value="PUT">FALL</option>
-          <option value="DIGITOVER">DIGIT OVER 3</option>
-          <option value="DIGITUNDER">DIGIT UNDER 7</option>
-          <option value="DIGITEVEN">DIGIT EVEN</option>
-          <option value="DIGITODD">DIGIT ODD</option>
-          <option value="DIGITMATCH">DIGIT MATCH</option>
-        </select>
-      </div>
-
-      <div>
-        <label>Stake</label>
-        <input id="stake" type="number" value="1" min="0.35" step="0.01">
-      </div>
-
-      <div>
-        <label>Duration / Ticks</label>
-        <input id="duration" type="number" value="1" min="1" step="1">
-      </div>
-
-      <div>
-        <label>Max Markets</label>
-        <input id="maxMarkets" type="number" value="40" min="1" max="40">
-      </div>
-
-    </div>
-
-    <div class="sectiontitle" style="margin-top:15px;">Signal Filters</div>
-
-    <div class="grid">
-
-      <div>
-        <label>Min Validation %</label>
-        <input id="minValidation" type="number" value="56" min="0" max="100">
-      </div>
-
-      <div>
-        <label>Min Samples</label>
-        <input id="minSamples" type="number" value="20" min="1">
-      </div>
-
-      <div>
-        <label>Min Score</label>
-        <input id="minScore" type="number" value="62" min="0" max="100">
-      </div>
-
-      <div>
-        <label>Min EV</label>
-        <input id="minEV" type="number" value="0" step="0.1">
-      </div>
-
-      <div>
-        <label>Max Chop %</label>
-        <input id="maxChop" type="number" value="70" min="0" max="100">
-      </div>
-
-      <div>
-        <label>Persistence %</label>
-        <input id="persistence" type="number" value="0" min="0" max="100">
-      </div>
+<h1>V38 LIVE Pulse / Surge Multi Trader</h1>
 
-      <div>
-        <label>Market Cooldown / sec</label>
-        <input id="cooldown" type="number" value="10" min="0">
-      </div>
+<div class="subtitle">
+Statistical synthetic-market scanner with live execution, validation, payout/EV filtering and market protection.
+</div>
 
-      <div>
-        <label>Market Loss Lock</label>
-        <input id="marketLossLock" type="number" value="1" min="0">
-      </div>
 
-    </div>
+<!-- CONNECTION / SETTINGS -->
 
-    <div class="sectiontitle" style="margin-top:15px;">Session Limits</div>
+<div class="panel">
 
-    <div class="grid">
+<div class="sectiontitle">Connection</div>
 
-      <div>
-        <label>Max Trades</label>
-        <input id="maxTrades" type="number" value="20" min="1">
-      </div>
+<div class="grid">
 
-      <div>
-        <label>Max Losses</label>
-        <input id="maxLosses" type="number" value="2" min="1">
-      </div>
+<div>
+<label>Personal Access Token</label>
+<input
+id="pat"
+type="password"
+placeholder="Enter Deriv PAT">
+</div>
 
-      <div>
-        <label>Take Profit</label>
-        <input id="takeProfit" type="number" value="0" step="0.01">
-      </div>
+<div>
+<label>Deriv App ID</label>
+<input
+id="appId"
+value=""
+placeholder="App ID">
+</div>
 
-      <div>
-        <label>Stop Loss</label>
-        <input id="stopLoss" type="number" value="0" step="0.01">
-      </div>
+<div>
+<label>Account Type</label>
+<select id="accountType">
+<option value="demo">DEMO</option>
+<option value="real">REAL</option>
+</select>
+</div>
 
-    </div>
+<div>
+<label>Currency</label>
+<input
+id="currency"
+value="USD"
+readonly>
+</div>
 
-    <div class="btnrow">
-      <button onclick="connectAccount()">Connect</button>
-      <button class="start" onclick="startTrading()">Start Trading</button>
-      <button class="stop" onclick="stopTrading()">Stop Trading</button>
-      <button class="warn" onclick="disconnect()">Disconnect</button>
-      <button class="reset" onclick="resetTradeSession()">Reset Trade Session</button>
-    </div>
+</div>
 
-    <div class="status">
 
-      <div class="badge">
-        Connection:
-        <span id="connectionStatus" class="bad">Disconnected</span>
-      </div>
+<div class="sectiontitle" style="margin-top:15px;">
+Strategy
+</div>
 
-      <div class="badge">
-        Account:
-        <span id="accountStatus">---</span>
-      </div>
 
-      <div class="badge">
-        Balance:
-        <span id="balanceStatus">---</span>
-      </div>
+<div class="grid">
 
-      <div class="badge">
-        Trading:
-        <span id="tradingStatus" class="bad">STOPPED</span>
-      </div>
+<div>
+<label>Strategy</label>
 
-      <div class="badge">
-        Open Trade:
-        <span id="openTradeStatus">NONE</span>
-      </div>
+<select id="strategy">
 
-    </div>
+<option value="AUTO">AUTO</option>
 
-  </div>
+<option value="CALL">
+RISE
+</option>
 
+<option value="PUT">
+FALL
+</option>
 
-  <!-- SESSION -->
-  <div class="panel">
+<option value="DIGITOVER">
+DIGIT OVER 3
+</option>
 
-    <div class="sectiontitle">Trade Session</div>
+<option value="DIGITUNDER">
+DIGIT UNDER 7
+</option>
 
-    <div class="statgrid">
+<option value="DIGITEVEN">
+DIGIT EVEN
+</option>
 
-      <div class="stat">
-        <div class="name">Trades</div>
-        <div class="value" id="totalTrades">0</div>
-      </div>
+<option value="DIGITODD">
+DIGIT ODD
+</option>
+
+<option value="DIGITMATCH">
+DIGIT MATCH
+</option>
 
-      <div class="stat">
-        <div class="name">Wins</div>
-        <div class="value green" id="wins">0</div>
-      </div>
+</select>
+</div>
+
+
+<div>
+<label>Stake</label>
+<input
+id="stake"
+type="number"
+value="1"
+min="0.35"
+step="0.01">
+</div>
+
+
+<div>
+<label>Duration / Ticks</label>
+<input
+id="duration"
+type="number"
+value="1"
+min="1"
+step="1">
+</div>
+
+
+<div>
+<label>Max Markets</label>
+<input
+id="maxMarkets"
+type="number"
+value="40"
+min="1"
+max="40">
+</div>
+
+</div>
+
+
+<div class="sectiontitle" style="margin-top:15px;">
+Signal Filters
+</div>
+
+
+<div class="grid">
+
+<div>
+<label>Min Validation %</label>
+<input
+id="minValidation"
+type="number"
+value="56"
+min="0"
+max="100">
+</div>
+
+
+<div>
+<label>Min Samples</label>
+<input
+id="minSamples"
+type="number"
+value="20"
+min="1">
+</div>
+
+
+<div>
+<label>Min Score</label>
+<input
+id="minScore"
+type="number"
+value="62"
+min="0"
+max="100">
+</div>
+
+
+<div>
+<label>Min EV</label>
+<input
+id="minEV"
+type="number"
+value="0"
+step="0.1">
+</div>
+
+
+<div>
+<label>Max Chop %</label>
+<input
+id="maxChop"
+type="number"
+value="70"
+min="0"
+max="100">
+</div>
+
+
+<div>
+<label>Persistence %</label>
+<input
+id="persistence"
+type="number"
+value="0"
+min="0"
+max="100">
+</div>
+
+
+<div>
+<label>Market Cooldown / sec</label>
+<input
+id="cooldown"
+type="number"
+value="10"
+min="0">
+</div>
+
+
+<div>
+<label>Market Loss Lock</label>
+<input
+id="marketLossLock"
+type="number"
+value="1"
+min="0">
+</div>
+
+</div>
+
+
+<div class="sectiontitle" style="margin-top:15px;">
+Session Limits
+</div>
+
+
+<div class="grid">
+
+<div>
+<label>Max Trades</label>
+<input
+id="maxTrades"
+type="number"
+value="20"
+min="1">
+</div>
+
+
+<div>
+<label>Max Losses</label>
+<input
+id="maxLosses"
+type="number"
+value="2"
+min="1">
+</div>
+
+
+<div>
+<label>Take Profit</label>
+<input
+id="takeProfit"
+type="number"
+value="0"
+step="0.01">
+</div>
+
+
+<div>
+<label>Stop Loss</label>
+<input
+id="stopLoss"
+type="number"
+value="0"
+step="0.01">
+</div>
+
+</div>
+
+
+<div class="btnrow">
+
+<button onclick="connectAccount()">
+Connect
+</button>
+
+<button
+class="start"
+onclick="startTrading()">
+Start Trading
+</button>
+
+<button
+class="stop"
+onclick="stopTrading()">
+Stop Trading
+</button>
+
+<button
+class="warn"
+onclick="disconnect()">
+Disconnect
+</button>
+
+<button
+class="reset"
+onclick="resetTradeSession()">
+Reset Trade Session
+</button>
+
+</div>
+
+
+<div class="status">
+
+<div class="badge">
+Connection:
+<span
+id="connectionStatus"
+class="bad">
+Disconnected
+</span>
+</div>
+
+
+<div class="badge">
+Account:
+<span id="accountStatus">
+---
+</span>
+</div>
+
+
+<div class="badge">
+Balance:
+<span id="balanceStatus">
+---
+</span>
+</div>
+
+
+<div class="badge">
+Trading:
+<span
+id="tradingStatus"
+class="bad">
+STOPPED
+</span>
+</div>
+
+
+<div class="badge">
+Open Trade:
+<span id="openTradeStatus">
+NONE
+</span>
+</div>
+
+</div>
+
+</div>
+
+
+<!-- SESSION -->
+
+<div class="panel">
+
+<div class="sectiontitle">
+Trade Session
+</div>
+
+<div class="statgrid">
+
+<div class="stat">
+<div class="name">Trades</div>
+<div
+class="value"
+id="totalTrades">
+0
+</div>
+</div>
+
+
+<div class="stat">
+<div class="name">Wins</div>
+<div
+class="value green"
+id="wins">
+0
+</div>
+</div>
+
+
+<div class="stat">
+<div class="name">Losses</div>
+<div
+class="value red"
+id="losses">
+0
+</div>
+</div>
+
+
+<div class="stat">
+<div class="name">Win Rate</div>
+<div
+class="value"
+id="winRate">
+0%
+</div>
+</div>
+
+
+<div class="stat">
+<div class="name">Session P/L</div>
+<div
+class="value"
+id="sessionPnL">
+0.00
+</div>
+</div>
+
+
+<div class="stat">
+<div class="name">Markets</div>
+<div
+class="value"
+id="marketCount">
+0
+</div>
+</div>
+
+</div>
+
+</div>
+
+
+<!-- ACTIVE TRADE -->
+
+<div class="panel">
+
+<div class="sectiontitle">
+Active Trade
+</div>
+
+<div class="statgrid">
+
+<div class="stat">
+<div class="name">Market</div>
+<div
+class="value"
+id="tradeMarket">
+---
+</div>
+</div>
+
+
+<div class="stat">
+<div class="name">Contract</div>
+<div
+class="value"
+id="tradeContract">
+---
+</div>
+</div>
 
-      <div class="stat">
-        <div class="name">Losses</div>
-        <div class="value red" id="losses">0</div>
-      </div>
 
-      <div class="stat">
-        <div class="name">Win Rate</div>
-        <div class="value" id="winRate">0%</div>
-      </div>
+<div class="stat">
+<div class="name">Stake</div>
+<div
+class="value"
+id="tradeStake">
+---
+</div>
+</div>
+
+
+<div class="stat">
+<div class="name">Ask</div>
+<div
+class="value"
+id="tradeAsk">
+---
+</div>
+</div>
+
 
-      <div class="stat">
-        <div class="name">Session P/L</div>
-        <div class="value" id="sessionPnL">0.00</div>
-      </div>
+<div class="stat">
+<div class="name">Payout</div>
+<div
+class="value"
+id="tradePayout">
+---
+</div>
+</div>
 
-      <div class="stat">
-        <div class="name">Markets</div>
-        <div class="value" id="marketCount">0</div>
-      </div>
 
-    </div>
+<div class="stat">
+<div class="name">Break Even</div>
+<div
+class="value"
+id="tradeBE">
+---
+</div>
+</div>
 
-  </div>
+</div>
 
+</div>
 
-  <!-- ACTIVE TRADE -->
-  <div class="panel">
 
-    <div class="sectiontitle">Active Trade</div>
+<!-- SCANNER -->
 
-    <div class="statgrid">
+<div class="panel">
 
-      <div class="stat">
-        <div class="name">Market</div>
-        <div class="value" id="tradeMarket">---</div>
-      </div>
+<div class="sectiontitle">
+Live Market Scanner
+</div>
 
-      <div class="stat">
-        <div class="name">Contract</div>
-        <div class="value" id="tradeContract">---</div>
-      </div>
+<div class="tablewrap">
 
-      <div class="stat">
-        <div class="name">Stake</div>
-        <div class="value" id="tradeStake">---</div>
-      </div>
+<table>
 
-      <div class="stat">
-        <div class="name">Ask</div>
-        <div class="value" id="tradeAsk">---</div>
-      </div>
+<thead>
 
-      <div class="stat">
-        <div class="name">Payout</div>
-        <div class="value" id="tradePayout">---</div>
-      </div>
+<tr>
+<th>Market</th>
+<th>Price</th>
+<th>Digit</th>
+<th>Signal</th>
+<th>Score</th>
+<th>Validation</th>
+<th>Samples</th>
+<th>Chop</th>
+<th>Persistence</th>
+<th>Current</th>
+</tr>
 
-      <div class="stat">
-        <div class="name">Break Even</div>
-        <div class="value" id="tradeBE">---</div>
-      </div>
+</thead>
 
-    </div>
+<tbody id="scannerBody"></tbody>
 
-  </div>
+</table>
 
+</div>
 
-  <!-- SCANNER -->
-  <div class="panel">
+</div>
 
-    <div class="sectiontitle">Live Market Scanner</div>
 
-    <div class="tablewrap">
+<!-- DIGIT ANALYSIS -->
 
-      <table>
+<div class="panel">
 
-        <thead>
-          <tr>
-            <th>Market</th>
-            <th>Price</th>
-            <th>Digit</th>
-            <th>Signal</th>
-            <th>Score</th>
-            <th>Validation</th>
-            <th>Samples</th>
-            <th>Chop</th>
-            <th>Persistence</th>
-            <th>Current</th>
-          </tr>
-        </thead>
+<div class="sectiontitle">
+Digit Analysis
+</div>
 
-        <tbody id="scannerBody"></tbody>
+<div class="tablewrap">
 
-      </table>
+<table>
 
-    </div>
+<thead>
 
-  </div>
+<tr>
+<th>Market</th>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+<th>7</th>
+<th>8</th>
+<th>9</th>
+<th>Current</th>
+</tr>
 
+</thead>
 
-  <!-- DIGITS -->
-  <div class="panel">
+<tbody id="digitsBody"></tbody>
 
-    <div class="sectiontitle">Digit Analysis</div>
+</table>
 
-    <div class="tablewrap">
+</div>
 
-      <table>
+</div>
 
-        <thead>
-          <tr>
-            <th>Market</th>
-            <th>0</th>
-            <th>1</th>
-            <th>2</th>
-            <th>3</th>
-            <th>4</th>
-            <th>5</th>
-            <th>6</th>
-            <th>7</th>
-            <th>8</th>
-            <th>9</th>
-            <th>Current</th>
-          </tr>
-        </thead>
 
-        <tbody id="digitsBody"></tbody>
+<!-- VALIDATION -->
 
-      </table>
+<div class="panel">
 
-    </div>
+<div class="sectiontitle">
+Validation / Pulse
+</div>
 
-  </div>
+<div class="tablewrap">
 
+<table>
 
-  <!-- VALIDATION -->
-  <div class="panel">
+<thead>
 
-    <div class="sectiontitle">Validation / Pulse</div>
+<tr>
+<th>Market</th>
+<th>Up 20</th>
+<th>Up 50</th>
+<th>Up 100</th>
+<th>Prev Up 100</th>
+<th>Over 3</th>
+<th>Prev Over 3</th>
+<th>Under 7</th>
+<th>Prev Under 7</th>
+<th>Even</th>
+<th>Odd</th>
+<th>Match</th>
+</tr>
 
-    <div class="tablewrap">
+</thead>
 
-      <table>
+<tbody id="validationBody"></tbody>
 
-        <thead>
-          <tr>
-            <th>Market</th>
-            <th>Up 20</th>
-            <th>Up 50</th>
-            <th>Up 100</th>
-            <th>Prev Up 100</th>
-            <th>Over 3</th>
-            <th>Prev Over 3</th>
-            <th>Under 7</th>
-            <th>Prev Under 7</th>
-            <th>Even</th>
-            <th>Odd</th>
-            <th>Match</th>
-          </tr>
-        </thead>
+</table>
 
-        <tbody id="validationBody"></tbody>
+</div>
 
-      </table>
+</div>
 
-    </div>
 
-  </div>
+<!-- ENGINE LOG -->
 
+<div class="panel">
 
-  <!-- ENGINE LOG -->
-  <div class="panel">
+<div class="sectiontitle">
+Engine Log
+</div>
 
-    <div class="sectiontitle">Engine Log</div>
+<div
+id="engineLog"
+class="log">
+</div>
 
-    <div id="engineLog" class="log"></div>
-
-  </div>
+</div>
 
 </div>
 
@@ -633,7 +891,7 @@ th{
 
 
 /* =========================================================
-   CORE STATE
+CORE STATE
 ========================================================= */
 
 let ws = null;
@@ -681,7 +939,7 @@ let lastScannerRender = 0;
 
 
 /* =========================================================
-   CONSTANTS
+CONSTANTS
 ========================================================= */
 
 const ALLOWED_CONTRACTS = new Set([
@@ -699,7 +957,7 @@ const MAX_MARKETS = 40;
 
 
 /* =========================================================
-   HELPERS
+HELPERS
 ========================================================= */
 
 function $(id){
@@ -718,14 +976,18 @@ function log(message){
 
   if(!box) return;
 
-  const time = new Date().toLocaleTimeString();
+  const time =
+    new Date().toLocaleTimeString();
 
   box.innerHTML +=
-    "[" + time + "] " +
+    "[" +
+    time +
+    "] " +
     String(message) +
     "<br>";
 
-  box.scrollTop = box.scrollHeight;
+  box.scrollTop =
+    box.scrollHeight;
 }
 
 
@@ -740,13 +1002,12 @@ function escapeHtml(value){
 }
 
 
-function sleepInline(ms){
-
-  return new Promise(function(resolve){
-    setTimeout(resolve,ms);
-  });
-}
-
+/*
+  IMPORTANT:
+  No sleep() function is used anywhere.
+  This avoids the previous mobile/GitHub Pages
+  "Can't find variable: sleep" problem.
+*/
 
 function settings(){
 
@@ -768,39 +1029,52 @@ function settings(){
       MAX_MARKETS,
       Math.max(
         1,
-        Number($("maxMarkets").value) || MAX_MARKETS
+        Number($("maxMarkets").value) ||
+        MAX_MARKETS
       )
     ),
 
-    minValidation:Number($("minValidation").value) || 56,
+    minValidation:
+      Number($("minValidation").value) || 56,
 
-    minSamples:Number($("minSamples").value) || 20,
+    minSamples:
+      Number($("minSamples").value) || 20,
 
-    minScore:Number($("minScore").value) || 62,
+    minScore:
+      Number($("minScore").value) || 62,
 
-    minEV:Number($("minEV").value) || 0,
+    minEV:
+      Number($("minEV").value) || 0,
 
-    maxChop:Number($("maxChop").value) || 70,
+    maxChop:
+      Number($("maxChop").value) || 70,
 
-    persistence:Number($("persistence").value) || 0,
+    persistence:
+      Number($("persistence").value) || 0,
 
-    cooldown:Number($("cooldown").value) || 10,
+    cooldown:
+      Number($("cooldown").value) || 10,
 
-    marketLossLock:Number($("marketLossLock").value) || 1,
+    marketLossLock:
+      Number($("marketLossLock").value) || 1,
 
-    maxTrades:Number($("maxTrades").value) || 20,
+    maxTrades:
+      Number($("maxTrades").value) || 20,
 
-    maxLosses:Number($("maxLosses").value) || 2,
+    maxLosses:
+      Number($("maxLosses").value) || 2,
 
-    takeProfit:Number($("takeProfit").value) || 0,
+    takeProfit:
+      Number($("takeProfit").value) || 0,
 
-    stopLoss:Number($("stopLoss").value) || 0
+    stopLoss:
+      Number($("stopLoss").value) || 0
   };
 }
 
 
 /* =========================================================
-   CONNECTION
+CONNECTION
 ========================================================= */
 
 async function connectAccount(){
@@ -811,41 +1085,66 @@ async function connectAccount(){
 
     connecting = true;
 
-    accountTypeSelected = $("accountType").value;
+    accountTypeSelected =
+      $("accountType").value;
 
     disconnect(false);
 
-    const pat = $("pat").value.trim();
-    const appId = $("appId").value.trim();
+    const pat =
+      $("pat").value.trim();
+
+    const appId =
+      $("appId").value.trim();
+
 
     if(!pat){
-      throw new Error("PAT is required.");
+
+      throw new Error(
+        "PAT is required."
+      );
     }
 
+
     if(!appId){
-      throw new Error("Deriv App ID is required.");
+
+      throw new Error(
+        "Deriv App ID is required."
+      );
     }
+
 
     setConnectionStatus(
       "Connecting...",
       "yellow"
     );
 
-    log("Requesting Options accounts...");
+
+    log(
+      "Requesting Options accounts..."
+    );
+
 
     const headers = {
 
-      "Authorization":"Bearer " + pat,
+      "Authorization":
+        "Bearer " + pat,
 
-      "Deriv-App-ID":appId,
+      "Deriv-App-ID":
+        appId,
 
-      "Content-Type":"application/json"
+      "Content-Type":
+        "application/json"
     };
 
 
+    /*
+      CURRENT DERIV OPTIONS REST BASE:
+      https://api.derivws.com
+    */
+
     const accountsResponse =
       await fetch(
-        "https://api.deriv.com/trading/v1/options/accounts",
+        "https://api.derivws.com/trading/v1/options/accounts",
         {
           method:"GET",
           headers:headers
@@ -872,7 +1171,9 @@ async function connectAccount(){
 
 
     const accounts =
-      extractAccounts(accountsJson);
+      extractAccounts(
+        accountsJson
+      );
 
 
     if(!accounts.length){
@@ -890,26 +1191,29 @@ async function connectAccount(){
 
 
     accountInfo =
-      accounts.find(function(a){
+      accounts.find(
+        function(a){
 
-        const type =
-          String(
-            a.account_type ??
-            a.type ??
-            a.environment ??
-            a.accountType ??
-            ""
-          ).toLowerCase();
+          const type =
+            String(
+              a.account_type ??
+              a.type ??
+              a.environment ??
+              a.accountType ??
+              ""
+            ).toLowerCase();
 
-        const isReal =
-          type === "real" ||
-          type === "live";
 
-        return desired === "real"
-          ? isReal
-          : !isReal;
+          const isReal =
+            type === "real" ||
+            type === "live";
 
-      });
+
+          return desired === "real"
+            ? isReal
+            : !isReal;
+        }
+      );
 
 
     if(!accountInfo){
@@ -944,9 +1248,14 @@ async function connectAccount(){
     );
 
 
+    /*
+      CURRENT DERIV OTP ENDPOINT:
+      https://api.derivws.com
+    */
+
     const otpResponse =
       await fetch(
-        "https://api.deriv.com/trading/v1/options/accounts/" +
+        "https://api.derivws.com/trading/v1/options/accounts/" +
         encodeURIComponent(accountId) +
         "/otp",
         {
@@ -988,21 +1297,32 @@ async function connectAccount(){
     }
 
 
-    log("Authenticated WebSocket URL received.");
+    log(
+      "Authenticated WebSocket URL received."
+    );
 
-    connectWebSocket(wsUrl);
+
+    connectWebSocket(
+      wsUrl
+    );
+
 
   }catch(error){
 
     log(
       "CONNECT ERROR: " +
-      (error?.message || error)
+      (
+        error?.message ||
+        error
+      )
     );
+
 
     setConnectionStatus(
       "Error",
       "bad"
     );
+
 
   }finally{
 
@@ -1023,7 +1343,10 @@ function extractAccounts(payload){
 
     if(Array.isArray(value)){
 
-      for(const item of value){
+      for(
+        const item of value
+      ){
+
         walk(item);
       }
 
@@ -1031,7 +1354,11 @@ function extractAccounts(payload){
     }
 
 
-    if(typeof value !== "object"){
+    if(
+      typeof value !==
+      "object"
+    ){
+
       return;
     }
 
@@ -1042,17 +1369,24 @@ function extractAccounts(payload){
       value.accountId
     ){
 
-      result.push(value);
+      result.push(
+        value
+      );
     }
 
 
-    for(const key of Object.keys(value)){
+    for(
+      const key of Object.keys(value)
+    ){
 
-      const child = value[key];
+      const child =
+        value[key];
+
 
       if(
         child &&
-        typeof child === "object"
+        typeof child ===
+        "object"
       ){
 
         walk(child);
@@ -1068,26 +1402,47 @@ function extractAccounts(payload){
   const seen = new Set();
 
 
-  for(const account of result){
+  for(
+    const account of result
+  ){
 
     const id =
       account.id ??
       account.account_id ??
       account.accountId;
 
+
     if(!id) continue;
 
-    if(seen.has(String(id))) continue;
 
-    seen.add(String(id));
+    if(
+      seen.has(
+        String(id)
+      )
+    ){
 
-    unique.push(account);
+      continue;
+    }
+
+
+    seen.add(
+      String(id)
+    );
+
+
+    unique.push(
+      account
+    );
   }
 
 
   return unique;
 }
 
+
+/* =========================================================
+WEBSOCKET
+========================================================= */
 
 function connectWebSocket(url){
 
@@ -1101,78 +1456,106 @@ function connectWebSocket(url){
 
 
   ws =
-    new WebSocket(url);
-
-
-  ws.onopen = function(){
-
-    connected = true;
-    authenticated = true;
-
-    setConnectionStatus(
-      "Connected",
-      "good"
+    new WebSocket(
+      url
     );
 
-    $("accountStatus").textContent =
-      accountId || "---";
 
-    log(
-      "Authenticated WebSocket connected."
-    );
+  ws.onopen =
+    function(){
 
-    refreshBalance(true);
-
-    discoverMarkets();
-  };
+      connected = true;
+      authenticated = true;
 
 
-  ws.onmessage = function(event){
+      setConnectionStatus(
+        "Connected",
+        "good"
+      );
 
-    try{
 
-      const message =
-        JSON.parse(event.data);
+      $("accountStatus").textContent =
+        accountId || "---";
 
-      handleMessage(message);
-
-    }catch(error){
 
       log(
-        "MESSAGE PARSE ERROR: " +
-        error.message
+        "Authenticated WebSocket connected."
       );
-    }
-  };
 
 
-  ws.onerror = function(){
+      refreshBalance(
+        true
+      );
 
-    log("WebSocket error.");
-  };
+
+      discoverMarkets();
+    };
 
 
-  ws.onclose = function(){
+  ws.onmessage =
+    function(event){
 
-    connected = false;
-    authenticated = false;
-    trading = false;
+      try{
 
-    $("tradingStatus").textContent =
-      "STOPPED";
+        const message =
+          JSON.parse(
+            event.data
+          );
 
-    $("tradingStatus").className =
-      "bad";
 
-    setConnectionStatus(
-      "Disconnected",
-      "bad"
-    );
+        handleMessage(
+          message
+        );
 
-    log("WebSocket disconnected.");
 
-    ws = null;
-  };
+      }catch(error){
+
+        log(
+          "MESSAGE PARSE ERROR: " +
+          error.message
+        );
+      }
+    };
+
+
+  ws.onerror =
+    function(){
+
+      log(
+        "WebSocket error."
+      );
+    };
+
+
+  ws.onclose =
+    function(){
+
+      connected = false;
+      authenticated = false;
+      trading = false;
+
+
+      $("tradingStatus").textContent =
+        "STOPPED";
+
+
+      $("tradingStatus").className =
+        "bad";
+
+
+      setConnectionStatus(
+        "Disconnected",
+        "bad"
+      );
+
+
+      log(
+        "WebSocket disconnected."
+      );
+
+
+      ws = null;
+    };
 }
 
 
@@ -1186,6 +1569,7 @@ function disconnect(showLog=true){
 
   openTrade = null;
 
+
   if(ws){
 
     try{
@@ -1194,52 +1578,64 @@ function disconnect(showLog=true){
 
   }
 
+
   ws = null;
 
   connected = false;
   authenticated = false;
+
   accountId = null;
   accountInfo = null;
 
   markets = [];
-  marketData = {};
+  marketData = [];
 
   activeRequests = {};
+
 
   setConnectionStatus(
     "Disconnected",
     "bad"
   );
 
+
   $("accountStatus").textContent =
     "---";
+
 
   $("balanceStatus").textContent =
     "---";
 
+
   $("tradingStatus").textContent =
     "STOPPED";
+
 
   $("tradingStatus").className =
     "bad";
 
+
   $("openTradeStatus").textContent =
     "NONE";
+
 
   $("marketCount").textContent =
     "0";
 
+
   if(showLog){
-    log("Disconnected.");
+
+    log(
+      "Disconnected."
+    );
   }
 }
 
 
-/* =========================================================
-   STATUS
-========================================================= */
-
-function setConnectionStatus(text,className){
+function setConnectionStatus(
+  text,
+  className
+){
 
   $("connectionStatus").textContent =
     text;
@@ -1250,78 +1646,104 @@ function setConnectionStatus(text,className){
 
 
 /* =========================================================
-   REQUEST SYSTEM
+REQUEST SYSTEM
 ========================================================= */
 
-function request(payload,timeout=15000){
+function request(
+  payload,
+  timeout=15000
+){
 
-  return new Promise(function(resolve,reject){
+  return new Promise(
+    function(resolve,reject){
 
-    if(!ws || ws.readyState !== WebSocket.OPEN){
+      if(
+        !ws ||
+        ws.readyState !==
+        WebSocket.OPEN
+      ){
 
-      reject(
-        new Error("WebSocket is not connected.")
-      );
+        reject(
+          new Error(
+            "WebSocket is not connected."
+          )
+        );
 
-      return;
+        return;
+      }
+
+
+      const id =
+        requestId++;
+
+
+      const timer =
+        setTimeout(
+          function(){
+
+            if(
+              activeRequests[id]
+            ){
+
+              delete activeRequests[id];
+
+
+              reject(
+                new Error(
+                  "Request timeout."
+                )
+              );
+            }
+
+          },
+          timeout
+        );
+
+
+      activeRequests[id] = {
+
+        resolve:resolve,
+
+        reject:reject,
+
+        timer:timer
+      };
+
+
+      try{
+
+        ws.send(
+          JSON.stringify({
+
+            ...payload,
+
+            req_id:id
+          })
+        );
+
+
+      }catch(error){
+
+        clearTimeout(
+          timer
+        );
+
+
+        delete activeRequests[id];
+
+
+        reject(
+          error
+        );
+      }
+
     }
-
-
-    const id =
-      requestId++;
-
-
-    const timer =
-      setTimeout(function(){
-
-        if(activeRequests[id]){
-
-          delete activeRequests[id];
-
-          reject(
-            new Error(
-              "Request timeout."
-            )
-          );
-        }
-
-      },timeout);
-
-
-    activeRequests[id] = {
-
-      resolve:resolve,
-
-      reject:reject,
-
-      timer:timer
-    };
-
-
-    try{
-
-      ws.send(
-        JSON.stringify({
-          ...payload,
-          req_id:id
-        })
-      );
-
-    }catch(error){
-
-      clearTimeout(timer);
-
-      delete activeRequests[id];
-
-      reject(error);
-    }
-
-  });
+  );
 }
 
 
 /* =========================================================
-   MESSAGE ROUTER
+MESSAGE ROUTER
 ========================================================= */
 
 function handleMessage(msg){
@@ -1356,6 +1778,7 @@ function handleMessage(msg){
         )
       );
 
+
       return;
     }
 
@@ -1364,9 +1787,12 @@ function handleMessage(msg){
       "API ERROR: " +
       (
         msg.error.message ||
-        JSON.stringify(msg.error)
+        JSON.stringify(
+          msg.error
+        )
       )
     );
+
 
     return;
   }
@@ -1393,23 +1819,35 @@ function handleMessage(msg){
     delete activeRequests[reqId];
 
 
-    requestData.resolve(msg);
+    requestData.resolve(
+      msg
+    );
+
 
     return;
   }
 
 
-  if(msg.msg_type === "tick"){
+  if(
+    msg.msg_type === "tick"
+  ){
 
-    processTick(msg);
+    processTick(
+      msg
+    );
 
     return;
   }
 
 
-  if(msg.msg_type === "proposal_open_contract"){
+  if(
+    msg.msg_type ===
+    "proposal_open_contract"
+  ){
 
-    processOpenContract(msg);
+    processOpenContract(
+      msg
+    );
 
     return;
   }
@@ -1417,37 +1855,48 @@ function handleMessage(msg){
 
 
 /* =========================================================
-   BALANCE
+BALANCE
 ========================================================= */
 
-async function refreshBalance(force=false){
+async function refreshBalance(
+  force=false
+){
 
   if(
     !connected ||
     !ws ||
-    ws.readyState !== WebSocket.OPEN
+    ws.readyState !==
+    WebSocket.OPEN
   ){
+
     return;
   }
 
 
   if(
     !force &&
-    now() - lastBalanceRefresh < 30000
+    now() -
+    lastBalanceRefresh <
+    30000
   ){
+
     return;
   }
 
 
   try{
 
-    lastBalanceRefresh = now();
+    lastBalanceRefresh =
+      now();
 
 
     const response =
       await request({
+
         balance:1,
+
         subscribe:0
+
       });
 
 
@@ -1457,13 +1906,20 @@ async function refreshBalance(force=false){
       );
 
 
-    if(Number.isFinite(balance)){
+    if(
+      Number.isFinite(
+        balance
+      )
+    ){
 
-      currentBalance = balance;
+      currentBalance =
+        balance;
+
 
       $("balanceStatus").textContent =
         balance.toFixed(2);
     }
+
 
   }catch(error){
 
@@ -1476,7 +1932,7 @@ async function refreshBalance(force=false){
 
 
 /* =========================================================
-   MARKET DISCOVERY
+MARKET DISCOVERY
 ========================================================= */
 
 async function discoverMarkets(){
@@ -1484,19 +1940,26 @@ async function discoverMarkets(){
   if(!connected) return;
 
 
-  log("Discovering synthetic markets...");
+  log(
+    "Discovering synthetic markets..."
+  );
 
 
   try{
 
     const response =
       await request({
-        active_symbols:"brief"
+
+        active_symbols:
+          "brief"
+
       });
 
 
     const symbols =
-      Array.isArray(response?.active_symbols)
+      Array.isArray(
+        response?.active_symbols
+      )
         ? response.active_symbols
         : [];
 
@@ -1524,12 +1987,15 @@ async function discoverMarkets(){
     const discovered = [];
 
 
-    for(const item of candidates){
+    for(
+      const item of candidates
+    ){
 
       if(
         !connected ||
         !ws
       ){
+
         break;
       }
 
@@ -1548,7 +2014,10 @@ async function discoverMarkets(){
 
         const response =
           await request({
-            contracts_for:symbol
+
+            contracts_for:
+              symbol
+
           });
 
 
@@ -1561,6 +2030,7 @@ async function discoverMarkets(){
         const supported =
           contracts.filter(
             function(type){
+
               return ALLOWED_CONTRACTS.has(
                 type
               );
@@ -1568,7 +2038,9 @@ async function discoverMarkets(){
           );
 
 
-        if(supported.length){
+        if(
+          supported.length
+        ){
 
           discovered.push({
 
@@ -1584,7 +2056,10 @@ async function discoverMarkets(){
               item.symbol_type ||
               "",
 
-            supported:new Set(supported),
+            supported:
+              new Set(
+                supported
+              ),
 
             raw:item
           });
@@ -1608,14 +2083,28 @@ async function discoverMarkets(){
       }
 
 
-      await new Promise(function(resolve){
-        setTimeout(resolve,60);
-      });
+      /*
+        Inline delay.
+        No sleep() function.
+      */
+
+      await new Promise(
+        function(resolve){
+
+          setTimeout(
+            resolve,
+            60
+          );
+
+        }
+      );
 
 
       if(
-        discovered.length >= maxMarkets
+        discovered.length >=
+        maxMarkets
       ){
+
         break;
       }
     }
@@ -1632,7 +2121,9 @@ async function discoverMarkets(){
       markets.length;
 
 
-    if(!markets.length){
+    if(
+      !markets.length
+    ){
 
       log(
         "No supported synthetic markets found."
@@ -1651,6 +2142,7 @@ async function discoverMarkets(){
 
     initializeSupportedMarkets();
 
+
   }catch(error){
 
     log(
@@ -1665,11 +2157,17 @@ function isSyntheticMarket(item){
 
   const text =
     [
+
       item?.underlying_symbol,
+
       item?.underlying_symbol_name,
+
       item?.underlying_symbol_type,
+
       item?.market,
+
       item?.submarket
+
     ]
     .filter(Boolean)
     .join(" ")
@@ -1677,20 +2175,49 @@ function isSyntheticMarket(item){
 
 
   return (
-    text.includes("synthetic") ||
-    text.includes("derived") ||
-    text.includes("volatility") ||
-    text.includes("jump") ||
-    text.includes("step") ||
-    text.includes("crash") ||
-    text.includes("boom") ||
-    text.includes("range break") ||
-    text.includes("drift")
+
+    text.includes(
+      "synthetic"
+    ) ||
+
+    text.includes(
+      "derived"
+    ) ||
+
+    text.includes(
+      "volatility"
+    ) ||
+
+    text.includes(
+      "jump"
+    ) ||
+
+    text.includes(
+      "step"
+    ) ||
+
+    text.includes(
+      "crash"
+    ) ||
+
+    text.includes(
+      "boom"
+    ) ||
+
+    text.includes(
+      "range break"
+    ) ||
+
+    text.includes(
+      "drift"
+    )
   );
 }
 
 
-function parseAvailableContracts(response){
+function parseAvailableContracts(
+  response
+){
 
   const list =
     response?.contracts_for?.available ||
@@ -1698,27 +2225,32 @@ function parseAvailableContracts(response){
     [];
 
 
-  if(!Array.isArray(list)){
+  if(
+    !Array.isArray(list)
+  ){
+
     return [];
   }
 
 
   return list
-    .map(function(item){
+    .map(
+      function(item){
 
-      return String(
-        item?.contract_type ||
-        item?.type ||
-        ""
-      ).toUpperCase();
+        return String(
+          item?.contract_type ||
+          item?.type ||
+          ""
+        ).toUpperCase();
 
-    })
+      }
+    )
     .filter(Boolean);
 }
 
 
 /* =========================================================
-   MARKET INITIALIZATION
+MARKET INITIALIZATION
 ========================================================= */
 
 async function initializeSupportedMarkets(){
@@ -1727,12 +2259,16 @@ async function initializeSupportedMarkets(){
     triggerEpoch;
 
 
-  for(const market of markets){
+  for(
+    const market of markets
+  ){
 
     if(
       !connected ||
-      epoch !== triggerEpoch
+      epoch !==
+      triggerEpoch
     ){
+
       return;
     }
 
@@ -1750,18 +2286,26 @@ async function initializeSupportedMarkets(){
 
 
       if(
-        !marketData[market.symbol]
+        !marketData[
+          market.symbol
+        ]
       ){
-        marketData[market.symbol] = {
+
+        marketData[
+          market.symbol
+        ] = {
 
           ticks:[],
 
           ready:true
         };
 
+
       }else{
 
-        marketData[market.symbol].ready =
+        marketData[
+          market.symbol
+        ].ready =
           true;
       }
 
@@ -1778,58 +2322,84 @@ async function initializeSupportedMarkets(){
 
 
   renderScanner();
+
   renderDigits();
+
   renderValidation();
 
 
-  log("Market initialization complete.");
+  log(
+    "Market initialization complete."
+  );
 }
 
 
-async function loadHistory(symbol){
+async function loadHistory(
+  symbol
+){
 
   const response =
     await request({
-      ticks_history:symbol,
-      end:"latest",
-      count:HISTORY_COUNT,
-      style:"ticks"
+
+      ticks_history:
+        symbol,
+
+      end:
+        "latest",
+
+      count:
+        HISTORY_COUNT,
+
+      style:
+        "ticks"
+
     });
 
 
   const prices =
-    extractPrices(response);
+    extractPrices(
+      response
+    );
 
 
   marketData[symbol] = {
 
-    ticks:prices.slice(
-      -HISTORY_COUNT
-    ),
+    ticks:
+      prices.slice(
+        -HISTORY_COUNT
+      ),
 
     ready:true,
 
     price:
       prices.length
-        ? prices[prices.length-1]
+        ? prices[
+            prices.length - 1
+          ]
         : null
   };
 }
 
 
-function extractPrices(response){
+function extractPrices(
+  response
+){
 
   const prices =
     response?.history?.prices;
 
 
   if(
-    Array.isArray(prices)
+    Array.isArray(
+      prices
+    )
   ){
 
     return prices
       .map(Number)
-      .filter(Number.isFinite);
+      .filter(
+        Number.isFinite
+      );
   }
 
 
@@ -1837,30 +2407,40 @@ function extractPrices(response){
 }
 
 
-async function subscribeTicks(symbol){
+async function subscribeTicks(
+  symbol
+){
 
   if(
     !connected ||
     !ws
   ){
+
     return;
   }
 
 
   ws.send(
     JSON.stringify({
-      ticks:symbol,
-      subscribe:1
+
+      ticks:
+        symbol,
+
+      subscribe:
+        1
+
     })
   );
 }
 
 
 /* =========================================================
-   LIVE TICKS
+LIVE TICKS
 ========================================================= */
 
-function processTick(msg){
+function processTick(
+  msg
+){
 
   const symbol =
     msg?.tick?.symbol;
@@ -1877,12 +2457,19 @@ function processTick(msg){
     );
 
 
-  if(!Number.isFinite(price)){
+  if(
+    !Number.isFinite(
+      price
+    )
+  ){
+
     return;
   }
 
 
-  if(!marketData[symbol]){
+  if(
+    !marketData[symbol]
+  ){
 
     marketData[symbol] = {
 
@@ -1901,7 +2488,9 @@ function processTick(msg){
     price;
 
 
-  data.ticks.push(price);
+  data.ticks.push(
+    price
+  );
 
 
   if(
@@ -1921,29 +2510,38 @@ function processTick(msg){
     !openTrade
   ){
 
-    evaluateMarket(symbol);
+    evaluateMarket(
+      symbol
+    );
   }
 
 
   if(
-    now() - lastScannerRender >
+    now() -
+    lastScannerRender >
     500
   ){
 
-    lastScannerRender = now();
+    lastScannerRender =
+      now();
+
 
     renderScanner();
+
     renderDigits();
+
     renderValidation();
   }
 }
 
 
 /* =========================================================
-   DIGIT / STATISTICS
+DIGIT / STATISTICS
 ========================================================= */
 
-function lastDigit(price){
+function lastDigit(
+  price
+){
 
   const text =
     String(price)
@@ -1953,22 +2551,31 @@ function lastDigit(price){
       );
 
 
-  if(!text.length){
+  if(
+    !text.length
+  ){
+
     return 0;
   }
 
 
   return Number(
-    text[text.length-1]
+    text[
+      text.length - 1
+    ]
   );
 }
 
 
-function percentage(condition,total){
+function percentage(
+  condition,
+  total
+){
 
   if(!total){
     return 0;
   }
+
 
   return (
     condition /
@@ -1977,7 +2584,9 @@ function percentage(condition,total){
 }
 
 
-function calculateAnalysis(symbol){
+function calculateAnalysis(
+  symbol
+){
 
   const data =
     marketData[symbol];
@@ -1985,8 +2594,11 @@ function calculateAnalysis(symbol){
 
   if(
     !data ||
-    !Array.isArray(data.ticks)
+    !Array.isArray(
+      data.ticks
+    )
   ){
+
     return null;
   }
 
@@ -1998,6 +2610,7 @@ function calculateAnalysis(symbol){
   if(
     ticks.length < 20
   ){
+
     return null;
   }
 
@@ -2010,10 +2623,12 @@ function calculateAnalysis(symbol){
 
   const previous100 =
     ticks.length >= 200
+
       ? ticks.slice(
           -200,
           -100
         )
+
       : ticks.slice(
           0,
           Math.min(
@@ -2037,21 +2652,22 @@ function calculateAnalysis(symbol){
     );
 
 
-  let up20 = 0;
-  let down20 = 0;
-  let up50 = 0;
-  let down50 = 0;
-  let up100 = 0;
-  let down100 = 0;
-
-
   const directionWindow =
-    function(arr,count){
+    function(
+      arr,
+      count
+    ){
 
-      if(arr.length < 2){
+      if(
+        arr.length < 2
+      ){
+
         return {
+
           up:0,
+
           down:0,
+
           total:0
         };
       }
@@ -2064,25 +2680,26 @@ function calculateAnalysis(symbol){
 
 
       let up = 0;
+
       let down = 0;
 
 
       for(
-        let i=1;
-        i<values.length;
+        let i = 1;
+        i < values.length;
         i++
       ){
 
         if(
           values[i] >
-          values[i-1]
+          values[i - 1]
         ){
 
           up++;
 
         }else if(
           values[i] <
-          values[i-1]
+          values[i - 1]
         ){
 
           down++;
@@ -2092,17 +2709,20 @@ function calculateAnalysis(symbol){
 
       return {
 
-        up:percentage(
-          up,
-          up+down
-        ),
+        up:
+          percentage(
+            up,
+            up + down
+          ),
 
-        down:percentage(
-          down,
-          up+down
-        ),
+        down:
+          percentage(
+            down,
+            up + down
+          ),
 
-        total:up+down
+        total:
+          up + down
       };
     };
 
@@ -2135,21 +2755,13 @@ function calculateAnalysis(symbol){
     );
 
 
-  up20 = d20.up;
-  down20 = d20.down;
-
-  up50 = d50.up;
-  down50 = d50.down;
-
-  up100 = d100.up;
-  down100 = d100.down;
-
-
   const digitCounts =
     Array(10).fill(0);
 
 
-  for(const digit of digits){
+  for(
+    const digit of digits
+  ){
 
     if(
       digit >= 0 &&
@@ -2165,21 +2777,29 @@ function calculateAnalysis(symbol){
     Array(10).fill(0);
 
 
-  for(const digit of previousDigits){
+  for(
+    const digit of previousDigits
+  ){
 
     if(
       digit >= 0 &&
       digit <= 9
     ){
 
-      previousDigitCounts[digit]++;
+      previousDigitCounts[
+        digit
+      ]++;
     }
   }
 
 
   const even =
     digits.filter(
-      d => d % 2 === 0
+      function(d){
+
+        return d % 2 === 0;
+
+      }
     ).length;
 
 
@@ -2190,7 +2810,11 @@ function calculateAnalysis(symbol){
 
   const prevEven =
     previousDigits.filter(
-      d => d % 2 === 0
+      function(d){
+
+        return d % 2 === 0;
+
+      }
     ).length;
 
 
@@ -2201,25 +2825,41 @@ function calculateAnalysis(symbol){
 
   const over3 =
     digits.filter(
-      d => d > 3
+      function(d){
+
+        return d > 3;
+
+      }
     ).length;
 
 
   const prevOver3 =
     previousDigits.filter(
-      d => d > 3
+      function(d){
+
+        return d > 3;
+
+      }
     ).length;
 
 
   const under7 =
     digits.filter(
-      d => d < 7
+      function(d){
+
+        return d < 7;
+
+      }
     ).length;
 
 
   const prevUnder7 =
     previousDigits.filter(
-      d => d < 7
+      function(d){
+
+        return d < 7;
+
+      }
     ).length;
 
 
@@ -2237,7 +2877,9 @@ function calculateAnalysis(symbol){
 
   const currentDigit =
     digits.length
-      ? digits[digits.length-1]
+      ? digits[
+          digits.length - 1
+        ]
       : null;
 
 
@@ -2270,14 +2912,14 @@ function calculateAnalysis(symbol){
 
 
     for(
-      let i=1;
-      i<recent.length;
+      let i = 1;
+      i < recent.length;
       i++
     ){
 
       if(
         recent[i] ===
-        recent[i-1]
+        recent[i - 1]
       ){
 
         runs++;
@@ -2290,7 +2932,7 @@ function calculateAnalysis(symbol){
         runs,
         Math.max(
           1,
-          recent.length-1
+          recent.length - 1
         )
       );
   }
@@ -2299,8 +2941,8 @@ function calculateAnalysis(symbol){
   const chop =
     100 -
     Math.abs(
-      up50 -
-      down50
+      d50.up -
+      d50.down
     );
 
 
@@ -2311,22 +2953,34 @@ function calculateAnalysis(symbol){
     ticks,
 
     current100,
+
     previous100,
 
     digits,
+
     previousDigits,
 
     digitCounts,
+
     previousDigitCounts,
 
-    up20,
-    down20,
+    up20:
+      d20.up,
 
-    up50,
-    down50,
+    down20:
+      d20.down,
 
-    up100,
-    down100,
+    up50:
+      d50.up,
+
+    down50:
+      d50.down,
+
+    up100:
+      d100.up,
+
+    down100:
+      d100.down,
 
     prevUp100:
       pd100.up,
@@ -2404,16 +3058,19 @@ function calculateAnalysis(symbol){
 
     chop,
 
-    samples:digits.length
+    samples:
+      digits.length
   };
 }
 
 
 /* =========================================================
-   SIGNAL GENERATION
+SIGNAL GENERATION
 ========================================================= */
 
-function candidateSignals(analysis){
+function candidateSignals(
+  analysis
+){
 
   const candidates = [];
 
@@ -2427,9 +3084,11 @@ function candidateSignals(analysis){
 
     candidates.push({
 
-      contractType:"CALL",
+      contractType:
+        "CALL",
 
-      label:"RISE",
+      label:
+        "RISE",
 
       score:
         (
@@ -2460,9 +3119,11 @@ function candidateSignals(analysis){
 
     candidates.push({
 
-      contractType:"PUT",
+      contractType:
+        "PUT",
 
-      label:"FALL",
+      label:
+        "FALL",
 
       score:
         (
@@ -2492,9 +3153,11 @@ function candidateSignals(analysis){
 
     candidates.push({
 
-      contractType:"DIGITOVER",
+      contractType:
+        "DIGITOVER",
 
-      label:"OVER 3",
+      label:
+        "OVER 3",
 
       score:
         (
@@ -2522,9 +3185,11 @@ function candidateSignals(analysis){
 
     candidates.push({
 
-      contractType:"DIGITUNDER",
+      contractType:
+        "DIGITUNDER",
 
-      label:"UNDER 7",
+      label:
+        "UNDER 7",
 
       score:
         (
@@ -2552,9 +3217,11 @@ function candidateSignals(analysis){
 
     candidates.push({
 
-      contractType:"DIGITEVEN",
+      contractType:
+        "DIGITEVEN",
 
-      label:"EVEN",
+      label:
+        "EVEN",
 
       score:
         (
@@ -2582,9 +3249,11 @@ function candidateSignals(analysis){
 
     candidates.push({
 
-      contractType:"DIGITODD",
+      contractType:
+        "DIGITODD",
 
-      label:"ODD",
+      label:
+        "ODD",
 
       score:
         (
@@ -2604,6 +3273,11 @@ function candidateSignals(analysis){
   }
 
 
+  /*
+    MATCH ONLY.
+    DIFFERS IS NOT INCLUDED.
+  */
+
   if(
     analysis.mostPct >= 10 &&
     analysis.prevMostPct >= 10
@@ -2611,7 +3285,8 @@ function candidateSignals(analysis){
 
     candidates.push({
 
-      contractType:"DIGITMATCH",
+      contractType:
+        "DIGITMATCH",
 
       label:
         "MATCH " +
@@ -2645,7 +3320,7 @@ function candidateSignals(analysis){
 
 
 /* =========================================================
-   SIGNAL SELECTION
+SIGNAL SELECTION
 ========================================================= */
 
 function chooseBestSignal(
@@ -2660,7 +3335,12 @@ function chooseBestSignal(
 
   const market =
     markets.find(
-      m => m.symbol === symbol
+      function(m){
+
+        return m.symbol ===
+          symbol;
+
+      }
     );
 
 
@@ -2685,9 +3365,13 @@ function chooseBestSignal(
 
     candidates =
       candidates.filter(
-        candidate =>
-          candidate.contractType ===
-          s.strategy
+        function(candidate){
+
+          return (
+            candidate.contractType ===
+            s.strategy
+          );
+        }
       );
   }
 
@@ -2701,6 +3385,7 @@ function chooseBestSignal(
             candidate.contractType
           )
         ){
+
           return false;
         }
 
@@ -2709,6 +3394,7 @@ function chooseBestSignal(
           candidate.validation <
           s.minValidation
         ){
+
           return false;
         }
 
@@ -2717,6 +3403,7 @@ function chooseBestSignal(
           candidate.score <
           s.minScore
         ){
+
           return false;
         }
 
@@ -2725,6 +3412,7 @@ function chooseBestSignal(
           candidate.samples <
           s.minSamples
         ){
+
           return false;
         }
 
@@ -2733,6 +3421,7 @@ function chooseBestSignal(
           analysis.chop >
           s.maxChop
         ){
+
           return false;
         }
 
@@ -2741,6 +3430,7 @@ function chooseBestSignal(
           analysis.persistence <
           s.persistence
         ){
+
           return false;
         }
 
@@ -2750,7 +3440,10 @@ function chooseBestSignal(
     );
 
 
-  if(!candidates.length){
+  if(
+    !candidates.length
+  ){
+
     return null;
   }
 
@@ -2771,7 +3464,7 @@ function chooseBestSignal(
 
 
 /* =========================================================
-   PROPOSAL RATE LIMIT CONTROL
+PROPOSAL RATE LIMIT CONTROL
 ========================================================= */
 
 function proposalAllowed(){
@@ -2779,6 +3472,7 @@ function proposalAllowed(){
   if(
     proposalInFlight
   ){
+
     return false;
   }
 
@@ -2787,6 +3481,7 @@ function proposalAllowed(){
     now() <
     proposalBackoffUntil
   ){
+
     return false;
   }
 
@@ -2796,6 +3491,7 @@ function proposalAllowed(){
     lastProposalAt <
     proposalCooldownMs
   ){
+
     return false;
   }
 
@@ -2805,16 +3501,19 @@ function proposalAllowed(){
 
 
 /* =========================================================
-   MARKET EVALUATION
+MARKET EVALUATION
 ========================================================= */
 
-async function evaluateMarket(symbol){
+async function evaluateMarket(
+  symbol
+){
 
   if(
     !trading ||
     !connected ||
     openTrade
   ){
+
     return;
   }
 
@@ -2847,14 +3546,11 @@ async function evaluateMarket(symbol){
 
   if(
     s.takeProfit > 0 &&
-    totalPnL >= s.takeProfit
+    totalPnL >=
+    s.takeProfit
   ){
 
     stopTrading();
-
-    log(
-      "Take profit reached."
-    );
 
     return;
   }
@@ -2862,16 +3558,13 @@ async function evaluateMarket(symbol){
 
   if(
     s.stopLoss > 0 &&
-    totalPnL <= -Math.abs(
+    totalPnL <=
+    -Math.abs(
       s.stopLoss
     )
   ){
 
     stopTrading();
-
-    log(
-      "Stop loss reached."
-    );
 
     return;
   }
@@ -2888,8 +3581,9 @@ async function evaluateMarket(symbol){
 
 
   const lastEval =
-    lastEvaluationByMarket[symbol] ||
-    0;
+    lastEvaluationByMarket[
+      symbol
+    ] || 0;
 
 
   if(
@@ -2902,13 +3596,16 @@ async function evaluateMarket(symbol){
   }
 
 
-  lastEvaluationByMarket[symbol] =
+  lastEvaluationByMarket[
+    symbol
+  ] =
     now();
 
 
   if(
     !proposalAllowed()
   ){
+
     return;
   }
 
@@ -2933,7 +3630,8 @@ async function evaluateMarket(symbol){
 
   proposalInFlight = true;
 
-  lastProposalAt = now();
+  lastProposalAt =
+    now();
 
 
   try{
@@ -2943,6 +3641,7 @@ async function evaluateMarket(symbol){
       signal,
       analysis
     );
+
 
   }catch(error){
 
@@ -2988,6 +3687,7 @@ async function evaluateMarket(symbol){
         "ms backoff."
       );
 
+
     }else{
 
       log(
@@ -2997,15 +3697,17 @@ async function evaluateMarket(symbol){
       );
     }
 
+
   }finally{
 
-    proposalInFlight = false;
+    proposalInFlight =
+      false;
   }
 }
 
 
 /* =========================================================
-   PROPOSAL
+PROPOSAL
 ========================================================= */
 
 async function requestProposal(
@@ -3019,6 +3721,7 @@ async function requestProposal(
     !connected ||
     openTrade
   ){
+
     return;
   }
 
@@ -3029,11 +3732,14 @@ async function requestProposal(
 
   const payload = {
 
-    proposal:1,
+    proposal:
+      1,
 
-    amount:s.stake,
+    amount:
+      s.stake,
 
-    basis:"stake",
+    basis:
+      "stake",
 
     contract_type:
       signal.contractType,
@@ -3044,7 +3750,8 @@ async function requestProposal(
     duration:
       s.duration,
 
-    duration_unit:"t",
+    duration_unit:
+      "t",
 
     underlying_symbol:
       symbol
@@ -3053,13 +3760,13 @@ async function requestProposal(
 
   if(
     signal.contractType ===
-      "DIGITOVER" ||
+    "DIGITOVER" ||
 
     signal.contractType ===
-      "DIGITUNDER" ||
+    "DIGITUNDER" ||
 
     signal.contractType ===
-      "DIGITMATCH"
+    "DIGITMATCH"
   ){
 
     payload.barrier =
@@ -3067,13 +3774,17 @@ async function requestProposal(
       (
         signal.contractType ===
         "DIGITOVER"
+
           ? "3"
+
           : signal.contractType ===
             "DIGITUNDER"
-              ? "7"
-              : String(
-                  analysis.mostDigit
-                )
+
+            ? "7"
+
+            : String(
+                analysis.mostDigit
+              )
       );
   }
 
@@ -3095,7 +3806,7 @@ async function requestProposal(
 
 
 /* =========================================================
-   PROCESS PROPOSAL
+PROCESS PROPOSAL
 ========================================================= */
 
 async function processProposal(
@@ -3110,6 +3821,7 @@ async function processProposal(
     !connected ||
     openTrade
   ){
+
     return;
   }
 
@@ -3210,6 +3922,7 @@ async function processProposal(
     !trading ||
     openTrade
   ){
+
     return;
   }
 
@@ -3227,7 +3940,7 @@ async function processProposal(
 
 
 /* =========================================================
-   BUY CONTRACT
+BUY CONTRACT
 ========================================================= */
 
 async function buyContract(
@@ -3245,6 +3958,7 @@ async function buyContract(
     !trading ||
     !connected
   ){
+
     return;
   }
 
@@ -3334,14 +4048,18 @@ async function buyContract(
     ws.send(
       JSON.stringify({
 
-        proposal_open_contract:1,
+        proposal_open_contract:
+          1,
 
         contract_id:
           contractId,
 
-        subscribe:1
+        subscribe:
+          1
+
       })
     );
+
 
   }catch(error){
 
@@ -3354,10 +4072,12 @@ async function buyContract(
 
 
 /* =========================================================
-   OPEN CONTRACT
+OPEN CONTRACT
 ========================================================= */
 
-function processOpenContract(msg){
+function processOpenContract(
+  msg
+){
 
   if(!openTrade){
     return;
@@ -3381,6 +4101,7 @@ function processOpenContract(msg){
       openTrade.contractId
     )
   ){
+
     return;
   }
 
@@ -3392,7 +4113,9 @@ function processOpenContract(msg){
 
 
   if(
-    Number.isFinite(profit)
+    Number.isFinite(
+      profit
+    )
   ){
 
     openTrade.latestProfit =
@@ -3411,10 +4134,18 @@ function processOpenContract(msg){
     Boolean(
       contract.is_sold
     ) ||
-    status === "sold" ||
-    status === "won" ||
-    status === "lost" ||
-    status === "expired";
+
+    status ===
+      "sold" ||
+
+    status ===
+      "won" ||
+
+    status ===
+      "lost" ||
+
+    status ===
+      "expired";
 
 
   if(
@@ -3429,10 +4160,12 @@ function processOpenContract(msg){
 
 
 /* =========================================================
-   FINISH TRADE
+FINISH TRADE
 ========================================================= */
 
-function finishTrade(contract){
+function finishTrade(
+  contract
+){
 
   if(!openTrade){
     return;
@@ -3462,9 +4195,11 @@ function finishTrade(contract){
 
     wins++;
 
+
   }else{
 
     losses++;
+
 
     const symbol =
       trade.symbol;
@@ -3486,16 +4221,19 @@ function finishTrade(contract){
       s.marketLossLock
     ){
 
-      marketCooldownUntil[symbol] =
+      marketCooldownUntil[
+        symbol
+      ] =
         now() +
-        s.cooldown *
-        1000;
+        s.cooldown * 1000;
     }
   }
 
 
   totalPnL +=
-    Number.isFinite(profit)
+    Number.isFinite(
+      profit
+    )
       ? profit
       : 0;
 
@@ -3512,24 +4250,30 @@ function finishTrade(contract){
     trade.label +
     " | P/L " +
     (
-      Number.isFinite(profit)
+      Number.isFinite(
+        profit
+      )
         ? profit.toFixed(2)
         : "0.00"
     )
   );
 
 
-  openTrade = null;
+  openTrade =
+    null;
 
 
   updateSessionUI();
+
   updateActiveTradeUI();
 
 
   setTimeout(
     function(){
 
-      refreshBalance(true);
+      refreshBalance(
+        true
+      );
 
     },
     500
@@ -3547,9 +4291,11 @@ function finishTrade(contract){
 
     stopTrading();
 
+
     log(
       "Maximum trade count reached."
     );
+
 
     return;
   }
@@ -3562,9 +4308,11 @@ function finishTrade(contract){
 
     stopTrading();
 
+
     log(
       "Maximum loss count reached."
     );
+
 
     return;
   }
@@ -3578,9 +4326,11 @@ function finishTrade(contract){
 
     stopTrading();
 
+
     log(
       "Take profit reached."
     );
+
 
     return;
   }
@@ -3596,6 +4346,7 @@ function finishTrade(contract){
 
     stopTrading();
 
+
     log(
       "Stop loss reached."
     );
@@ -3604,7 +4355,7 @@ function finishTrade(contract){
 
 
 /* =========================================================
-   TRADING CONTROL
+TRADING CONTROL
 ========================================================= */
 
 function startTrading(){
@@ -3663,6 +4414,7 @@ function startTrading(){
   $("tradingStatus").textContent =
     "RUNNING";
 
+
   $("tradingStatus").className =
     "good";
 
@@ -3683,6 +4435,7 @@ function stopTrading(){
   $("tradingStatus").textContent =
     "STOPPED";
 
+
   $("tradingStatus").className =
     "bad";
 
@@ -3694,7 +4447,7 @@ function stopTrading(){
 
 
 /* =========================================================
-   RESET TRADE SESSION
+RESET TRADE SESSION
 ========================================================= */
 
 function resetTradeSession(){
@@ -3705,13 +4458,17 @@ function resetTradeSession(){
       "Reset Trade Session only resets session statistics; active trade remains untouched."
     );
 
+
     return;
   }
 
 
   totalTrades = 0;
+
   wins = 0;
+
   losses = 0;
+
   totalPnL = 0;
 
 
@@ -3735,7 +4492,7 @@ function resetTradeSession(){
 
 
 /* =========================================================
-   SESSION UI
+SESSION UI
 ========================================================= */
 
 function updateSessionUI(){
@@ -3743,8 +4500,10 @@ function updateSessionUI(){
   $("totalTrades").textContent =
     totalTrades;
 
+
   $("wins").textContent =
     wins;
+
 
   $("losses").textContent =
     losses;
@@ -3752,10 +4511,12 @@ function updateSessionUI(){
 
   const rate =
     totalTrades > 0
+
       ? (
           wins /
           totalTrades
         ) * 100
+
       : 0;
 
 
@@ -3776,23 +4537,30 @@ function updateActiveTradeUI(){
     $("openTradeStatus").textContent =
       "NONE";
 
+
     $("tradeMarket").textContent =
       "---";
+
 
     $("tradeContract").textContent =
       "---";
 
+
     $("tradeStake").textContent =
       "---";
+
 
     $("tradeAsk").textContent =
       "---";
 
+
     $("tradePayout").textContent =
       "---";
 
+
     $("tradeBE").textContent =
       "---";
+
 
     return;
   }
@@ -3837,7 +4605,7 @@ function updateActiveTradeUI(){
 
 
 /* =========================================================
-   SCANNER RENDER
+SCANNER
 ========================================================= */
 
 function renderScanner(){
@@ -3854,7 +4622,9 @@ function renderScanner(){
   const rows = [];
 
 
-  for(const market of markets){
+  for(
+    const market of markets
+  ){
 
     const analysis =
       calculateAnalysis(
@@ -3898,64 +4668,89 @@ function renderScanner(){
 
 
         return `
-          <tr>
-            <td>${escapeHtml(row.market.symbol)}</td>
 
-            <td>
-              ${Number(
-                marketData[row.market.symbol]?.price ?? 0
-              ).toFixed(5)}
-            </td>
+<tr>
 
-            <td>
-              ${a.currentDigit ?? "-"}
-            </td>
+<td>
+${escapeHtml(
+  row.market.symbol
+)}
+</td>
 
-            <td class="signal">
-              ${
-                signal
-                  ? escapeHtml(signal.label)
-                  : "-"
-              }
-            </td>
 
-            <td>
-              ${
-                signal
-                  ? signal.score.toFixed(2) + "%"
-                  : "-"
-              }
-            </td>
+<td>
+${Number(
+  marketData[
+    row.market.symbol
+  ]?.price ?? 0
+).toFixed(5)}
+</td>
 
-            <td>
-              ${
-                signal
-                  ? signal.validation.toFixed(2) + "%"
-                  : "-"
-              }
-            </td>
 
-            <td>
-              ${a.samples}
-            </td>
+<td>
+${a.currentDigit ?? "-"}
+</td>
 
-            <td>
-              ${a.chop.toFixed(2)}%
-            </td>
 
-            <td>
-              ${a.persistence.toFixed(2)}%
-            </td>
+<td class="signal">
+${
+  signal
+    ? escapeHtml(
+        signal.label
+      )
+    : "-"
+}
+</td>
 
-            <td>
-              ${
-                signal
-                  ? signal.current.toFixed(2) + "%"
-                  : "-"
-              }
-            </td>
-          </tr>
-        `;
+
+<td>
+${
+  signal
+    ? signal.score.toFixed(2) +
+      "%"
+    : "-"
+}
+</td>
+
+
+<td>
+${
+  signal
+    ? signal.validation.toFixed(2) +
+      "%"
+    : "-"
+}
+</td>
+
+
+<td>
+${a.samples}
+</td>
+
+
+<td>
+${a.chop.toFixed(2)}%
+</td>
+
+
+<td>
+${a.persistence.toFixed(2)}%
+</td>
+
+
+<td>
+${
+  signal
+    ? signal.current.toFixed(2) +
+      "%"
+    : "-"
+}
+</td>
+
+</tr>
+
+`;
+
       }
     )
     .join("");
@@ -3963,7 +4758,7 @@ function renderScanner(){
 
 
 /* =========================================================
-   DIGIT TABLE
+DIGITS
 ========================================================= */
 
 function renderDigits(){
@@ -4003,37 +4798,43 @@ function renderDigits(){
                 function(count){
 
                   return `
-                    <td>
-                      ${
-                        percentage(
-                          count,
-                          total
-                        ).toFixed(1)
-                      }%
-                    </td>
-                  `;
+
+<td>
+${
+  percentage(
+    count,
+    total
+  ).toFixed(1)
+}%
+</td>
+
+`;
+
                 }
               )
               .join("");
 
 
           return `
-            <tr>
-              <td>
-                ${escapeHtml(
-                  market.symbol
-                )}
-              </td>
 
-              ${cells}
+<tr>
 
-              <td>
-                ${
-                  a.currentDigit ?? "-"
-                }
-              </td>
-            </tr>
-          `;
+<td>
+${escapeHtml(
+  market.symbol
+)}
+</td>
+
+${cells}
+
+<td>
+${a.currentDigit ?? "-"}
+</td>
+
+</tr>
+
+`;
+
         }
       )
       .join("");
@@ -4041,7 +4842,7 @@ function renderDigits(){
 
 
 /* =========================================================
-   VALIDATION TABLE
+VALIDATION
 ========================================================= */
 
 function renderValidation(){
@@ -4072,60 +4873,63 @@ function renderValidation(){
 
 
           return `
-            <tr>
 
-              <td>
-                ${escapeHtml(
-                  market.symbol
-                )}
-              </td>
+<tr>
 
-              <td>
-                ${a.up20.toFixed(1)}%
-              </td>
+<td>
+${escapeHtml(
+  market.symbol
+)}
+</td>
 
-              <td>
-                ${a.up50.toFixed(1)}%
-              </td>
+<td>
+${a.up20.toFixed(1)}%
+</td>
 
-              <td>
-                ${a.up100.toFixed(1)}%
-              </td>
+<td>
+${a.up50.toFixed(1)}%
+</td>
 
-              <td>
-                ${a.prevUp100.toFixed(1)}%
-              </td>
+<td>
+${a.up100.toFixed(1)}%
+</td>
 
-              <td>
-                ${a.over3.toFixed(1)}%
-              </td>
+<td>
+${a.prevUp100.toFixed(1)}%
+</td>
 
-              <td>
-                ${a.prevOver3.toFixed(1)}%
-              </td>
+<td>
+${a.over3.toFixed(1)}%
+</td>
 
-              <td>
-                ${a.under7.toFixed(1)}%
-              </td>
+<td>
+${a.prevOver3.toFixed(1)}%
+</td>
 
-              <td>
-                ${a.prevUnder7.toFixed(1)}%
-              </td>
+<td>
+${a.under7.toFixed(1)}%
+</td>
 
-              <td>
-                ${a.even.toFixed(1)}%
-              </td>
+<td>
+${a.prevUnder7.toFixed(1)}%
+</td>
 
-              <td>
-                ${a.odd.toFixed(1)}%
-              </td>
+<td>
+${a.even.toFixed(1)}%
+</td>
 
-              <td>
-                ${a.mostPct.toFixed(1)}%
-              </td>
+<td>
+${a.odd.toFixed(1)}%
+</td>
 
-            </tr>
-          `;
+<td>
+${a.mostPct.toFixed(1)}%
+</td>
+
+</tr>
+
+`;
+
         }
       )
       .join("");
@@ -4133,7 +4937,7 @@ function renderValidation(){
 
 
 /* =========================================================
-   PERIODIC BALANCE REFRESH
+PERIODIC BALANCE REFRESH
 ========================================================= */
 
 setInterval(
@@ -4144,7 +4948,9 @@ setInterval(
       authenticated
     ){
 
-      refreshBalance(false);
+      refreshBalance(
+        false
+      );
     }
 
   },
@@ -4153,7 +4959,7 @@ setInterval(
 
 
 /* =========================================================
-   INITIAL TRADING LOOP
+TRADING LOOP
 ========================================================= */
 
 setInterval(
@@ -4164,6 +4970,7 @@ setInterval(
       !connected ||
       openTrade
     ){
+
       return;
     }
 
@@ -4173,13 +4980,15 @@ setInterval(
 
 
     for(
-      const market of currentMarkets
+      const market of
+      currentMarkets
     ){
 
       if(
         openTrade ||
         !trading
       ){
+
         break;
       }
 
@@ -4195,40 +5004,53 @@ setInterval(
 
 
 /* =========================================================
-   INITIAL UI
+INITIAL UI
 ========================================================= */
 
 updateSessionUI();
+
 updateActiveTradeUI();
 
 
 log(
-  "V37 ready."
+  "V38 ready."
 );
+
+
+log(
+  "Current Options REST API host: api.derivws.com"
+);
+
 
 log(
   "Strategy: Pulse / Surge multi-market statistical scanner."
 );
 
+
 log(
   "Contracts enabled: CALL, PUT, DIGITOVER, DIGITUNDER, DIGITEVEN, DIGITODD, DIGITMATCH."
 );
+
 
 log(
   "DIFFERS is disabled."
 );
 
+
 log(
   "History validation: current 100 ticks + previous 100 ticks."
 );
+
 
 log(
   "No Martingale or recovery."
 );
 
+
 log(
   "Proposal rate-limit protection enabled."
 );
+
 
 log(
   "LIVE execution mode: DEMO or REAL Options account."
