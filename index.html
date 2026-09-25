@@ -2,18 +2,23 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport"
-      content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+
+<meta
+  name="viewport"
+  content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"
+>
 
 <title>AI Pulse Surge Trader</title>
 
 <style>
+
 *{
   box-sizing:border-box;
   -webkit-tap-highlight-color:transparent;
 }
 
-html,body{
+html,
+body{
   margin:0;
   padding:0;
   background:#07101e;
@@ -61,9 +66,11 @@ h2{
 }
 
 @media(max-width:650px){
+
   .grid{
     grid-template-columns:1fr;
   }
+
 }
 
 label{
@@ -73,7 +80,8 @@ label{
   margin-bottom:7px;
 }
 
-input,select{
+input,
+select{
   width:100%;
   background:#091322;
   color:#eef4ff;
@@ -84,7 +92,8 @@ input,select{
   outline:none;
 }
 
-input:focus,select:focus{
+input:focus,
+select:focus{
   border-color:#4b8ddd;
 }
 
@@ -98,7 +107,7 @@ input:focus,select:focus{
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:12px;
-  margin-top:10px;
+  margin-top:12px;
 }
 
 button{
@@ -144,9 +153,11 @@ button:disabled{
 }
 
 @media(max-width:700px){
+
   .statusGrid{
     grid-template-columns:1fr 1fr;
   }
+
 }
 
 .status{
@@ -205,6 +216,7 @@ button:disabled{
 .signalMarket{
   color:#9db1ce;
   font-size:13px;
+  margin-top:3px;
 }
 
 .score{
@@ -234,9 +246,11 @@ button:disabled{
 }
 
 @media(max-width:650px){
+
   .metrics{
     grid-template-columns:1fr 1fr;
   }
+
 }
 
 .metric{
@@ -256,7 +270,7 @@ button:disabled{
 }
 
 .log{
-  height:260px;
+  height:280px;
   overflow:auto;
   background:#050b14;
   border:1px solid #1d314d;
@@ -307,9 +321,6 @@ button:disabled{
   color:#e8aaaa;
 }
 
-.hidden{
-  display:none;
-}
 </style>
 </head>
 
@@ -317,492 +328,838 @@ button:disabled{
 
 <div class="container">
 
-  <h1>⚡ AI Pulse Surge Trader</h1>
-
-  <div class="subtitle">
-    Statistical multi-market scanner • Rise/Fall + Even/Odd only
-  </div>
-
-  <!-- CONNECTION -->
-  <div class="card">
-
-    <h2>Connection</h2>
-
-    <div class="grid">
-
-      <div>
-        <label>Personal Access Token</label>
-        <input
-          id="pat"
-          type="password"
-          autocomplete="off"
-          placeholder="Paste new PAT">
-      </div>
-
-      <div>
-        <label>New PAT App ID</label>
-        <input
-          id="appId"
-          type="text"
-          autocomplete="off"
-          placeholder="Paste new App ID">
-        <div class="small">
-          Use the NEW PAT application App ID.
-        </div>
-      </div>
-
-      <div>
-        <label>Account</label>
-        <select id="accountType">
-          <option value="demo">DEMO</option>
-          <option value="real">REAL</option>
-        </select>
-      </div>
-
-      <div>
-        <label>Stake / Trade</label>
-        <input
-          id="stake"
-          type="number"
-          value="1"
-          min="0.35"
-          step="0.01">
-      </div>
-
-      <div>
-        <label>Duration / Ticks</label>
-        <input
-          id="duration"
-          type="number"
-          value="1"
-          min="1"
-          max="10">
-      </div>
-
-      <div>
-        <label>Max Markets</label>
-        <input
-          id="maxMarkets"
-          type="number"
-          value="40"
-          min="5"
-          max="60">
-      </div>
-
-    </div>
-
-  </div>
-
-
-  <!-- AI FILTERS -->
-  <div class="card">
-
-    <h2>🧠 AI Signal Engine</h2>
-
-    <div class="grid">
-
-      <div>
-        <label>Min Validation %</label>
-        <input
-          id="minValidation"
-          type="number"
-          value="56"
-          min="50"
-          max="95">
-      </div>
-
-      <div>
-        <label>Min Samples</label>
-        <input
-          id="minSamples"
-          type="number"
-          value="20"
-          min="10"
-          max="200">
-      </div>
-
-      <div>
-        <label>Min AI Score</label>
-        <input
-          id="minScore"
-          type="number"
-          value="62"
-          min="50"
-          max="95">
-      </div>
-
-      <div>
-        <label>Min EV %</label>
-        <input
-          id="minEV"
-          type="number"
-          value="0"
-          min="-100"
-          max="100"
-          step="0.1">
-      </div>
-
-      <div>
-        <label>Max Chop %</label>
-        <input
-          id="maxChop"
-          type="number"
-          value="70"
-          min="0"
-          max="100">
-      </div>
-
-      <div>
-        <label>Persistence %</label>
-        <input
-          id="persistence"
-          type="number"
-          value="0"
-          min="0"
-          max="100">
-      </div>
-
-      <div>
-        <label>Market Cooldown / sec</label>
-        <input
-          id="cooldown"
-          type="number"
-          value="10"
-          min="0"
-          max="300">
-      </div>
-
-      <div>
-        <label>Market Loss Lock</label>
-        <input
-          id="lossLock"
-          type="number"
-          value="1"
-          min="1"
-          max="10">
-      </div>
-
-    </div>
-
-    <div class="info">
-      The engine evaluates the latest 100 ticks against the previous
-      100 ticks. It creates separate Rise/Fall and Even/Odd scores,
-      then selects the strongest qualified setup. If no setup passes,
-      it waits.
-    </div>
-
-  </div>
-
-
-  <!-- SESSION -->
-  <div class="card">
-
-    <h2>Session Limits</h2>
-
-    <div class="grid">
-
-      <div>
-        <label>Max Trades</label>
-        <input
-          id="maxTrades"
-          type="number"
-          value="20"
-          min="1"
-          max="500">
-      </div>
-
-      <div>
-        <label>Max Losses</label>
-        <input
-          id="maxLosses"
-          type="number"
-          value="3"
-          min="1"
-          max="100">
-      </div>
-
-      <div>
-        <label>Take Profit</label>
-        <input
-          id="takeProfit"
-          type="number"
-          value="0"
-          min="0"
-          step="0.01">
-      </div>
-
-      <div>
-        <label>Stop Loss</label>
-        <input
-          id="stopLoss"
-          type="number"
-          value="0"
-          min="0"
-          step="0.01">
-      </div>
-
-    </div>
-
-    <div class="buttons">
-
-      <button
-        class="connect"
-        id="connectBtn"
-        onclick="connectAccount()">
-        Connect
-      </button>
-
-      <button
-        class="start"
-        id="startBtn"
-        onclick="startTrading()"
-        disabled>
-        Start Trading
-      </button>
-
-      <button
-        class="stop"
-        onclick="stopTrading()">
-        Stop Trading
-      </button>
-
-      <button
-        class="disconnect"
-        onclick="disconnect()">
-        Disconnect
-      </button>
-
-      <button
-        class="reset"
-        onclick="resetTradeSession()">
-        Reset Trade Session
-      </button>
-
-    </div>
-
-    <div class="info dangerNote">
-      No Martingale. No recovery. One trade at a time.
-      This bot does not increase the stake after a loss.
-    </div>
-
-  </div>
-
-
-  <!-- STATUS -->
-  <div class="card">
-
-    <h2>Live Status</h2>
-
-    <div class="statusGrid">
-
-      <div class="status">
-        <div class="title">Connection</div>
-        <div
-          id="connectionStatus"
-          class="value red">
-          Disconnected
-        </div>
-      </div>
-
-      <div class="status">
-        <div class="title">Account</div>
-        <div
-          id="accountStatus"
-          class="value">
-          —
-        </div>
-      </div>
-
-      <div class="status">
-        <div class="title">Balance</div>
-        <div
-          id="balanceStatus"
-          class="value">
-          —
-        </div>
-      </div>
-
-      <div class="status">
-        <div class="title">Trading</div>
-        <div
-          id="tradingStatus"
-          class="value yellow">
-          STOPPED
-        </div>
-      </div>
-
-      <div class="status">
-        <div class="title">Markets</div>
-        <div
-          id="marketStatus"
-          class="value">
-          0
-        </div>
-      </div>
-
-      <div class="status">
-        <div class="title">Trades</div>
-        <div
-          id="tradesStatus"
-          class="value">
-          0
-        </div>
-      </div>
-
-      <div class="status">
-        <div class="title">Wins</div>
-        <div
-          id="winsStatus"
-          class="value green">
-          0
-        </div>
-      </div>
-
-      <div class="status">
-        <div class="title">Losses</div>
-        <div
-          id="lossesStatus"
-          class="value red">
-          0
-        </div>
-      </div>
-
-      <div class="status">
-        <div class="title">Session P/L</div>
-        <div
-          id="profitStatus"
-          class="value">
-          0.00
-        </div>
-      </div>
-
-      <div class="status">
-        <div class="title">Win Rate</div>
-        <div
-          id="winRateStatus"
-          class="value">
-          0%
-        </div>
-      </div>
-
-      <div class="status">
-        <div class="title">AI Candidates</div>
-        <div
-          id="candidateStatus"
-          class="value blue">
-          0
-        </div>
-      </div>
-
-      <div class="status">
-        <div class="title">Trade State</div>
-        <div
-          id="tradeState"
-          class="value">
-          IDLE
-        </div>
-      </div>
-
-    </div>
-
-  </div>
-
-
-  <!-- SIGNAL -->
-  <div class="card">
-
-    <h2>🔎 AI Signal</h2>
-
-    <div class="signalBox">
-
-      <div class="signalMain">
-
-        <div>
-          <div
-            id="signalType"
-            class="signalType">
-            WAITING
-          </div>
-
-          <div
-            id="signalMarket"
-            class="signalMarket">
-            Scanning markets...
-          </div>
-        </div>
-
-        <div
-          id="signalScore"
-          class="score">
-          0
-        </div>
-
-      </div>
-
-      <div class="progress">
-        <div
-          id="signalProgress"
-          class="progressBar">
-        </div>
-      </div>
-
-      <div class="metrics">
-
-        <div class="metric">
-          <b id="mValidation">0%</b>
-          <span>Validation</span>
-        </div>
-
-        <div class="metric">
-          <b id="mPersistence">0%</b>
-          <span>Persistence</span>
-        </div>
-
-        <div class="metric">
-          <b id="mChop">0%</b>
-          <span>Chop</span>
-        </div>
-
-        <div class="metric">
-          <b id="mSamples">0</b>
-          <span>Samples</span>
-        </div>
-
-        <div class="metric">
-          <b id="mEV">0%</b>
-          <span>Estimated EV</span>
-        </div>
-
-        <div class="metric">
-          <b id="mRF">0</b>
-          <span>RF Score</span>
-        </div>
-
-        <div class="metric">
-          <b id="mEO">0</b>
-          <span>EO Score</span>
-        </div>
-
-        <div class="metric">
-          <b id="mMode">WAIT</b>
-          <span>Engine</span>
-        </div>
-
-      </div>
-
-    </div>
-
-  </div>
-
-
-  <!-- LOG -->
-  <div class="card">
-
-    <h2>Engine Log</h2>
-
-    <div id="log" class="log"></div>
-
-  </div>
+<h1>⚡ AI Pulse Surge Trader</h1>
+
+<div class="subtitle">
+AI-style multi-market scanner • Rise/Fall + Even/Odd only
+</div>
+
+
+<!-- CONNECTION -->
+
+<div class="card">
+
+<h2>Connection</h2>
+
+<div class="grid">
+
+<div>
+
+<label>Personal Access Token</label>
+
+<input
+id="pat"
+type="password"
+autocomplete="off"
+placeholder="Paste new PAT"
+>
+
+</div>
+
+
+<div>
+
+<label>New PAT App ID</label>
+
+<input
+id="appId"
+type="text"
+autocomplete="off"
+placeholder="Paste new App ID"
+>
+
+<div class="small">
+Use the NEW PAT application App ID.
+</div>
+
+</div>
+
+
+<div>
+
+<label>Account</label>
+
+<select id="accountType">
+
+<option value="demo">
+DEMO
+</option>
+
+<option value="real">
+REAL
+</option>
+
+</select>
+
+</div>
+
+
+<div>
+
+<label>Stake / Trade</label>
+
+<input
+id="stake"
+type="number"
+value="1"
+min="0.35"
+step="0.01"
+>
+
+</div>
+
+
+<div>
+
+<label>Duration / Ticks</label>
+
+<select id="duration">
+
+<option value="AUTO">
+AUTO — find allowed duration
+</option>
+
+<option value="1">
+1 tick
+</option>
+
+<option value="2">
+2 ticks
+</option>
+
+<option value="3">
+3 ticks
+</option>
+
+<option value="4">
+4 ticks
+</option>
+
+<option value="5">
+5 ticks
+</option>
+
+<option value="10">
+10 ticks
+</option>
+
+<option value="15">
+15 ticks
+</option>
+
+<option value="20">
+20 ticks
+</option>
+
+</select>
+
+<div class="small">
+AUTO automatically finds a duration accepted by Deriv.
+</div>
+
+</div>
+
+
+<div>
+
+<label>Max Markets</label>
+
+<input
+id="maxMarkets"
+type="number"
+value="40"
+min="5"
+max="60"
+>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- AI FILTERS -->
+
+<div class="card">
+
+<h2>🧠 AI Signal Filters</h2>
+
+<div class="grid">
+
+<div>
+
+<label>Min Validation %</label>
+
+<input
+id="minValidation"
+type="number"
+value="56"
+min="50"
+max="95"
+>
+
+</div>
+
+
+<div>
+
+<label>Min Samples</label>
+
+<input
+id="minSamples"
+type="number"
+value="30"
+min="20"
+max="200"
+>
+
+</div>
+
+
+<div>
+
+<label>Min AI Score</label>
+
+<input
+id="minScore"
+type="number"
+value="62"
+min="50"
+max="92"
+>
+
+</div>
+
+
+<div>
+
+<label>Min EV %</label>
+
+<input
+id="minEV"
+type="number"
+value="0"
+min="-100"
+max="100"
+step="0.1"
+>
+
+</div>
+
+
+<div>
+
+<label>Max Chop %</label>
+
+<input
+id="maxChop"
+type="number"
+value="70"
+min="0"
+max="100"
+>
+
+</div>
+
+
+<div>
+
+<label>Persistence %</label>
+
+<input
+id="persistence"
+type="number"
+value="0"
+min="0"
+max="100"
+>
+
+</div>
+
+
+<div>
+
+<label>Market Cooldown / sec</label>
+
+<input
+id="cooldown"
+type="number"
+value="15"
+min="0"
+max="300"
+>
+
+</div>
+
+
+<div>
+
+<label>Market Loss Lock</label>
+
+<input
+id="lossLock"
+type="number"
+value="1"
+min="1"
+max="10"
+>
+
+</div>
+
+</div>
+
+
+<div class="info">
+
+The engine analyzes the latest 200 ticks:
+100 current ticks + 100 previous ticks.
+
+It evaluates Rise/Fall and Even/Odd independently,
+then ranks qualified signals.
+
+No signal = no trade.
+
+</div>
+
+</div>
+
+
+<!-- SESSION -->
+
+<div class="card">
+
+<h2>Session Limits</h2>
+
+<div class="grid">
+
+<div>
+
+<label>Max Trades</label>
+
+<input
+id="maxTrades"
+type="number"
+value="20"
+min="1"
+max="500"
+>
+
+</div>
+
+
+<div>
+
+<label>Max Losses</label>
+
+<input
+id="maxLosses"
+type="number"
+value="3"
+min="1"
+max="100"
+>
+
+</div>
+
+
+<div>
+
+<label>Take Profit</label>
+
+<input
+id="takeProfit"
+type="number"
+value="0"
+min="0"
+step="0.01"
+>
+
+</div>
+
+
+<div>
+
+<label>Stop Loss</label>
+
+<input
+id="stopLoss"
+type="number"
+value="0"
+min="0"
+step="0.01"
+>
+
+</div>
+
+</div>
+
+
+<div class="buttons">
+
+<button
+class="connect"
+id="connectBtn"
+onclick="connectAccount()"
+>
+Connect
+</button>
+
+
+<button
+class="start"
+id="startBtn"
+onclick="startTrading()"
+disabled
+>
+Start Trading
+</button>
+
+
+<button
+class="stop"
+onclick="stopTrading()"
+>
+Stop Trading
+</button>
+
+
+<button
+class="disconnect"
+onclick="disconnect()"
+>
+Disconnect
+</button>
+
+
+<button
+class="reset"
+onclick="resetTradeSession()"
+>
+Reset Trade Session
+</button>
+
+</div>
+
+
+<div class="info dangerNote">
+
+No Martingale.
+No recovery.
+One trade at a time.
+
+</div>
+
+</div>
+
+
+<!-- STATUS -->
+
+<div class="card">
+
+<h2>Live Status</h2>
+
+<div class="statusGrid">
+
+<div class="status">
+
+<div class="title">
+Connection
+</div>
+
+<div
+id="connectionStatus"
+class="value red"
+>
+Disconnected
+</div>
+
+</div>
+
+
+<div class="status">
+
+<div class="title">
+Account
+</div>
+
+<div
+id="accountStatus"
+class="value"
+>
+—
+</div>
+
+</div>
+
+
+<div class="status">
+
+<div class="title">
+Balance
+</div>
+
+<div
+id="balanceStatus"
+class="value"
+>
+—
+</div>
+
+</div>
+
+
+<div class="status">
+
+<div class="title">
+Trading
+</div>
+
+<div
+id="tradingStatus"
+class="value yellow"
+>
+STOPPED
+</div>
+
+</div>
+
+
+<div class="status">
+
+<div class="title">
+Markets
+</div>
+
+<div
+id="marketStatus"
+class="value"
+>
+0
+</div>
+
+</div>
+
+
+<div class="status">
+
+<div class="title">
+Trades
+</div>
+
+<div
+id="tradesStatus"
+class="value"
+>
+0
+</div>
+
+</div>
+
+
+<div class="status">
+
+<div class="title">
+Wins
+</div>
+
+<div
+id="winsStatus"
+class="value green"
+>
+0
+</div>
+
+</div>
+
+
+<div class="status">
+
+<div class="title">
+Losses
+</div>
+
+<div
+id="lossesStatus"
+class="value red"
+>
+0
+</div>
+
+</div>
+
+
+<div class="status">
+
+<div class="title">
+Session P/L
+</div>
+
+<div
+id="profitStatus"
+class="value"
+>
+0.00
+</div>
+
+</div>
+
+
+<div class="status">
+
+<div class="title">
+Win Rate
+</div>
+
+<div
+id="winRateStatus"
+class="value"
+>
+0%
+</div>
+
+</div>
+
+
+<div class="status">
+
+<div class="title">
+AI Candidates
+</div>
+
+<div
+id="candidateStatus"
+class="value blue"
+>
+0
+</div>
+
+</div>
+
+
+<div class="status">
+
+<div class="title">
+Trade State
+</div>
+
+<div
+id="tradeState"
+class="value"
+>
+IDLE
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- SIGNAL -->
+
+<div class="card">
+
+<h2>🔎 AI Signal</h2>
+
+<div class="signalBox">
+
+<div class="signalMain">
+
+<div>
+
+<div
+id="signalType"
+class="signalType"
+>
+WAITING
+</div>
+
+<div
+id="signalMarket"
+class="signalMarket"
+>
+Scanning markets...
+</div>
+
+</div>
+
+
+<div
+id="signalScore"
+class="score"
+>
+0
+</div>
+
+</div>
+
+
+<div class="progress">
+
+<div
+id="signalProgress"
+class="progressBar"
+>
+</div>
+
+</div>
+
+
+<div class="metrics">
+
+<div class="metric">
+
+<b id="mValidation">
+0%
+</b>
+
+<span>
+Validation
+</span>
+
+</div>
+
+
+<div class="metric">
+
+<b id="mPrevious">
+0%
+</b>
+
+<span>
+Previous
+</span>
+
+</div>
+
+
+<div class="metric">
+
+<b id="mPersistence">
+0%
+</b>
+
+<span>
+Persistence
+</span>
+
+</div>
+
+
+<div class="metric">
+
+<b id="mChop">
+0%
+</b>
+
+<span>
+Chop
+</span>
+
+</div>
+
+
+<div class="metric">
+
+<b id="mSamples">
+0
+</b>
+
+<span>
+Samples
+</span>
+
+</div>
+
+
+<div class="metric">
+
+<b id="mEV">
+0%
+</b>
+
+<span>
+Estimated EV
+</span>
+
+</div>
+
+
+<div class="metric">
+
+<b id="mRF">
+0
+</b>
+
+<span>
+RF Score
+</span>
+
+</div>
+
+
+<div class="metric">
+
+<b id="mEO">
+0
+</b>
+
+<span>
+EO Score
+</span>
+
+</div>
+
+
+<div class="metric">
+
+<b id="mDuration">
+AUTO
+</b>
+
+<span>
+Duration
+</span>
+
+</div>
+
+
+<div class="metric">
+
+<b id="mMode">
+WAIT
+</b>
+
+<span>
+Engine
+</span>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- LOG -->
+
+<div class="card">
+
+<h2>
+Engine Log
+</h2>
+
+<div
+id="log"
+class="log"
+>
+</div>
+
+</div>
 
 </div>
 
@@ -811,39 +1168,73 @@ button:disabled{
 
 /* =========================================================
    AI PULSE SURGE TRADER
-   ---------------------------------------------------------
-   Contracts:
-   CALL
-   PUT
-   DIGITEVEN
-   DIGITODD
+   =========================================================
 
-   Removed:
+   CONTRACTS:
+
+   CALL       = RISE
+   PUT        = FALL
+   DIGITEVEN  = EVEN
+   DIGITODD   = ODD
+
+   REMOVED:
+
    DIGITOVER
    DIGITUNDER
    DIGITMATCH
    DIGITDIFF
 
-   No Martingale
-   No recovery
-   One trade at a time
    ========================================================= */
+
+
+/* =========================================================
+   API
+   ========================================================= */
+
+const API_BASE =
+"https://api.derivws.com";
 
 
 /* =========================================================
    CONSTANTS
    ========================================================= */
 
-const API_BASE = "https://api.derivws.com";
+const HISTORY_SIZE =
+200;
+
 
 const ALLOWED_CONTRACTS = [
-  "CALL",
-  "PUT",
-  "DIGITEVEN",
-  "DIGITODD"
+
+"CALL",
+
+"PUT",
+
+"DIGITEVEN",
+
+"DIGITODD"
+
 ];
 
-const HISTORY_SIZE = 200;
+
+const AUTO_DURATIONS = [
+
+1,
+
+2,
+
+3,
+
+4,
+
+5,
+
+10,
+
+15,
+
+20
+
+];
 
 
 /* =========================================================
@@ -853,43 +1244,76 @@ const HISTORY_SIZE = 200;
 let ws = null;
 
 let connected = false;
+
 let trading = false;
 
+let disconnecting = false;
+
 let accountId = null;
+
 let accountType = null;
+
 let currency = "USD";
+
 let balance = 0;
 
 let requestId = 1000;
 
-const pendingRequests = new Map();
 
-const markets = new Map();
+const pendingRequests =
+new Map();
+
+
+const markets =
+new Map();
+
+
+const durationCache =
+new Map();
+
+
+const badDurationCache =
+new Map();
+
+
+const marketLosses =
+new Map();
+
+
+const marketLastTrade =
+new Map();
+
 
 let scanTimer = null;
 
 let proposalInFlight = false;
+
 let tradeInFlight = false;
 
 let currentContractId = null;
+
 let currentTradeMarket = null;
+
 let currentTradeType = null;
+
+let currentTradeDuration = null;
 
 let currentTradeFinalized = false;
 
-let session = {
-  trades: 0,
-  wins: 0,
-  losses: 0,
-  profit: 0
-};
-
-let marketLosses = new Map();
-let marketLastTrade = new Map();
-
 let lastCandidateCount = 0;
 
-let disconnecting = false;
+
+let session = {
+
+trades:0,
+
+wins:0,
+
+losses:0,
+
+profit:0
+
+};
 
 
 /* =========================================================
@@ -897,7 +1321,30 @@ let disconnecting = false;
    ========================================================= */
 
 function el(id){
-  return document.getElementById(id);
+
+return document.getElementById(id);
+
+}
+
+
+/* =========================================================
+   NUMBER
+   ========================================================= */
+
+function num(
+id,
+fallback
+){
+
+const value =
+Number(
+el(id).value
+);
+
+return Number.isFinite(value)
+? value
+: fallback;
+
 }
 
 
@@ -905,134 +1352,245 @@ function el(id){
    SETTINGS
    ========================================================= */
 
-function num(id, fallback){
-  const value = Number(el(id).value);
-  return Number.isFinite(value) ? value : fallback;
-}
-
 function settings(){
 
-  return {
+const durationValue =
+el("duration").value;
 
-    stake: Math.max(
-      0.35,
-      num("stake",1)
-    ),
 
-    duration: Math.max(
-      1,
-      Math.floor(num("duration",1))
-    ),
+return {
 
-    maxMarkets: Math.max(
-      5,
-      Math.min(
-        60,
-        Math.floor(num("maxMarkets",40))
-      )
-    ),
+stake:
+Math.max(
+0.35,
+num("stake",1)
+),
 
-    minValidation: Math.max(
-      50,
-      Math.min(
-        95,
-        num("minValidation",56)
-      )
-    ),
 
-    minSamples: Math.max(
-      10,
-      Math.min(
-        200,
-        Math.floor(num("minSamples",20))
-      )
-    ),
+duration:
+durationValue === "AUTO"
+? "AUTO"
+: Math.max(
+1,
+Number(durationValue)
+),
 
-    minScore: Math.max(
-      50,
-      Math.min(
-        95,
-        num("minScore",62)
-      )
-    ),
 
-    minEV: num("minEV",0),
+maxMarkets:
+Math.max(
+5,
+Math.min(
+60,
+Math.floor(
+num(
+"maxMarkets",
+40
+)
+)
+)
+),
 
-    maxChop: Math.max(
-      0,
-      Math.min(
-        100,
-        num("maxChop",70)
-      )
-    ),
 
-    persistence: Math.max(
-      0,
-      Math.min(
-        100,
-        num("persistence",0)
-      )
-    ),
+minValidation:
+Math.max(
+50,
+Math.min(
+95,
+num(
+"minValidation",
+56
+)
+)
+),
 
-    cooldown: Math.max(
-      0,
-      num("cooldown",10)
-    ),
 
-    lossLock: Math.max(
-      1,
-      Math.floor(num("lossLock",1))
-    ),
+minSamples:
+Math.max(
+20,
+Math.min(
+200,
+Math.floor(
+num(
+"minSamples",
+30
+)
+)
+)
+),
 
-    maxTrades: Math.max(
-      1,
-      Math.floor(num("maxTrades",20))
-    ),
 
-    maxLosses: Math.max(
-      1,
-      Math.floor(num("maxLosses",3))
-    ),
+minScore:
+Math.max(
+50,
+Math.min(
+92,
+num(
+"minScore",
+62
+)
+)
+),
 
-    takeProfit: Math.max(
-      0,
-      num("takeProfit",0)
-    ),
 
-    stopLoss: Math.max(
-      0,
-      num("stopLoss",0)
-    )
-  };
+minEV:
+num(
+"minEV",
+0
+),
+
+
+maxChop:
+Math.max(
+0,
+Math.min(
+100,
+num(
+"maxChop",
+70
+)
+)
+),
+
+
+persistence:
+Math.max(
+0,
+Math.min(
+100,
+num(
+"persistence",
+0
+)
+)
+),
+
+
+cooldown:
+Math.max(
+0,
+num(
+"cooldown",
+15
+)
+),
+
+
+lossLock:
+Math.max(
+1,
+Math.floor(
+num(
+"lossLock",
+1
+)
+)
+),
+
+
+maxTrades:
+Math.max(
+1,
+Math.floor(
+num(
+"maxTrades",
+20
+)
+)
+),
+
+
+maxLosses:
+Math.max(
+1,
+Math.floor(
+num(
+"maxLosses",
+3
+)
+)
+),
+
+
+takeProfit:
+Math.max(
+0,
+num(
+"takeProfit",
+0
+)
+),
+
+
+stopLoss:
+Math.max(
+0,
+num(
+"stopLoss",
+0
+)
+)
+
+};
+
 }
 
 
 /* =========================================================
-   LOGGING
+   LOG
    ========================================================= */
 
-function log(message, type=""){
+function log(
+message,
+type=""
+){
 
-  const box = el("log");
+const box =
+el("log");
 
-  const line = document.createElement("div");
 
-  line.className =
-    "logLine " + type;
+const line =
+document.createElement(
+"div"
+);
 
-  const time =
-    new Date().toLocaleTimeString();
 
-  line.textContent =
-    "[" + time + "] " + message;
+line.className =
+"logLine " +
+type;
 
-  box.appendChild(line);
 
-  while(box.children.length > 300){
-    box.removeChild(box.firstChild);
-  }
+const time =
+new Date()
+.toLocaleTimeString();
 
-  box.scrollTop = box.scrollHeight;
+
+line.textContent =
+"[" +
+time +
+"] " +
+message;
+
+
+box.appendChild(
+line
+);
+
+
+while(
+box.children.length >
+350
+){
+
+box.removeChild(
+box.firstChild
+);
+
+}
+
+
+box.scrollTop =
+box.scrollHeight;
+
 }
 
 
@@ -1040,208 +1598,346 @@ function log(message, type=""){
    UI
    ========================================================= */
 
-function setConnectionStatus(text, className){
+function setConnectionStatus(
+text,
+className
+){
 
-  el("connectionStatus").textContent = text;
+el(
+"connectionStatus"
+).textContent =
+text;
 
-  el("connectionStatus").className =
-    "value " + className;
+
+el(
+"connectionStatus"
+).className =
+"value " +
+className;
+
 }
+
 
 function updateUI(){
 
-  el("accountStatus").textContent =
-    accountId || "—";
+el(
+"accountStatus"
+).textContent =
+accountId ||
+"—";
 
-  el("balanceStatus").textContent =
-    balance
-      ? balance.toFixed(2) + " " + currency
-      : "—";
 
-  el("tradingStatus").textContent =
-    trading ? "RUNNING" : "STOPPED";
+el(
+"balanceStatus"
+).textContent =
+balance
+? balance.toFixed(2) +
+" " +
+currency
+: "—";
 
-  el("tradingStatus").className =
-    "value " +
-    (trading ? "green" : "yellow");
 
-  el("marketStatus").textContent =
-    markets.size;
+el(
+"tradingStatus"
+).textContent =
+trading
+? "RUNNING"
+: "STOPPED";
 
-  el("tradesStatus").textContent =
-    session.trades;
 
-  el("winsStatus").textContent =
-    session.wins;
+el(
+"tradingStatus"
+).className =
+"value " +
+(
+trading
+? "green"
+: "yellow"
+);
 
-  el("lossesStatus").textContent =
-    session.losses;
 
-  el("profitStatus").textContent =
-    session.profit.toFixed(2);
+el(
+"marketStatus"
+).textContent =
+markets.size;
 
-  el("profitStatus").className =
-    "value " +
-    (
-      session.profit > 0
-        ? "green"
-        : session.profit < 0
-          ? "red"
-          : ""
-    );
 
-  const wr =
-    session.trades > 0
-      ? (session.wins / session.trades) * 100
-      : 0;
+el(
+"tradesStatus"
+).textContent =
+session.trades;
 
-  el("winRateStatus").textContent =
-    wr.toFixed(1) + "%";
 
-  el("candidateStatus").textContent =
-    lastCandidateCount;
+el(
+"winsStatus"
+).textContent =
+session.wins;
 
-  el("tradeState").textContent =
-    tradeInFlight
-      ? "IN TRADE"
-      : proposalInFlight
-        ? "PROPOSAL"
-        : trading
-          ? "SCANNING"
-          : "IDLE";
 
-  el("startBtn").disabled =
-    !connected || trading;
+el(
+"lossesStatus"
+).textContent =
+session.losses;
+
+
+el(
+"profitStatus"
+).textContent =
+session.profit.toFixed(2);
+
+
+el(
+"profitStatus"
+).className =
+"value " +
+(
+session.profit > 0
+? "green"
+: session.profit < 0
+? "red"
+: ""
+);
+
+
+const winRate =
+session.trades > 0
+? (
+session.wins /
+session.trades
+) *
+100
+: 0;
+
+
+el(
+"winRateStatus"
+).textContent =
+winRate.toFixed(1) +
+"%";
+
+
+el(
+"candidateStatus"
+).textContent =
+lastCandidateCount;
+
+
+el(
+"tradeState"
+).textContent =
+tradeInFlight
+? "IN TRADE"
+: proposalInFlight
+? "PROPOSAL"
+: trading
+? "SCANNING"
+: "IDLE";
+
+
+el(
+"startBtn"
+).disabled =
+!connected ||
+trading;
+
 }
 
 
 /* =========================================================
-   REST HELPERS
+   CREDENTIALS
    ========================================================= */
 
 function credentials(){
 
-  const pat =
-    el("pat").value.trim();
+const pat =
+el("pat")
+.value
+.trim();
 
-  const appId =
-    el("appId").value.trim();
 
-  if(!pat){
-    throw new Error(
-      "PAT is empty."
-    );
-  }
+const appId =
+el("appId")
+.value
+.trim();
 
-  if(!appId){
-    throw new Error(
-      "App ID is empty."
-    );
-  }
 
-  return {
-    pat,
-    appId
-  };
+if(!pat){
+
+throw new Error(
+"PAT is empty."
+);
+
 }
 
 
-async function parseRestError(response){
+if(!appId){
 
-  let body = null;
+throw new Error(
+"App ID is empty."
+);
 
-  try{
-    body = await response.json();
-  }catch(e){
-    body = null;
-  }
+}
 
-  let message =
-    "HTTP " + response.status;
 
-  if(
-    body &&
-    Array.isArray(body.errors) &&
-    body.errors.length
-  ){
+return {
 
-    const error =
-      body.errors[0];
+pat,
 
-    message =
-      (
-        error.code
-          ? error.code + ": "
-          : ""
-      ) +
-      (
-        error.message ||
-        message
-      );
-  }
+appId
 
-  return message;
+};
+
 }
 
 
 /* =========================================================
-   GET OPTIONS ACCOUNTS
+   REST ERROR
+   ========================================================= */
+
+async function parseRestError(
+response
+){
+
+let body = null;
+
+
+try{
+
+body =
+await response.json();
+
+}catch(e){
+
+body = null;
+
+}
+
+
+let message =
+"HTTP " +
+response.status;
+
+
+if(
+body &&
+Array.isArray(
+body.errors
+) &&
+body.errors.length
+){
+
+const error =
+body.errors[0];
+
+
+message =
+(
+error.code
+? error.code +
+": "
+: ""
+) +
+(
+error.message ||
+message
+);
+
+}
+
+
+return message;
+
+}
+
+
+/* =========================================================
+   OPTIONS ACCOUNTS
    ========================================================= */
 
 async function getOptionsAccounts(){
 
-  const {pat,appId} =
-    credentials();
+const {
+pat,
+appId
+} =
+credentials();
 
-  log(
-    "Requesting Options accounts...",
-    "ai"
-  );
 
-  const response =
-    await fetch(
-      API_BASE +
-      "/trading/v1/options/accounts",
-      {
-        method:"GET",
-        headers:{
-          "Authorization":
-            "Bearer " + pat,
+log(
+"Requesting Options accounts...",
+"ai"
+);
 
-          "Deriv-App-ID":
-            appId,
 
-          "Content-Type":
-            "application/json"
-        }
-      }
-    );
+const response =
+await fetch(
 
-  if(!response.ok){
+API_BASE +
+"/trading/v1/options/accounts",
 
-    const error =
-      await parseRestError(response);
+{
 
-    throw new Error(
-      "Accounts request failed: " +
-      error
-    );
-  }
+method:"GET",
 
-  const result =
-    await response.json();
+headers:{
 
-  let data =
-    result.data;
+"Authorization":
+"Bearer " +
+pat,
 
-  if(!Array.isArray(data)){
-    data =
-      data
-        ? [data]
-        : [];
-  }
+"Deriv-App-ID":
+appId,
 
-  return data;
+"Content-Type":
+"application/json"
+
+}
+
+}
+
+);
+
+
+if(
+!response.ok
+){
+
+const error =
+await parseRestError(
+response
+);
+
+
+throw new Error(
+"Accounts request failed: " +
+error
+);
+
+}
+
+
+const result =
+await response.json();
+
+
+let data =
+result.data;
+
+
+if(
+!Array.isArray(data)
+){
+
+data =
+data
+? [data]
+: [];
+
+}
+
+
+return data;
+
 }
 
 
@@ -1249,97 +1945,137 @@ async function getOptionsAccounts(){
    SELECT ACCOUNT
    ========================================================= */
 
-function selectAccount(accounts,type){
+function selectAccount(
+accounts,
+type
+){
 
-  const desired =
-    type === "real"
-      ? "real"
-      : "demo";
+const desired =
+type === "real"
+? "real"
+: "demo";
 
-  const found =
-    accounts.find(
-      account =>
-        String(
-          account.account_type || ""
-        ).toLowerCase()
-        === desired
-    );
 
-  if(!found){
+const found =
+accounts.find(
+account =>
+String(
+account.account_type ||
+""
+)
+.toLowerCase()
+===
+desired
+);
 
-    throw new Error(
-      "No " +
-      desired.toUpperCase() +
-      " Options account was returned."
-    );
-  }
 
-  return found;
+if(!found){
+
+throw new Error(
+"No " +
+desired.toUpperCase() +
+" Options account was returned."
+);
+
+}
+
+
+return found;
+
 }
 
 
 /* =========================================================
-   REQUEST OTP
+   OTP
    ========================================================= */
 
-async function getOTP(id){
+async function getOTP(
+id
+){
 
-  const {pat,appId} =
-    credentials();
+const {
+pat,
+appId
+} =
+credentials();
 
-  log(
-    "Requesting authenticated WebSocket URL...",
-    "ai"
-  );
 
-  const response =
-    await fetch(
-      API_BASE +
-      "/trading/v1/options/accounts/" +
-      encodeURIComponent(id) +
-      "/otp",
-      {
-        method:"POST",
-        headers:{
-          "Authorization":
-            "Bearer " + pat,
+log(
+"Requesting authenticated WebSocket URL...",
+"ai"
+);
 
-          "Deriv-App-ID":
-            appId,
 
-          "Content-Type":
-            "application/json"
-        }
-      }
-    );
+const response =
+await fetch(
 
-  if(!response.ok){
+API_BASE +
+"/trading/v1/options/accounts/" +
+encodeURIComponent(id) +
+"/otp",
 
-    const error =
-      await parseRestError(response);
+{
 
-    throw new Error(
-      "OTP request failed: " +
-      error
-    );
-  }
+method:"POST",
 
-  const result =
-    await response.json();
+headers:{
 
-  const url =
-    result &&
-    result.data &&
-    result.data.url;
+"Authorization":
+"Bearer " +
+pat,
 
-  if(!url){
+"Deriv-App-ID":
+appId,
 
-    throw new Error(
-      "OTP response did not contain a WebSocket URL."
-    );
-  }
+"Content-Type":
+"application/json"
 
-  return url;
+}
+
+}
+
+);
+
+
+if(
+!response.ok
+){
+
+const error =
+await parseRestError(
+response
+);
+
+
+throw new Error(
+"OTP request failed: " +
+error
+);
+
+}
+
+
+const result =
+await response.json();
+
+
+const url =
+result &&
+result.data &&
+result.data.url;
+
+
+if(!url){
+
+throw new Error(
+"OTP response did not contain a WebSocket URL."
+);
+
+}
+
+
+return url;
+
 }
 
 
@@ -1349,318 +2085,467 @@ async function getOTP(id){
 
 async function connectAccount(){
 
-  if(connected){
-    log(
-      "Already connected.",
-      "warn"
-    );
-    return;
-  }
+if(connected){
 
-  disconnecting = false;
+log(
+"Already connected.",
+"warn"
+);
 
-  try{
+return;
 
-    const type =
-      el("accountType").value;
+}
 
-    const accounts =
-      await getOptionsAccounts();
 
-    const account =
-      selectAccount(
-        accounts,
-        type
-      );
+disconnecting =
+false;
 
-    accountId =
-      account.account_id;
 
-    accountType =
-      account.account_type;
+try{
 
-    currency =
-      account.currency ||
-      "USD";
+const type =
+el(
+"accountType"
+).value;
 
-    balance =
-      Number(account.balance) || 0;
 
-    log(
-      "Selected " +
-      accountType.toUpperCase() +
-      " Options account: " +
-      accountId,
-      "trade"
-    );
+const accounts =
+await getOptionsAccounts();
 
-    updateUI();
 
-    const wsUrl =
-      await getOTP(accountId);
+const account =
+selectAccount(
+accounts,
+type
+);
 
-    log(
-      "Authenticated WebSocket URL received.",
-      "ai"
-    );
 
-    await openWebSocket(wsUrl);
+accountId =
+account.account_id;
 
-  }catch(error){
 
-    log(
-      error.message ||
-      String(error),
-      "error"
-    );
+accountType =
+account.account_type;
 
-    setConnectionStatus(
-      "Error",
-      "red"
-    );
 
-    connected = false;
+currency =
+account.currency ||
+"USD";
 
-    updateUI();
-  }
+
+balance =
+Number(
+account.balance
+) ||
+0;
+
+
+log(
+"Selected " +
+accountType.toUpperCase() +
+" Options account: " +
+accountId,
+"trade"
+);
+
+
+updateUI();
+
+
+const wsUrl =
+await getOTP(
+accountId
+);
+
+
+log(
+"Authenticated WebSocket URL received.",
+"ai"
+);
+
+
+await openWebSocket(
+wsUrl
+);
+
+
+}catch(error){
+
+log(
+error.message ||
+String(error),
+"error"
+);
+
+
+setConnectionStatus(
+"Error",
+"red"
+);
+
+
+connected =
+false;
+
+
+updateUI();
+
+}
+
 }
 
 
 /* =========================================================
-   OPEN WEBSOCKET
+   WEBSOCKET
    ========================================================= */
 
-function openWebSocket(url){
+function openWebSocket(
+url
+){
 
-  return new Promise(
-    (resolve,reject)=>{
+return new Promise(
 
-      let settled = false;
-
-      ws =
-        new WebSocket(url);
-
-      const timeout =
-        setTimeout(
-          ()=>{
-            if(!settled){
-
-              settled = true;
-
-              try{
-                ws.close();
-              }catch(e){}
-
-              reject(
-                new Error(
-                  "WebSocket connection timed out."
-                )
-              );
-            }
-          },
-          15000
-        );
-
-      ws.onopen =
-        ()=>{
-
-          clearTimeout(timeout);
-
-          connected = true;
-
-          setConnectionStatus(
-            "Connected",
-            "green"
-          );
-
-          log(
-            "Authenticated WebSocket connected.",
-            "trade"
-          );
-
-          updateUI();
-
-          if(!settled){
-
-            settled = true;
-
-            resolve();
-          }
-
-          initializeMarketData()
-            .catch(error=>{
-              log(
-                "Market initialization failed: " +
-                error.message,
-                "error"
-              );
-            });
-        };
+(
+resolve,
+reject
+)=>{
 
 
-      ws.onerror =
-        ()=>{
-          log(
-            "WebSocket error.",
-            "error"
-          );
-
-          if(!settled){
-
-            clearTimeout(timeout);
-
-            settled = true;
-
-            reject(
-              new Error(
-                "WebSocket connection failed."
-              )
-            );
-          }
-        };
+let settled =
+false;
 
 
-      ws.onclose =
-        ()=>{
-
-          connected = false;
-
-          if(!disconnecting){
-
-            trading = false;
-
-            log(
-              "WebSocket closed.",
-              "warn"
-            );
-          }
-
-          setConnectionStatus(
-            "Disconnected",
-            "red"
-          );
-
-          updateUI();
-
-          rejectPendingRequests(
-            "WebSocket closed."
-          );
-        };
+ws =
+new WebSocket(
+url
+);
 
 
-      ws.onmessage =
-        event => {
+const timeout =
+setTimeout(
+()=>{
 
-          let data;
+if(!settled){
 
-          try{
-            data =
-              JSON.parse(
-                event.data
-              );
-          }catch(e){
-            return;
-          }
+settled =
+true;
 
-          handleMessage(data);
-        };
-    }
-  );
+
+try{
+
+ws.close();
+
+}catch(e){}
+
+
+reject(
+new Error(
+"WebSocket connection timed out."
+)
+);
+
+}
+
+},
+15000
+);
+
+
+ws.onopen =
+()=>{
+
+clearTimeout(
+timeout
+);
+
+
+connected =
+true;
+
+
+setConnectionStatus(
+"Connected",
+"green"
+);
+
+
+log(
+"Authenticated WebSocket connected.",
+"trade"
+);
+
+
+updateUI();
+
+
+if(!settled){
+
+settled =
+true;
+
+resolve();
+
+}
+
+
+initializeMarketData()
+.catch(
+error =>
+log(
+"Market initialization failed: " +
+error.message,
+"error"
+)
+);
+
+};
+
+
+ws.onerror =
+()=>{
+
+log(
+"WebSocket error.",
+"error"
+);
+
+
+if(!settled){
+
+clearTimeout(
+timeout
+);
+
+
+settled =
+true;
+
+
+reject(
+new Error(
+"WebSocket connection failed."
+)
+);
+
+}
+
+};
+
+
+ws.onclose =
+()=>{
+
+connected =
+false;
+
+
+if(!disconnecting){
+
+trading =
+false;
+
+
+log(
+"WebSocket closed.",
+"warn"
+);
+
+}
+
+
+setConnectionStatus(
+"Disconnected",
+"red"
+);
+
+
+updateUI();
+
+
+rejectPendingRequests(
+"WebSocket closed."
+);
+
+};
+
+
+ws.onmessage =
+event =>{
+
+let data;
+
+
+try{
+
+data =
+JSON.parse(
+event.data
+);
+
+}catch(e){
+
+return;
+
+}
+
+
+handleMessage(
+data
+);
+
+};
+
+}
+
+);
+
 }
 
 
 /* =========================================================
-   REQUEST / RESPONSE
+   REQUEST
    ========================================================= */
 
-function sendRequest(payload, timeout=10000){
+function sendRequest(
+payload,
+timeout=10000
+){
 
-  return new Promise(
-    (resolve,reject)=>{
+return new Promise(
 
-      if(
-        !ws ||
-        ws.readyState !== WebSocket.OPEN
-      ){
+(
+resolve,
+reject
+)=>{
 
-        reject(
-          new Error(
-            "WebSocket is not connected."
-          )
-        );
 
-        return;
-      }
+if(
+!ws ||
+ws.readyState !==
+WebSocket.OPEN
+){
 
-      const id =
-        ++requestId;
+reject(
+new Error(
+"WebSocket is not connected."
+)
+);
 
-      payload.req_id = id;
+return;
 
-      const timer =
-        setTimeout(
-          ()=>{
-            if(
-              pendingRequests.has(id)
-            ){
-
-              pendingRequests.delete(id);
-
-              reject(
-                new Error(
-                  "Request timed out."
-                )
-              );
-            }
-          },
-          timeout
-        );
-
-      pendingRequests.set(
-        id,
-        {
-          resolve,
-          reject,
-          timer
-        }
-      );
-
-      try{
-
-        ws.send(
-          JSON.stringify(payload)
-        );
-
-      }catch(error){
-
-        clearTimeout(timer);
-
-        pendingRequests.delete(id);
-
-        reject(error);
-      }
-    }
-  );
 }
 
 
-function rejectPendingRequests(message){
+const id =
+++requestId;
 
-  for(
-    const [id,pending]
-    of pendingRequests
-  ){
 
-    clearTimeout(
-      pending.timer
-    );
+payload.req_id =
+id;
 
-    pending.reject(
-      new Error(message)
-    );
-  }
 
-  pendingRequests.clear();
+const timer =
+setTimeout(
+()=>{
+
+if(
+pendingRequests.has(id)
+){
+
+pendingRequests.delete(id);
+
+
+reject(
+new Error(
+"Request timed out."
+)
+);
+
+}
+
+},
+timeout
+);
+
+
+pendingRequests.set(
+id,
+{
+
+resolve,
+
+reject,
+
+timer
+
+}
+);
+
+
+try{
+
+ws.send(
+JSON.stringify(
+payload
+)
+);
+
+
+}catch(error){
+
+clearTimeout(
+timer
+);
+
+
+pendingRequests.delete(
+id
+);
+
+
+reject(
+error
+);
+
+}
+
+});
+
+}
+
+
+/* =========================================================
+   REJECT REQUESTS
+   ========================================================= */
+
+function rejectPendingRequests(
+message
+){
+
+for(
+const [
+id,
+pending
+]
+of pendingRequests
+){
+
+clearTimeout(
+pending.timer
+);
+
+
+pending.reject(
+new Error(
+message
+)
+);
+
+}
+
+
+pendingRequests.clear();
+
 }
 
 
@@ -1668,417 +2553,692 @@ function rejectPendingRequests(message){
    MESSAGE ROUTER
    ========================================================= */
 
-function handleMessage(data){
+function handleMessage(
+data
+){
 
-  if(data.error){
+if(data.error){
 
-    if(data.req_id){
+if(data.req_id){
 
-      const pending =
-        pendingRequests.get(
-          data.req_id
-        );
-
-      if(pending){
-
-        clearTimeout(
-          pending.timer
-        );
-
-        pendingRequests.delete(
-          data.req_id
-        );
-
-        pending.reject(
-          new Error(
-            (
-              data.error.code
-                ? data.error.code + ": "
-                : ""
-            ) +
-            (
-              data.error.message ||
-              "Deriv request failed."
-            )
-          )
-        );
-      }
-    }
-
-    log(
-      (
-        data.error.code
-          ? data.error.code + ": "
-          : ""
-      ) +
-      (
-        data.error.message ||
-        "API error"
-      ),
-      "error"
-    );
-
-    return;
-  }
+const pending =
+pendingRequests.get(
+data.req_id
+);
 
 
-  if(data.req_id){
+if(pending){
 
-    const pending =
-      pendingRequests.get(
-        data.req_id
-      );
-
-    if(pending){
-
-      clearTimeout(
-        pending.timer
-      );
-
-      pendingRequests.delete(
-        data.req_id
-      );
-
-      pending.resolve(data);
-    }
-  }
+clearTimeout(
+pending.timer
+);
 
 
-  if(data.msg_type === "tick"){
-
-    processTick(
-      data.tick
-    );
-
-    return;
-  }
+pendingRequests.delete(
+data.req_id
+);
 
 
-  if(
-    data.msg_type ===
-    "proposal_open_contract"
-  ){
+pending.reject(
 
-    processOpenContract(
-      data.proposal_open_contract
-    );
+new Error(
 
-    return;
-  }
+(
+data.error.code
+? data.error.code +
+": "
+: ""
+) +
+(
+data.error.message ||
+"Deriv request failed."
+)
 
+)
 
-  if(data.msg_type === "balance"){
+);
 
-    if(
-      data.balance
-    ){
+}
 
-      balance =
-        Number(
-          data.balance.balance
-        ) || balance;
-
-      currency =
-        data.balance.currency ||
-        currency;
-
-      updateUI();
-    }
-
-    return;
-  }
+}
 
 
-  if(data.msg_type === "buy"){
+log(
 
-    processBuy(
-      data.buy
-    );
+(
+data.error.code
+? data.error.code +
+": "
+: ""
+) +
+(
+data.error.message ||
+"API error"
+),
 
-    return;
-  }
+"error"
+
+);
+
+
+return;
+
+}
+
+
+if(data.req_id){
+
+const pending =
+pendingRequests.get(
+data.req_id
+);
+
+
+if(pending){
+
+clearTimeout(
+pending.timer
+);
+
+
+pendingRequests.delete(
+data.req_id
+);
+
+
+pending.resolve(
+data
+);
+
+}
+
+}
+
+
+if(
+data.msg_type ===
+"tick"
+){
+
+processTick(
+data.tick
+);
+
+return;
+
+}
+
+
+if(
+data.msg_type ===
+"proposal_open_contract"
+){
+
+processOpenContract(
+data.proposal_open_contract
+);
+
+return;
+
+}
+
+
+if(
+data.msg_type ===
+"balance"
+){
+
+if(
+data.balance
+){
+
+balance =
+Number(
+data.balance.balance
+) ||
+balance;
+
+
+currency =
+data.balance.currency ||
+currency;
+
+
+updateUI();
+
+}
+
+
+return;
+
+}
+
 }
 
 
 /* =========================================================
-   MARKET DATA INITIALIZATION
+   INITIALIZE
    ========================================================= */
 
 async function initializeMarketData(){
 
-  log(
-    "Discovering synthetic markets...",
-    "ai"
-  );
+log(
+"Discovering synthetic markets...",
+"ai"
+);
 
-  markets.clear();
 
-  const result =
-    await sendRequest(
-      {
-        active_symbols:"brief",
-        contract_type:[
-          "CALL",
-          "PUT",
-          "DIGITEVEN",
-          "DIGITODD"
-        ]
-      },
-      15000
-    );
+markets.clear();
 
-  const list =
-    Array.isArray(
-      result.active_symbols
-    )
-      ? result.active_symbols
-      : [];
 
-  const synthetic =
-    list.filter(
-      item => {
+const result =
+await sendRequest(
 
-        const type =
-          String(
-            item.underlying_symbol_type ||
-            ""
-          ).toLowerCase();
+{
 
-        const market =
-          String(
-            item.market ||
-            ""
-          ).toLowerCase();
+active_symbols:
+"brief",
 
-        return (
-          type === "synthetic_index" ||
-          market === "synthetic_index"
-        );
-      }
-    );
+contract_type:[
 
-  synthetic.sort(
-    (a,b)=>
-      String(
-        a.underlying_symbol
-      ).localeCompare(
-        String(
-          b.underlying_symbol
-        )
-      )
-  );
+"CALL",
 
-  const max =
-    settings().maxMarkets;
+"PUT",
 
-  const selected =
-    synthetic.slice(
-      0,
-      max
-    );
+"DIGITEVEN",
 
-  log(
-    "Found " +
-    synthetic.length +
-    " synthetic markets. Loading " +
-    selected.length +
-    ".",
-    "ai"
-  );
+"DIGITODD"
 
-  for(
-    const item
-    of selected
-  ){
+]
 
-    const symbol =
-      item.underlying_symbol;
+},
 
-    if(!symbol){
-      continue;
-    }
+15000
 
-    markets.set(
-      symbol,
-      {
-        symbol,
-        name:
-          item.underlying_symbol_name ||
-          symbol,
-        type:
-          item.underlying_symbol_type ||
-          "",
-        pipSize:
-          Number(item.pip_size) ||
-          0.01,
-        ticks:[],
-        ready:false,
-        lastTick:0,
-        lastEpoch:0,
-        lossCount:
-          marketLosses.get(symbol) || 0,
-        lastTrade:
-          marketLastTrade.get(symbol) || 0
-      }
-    );
-  }
+);
 
-  updateUI();
 
-  await loadHistoricalData();
+const list =
+Array.isArray(
+result.active_symbols
+)
+? result.active_symbols
+: [];
 
-  await subscribeMarkets();
 
-  subscribeBalance();
+const synthetic =
+list.filter(
+item =>{
 
-  log(
-    "Scanner ready. Waiting for qualified signals.",
-    "trade"
-  );
+const type =
+String(
+item.underlying_symbol_type ||
+""
+)
+.toLowerCase();
+
+
+const market =
+String(
+item.market ||
+""
+)
+.toLowerCase();
+
+
+return (
+
+type ===
+"synthetic_index"
+
+||
+
+market ===
+"synthetic_index"
+
+);
+
+}
+
+);
+
+
+synthetic.sort(
+(a,b)=>
+String(
+a.underlying_symbol
+)
+.localeCompare(
+String(
+b.underlying_symbol
+)
+)
+);
+
+
+const selected =
+synthetic.slice(
+0,
+settings().maxMarkets
+);
+
+
+log(
+"Found " +
+synthetic.length +
+" synthetic markets. Loading " +
+selected.length +
+".",
+"ai"
+);
+
+
+for(
+const item
+of selected
+){
+
+const symbol =
+item.underlying_symbol;
+
+
+if(!symbol){
+
+continue;
+
+}
+
+
+markets.set(
+symbol,
+{
+
+symbol,
+
+name:
+item.underlying_symbol_name ||
+symbol,
+
+type:
+item.underlying_symbol_type ||
+"",
+
+pipSize:
+Number(
+item.pip_size
+) ||
+0.01,
+
+ticks:[],
+
+contracts:
+new Set(),
+
+contractsLoaded:
+false,
+
+ready:false,
+
+lastTick:0,
+
+lastEpoch:0
+
+}
+
+);
+
+}
+
+
+updateUI();
+
+
+await loadHistoricalData();
+
+
+await loadContractAvailability();
+
+
+await subscribeMarkets();
+
+
+subscribeBalance();
+
+
+log(
+"Scanner ready. Waiting for qualified signals.",
+"trade"
+);
+
 }
 
 
 /* =========================================================
-   LOAD 200 TICKS
+   HISTORY
    ========================================================= */
 
 async function loadHistoricalData(){
 
-  const list =
-    Array.from(
-      markets.values()
-    );
+const list =
+Array.from(
+markets.values()
+);
 
-  let completed = 0;
 
-  for(
-    const market
-    of list
-  ){
+let completed =
+0;
 
-    try{
 
-      const result =
-        await sendRequest(
-          {
-            ticks_history:
-              market.symbol,
+for(
+const market
+of list
+){
 
-            count:
-              HISTORY_SIZE,
+try{
 
-            end:"latest",
+const result =
+await sendRequest(
 
-            style:"ticks"
-          },
-          12000
-        );
+{
 
-      const history =
-        result.history;
+ticks_history:
+market.symbol,
 
-      let prices = [];
+count:
+HISTORY_SIZE,
 
-      if(
-        history &&
-        Array.isArray(
-          history.prices
-        )
-      ){
+end:
+"latest",
 
-        prices =
-          history.prices
-            .map(Number)
-            .filter(Number.isFinite);
-      }
+style:
+"ticks"
 
-      market.ticks =
-        prices.slice(
-          -HISTORY_SIZE
-        );
+},
 
-      market.ready =
-        market.ticks.length >=
-        settings().minSamples;
+12000
 
-      completed++;
+);
 
-      if(
-        completed % 5 === 0 ||
-        completed === list.length
-      ){
 
-        log(
-          "History loaded: " +
-          completed +
-          "/" +
-          list.length,
-          "muted"
-        );
-      }
+const history =
+result.history;
 
-    }catch(error){
 
-      log(
-        market.symbol +
-        " history failed: " +
-        error.message,
-        "warn"
-      );
-    }
+let prices = [];
 
-    await delay(60);
-  }
+
+if(
+history &&
+Array.isArray(
+history.prices
+)
+){
+
+prices =
+history.prices
+.map(Number)
+.filter(
+Number.isFinite
+);
+
+}
+
+
+market.ticks =
+prices.slice(
+-HISTORY_SIZE
+);
+
+
+market.ready =
+market.ticks.length >=
+100;
+
+
+completed++;
+
+
+if(
+completed % 5 === 0 ||
+completed === list.length
+){
+
+log(
+"History loaded: " +
+completed +
+"/" +
+list.length,
+"muted"
+);
+
+}
+
+
+}catch(error){
+
+log(
+market.symbol +
+" history failed: " +
+error.message,
+"warn"
+);
+
+}
+
+
+await delay(
+60
+);
+
+}
+
 }
 
 
 /* =========================================================
-   SUBSCRIBE LIVE TICKS
+   CONTRACT DISCOVERY
+   ========================================================= */
+
+async function loadContractAvailability(){
+
+const list =
+Array.from(
+markets.values()
+);
+
+
+let completed =
+0;
+
+
+for(
+const market
+of list
+){
+
+try{
+
+const result =
+await sendRequest(
+
+{
+
+contracts_for:
+market.symbol
+
+},
+
+10000
+
+);
+
+
+const available =
+result &&
+result.contracts_for &&
+Array.isArray(
+result.contracts_for.available
+)
+
+?
+
+result.contracts_for.available
+
+:
+
+[];
+
+
+market.contracts =
+new Set();
+
+
+for(
+const item
+of available
+){
+
+if(
+ALLOWED_CONTRACTS.includes(
+item.contract_type
+)
+){
+
+market.contracts.add(
+item.contract_type
+);
+
+}
+
+}
+
+
+market.contractsLoaded =
+true;
+
+
+completed++;
+
+
+log(
+
+market.symbol +
+" supports: " +
+
+(
+market.contracts.size
+?
+
+Array.from(
+market.contracts
+).join(", ")
+
+:
+
+"NONE"
+),
+
+market.contracts.size
+? "muted"
+: "warn"
+
+);
+
+
+}catch(error){
+
+log(
+market.symbol +
+" contract discovery failed: " +
+error.message,
+"warn"
+);
+
+}
+
+
+await delay(
+70
+);
+
+}
+
+
+log(
+"Contract availability loaded for " +
+completed +
+"/" +
+list.length +
+" markets.",
+"ai"
+);
+
+}
+
+
+/* =========================================================
+   TICKS
    ========================================================= */
 
 async function subscribeMarkets(){
 
-  for(
-    const market
-    of markets.values()
-  ){
+for(
+const market
+of markets.values()
+){
 
-    if(
-      !market.ready
-    ){
-      continue;
-    }
+if(
+!market.ready
+){
 
-    try{
+continue;
 
-      ws.send(
-        JSON.stringify({
-          ticks:
-            market.symbol,
+}
 
-          subscribe:1,
 
-          req_id:
-            ++requestId
-        })
-      );
+try{
 
-    }catch(error){
+ws.send(
+JSON.stringify(
+{
 
-      log(
-        "Tick subscription failed for " +
-        market.symbol,
-        "error"
-      );
-    }
+ticks:
+market.symbol,
 
-    await delay(50);
-  }
+subscribe:
+1,
 
-  log(
-    "Live tick subscriptions active.",
-    "trade"
-  );
+req_id:
+++requestId
+
+}
+)
+);
+
+
+}catch(error){
+
+log(
+"Tick subscription failed for " +
+market.symbol,
+"error"
+);
+
+}
+
+
+await delay(
+50
+);
+
+}
+
+
+log(
+"Live tick subscriptions active.",
+"trade"
+);
+
 }
 
 
@@ -2088,1239 +3248,1628 @@ async function subscribeMarkets(){
 
 function subscribeBalance(){
 
-  try{
+try{
 
-    ws.send(
-      JSON.stringify({
-        balance:1,
-        subscribe:1,
-        req_id:++requestId
-      })
-    );
+ws.send(
+JSON.stringify(
+{
 
-  }catch(error){
-    log(
-      "Balance subscription failed.",
-      "warn"
-    );
-  }
+balance:
+1,
+
+subscribe:
+1,
+
+req_id:
+++requestId
+
+}
+)
+);
+
+
+}catch(error){
+
+log(
+"Balance subscription failed.",
+"warn"
+);
+
+}
+
 }
 
 
 /* =========================================================
-   TICK PROCESSING
+   PROCESS TICK
    ========================================================= */
 
-function processTick(tick){
+function processTick(
+tick
+){
 
-  if(!tick){
-    return;
-  }
+if(!tick){
 
-  const symbol =
-    tick.underlying_symbol ||
-    tick.symbol;
+return;
 
-  if(!symbol){
-    return;
-  }
+}
 
-  const market =
-    markets.get(symbol);
 
-  if(!market){
-    return;
-  }
+const symbol =
+tick.underlying_symbol ||
+tick.symbol;
 
-  const quote =
-    Number(tick.quote);
 
-  if(!Number.isFinite(quote)){
-    return;
-  }
+if(!symbol){
 
-  market.lastTick =
-    quote;
+return;
 
-  market.lastEpoch =
-    Number(tick.epoch) ||
-    Date.now()/1000;
+}
 
-  market.ticks.push(
-    quote
-  );
 
-  if(
-    market.ticks.length >
-    HISTORY_SIZE
-  ){
+const market =
+markets.get(
+symbol
+);
 
-    market.ticks =
-      market.ticks.slice(
-        -HISTORY_SIZE
-      );
-  }
 
-  market.ready =
-    market.ticks.length >=
-    settings().minSamples;
+if(!market){
+
+return;
+
+}
+
+
+const quote =
+Number(
+tick.quote
+);
+
+
+if(
+!Number.isFinite(
+quote
+)
+){
+
+return;
+
+}
+
+
+market.lastTick =
+quote;
+
+
+market.lastEpoch =
+Number(
+tick.epoch
+) ||
+Date.now()/1000;
+
+
+market.ticks.push(
+quote
+);
+
+
+if(
+market.ticks.length >
+HISTORY_SIZE
+){
+
+market.ticks =
+market.ticks.slice(
+-HISTORY_SIZE
+);
+
+}
+
+
+market.ready =
+market.ticks.length >=
+100;
+
 }
 
 
 /* =========================================================
-   AI MATH
+   CLAMP
    ========================================================= */
 
-function clamp(value,min,max){
+function clamp(
+value,
+min,
+max
+){
 
-  return Math.max(
-    min,
-    Math.min(
-      max,
-      value
-    )
-  );
-}
+return Math.max(
+min,
+Math.min(
+max,
+value
+)
+);
 
-
-function mean(values){
-
-  if(!values.length){
-    return 0;
-  }
-
-  return values.reduce(
-    (a,b)=>a+b,
-    0
-  ) / values.length;
-}
-
-
-function std(values){
-
-  if(values.length < 2){
-    return 0;
-  }
-
-  const m =
-    mean(values);
-
-  const variance =
-    mean(
-      values.map(
-        x =>
-          Math.pow(
-            x-m,
-            2
-          )
-      )
-    );
-
-  return Math.sqrt(
-    variance
-  );
 }
 
 
 /* =========================================================
-   RISE / FALL ENGINE
+   RISE/FALL ANALYSIS
    ========================================================= */
 
-function analyzeRiseFall(ticks){
+function analyzeRiseFall(
+ticks
+){
 
-  if(ticks.length < 20){
-    return null;
-  }
+if(
+ticks.length <
+200
+){
 
-  const recent =
-    ticks.slice(-20);
+return null;
 
-  const previous =
-    ticks.slice(
-      -40,
-      -20
-    );
+}
 
-  if(previous.length < 10){
-    return null;
-  }
 
-  let up = 0;
-  let down = 0;
-  let changes = 0;
+const previous =
+ticks.slice(
+-200,
+-100
+);
 
-  const deltas = [];
 
-  for(
-    let i=1;
-    i<recent.length;
-    i++
-  ){
+const current =
+ticks.slice(
+-100
+);
 
-    const d =
-      recent[i] -
-      recent[i-1];
 
-    deltas.push(d);
+function directionStats(
+values
+){
 
-    if(d > 0){
-      up++;
-    }
+let up = 0;
 
-    if(d < 0){
-      down++;
-    }
+let down = 0;
 
-    if(
-      (i > 1) &&
-      (
-        Math.sign(d) !==
-        Math.sign(
-          recent[i-1] -
-          recent[i-2]
-        )
-      )
-    ){
-      changes++;
-    }
-  }
+const deltas = [];
 
-  const totalMoves =
-    up + down;
 
-  if(totalMoves < 5){
-    return null;
-  }
+for(
+let i=1;
+i<values.length;
+i++
+){
 
-  const upPct =
-    (up / totalMoves) * 100;
+const delta =
+values[i] -
+values[i-1];
 
-  const downPct =
-    (down / totalMoves) * 100;
 
-  const direction =
-    upPct >= downPct
-      ? "CALL"
-      : "PUT";
+deltas.push(
+delta
+);
 
-  const directionPct =
-    Math.max(
-      upPct,
-      downPct
-    );
 
-  const netMove =
-    recent[recent.length-1] -
-    recent[0];
+if(
+delta > 0
+){
 
-  const absoluteMove =
-    deltas.reduce(
-      (sum,d)=>
-        sum + Math.abs(d),
-      0
-    );
+up++;
 
-  const trendEfficiency =
-    absoluteMove > 0
-      ? Math.abs(netMove) /
-        absoluteMove
-      : 0;
+}
 
-  const chop =
-    clamp(
-      (1-trendEfficiency)*100,
-      0,
-      100
-    );
+else if(
+delta < 0
+){
 
-  const persistence =
-    clamp(
-      directionPct,
-      0,
-      100
-    );
+down++;
 
-  const momentum10 =
-    recent[recent.length-1] -
-    recent[
-      Math.max(
-        0,
-        recent.length-11
-      )
-    ];
+}
 
-  const previousMomentum =
-    previous[previous.length-1] -
-    previous[
-      Math.max(
-        0,
-        previous.length-11
-      )
-    ];
+}
 
-  const absMoves =
-    mean(
-      deltas.map(
-        Math.abs
-      )
-    ) || 0.00000001;
 
-  const normalizedMomentum =
-    clamp(
-      Math.abs(momentum10) /
-      (absMoves * 10),
-      0,
-      1
-    );
+const total =
+up + down;
 
-  const momentumDirection =
-    momentum10 >= 0
-      ? "CALL"
-      : "PUT";
 
-  const momentumAgreement =
-    momentumDirection === direction
-      ? 100
-      : 0;
+if(
+total < 10
+){
 
-  const previousDirection =
-    previousMomentum >= 0
-      ? "CALL"
-      : "PUT";
+return {
 
-  const regimeAgreement =
-    previousDirection === direction
-      ? 100
-      : 0;
+upPct:50,
 
-  const reversalPenalty =
-    clamp(
-      (changes / 18) * 100,
-      0,
-      100
-    );
+downPct:50,
 
-  const stability =
-    100 -
-    reversalPenalty;
+deltas
 
-  /*
-    Ensemble weighting:
+};
 
-    Direction pressure 30%
-    Persistence      25%
-    Momentum         20%
-    Trend efficiency 15%
-    Regime agreement 10%
-  */
+}
 
-  let score =
-      (directionPct * 0.30)
-    + (persistence * 0.25)
-    + (normalizedMomentum * 100 * 0.20)
-    + (trendEfficiency * 100 * 0.15)
-    + (regimeAgreement * 0.10);
 
-  /*
-    Penalize unstable/choppy markets.
-  */
+return {
 
-  score -=
-    (reversalPenalty * 0.10);
+upPct:
+(
+up /
+total
+) *
+100,
 
-  score =
-    clamp(
-      score,
-      0,
-      100
-    );
+downPct:
+(
+down /
+total
+) *
+100,
 
-  return {
+deltas
 
-    family:"RISE/FALL",
+};
 
-    contract:
-      direction,
+}
 
-    label:
-      direction === "CALL"
-        ? "RISE"
-        : "FALL",
 
-    validation:
-      directionPct,
+const cur =
+directionStats(
+current
+);
 
-    persistence,
 
-    chop,
+const prev =
+directionStats(
+previous
+);
 
-    score,
 
-    samples:
-      recent.length,
+const currentDirection =
+cur.upPct >=
+cur.downPct
+? "CALL"
+: "PUT";
 
-    momentum:
-      momentum10,
 
-    stability,
+const previousDirection =
+prev.upPct >=
+prev.downPct
+? "CALL"
+: "PUT";
 
-    directionPct,
 
-    oppositePct:
-      Math.min(
-        upPct,
-        downPct
-      )
-  };
+const currentValidation =
+Math.max(
+cur.upPct,
+cur.downPct
+);
+
+
+const previousValidation =
+Math.max(
+prev.upPct,
+prev.downPct
+);
+
+
+const regimeAgreement =
+currentDirection ===
+previousDirection
+? 100
+: 0;
+
+
+const currentMove =
+current[
+current.length-1
+] -
+current[0];
+
+
+const momentumDirection =
+currentMove >= 0
+? "CALL"
+: "PUT";
+
+
+const momentumAgreement =
+momentumDirection ===
+currentDirection
+? 100
+: 0;
+
+
+const absoluteMovement =
+cur.deltas.reduce(
+(
+total,
+delta
+)=>
+total +
+Math.abs(
+delta
+),
+0
+);
+
+
+const efficiency =
+absoluteMovement > 0
+? Math.abs(
+currentMove
+) /
+absoluteMovement
+: 0;
+
+
+let changes = 0;
+
+
+for(
+let i=1;
+i<cur.deltas.length;
+i++
+){
+
+const a =
+Math.sign(
+cur.deltas[i-1]
+);
+
+
+const b =
+Math.sign(
+cur.deltas[i]
+);
+
+
+if(
+a !== 0 &&
+b !== 0 &&
+a !== b
+){
+
+changes++;
+
+}
+
+}
+
+
+const chop =
+clamp(
+
+(
+changes /
+Math.max(
+1,
+cur.deltas.length-1
+)
+) *
+100,
+
+0,
+
+100
+
+);
+
+
+const persistence =
+clamp(
+currentValidation,
+0,
+100
+);
+
+
+let rawScore =
+
+currentValidation *
+0.30
+
++
+
+previousValidation *
+0.20
+
++
+
+regimeAgreement *
+0.20
+
++
+
+momentumAgreement *
+0.10
+
++
+
+efficiency *
+100 *
+0.20;
+
+
+rawScore -=
+chop *
+0.15;
+
+
+const score =
+clamp(
+rawScore,
+0,
+92
+);
+
+
+return {
+
+family:
+"RISE/FALL",
+
+contract:
+currentDirection,
+
+label:
+currentDirection ===
+"CALL"
+? "RISE"
+: "FALL",
+
+validation:
+currentValidation,
+
+previousValidation,
+
+persistence,
+
+chop,
+
+score,
+
+samples:
+100
+
+};
+
 }
 
 
 /* =========================================================
-   EVEN / ODD ENGINE
+   LAST DIGIT
    ========================================================= */
 
 function quoteDigit(
-  quote,
-  pipSize
+quote,
+pipSize
 ){
 
-  let decimals = 2;
+let decimals =
+2;
 
-  if(
-    pipSize &&
-    Number.isFinite(pipSize)
-  ){
 
-    decimals =
-      Math.max(
-        0,
-        Math.min(
-          8,
-          Math.round(
-            -Math.log10(
-              pipSize
-            )
-          )
-        )
-      );
-  }
+if(
+pipSize &&
+Number.isFinite(
+pipSize
+)
+){
 
-  const fixed =
-    Number(quote).toFixed(
-      decimals
-    );
+decimals =
+Math.max(
+0,
+Math.min(
+8,
+Math.round(
+-Math.log10(
+pipSize
+)
+)
+)
+);
 
-  const digits =
-    fixed.replace(
-      /[^0-9]/g,
-      ""
-    );
-
-  if(!digits.length){
-    return 0;
-  }
-
-  return Number(
-    digits[
-      digits.length-1
-    ]
-  );
 }
 
 
-function parityStats(
-  ticks,
-  pipSize
+const fixed =
+Number(
+quote
+).toFixed(
+decimals
+);
+
+
+const digits =
+fixed.replace(
+/[^0-9]/g,
+""
+);
+
+
+if(
+!digits.length
 ){
 
-  let even = 0;
-  let odd = 0;
+return 0;
 
-  const parity = [];
-
-  for(
-    const price
-    of ticks
-  ){
-
-    const digit =
-      quoteDigit(
-        price,
-        pipSize
-      );
-
-    const p =
-      digit % 2 === 0
-        ? "EVEN"
-        : "ODD";
-
-    parity.push(p);
-
-    if(p === "EVEN"){
-      even++;
-    }else{
-      odd++;
-    }
-  }
-
-  const total =
-    even + odd;
-
-  if(!total){
-    return null;
-  }
-
-  return {
-
-    evenPct:
-      (even/total)*100,
-
-    oddPct:
-      (odd/total)*100,
-
-    parity
-  };
 }
 
 
-function analyzeEvenOdd(
-  ticks,
-  pipSize
-){
+return Number(
+digits[
+digits.length-1
+]
+);
 
-  if(ticks.length < 20){
-    return null;
-  }
-
-  const last100 =
-    ticks.slice(-100);
-
-  const last50 =
-    ticks.slice(-50);
-
-  const last20 =
-    ticks.slice(-20);
-
-  const s100 =
-    parityStats(
-      last100,
-      pipSize
-    );
-
-  const s50 =
-    parityStats(
-      last50,
-      pipSize
-    );
-
-  const s20 =
-    parityStats(
-      last20,
-      pipSize
-    );
-
-  if(
-    !s100 ||
-    !s50 ||
-    !s20
-  ){
-    return null;
-  }
-
-  const overallWinner =
-    s100.evenPct >= s100.oddPct
-      ? "DIGITEVEN"
-      : "DIGITODD";
-
-  const overallPct =
-    Math.max(
-      s100.evenPct,
-      s100.oddPct
-    );
-
-  const recentWinner =
-    s20.evenPct >= s20.oddPct
-      ? "DIGITEVEN"
-      : "DIGITODD";
-
-  const recentPct =
-    Math.max(
-      s20.evenPct,
-      s20.oddPct
-    );
-
-  const midWinner =
-    s50.evenPct >= s50.oddPct
-      ? "DIGITEVEN"
-      : "DIGITODD";
-
-  const alignment =
-    (
-      overallWinner ===
-      recentWinner
-        ? 50
-        : 0
-    ) +
-    (
-      overallWinner ===
-      midWinner
-        ? 50
-        : 0
-    );
-
-  /*
-    Parity pressure:
-    50/50 = 0
-    60/40 = 20
-    70/30 = 40
-    80/20 = 60
-    90/10 = 80
-    100/0 = 100
-  */
-
-  const pressure =
-    Math.abs(
-      s100.evenPct -
-      s100.oddPct
-    );
-
-  const recentPressure =
-    Math.abs(
-      s20.evenPct -
-      s20.oddPct
-    );
-
-  /*
-    Check recent parity persistence.
-  */
-
-  let sameRecent = 0;
-
-  for(
-    let i=1;
-    i<s20.parity.length;
-    i++
-  ){
-
-    if(
-      s20.parity[i] ===
-      s20.parity[i-1]
-    ){
-      sameRecent++;
-    }
-  }
-
-  const parityPersistence =
-    s20.parity.length > 1
-      ? (
-          sameRecent /
-          (s20.parity.length-1)
-        ) * 100
-      : 0;
-
-  /*
-    If recent pressure and 100-tick pressure
-    point in the same direction, confidence rises.
-  */
-
-  const pressureAgreement =
-    (
-      (
-        s100.evenPct >= s100.oddPct
-          &&
-        s20.evenPct >= s20.oddPct
-      )
-      ||
-      (
-        s100.oddPct > s100.evenPct
-          &&
-        s20.oddPct > s20.evenPct
-      )
-    )
-      ? 100
-      : 0;
-
-  /*
-    Chop for parity:
-
-    Near 50/50 = high chop.
-    Strong imbalance = lower chop.
-  */
-
-  const chop =
-    clamp(
-      100 - pressure,
-      0,
-      100
-    );
-
-  /*
-    AI-style ensemble score.
-
-    Long pressure      35%
-    Recent pressure    25%
-    Alignment          20%
-    Persistence        10%
-    Pressure agreement 10%
-  */
-
-  let score =
-      pressure * 0.35
-    + recentPressure * 0.25
-    + alignment * 0.20
-    + parityPersistence * 0.10
-    + pressureAgreement * 0.10;
-
-  /*
-    Give the model a neutral base so a
-    qualified 56% parity signal can still
-    be considered when other confirmations
-    agree.
-  */
-
-  score += 45;
-
-  score =
-    clamp(
-      score,
-      0,
-      100
-    );
-
-  return {
-
-    family:"EVEN/ODD",
-
-    contract:
-      overallWinner,
-
-    label:
-      overallWinner ===
-      "DIGITEVEN"
-        ? "EVEN"
-        : "ODD",
-
-    validation:
-      overallPct,
-
-    persistence:
-      parityPersistence,
-
-    chop,
-
-    score,
-
-    samples:
-      last100.length,
-
-    pressure,
-
-    recentPressure,
-
-    alignment,
-
-    pressureAgreement,
-
-    evenPct:
-      s100.evenPct,
-
-    oddPct:
-      s100.oddPct
-  };
 }
 
 
 /* =========================================================
-   FULL MARKET AI ANALYSIS
+   PARITY STATS
    ========================================================= */
 
-function analyzeMarket(market){
+function parityStats(
+ticks,
+pipSize
+){
 
-  if(
-    !market ||
-    !market.ready ||
-    market.ticks.length <
-      settings().minSamples
-  ){
-    return null;
-  }
+let even = 0;
 
-  /*
-    The scanner uses exactly the last
-    200 ticks when available.
+let odd = 0;
 
-    First 100:
-      previous regime
+const parity = [];
 
-    Last 100:
-      current regime
-  */
 
-  const ticks =
-    market.ticks.slice(
-      -200
-    );
+for(
+const price
+of ticks
+){
 
-  if(
-    ticks.length <
-    settings().minSamples
-  ){
-    return null;
-  }
+const digit =
+quoteDigit(
+price,
+pipSize
+);
 
-  const rf =
-    analyzeRiseFall(
-      ticks
-    );
 
-  const eo =
-    analyzeEvenOdd(
-      ticks,
-      market.pipSize
-    );
+const value =
+digit % 2 === 0
+? "EVEN"
+: "ODD";
 
-  const s =
-    settings();
 
-  const candidates = [];
+parity.push(
+value
+);
 
-  if(rf){
 
-    if(
-      rf.validation >=
-        s.minValidation &&
+if(
+value === "EVEN"
+){
 
-      rf.score >=
-        s.minScore &&
+even++;
 
-      rf.chop <=
-        s.maxChop &&
+}
 
-      rf.persistence >=
-        s.persistence
-    ){
+else{
 
-      candidates.push({
-        ...rf,
-        market
-      });
-    }
-  }
+odd++;
 
-  if(eo){
+}
 
-    if(
-      eo.validation >=
-        s.minValidation &&
+}
 
-      eo.score >=
-        s.minScore &&
 
-      eo.chop <=
-        s.maxChop &&
+const total =
+even + odd;
 
-      eo.persistence >=
-        s.persistence
-    ){
 
-      candidates.push({
-        ...eo,
-        market
-      });
-    }
-  }
+if(!total){
 
-  if(!candidates.length){
-    return {
-      market,
-      rf,
-      eo,
-      candidates:[]
-    };
-  }
+return null;
 
-  candidates.sort(
-    (a,b)=>
-      b.score -
-      a.score
-  );
+}
 
-  return {
-    market,
-    rf,
-    eo,
-    candidates
-  };
+
+return {
+
+evenPct:
+(
+even /
+total
+) *
+100,
+
+oddPct:
+(
+odd /
+total
+) *
+100,
+
+parity
+
+};
+
 }
 
 
 /* =========================================================
-   CANDIDATE SCANNER
+   EVEN/ODD ANALYSIS
+   ========================================================= */
+
+function analyzeEvenOdd(
+ticks,
+pipSize
+){
+
+if(
+ticks.length <
+200
+){
+
+return null;
+
+}
+
+
+const previous =
+ticks.slice(
+-200,
+-100
+);
+
+
+const current =
+ticks.slice(
+-100
+);
+
+
+const recent =
+current.slice(
+-30
+);
+
+
+const previousStats =
+parityStats(
+previous,
+pipSize
+);
+
+
+const currentStats =
+parityStats(
+current,
+pipSize
+);
+
+
+const recentStats =
+parityStats(
+recent,
+pipSize
+);
+
+
+if(
+!previousStats ||
+!currentStats ||
+!recentStats
+){
+
+return null;
+
+}
+
+
+const currentWinner =
+currentStats.evenPct >=
+currentStats.oddPct
+? "DIGITEVEN"
+: "DIGITODD";
+
+
+const previousWinner =
+previousStats.evenPct >=
+previousStats.oddPct
+? "DIGITEVEN"
+: "DIGITODD";
+
+
+const recentWinner =
+recentStats.evenPct >=
+recentStats.oddPct
+? "DIGITEVEN"
+: "DIGITODD";
+
+
+const currentValidation =
+Math.max(
+currentStats.evenPct,
+currentStats.oddPct
+);
+
+
+const previousValidation =
+Math.max(
+previousStats.evenPct,
+previousStats.oddPct
+);
+
+
+const currentPressure =
+Math.abs(
+currentStats.evenPct -
+currentStats.oddPct
+);
+
+
+const previousPressure =
+Math.abs(
+previousStats.evenPct -
+previousStats.oddPct
+);
+
+
+let alignment = 0;
+
+
+if(
+currentWinner ===
+previousWinner
+){
+
+alignment +=
+50;
+
+}
+
+
+if(
+currentWinner ===
+recentWinner
+){
+
+alignment +=
+50;
+
+}
+
+
+let same = 0;
+
+
+for(
+let i=1;
+i<recentStats.parity.length;
+i++
+){
+
+if(
+recentStats.parity[i] ===
+recentStats.parity[i-1]
+){
+
+same++;
+
+}
+
+}
+
+
+const persistence =
+(
+same /
+Math.max(
+1,
+recentStats.parity.length-1
+)
+) *
+100;
+
+
+const regimeAgreement =
+currentWinner ===
+previousWinner
+? 100
+: 0;
+
+
+const pressureStability =
+clamp(
+
+(
+Math.min(
+currentPressure,
+previousPressure
+) /
+50
+) *
+100,
+
+0,
+
+100
+
+);
+
+
+const chop =
+clamp(
+100 -
+currentPressure,
+0,
+100
+);
+
+
+let rawScore =
+
+currentPressure *
+0.25
+
++
+
+previousPressure *
+0.20
+
++
+
+alignment *
+0.20
+
++
+
+persistence *
+0.15
+
++
+
+regimeAgreement *
+0.10
+
++
+
+pressureStability *
+0.10;
+
+
+rawScore +=
+35;
+
+
+rawScore -=
+chop *
+0.05;
+
+
+const score =
+clamp(
+rawScore,
+0,
+92
+);
+
+
+return {
+
+family:
+"EVEN/ODD",
+
+contract:
+currentWinner,
+
+label:
+currentWinner ===
+"DIGITEVEN"
+? "EVEN"
+: "ODD",
+
+validation:
+currentValidation,
+
+previousValidation,
+
+persistence,
+
+chop,
+
+score,
+
+samples:
+100
+
+};
+
+}
+
+
+/* =========================================================
+   MARKET ANALYSIS
+   ========================================================= */
+
+function analyzeMarket(
+market
+){
+
+if(
+!market ||
+!market.ready ||
+!market.contractsLoaded ||
+market.ticks.length <
+200
+){
+
+return null;
+
+}
+
+
+const ticks =
+market.ticks.slice(
+-200
+);
+
+
+const rf =
+analyzeRiseFall(
+ticks
+);
+
+
+const eo =
+analyzeEvenOdd(
+ticks,
+market.pipSize
+);
+
+
+const s =
+settings();
+
+
+const candidates = [];
+
+
+if(
+rf &&
+market.contracts.has(
+rf.contract
+)
+){
+
+if(
+
+rf.validation >=
+s.minValidation
+
+&&
+
+rf.score >=
+s.minScore
+
+&&
+
+rf.chop <=
+s.maxChop
+
+&&
+
+rf.persistence >=
+s.persistence
+
+){
+
+candidates.push({
+
+...rf,
+
+market
+
+});
+
+}
+
+}
+
+
+if(
+eo &&
+market.contracts.has(
+eo.contract
+)
+){
+
+if(
+
+eo.validation >=
+s.minValidation
+
+&&
+
+eo.score >=
+s.minScore
+
+&&
+
+eo.chop <=
+s.maxChop
+
+&&
+
+eo.persistence >=
+s.persistence
+
+){
+
+candidates.push({
+
+...eo,
+
+market
+
+});
+
+}
+
+}
+
+
+candidates.sort(
+(a,b)=>
+b.score -
+a.score
+);
+
+
+return {
+
+market,
+
+rf,
+
+eo,
+
+candidates
+
+};
+
+}
+
+
+/* =========================================================
+   COLLECT CANDIDATES
    ========================================================= */
 
 function collectCandidates(){
 
-  const all = [];
+const all = [];
 
-  for(
-    const market
-    of markets.values()
-  ){
 
-    if(
-      !market.ready
-    ){
-      continue;
-    }
+for(
+const market
+of markets.values()
+){
 
-    /*
-      Market cooldown.
-    */
+if(
+!market.ready ||
+!market.contractsLoaded
+){
 
-    const lastTrade =
-      marketLastTrade.get(
-        market.symbol
-      ) || 0;
+continue;
 
-    const cooldownMs =
-      settings().cooldown *
-      1000;
+}
 
-    if(
-      Date.now() -
-      lastTrade <
-      cooldownMs
-    ){
-      continue;
-    }
 
-    /*
-      Market loss lock.
-    */
+const lastTrade =
+marketLastTrade.get(
+market.symbol
+) ||
+0;
 
-    const losses =
-      marketLosses.get(
-        market.symbol
-      ) || 0;
 
-    if(
-      losses >=
-      settings().lossLock
-    ){
-      continue;
-    }
+if(
+Date.now() -
+lastTrade <
+settings().cooldown *
+1000
+){
 
-    const analysis =
-      analyzeMarket(
-        market
-      );
+continue;
 
-    if(
-      !analysis ||
-      !analysis.candidates
-    ){
-      continue;
-    }
+}
 
-    for(
-      const candidate
-      of analysis.candidates
-    ){
 
-      all.push(
-        candidate
-      );
-    }
-  }
+const losses =
+marketLosses.get(
+market.symbol
+) ||
+0;
 
-  all.sort(
-    (a,b)=>{
 
-      /*
-        Primary:
-        AI score
+if(
+losses >=
+settings().lossLock
+){
 
-        Secondary:
-        validation
+continue;
 
-        Tertiary:
-        persistence
-      */
+}
 
-      if(
-        b.score !==
-        a.score
-      ){
 
-        return (
-          b.score -
-          a.score
-        );
-      }
+const analysis =
+analyzeMarket(
+market
+);
 
-      if(
-        b.validation !==
-        a.validation
-      ){
 
-        return (
-          b.validation -
-          a.validation
-        );
-      }
+if(
+!analysis
+){
 
-      return (
-        b.persistence -
-        a.persistence
-      );
-    }
-  );
+continue;
 
-  return all;
+}
+
+
+for(
+const candidate
+of analysis.candidates
+){
+
+all.push(
+candidate
+);
+
+}
+
+}
+
+
+all.sort(
+(a,b)=>{
+
+if(
+b.score !==
+a.score
+){
+
+return b.score -
+a.score;
+
+}
+
+
+if(
+b.validation !==
+a.validation
+){
+
+return b.validation -
+a.validation;
+
+}
+
+
+return b.persistence -
+a.persistence;
+
+}
+);
+
+
+return all;
+
 }
 
 
 /* =========================================================
-   DISPLAY SIGNAL
+   DISPLAY
    ========================================================= */
 
 function displayCandidate(
-  candidate,
-  ev=0
+candidate,
+ev=0,
+duration="AUTO"
 ){
 
-  if(!candidate){
+if(!candidate){
 
-    el("signalType").textContent =
-      "WAITING";
+el(
+"signalType"
+).textContent =
+"WAITING";
 
-    el("signalMarket").textContent =
-      "No qualified signal";
 
-    el("signalScore").textContent =
-      "0";
+el(
+"signalMarket"
+).textContent =
+"No qualified signal";
 
-    el("signalProgress").style.width =
-      "0%";
 
-    el("mValidation").textContent =
-      "0%";
+el(
+"signalScore"
+).textContent =
+"0";
 
-    el("mPersistence").textContent =
-      "0%";
 
-    el("mChop").textContent =
-      "0%";
+el(
+"signalProgress"
+).style.width =
+"0%";
 
-    el("mSamples").textContent =
-      "0";
 
-    el("mEV").textContent =
-      "0%";
+el(
+"mValidation"
+).textContent =
+"0%";
 
-    el("mRF").textContent =
-      "0";
 
-    el("mEO").textContent =
-      "0";
+el(
+"mPrevious"
+).textContent =
+"0%";
 
-    el("mMode").textContent =
-      "WAIT";
 
-    return;
-  }
+el(
+"mPersistence"
+).textContent =
+"0%";
 
-  el("signalType").textContent =
-    candidate.label;
 
-  el("signalMarket").textContent =
-    candidate.market.name +
-    " • " +
-    candidate.family;
+el(
+"mChop"
+).textContent =
+"0%";
 
-  el("signalScore").textContent =
-    candidate.score.toFixed(1);
 
-  el("signalProgress").style.width =
-    clamp(
-      candidate.score,
-      0,
-      100
-    ) + "%";
+el(
+"mSamples"
+).textContent =
+"0";
 
-  el("mValidation").textContent =
-    candidate.validation.toFixed(1) +
-    "%";
 
-  el("mPersistence").textContent =
-    candidate.persistence.toFixed(1) +
-    "%";
+el(
+"mEV"
+).textContent =
+"0%";
 
-  el("mChop").textContent =
-    candidate.chop.toFixed(1) +
-    "%";
 
-  el("mSamples").textContent =
-    candidate.samples;
+el(
+"mRF"
+).textContent =
+"0";
 
-  el("mEV").textContent =
-    ev.toFixed(2) +
-    "%";
 
-  el("mMode").textContent =
-    candidate.family;
+el(
+"mEO"
+).textContent =
+"0";
 
-  const analysis =
-    analyzeMarket(
-      candidate.market
-    );
 
-  el("mRF").textContent =
-    analysis &&
-    analysis.rf
-      ? analysis.rf.score.toFixed(1)
-      : "0";
+el(
+"mDuration"
+).textContent =
+"AUTO";
 
-  el("mEO").textContent =
-    analysis &&
-    analysis.eo
-      ? analysis.eo.score.toFixed(1)
-      : "0";
+
+el(
+"mMode"
+).textContent =
+"WAIT";
+
+
+return;
+
+}
+
+
+el(
+"signalType"
+).textContent =
+candidate.label;
+
+
+el(
+"signalMarket"
+).textContent =
+candidate.market.name +
+" • " +
+candidate.family;
+
+
+el(
+"signalScore"
+).textContent =
+candidate.score.toFixed(
+1
+);
+
+
+el(
+"signalProgress"
+).style.width =
+clamp(
+candidate.score,
+0,
+92
+) +
+"%";
+
+
+el(
+"mValidation"
+).textContent =
+candidate.validation.toFixed(
+1
+) +
+"%";
+
+
+el(
+"mPrevious"
+).textContent =
+(
+candidate.previousValidation ||
+0
+).toFixed(
+1
+) +
+"%";
+
+
+el(
+"mPersistence"
+).textContent =
+candidate.persistence.toFixed(
+1
+) +
+"%";
+
+
+el(
+"mChop"
+).textContent =
+candidate.chop.toFixed(
+1
+) +
+"%";
+
+
+el(
+"mSamples"
+).textContent =
+candidate.samples;
+
+
+el(
+"mEV"
+).textContent =
+ev.toFixed(
+2
+) +
+"%";
+
+
+el(
+"mDuration"
+).textContent =
+duration ===
+"AUTO"
+? "AUTO"
+: duration +
+"T";
+
+
+el(
+"mMode"
+).textContent =
+candidate.family;
+
+
+const analysis =
+analyzeMarket(
+candidate.market
+);
+
+
+el(
+"mRF"
+).textContent =
+analysis &&
+analysis.rf
+? analysis.rf.score.toFixed(
+1
+)
+: "0";
+
+
+el(
+"mEO"
+).textContent =
+analysis &&
+analysis.eo
+? analysis.eo.score.toFixed(
+1
+)
+: "0";
+
 }
 
 
 /* =========================================================
-   SCAN CYCLE
+   DURATION
    ========================================================= */
 
-async function scanCycle(){
+function durationKey(
+symbol,
+contract
+){
 
-  if(
-    !trading ||
-    !connected
-  ){
-    return;
-  }
+return symbol +
+"|" +
+contract;
 
-  if(
-    tradeInFlight ||
-    proposalInFlight
-  ){
-    return;
-  }
+}
 
-  if(
-    session.trades >=
-    settings().maxTrades
-  ){
 
-    log(
-      "Maximum trades reached. Trading stopped.",
-      "warn"
-    );
+function badDurationKey(
+symbol,
+contract,
+duration
+){
 
-    stopTrading();
+return symbol +
+"|" +
+contract +
+"|" +
+duration;
 
-    return;
-  }
+}
 
-  if(
-    session.losses >=
-    settings().maxLosses
-  ){
 
-    log(
-      "Maximum session losses reached. Trading stopped.",
-      "warn"
-    );
+function isBadDuration(
+symbol,
+contract,
+duration
+){
 
-    stopTrading();
+const key =
+badDurationKey(
+symbol,
+contract,
+duration
+);
 
-    return;
-  }
 
-  if(
-    settings().takeProfit > 0 &&
-    session.profit >=
-      settings().takeProfit
-  ){
+const expiry =
+badDurationCache.get(
+key
+);
 
-    log(
-      "Take-profit reached. Trading stopped.",
-      "trade"
-    );
 
-    stopTrading();
+if(!expiry){
 
-    return;
-  }
+return false;
 
-  if(
-    settings().stopLoss > 0 &&
-    session.profit <=
-      -Math.abs(
-        settings().stopLoss
-      )
-  ){
+}
 
-    log(
-      "Stop-loss reached. Trading stopped.",
-      "warn"
-    );
 
-    stopTrading();
+if(
+Date.now() >=
+expiry
+){
 
-    return;
-  }
+badDurationCache.delete(
+key
+);
 
-  const candidates =
-    collectCandidates();
+return false;
 
-  lastCandidateCount =
-    candidates.length;
+}
 
-  updateUI();
 
-  if(!candidates.length){
+return true;
 
-    displayCandidate(
-      null
-    );
+}
 
-    return;
-  }
 
-  const best =
-    candidates[0];
+/* =========================================================
+   DURATION LIST
+   ========================================================= */
 
-  /*
-    Show the best signal before requesting
-    a proposal.
-  */
+function durationList(
+market,
+contract
+){
 
-  displayCandidate(
-    best,
-    0
-  );
+const selected =
+settings().duration;
 
-  log(
-    "AI candidate: " +
-    best.market.symbol +
-    " " +
-    best.label +
-    " | " +
-    best.family +
-    " | Score " +
-    best.score.toFixed(1) +
-    " | Validation " +
-    best.validation.toFixed(1) +
-    "%",
-    "ai"
-  );
 
-  await requestAndBuy(
-    best
-  );
+if(
+selected !==
+"AUTO"
+){
+
+return [
+Number(
+selected
+)
+];
+
+}
+
+
+const cached =
+durationCache.get(
+durationKey(
+market.symbol,
+contract
+)
+);
+
+
+const list = [];
+
+
+if(
+cached &&
+!isBadDuration(
+market.symbol,
+contract,
+cached
+)
+){
+
+list.push(
+cached
+);
+
+}
+
+
+for(
+const duration
+of AUTO_DURATIONS
+){
+
+if(
+list.includes(
+duration
+)
+){
+
+continue;
+
+}
+
+
+if(
+!isBadDuration(
+market.symbol,
+contract,
+duration
+)
+){
+
+list.push(
+duration
+);
+
+}
+
+}
+
+
+return list;
+
 }
 
 
@@ -3328,220 +4877,604 @@ async function scanCycle(){
    PROPOSAL
    ========================================================= */
 
-async function requestAndBuy(
-  candidate
+async function getProposal(
+candidate,
+duration
 ){
 
-  if(
-    proposalInFlight ||
-    tradeInFlight ||
-    !trading
-  ){
-    return;
-  }
+const s =
+settings();
 
-  proposalInFlight = true;
 
-  updateUI();
+const result =
+await sendRequest(
 
-  const s =
-    settings();
+{
 
-  const market =
-    candidate.market;
+proposal:
+1,
 
-  const contract =
-    candidate.contract;
+amount:
+s.stake,
 
-  try{
+basis:
+"stake",
 
-    log(
-      "Requesting " +
-      candidate.label +
-      " proposal on " +
-      market.symbol +
-      "...",
-      "ai"
-    );
+contract_type:
+candidate.contract,
 
-    const result =
-      await sendRequest(
-        {
-          proposal:1,
+currency:
+currency,
 
-          amount:
-            s.stake,
+duration:
+duration,
 
-          basis:"stake",
+duration_unit:
+"t",
 
-          contract_type:
-            contract,
+underlying_symbol:
+candidate.market.symbol
 
-          currency:
-            currency,
+},
 
-          duration:
-            s.duration,
+10000
 
-          duration_unit:"t",
+);
 
-          underlying_symbol:
-            market.symbol
 
-        },
-        10000
-      );
+if(
+!result.proposal ||
+!result.proposal.id
+){
 
-    if(!trading){
-      return;
-    }
+throw new Error(
+"Proposal response did not contain an ID."
+);
 
-    const proposal =
-      result.proposal;
+}
 
-    if(
-      !proposal ||
-      !proposal.id
-    ){
 
-      throw new Error(
-        "Proposal response did not contain an ID."
-      );
-    }
+return result.proposal;
 
-    const ask =
-      Number(
-        proposal.ask_price
-      );
+}
 
-    const payout =
-      Number(
-        proposal.payout
-      );
 
-    let ev =
-      0;
+/* =========================================================
+   FIND WORKING DURATION
+   ========================================================= */
 
-    if(
-      Number.isFinite(ask) &&
-      ask > 0 &&
-      Number.isFinite(payout)
-    ){
+async function findWorkingProposal(
+candidate
+){
 
-      /*
-        The score is used only as a heuristic
-        confidence estimate.
+const durations =
+durationList(
+candidate.market,
+candidate.contract
+);
 
-        This is NOT a guaranteed probability.
-      */
 
-      const estimatedProbability =
-        clamp(
-          candidate.score / 100,
-          0,
-          1
-        );
+let lastError =
+null;
 
-      const expectedValue =
-        (
-          estimatedProbability *
-          payout
-        ) -
-        ask;
 
-      ev =
-        (
-          expectedValue /
-          ask
-        ) * 100;
-    }
+for(
+const duration
+of durations
+){
 
-    displayCandidate(
-      candidate,
-      ev
-    );
+if(
+!trading
+){
 
-    log(
-      "Proposal " +
-      candidate.label +
-      " | Ask " +
-      (
-        Number.isFinite(ask)
-          ? ask.toFixed(2)
-          : "?"
-      ) +
-      " | Payout " +
-      (
-        Number.isFinite(payout)
-          ? payout.toFixed(2)
-          : "?"
-      ) +
-      " | Est. EV " +
-      ev.toFixed(2) +
-      "%",
-      "ai"
-    );
+return null;
 
-    /*
-      EV filter.
-    */
+}
 
-    if(
-      ev <
-      s.minEV
-    ){
 
-      log(
-        "Proposal rejected by EV filter.",
-        "warn"
-      );
+try{
 
-      return;
-    }
+log(
+"Testing " +
+candidate.label +
+" on " +
+candidate.market.symbol +
+" at " +
+duration +
+" tick(s)...",
+"ai"
+);
 
-    /*
-      Buy immediately after proposal.
-    */
 
-    const buy =
-      await sendRequest(
-        {
-          buy:
-            proposal.id,
+const proposal =
+await getProposal(
+candidate,
+duration
+);
 
-          price:
-            Number.isFinite(ask)
-              ? ask
-              : s.stake
-        },
-        10000
-      );
 
-    if(!buy.buy){
+durationCache.set(
 
-      throw new Error(
-        "Buy response was empty."
-      );
-    }
+durationKey(
+candidate.market.symbol,
+candidate.contract
+),
 
-    processBuy(
-      buy.buy
-    );
+duration
 
-  }catch(error){
+);
 
-    log(
-      "Trade proposal failed: " +
-      error.message,
-      "error"
-    );
 
-  }finally{
+log(
+"VALID duration found: " +
+duration +
+" tick(s).",
+"trade"
+);
 
-    proposalInFlight = false;
 
-    updateUI();
-  }
+return {
+
+proposal,
+
+duration
+
+};
+
+
+}catch(error){
+
+lastError =
+error;
+
+
+const message =
+String(
+error.message ||
+""
+).toLowerCase();
+
+
+if(
+message.includes(
+"tradingdurationnotallowed"
+)
+){
+
+badDurationCache.set(
+
+badDurationKey(
+candidate.market.symbol,
+candidate.contract,
+duration
+),
+
+Date.now() +
+10 *
+60 *
+1000
+
+);
+
+
+log(
+duration +
+" tick(s) unavailable for " +
+candidate.market.symbol +
+" / " +
+candidate.label +
+". Trying another duration.",
+"warn"
+);
+
+
+continue;
+
+}
+
+
+throw error;
+
+}
+
+}
+
+
+throw new Error(
+
+"No supported duration found for " +
+candidate.label +
+" on " +
+candidate.market.symbol +
+(
+lastError
+? " (" +
+lastError.message +
+")"
+: ""
+)
+
+);
+
+}
+
+
+/* =========================================================
+   SCAN
+   ========================================================= */
+
+async function scanCycle(){
+
+if(
+!trading ||
+!connected
+){
+
+return;
+
+}
+
+
+if(
+tradeInFlight ||
+proposalInFlight
+){
+
+return;
+
+}
+
+
+if(
+session.trades >=
+settings().maxTrades
+){
+
+log(
+"Maximum trades reached. Trading stopped.",
+"warn"
+);
+
+stopTrading();
+
+return;
+
+}
+
+
+if(
+session.losses >=
+settings().maxLosses
+){
+
+log(
+"Maximum losses reached. Trading stopped.",
+"warn"
+);
+
+stopTrading();
+
+return;
+
+}
+
+
+if(
+settings().takeProfit > 0 &&
+session.profit >=
+settings().takeProfit
+){
+
+log(
+"Take-profit reached.",
+"trade"
+);
+
+stopTrading();
+
+return;
+
+}
+
+
+if(
+settings().stopLoss > 0 &&
+session.profit <=
+-settings().stopLoss
+){
+
+log(
+"Stop-loss reached.",
+"warn"
+);
+
+stopTrading();
+
+return;
+
+}
+
+
+const candidates =
+collectCandidates();
+
+
+lastCandidateCount =
+candidates.length;
+
+
+updateUI();
+
+
+if(
+!candidates.length
+){
+
+displayCandidate(
+null
+);
+
+return;
+
+}
+
+
+const best =
+candidates[0];
+
+
+displayCandidate(
+best
+);
+
+
+log(
+
+"AI candidate: " +
+best.market.symbol +
+" " +
+best.label +
+" | " +
+best.family +
+" | Score " +
+best.score.toFixed(1) +
+" | Current " +
+best.validation.toFixed(1) +
+"% | Previous " +
+(
+best.previousValidation ||
+0
+).toFixed(1) +
+"%",
+
+"ai"
+
+);
+
+
+await requestAndBuy(
+best
+);
+
+}
+
+
+/* =========================================================
+   REQUEST AND BUY
+   ========================================================= */
+
+async function requestAndBuy(
+candidate
+){
+
+if(
+proposalInFlight ||
+tradeInFlight ||
+!trading
+){
+
+return;
+
+}
+
+
+proposalInFlight =
+true;
+
+
+updateUI();
+
+
+try{
+
+log(
+"Finding valid duration for " +
+candidate.label +
+" on " +
+candidate.market.symbol +
+"...",
+"ai"
+);
+
+
+const found =
+await findWorkingProposal(
+candidate
+);
+
+
+if(
+!found ||
+!found.proposal
+){
+
+return;
+
+}
+
+
+const proposal =
+found.proposal;
+
+
+const duration =
+found.duration;
+
+
+const ask =
+Number(
+proposal.ask_price
+);
+
+
+const payout =
+Number(
+proposal.payout
+);
+
+
+let ev = 0;
+
+
+if(
+Number.isFinite(ask) &&
+ask > 0 &&
+Number.isFinite(payout)
+){
+
+const estimatedProbability =
+clamp(
+candidate.score /
+100,
+0,
+0.92
+);
+
+
+const expectedValue =
+(
+estimatedProbability *
+payout
+) -
+ask;
+
+
+ev =
+(
+expectedValue /
+ask
+) *
+100;
+
+}
+
+
+displayCandidate(
+candidate,
+ev,
+duration
+);
+
+
+log(
+
+"Proposal " +
+candidate.label +
+" | " +
+duration +
+"T | Ask " +
+(
+Number.isFinite(ask)
+? ask.toFixed(2)
+: "?"
+) +
+" | Payout " +
+(
+Number.isFinite(payout)
+? payout.toFixed(2)
+: "?"
+) +
+" | Est. EV " +
+ev.toFixed(2) +
+"%",
+
+"ai"
+
+);
+
+
+if(
+ev <
+settings().minEV
+){
+
+log(
+"Proposal rejected by EV filter.",
+"warn"
+);
+
+return;
+
+}
+
+
+const buy =
+await sendRequest(
+
+{
+
+buy:
+proposal.id,
+
+price:
+Number.isFinite(ask)
+? ask
+: settings().stake
+
+},
+
+10000
+
+);
+
+
+if(
+!buy.buy
+){
+
+throw new Error(
+"Buy response was empty."
+);
+
+}
+
+
+processBuy(
+buy.buy,
+candidate,
+duration
+);
+
+
+}catch(error){
+
+log(
+"Trade proposal failed: " +
+error.message,
+"error"
+);
+
+
+}finally{
+
+proposalInFlight =
+false;
+
+
+updateUI();
+
+}
+
 }
 
 
@@ -3549,81 +5482,120 @@ async function requestAndBuy(
    BUY
    ========================================================= */
 
-function processBuy(buy){
+function processBuy(
+buy,
+candidate,
+duration
+){
 
-  if(!buy){
-    return;
-  }
+if(!buy){
 
-  const contractId =
-    buy.contract_id;
+return;
 
-  if(!contractId){
+}
 
-    log(
-      "Buy succeeded but no contract ID was returned.",
-      "error"
-    );
 
-    return;
-  }
+const contractId =
+buy.contract_id;
 
-  tradeInFlight = true;
 
-  currentContractId =
-    contractId;
+if(!contractId){
 
-  currentTradeFinalized =
-    false;
+log(
+"Buy succeeded but no contract ID was returned.",
+"error"
+);
 
-  session.trades++;
+return;
 
-  currentTradeMarket =
-    buy.underlying_symbol ||
-    currentTradeMarket;
+}
 
-  currentTradeType =
-    buy.contract_type ||
-    currentTradeType;
 
-  /*
-    The market/type can sometimes be absent
-    from buy response, so the scanner's current
-    candidate remains the fallback.
-  */
+tradeInFlight =
+true;
 
-  log(
-    "TRADE OPENED | Contract " +
-    contractId,
-    "trade"
-  );
 
-  updateUI();
+currentContractId =
+contractId;
 
-  try{
 
-    ws.send(
-      JSON.stringify({
-        proposal_open_contract:1,
+currentTradeFinalized =
+false;
 
-        contract_id:
-          contractId,
 
-        subscribe:1,
+currentTradeMarket =
+candidate.market.symbol;
 
-        req_id:
-          ++requestId
-      })
-    );
 
-  }catch(error){
+currentTradeType =
+candidate.contract;
 
-    log(
-      "Could not subscribe to contract: " +
-      error.message,
-      "error"
-    );
-  }
+
+currentTradeDuration =
+duration;
+
+
+session.trades++;
+
+
+marketLastTrade.set(
+currentTradeMarket,
+Date.now()
+);
+
+
+log(
+
+"TRADE OPENED | " +
+candidate.market.symbol +
+" | " +
+candidate.label +
+" | " +
+duration +
+"T | Contract " +
+contractId,
+
+"trade"
+
+);
+
+
+updateUI();
+
+
+try{
+
+ws.send(
+JSON.stringify(
+{
+
+proposal_open_contract:
+1,
+
+contract_id:
+contractId,
+
+subscribe:
+1,
+
+req_id:
+++requestId
+
+}
+)
+);
+
+
+}catch(error){
+
+log(
+"Could not subscribe to contract: " +
+error.message,
+"error"
+);
+
+}
+
 }
 
 
@@ -3631,67 +5603,86 @@ function processBuy(buy){
    OPEN CONTRACT
    ========================================================= */
 
-function processOpenContract(contract){
+function processOpenContract(
+contract
+){
 
-  if(!contract){
-    return;
-  }
+if(!contract){
 
-  if(
-    !currentContractId ||
-    String(
-      contract.contract_id
-    ) !== String(
-      currentContractId
-    )
-  ){
-    return;
-  }
+return;
 
-  const profit =
-    Number(
-      contract.profit
-    );
+}
 
-  const status =
-    String(
-      contract.status ||
-      ""
-    ).toLowerCase();
 
-  const sold =
-    contract.is_sold === 1 ||
-    contract.is_sold === true;
+if(
+!currentContractId ||
+String(
+contract.contract_id
+) !==
+String(
+currentContractId
+)
+){
 
-  const closed =
-    sold ||
-    status === "won" ||
-    status === "lost" ||
-    status === "expired" ||
-    status === "sold";
+return;
 
-  if(!closed){
+}
 
-    return;
-  }
 
-  if(currentTradeFinalized){
+const profit =
+Number(
+contract.profit
+);
 
-    return;
-  }
 
-  currentTradeFinalized =
-    true;
+const status =
+String(
+contract.status ||
+""
+).toLowerCase();
 
-  const pnl =
-    Number.isFinite(profit)
-      ? profit
-      : 0;
 
-  finishTrade(
-    contract,
-    pnl
-  );
+const closed =
+contract.is_sold === 1 ||
+contract.is_sold === true ||
+status === "won" ||
+status === "lost" ||
+status === "expired" ||
+status === "sold";
+
+
+if(!closed){
+
+return;
+
+}
+
+
+if(
+currentTradeFinalized
+){
+
+return;
+
+}
+
+
+currentTradeFinalized =
+true;
+
+
+const pnl =
+Number.isFinite(
+profit
+)
+? profit
+: 0;
+
+
+finishTrade(
+pnl
+);
+
 }
 
 
@@ -3700,225 +5691,238 @@ function processOpenContract(contract){
    ========================================================= */
 
 function finishTrade(
-  contract,
-  pnl
+pnl
 ){
 
-  tradeInFlight = false;
+tradeInFlight =
+false;
 
-  const won =
-    pnl > 0;
 
-  if(won){
+const won =
+pnl > 0;
 
-    session.wins++;
 
-  }else{
+if(won){
 
-    session.losses++;
+session.wins++;
 
-  }
+}else{
 
-  session.profit +=
-    pnl;
+session.losses++;
 
-  /*
-    Track market-specific losses.
-  */
+}
 
-  const symbol =
-    currentTradeMarket;
 
-  if(symbol){
+session.profit +=
+pnl;
 
-    if(won){
 
-      marketLosses.set(
-        symbol,
-        0
-      );
+const symbol =
+currentTradeMarket;
 
-    }else{
 
-      const losses =
-        (
-          marketLosses.get(
-            symbol
-          ) || 0
-        ) + 1;
+if(symbol){
 
-      marketLosses.set(
-        symbol,
-        losses
-      );
-    }
+if(won){
 
-    marketLastTrade.set(
-      symbol,
-      Date.now()
-    );
+marketLosses.set(
+symbol,
+0
+);
 
-    const market =
-      markets.get(symbol);
+}else{
 
-    if(market){
+const losses =
+(
+marketLosses.get(
+symbol
+) ||
+0
+) +
+1;
 
-      market.lossCount =
-        marketLosses.get(
-          symbol
-        ) || 0;
 
-      market.lastTrade =
-        Date.now();
-    }
-  }
+marketLosses.set(
+symbol,
+losses
+);
 
-  log(
-    (
-      won
-        ? "WIN"
-        : "LOSS"
-    ) +
-    " | " +
-    (
-      pnl >= 0
-        ? "+"
-        : ""
-    ) +
-    pnl.toFixed(2) +
-    " | Session P/L " +
-    (
-      session.profit >= 0
-        ? "+"
-        : ""
-    ) +
-    session.profit.toFixed(2),
-    won
-      ? "trade"
-      : "error"
-  );
+}
 
-  /*
-    If a market has hit the configured loss
-    lock, prevent it from being selected again
-    during this session.
-  */
 
-  if(
-    !won &&
-    symbol
-  ){
+const market =
+markets.get(
+symbol
+);
 
-    const losses =
-      marketLosses.get(
-        symbol
-      ) || 0;
 
-    if(
-      losses >=
-      settings().lossLock
-    ){
+if(market){
 
-      log(
-        symbol +
-        " locked after " +
-        losses +
-        " loss(es).",
-        "warn"
-      );
-    }
-  }
+market.lastTrade =
+Date.now();
 
-  currentContractId =
-    null;
+}
 
-  currentTradeMarket =
-    null;
+}
 
-  currentTradeType =
-    null;
 
-  currentTradeFinalized =
-    false;
+log(
 
-  /*
-    Refresh balance after settlement.
-  */
+(
+won
+? "WIN"
+: "LOSS"
+) +
+" | " +
+(
+pnl >= 0
+? "+"
+: ""
+) +
+pnl.toFixed(2) +
+" | Session P/L " +
+(
+session.profit >= 0
+? "+"
+: ""
+) +
+session.profit.toFixed(2),
 
-  setTimeout(
-    refreshBalance,
-    500
-  );
+won
+? "trade"
+: "error"
 
-  updateUI();
+);
 
-  /*
-    Session limits.
-  */
 
-  if(
-    session.losses >=
-    settings().maxLosses
-  ){
+if(
+!won &&
+symbol
+){
 
-    log(
-      "Maximum losses reached.",
-      "warn"
-    );
+const losses =
+marketLosses.get(
+symbol
+) ||
+0;
 
-    stopTrading();
 
-    return;
-  }
+if(
+losses >=
+settings().lossLock
+){
 
-  if(
-    session.trades >=
-    settings().maxTrades
-  ){
+log(
+symbol +
+" locked after " +
+losses +
+" loss(es).",
+"warn"
+);
 
-    log(
-      "Maximum trades reached.",
-      "warn"
-    );
+}
 
-    stopTrading();
+}
 
-    return;
-  }
 
-  if(
-    settings().takeProfit > 0 &&
-    session.profit >=
-      settings().takeProfit
-  ){
+currentContractId =
+null;
 
-    log(
-      "Take-profit reached.",
-      "trade"
-    );
 
-    stopTrading();
+currentTradeMarket =
+null;
 
-    return;
-  }
 
-  if(
-    settings().stopLoss > 0 &&
-    session.profit <=
-      -Math.abs(
-        settings().stopLoss
-      )
-  ){
+currentTradeType =
+null;
 
-    log(
-      "Stop-loss reached.",
-      "warn"
-    );
 
-    stopTrading();
+currentTradeDuration =
+null;
 
-    return;
-  }
+
+currentTradeFinalized =
+false;
+
+
+setTimeout(
+refreshBalance,
+500
+);
+
+
+updateUI();
+
+
+if(
+session.losses >=
+settings().maxLosses
+){
+
+log(
+"Maximum losses reached.",
+"warn"
+);
+
+stopTrading();
+
+return;
+
+}
+
+
+if(
+session.trades >=
+settings().maxTrades
+){
+
+log(
+"Maximum trades reached.",
+"warn"
+);
+
+stopTrading();
+
+return;
+
+}
+
+
+if(
+settings().takeProfit > 0 &&
+session.profit >=
+settings().takeProfit
+){
+
+log(
+"Take-profit reached.",
+"trade"
+);
+
+stopTrading();
+
+return;
+
+}
+
+
+if(
+settings().stopLoss > 0 &&
+session.profit <=
+-settings().stopLoss
+){
+
+log(
+"Stop-loss reached.",
+"warn"
+);
+
+stopTrading();
+
+return;
+
+}
+
 }
 
 
@@ -3928,183 +5932,206 @@ function finishTrade(
 
 function refreshBalance(){
 
-  if(
-    !connected ||
-    !ws ||
-    ws.readyState !==
-      WebSocket.OPEN
-  ){
-    return;
-  }
+if(
+!connected ||
+!ws ||
+ws.readyState !==
+WebSocket.OPEN
+){
 
-  try{
+return;
 
-    ws.send(
-      JSON.stringify({
-        balance:1,
-        subscribe:1,
-        req_id:++requestId
-      })
-    );
+}
 
-  }catch(error){
 
-    log(
-      "Balance refresh failed.",
-      "warn"
-    );
-  }
+try{
+
+ws.send(
+JSON.stringify(
+{
+
+balance:
+1,
+
+subscribe:
+1,
+
+req_id:
+++requestId
+
+}
+)
+);
+
+
+}catch(error){
+
+log(
+"Balance refresh failed.",
+"warn"
+);
+
+}
+
 }
 
 
 /* =========================================================
-   START TRADING
+   START
    ========================================================= */
 
 function startTrading(){
 
-  if(!connected){
+if(!connected){
 
-    log(
-      "Connect the account first.",
-      "warn"
-    );
+log(
+"Connect the account first.",
+"warn"
+);
 
-    return;
-  }
+return;
 
-  if(trading){
-    return;
-  }
+}
 
-  /*
-    Never automatically reset session statistics
-    when Start is pressed.
-  */
 
-  trading = true;
+if(trading){
 
-  log(
-    "AI Pulse/Surge scanner STARTED.",
-    "trade"
-  );
+return;
 
-  log(
-    "Allowed contracts: RISE/FALL + EVEN/ODD.",
-    "ai"
-  );
+}
 
-  log(
-    "Over/Under, Match and Differs are disabled.",
-    "ai"
-  );
 
-  updateUI();
+trading =
+true;
 
-  if(scanTimer){
-    clearInterval(
-      scanTimer
-    );
-  }
 
-  /*
-    Scan once immediately.
-  */
+log(
+"AI Pulse/Surge scanner STARTED.",
+"trade"
+);
 
-  scanCycle();
 
-  /*
-    Then scan once per second.
-  */
+log(
+"Allowed contracts: RISE/FALL + EVEN/ODD.",
+"ai"
+);
 
-  scanTimer =
-    setInterval(
-      scanCycle,
-      1000
-    );
+
+log(
+"Over/Under/Match/Differs disabled.",
+"ai"
+);
+
+
+log(
+"AUTO duration discovery enabled.",
+"ai"
+);
+
+
+updateUI();
+
+
+if(scanTimer){
+
+clearInterval(
+scanTimer
+);
+
+}
+
+
+scanCycle();
+
+
+scanTimer =
+setInterval(
+scanCycle,
+1000
+);
+
 }
 
 
 /* =========================================================
-   STOP TRADING
+   STOP
    ========================================================= */
 
 function stopTrading(){
 
-  trading = false;
+trading =
+false;
 
-  if(scanTimer){
 
-    clearInterval(
-      scanTimer
-    );
+if(scanTimer){
 
-    scanTimer = null;
-  }
+clearInterval(
+scanTimer
+);
 
-  log(
-    "Trading STOPPED. Existing contract is left to settle.",
-    "warn"
-  );
+scanTimer =
+null;
 
-  updateUI();
+}
+
+
+log(
+"Trading STOPPED. Existing contract will settle normally.",
+"warn"
+);
+
+
+updateUI();
+
 }
 
 
 /* =========================================================
-   RESET SESSION
+   RESET
    ========================================================= */
 
 function resetTradeSession(){
 
-  /*
-    Important:
+if(
+tradeInFlight
+){
 
-    This resets statistics only.
+log(
+"Cannot reset session while a trade is active.",
+"warn"
+);
 
-    It does NOT:
-    - change account
-    - change strategy
-    - change markets
-    - change settings
-    - cancel an active trade
-  */
+return;
 
-  if(tradeInFlight){
+}
 
-    log(
-      "Cannot reset session while a trade is active.",
-      "warn"
-    );
 
-    return;
-  }
+session = {
 
-  session = {
-    trades:0,
-    wins:0,
-    losses:0,
-    profit:0
-  };
+trades:0,
 
-  marketLosses.clear();
-  marketLastTrade.clear();
+wins:0,
 
-  for(
-    const market
-    of markets.values()
-  ){
+losses:0,
 
-    market.lossCount = 0;
-    market.lastTrade = 0;
-  }
+profit:0
 
-  log(
-    "Trade session reset. Strategy and settings unchanged.",
-    "trade"
-  );
+};
 
-  updateUI();
+
+marketLosses.clear();
+
+marketLastTrade.clear();
+
+
+log(
+"Trade session reset. Strategy and settings unchanged.",
+"trade"
+);
+
+
+updateUI();
+
 }
 
 
@@ -4114,39 +6141,74 @@ function resetTradeSession(){
 
 function disconnect(){
 
-  disconnecting = true;
+disconnecting =
+true;
 
-  stopTrading();
 
-  if(ws){
+stopTrading();
 
-    try{
-      ws.close();
-    }catch(e){}
-  }
 
-  ws = null;
+if(ws){
 
-  connected = false;
+try{
 
-  accountId = null;
-  accountType = null;
+ws.close();
 
-  markets.clear();
+}catch(e){}
 
-  proposalInFlight = false;
+}
 
-  setConnectionStatus(
-    "Disconnected",
-    "red"
-  );
 
-  updateUI();
+ws =
+null;
 
-  log(
-    "Disconnected.",
-    "warn"
-  );
+
+connected =
+false;
+
+
+accountId =
+null;
+
+
+accountType =
+null;
+
+
+markets.clear();
+
+
+durationCache.clear();
+
+badDurationCache.clear();
+
+
+proposalInFlight =
+false;
+
+
+tradeInFlight =
+false;
+
+
+currentContractId =
+null;
+
+
+setConnectionStatus(
+"Disconnected",
+"red"
+);
+
+
+updateUI();
+
+
+log(
+"Disconnected.",
+"warn"
+);
+
 }
 
 
@@ -4154,32 +6216,49 @@ function disconnect(){
    DELAY
    ========================================================= */
 
-function delay(ms){
+function delay(
+ms
+){
 
-  return new Promise(
-    resolve =>
-      setTimeout(
-        resolve,
-        ms
-      )
-  );
+return new Promise(
+resolve =>
+setTimeout(
+resolve,
+ms
+)
+);
+
 }
 
 
 /* =========================================================
-   INITIAL UI
+   STARTUP
    ========================================================= */
 
 updateUI();
 
-log(
-  "AI Pulse Surge Trader loaded.",
-  "ai"
-);
 
 log(
-  "Waiting for connection...",
-  "muted"
+"AI Pulse Surge Trader loaded.",
+"ai"
+);
+
+
+log(
+"Contracts: RISE/FALL + EVEN/ODD.",
+"ai"
+);
+
+
+log(
+"Over/Under/Match/Differs disabled.",
+"ai"
+);
+
+
+log(
+"Waiting for connection...",
+"muted"
 );
 
 </script>
