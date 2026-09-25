@@ -6,10 +6,7 @@
 <title>AI Pulse RISE/FALL Trader</title>
 
 <style>
-*{
-  box-sizing:border-box;
-  -webkit-tap-highlight-color:transparent;
-}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 
 html,body{
   margin:0;
@@ -19,9 +16,7 @@ html,body{
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
 }
 
-body{
-  padding:14px;
-}
+body{padding:14px}
 
 .container{
   width:100%;
@@ -29,10 +24,8 @@ body{
   margin:auto;
 }
 
-h1{
-  margin:5px 0 4px;
-  font-size:25px;
-}
+h1{margin:5px 0 4px;font-size:25px}
+h2{margin:0 0 14px;font-size:19px}
 
 .subtitle{
   color:#8fa2bf;
@@ -48,11 +41,6 @@ h1{
   margin-bottom:14px;
 }
 
-h2{
-  margin:0 0 14px;
-  font-size:19px;
-}
-
 .grid{
   display:grid;
   grid-template-columns:1fr 1fr;
@@ -60,9 +48,7 @@ h2{
 }
 
 @media(max-width:650px){
-  .grid{
-    grid-template-columns:1fr;
-  }
+  .grid{grid-template-columns:1fr}
 }
 
 label{
@@ -72,8 +58,7 @@ label{
   margin-bottom:7px;
 }
 
-input,
-select{
+input,select{
   width:100%;
   background:#091322;
   color:#eef4ff;
@@ -84,8 +69,7 @@ select{
   outline:none;
 }
 
-input:focus,
-select:focus{
+input:focus,select:focus{
   border-color:#4b8ddd;
 }
 
@@ -111,29 +95,13 @@ button{
   color:white;
 }
 
-button:disabled{
-  opacity:.45;
-}
+button:disabled{opacity:.45}
 
-.connect{
-  background:#344e73;
-}
-
-.start{
-  background:#429b73;
-}
-
-.stop{
-  background:#ad403b;
-}
-
-.disconnect{
-  background:#765318;
-}
-
-.reset{
-  background:#31517e;
-}
+.connect{background:#344e73}
+.start{background:#429b73}
+.stop{background:#ad403b}
+.disconnect{background:#765318}
+.reset{background:#31517e}
 
 .statusGrid{
   display:grid;
@@ -142,9 +110,7 @@ button:disabled{
 }
 
 @media(max-width:700px){
-  .statusGrid{
-    grid-template-columns:1fr 1fr;
-  }
+  .statusGrid{grid-template-columns:1fr 1fr}
 }
 
 .status{
@@ -165,21 +131,10 @@ button:disabled{
   font-weight:700;
 }
 
-.green{
-  color:#6be0a5;
-}
-
-.red{
-  color:#ff7272;
-}
-
-.yellow{
-  color:#efc35d;
-}
-
-.blue{
-  color:#74a9ff;
-}
+.green{color:#6be0a5}
+.red{color:#ff7272}
+.yellow{color:#efc35d}
+.blue{color:#74a9ff}
 
 .signalBox{
   background:#081321;
@@ -234,9 +189,7 @@ button:disabled{
 }
 
 @media(max-width:650px){
-  .metrics{
-    grid-template-columns:1fr 1fr;
-  }
+  .metrics{grid-template-columns:1fr 1fr}
 }
 
 .metric{
@@ -277,29 +230,12 @@ button:disabled{
   line-height:1.55;
 }
 
-.logLine{
-  margin-bottom:3px;
-}
-
-.ai{
-  color:#75aaff;
-}
-
-.trade{
-  color:#69e2a2;
-}
-
-.warn{
-  color:#edc15c;
-}
-
-.error{
-  color:#ff7070;
-}
-
-.muted{
-  color:#7186a3;
-}
+.logLine{margin-bottom:3px}
+.ai{color:#75aaff}
+.trade{color:#69e2a2}
+.warn{color:#edc15c}
+.error{color:#ff7070}
+.muted{color:#7186a3}
 
 .info{
   background:#0a1728;
@@ -324,9 +260,6 @@ button:disabled{
 Trend + Momentum + Pullback + Breakout • RISE/FALL only
 </div>
 
-
-<!-- CONNECTION -->
-
 <div class="card">
 
 <h2>🔐 Connection</h2>
@@ -335,33 +268,17 @@ Trend + Momentum + Pullback + Breakout • RISE/FALL only
 
 <div>
 <label>Personal Access Token</label>
-
-<input
-id="pat"
-type="password"
-autocomplete="off"
-placeholder="Paste PAT"
->
+<input id="pat" type="password" autocomplete="off" placeholder="Paste PAT">
 </div>
 
 <div>
 <label>New PAT App ID</label>
-
-<input
-id="appId"
-type="text"
-autocomplete="off"
-placeholder="Paste new App ID"
->
-
-<div class="small">
-Use your new PAT App ID from the Deriv developer application.
-</div>
+<input id="appId" type="text" autocomplete="off" placeholder="Paste new App ID">
+<div class="small">Use your new PAT App ID from the Deriv developer application.</div>
 </div>
 
 <div>
 <label>Account</label>
-
 <select id="accountType">
 <option value="demo">DEMO</option>
 <option value="real">REAL</option>
@@ -370,19 +287,11 @@ Use your new PAT App ID from the Deriv developer application.
 
 <div>
 <label>Stake / Trade</label>
-
-<input
-id="stake"
-type="number"
-value="1"
-min="0.35"
-step="0.01"
->
+<input id="stake" type="number" value="1" min="0.35" step="0.01">
 </div>
 
 <div>
 <label>Duration / Ticks</label>
-
 <select id="duration">
 <option value="AUTO">AUTO</option>
 <option value="1">1 tick</option>
@@ -398,21 +307,11 @@ step="0.01"
 
 <div>
 <label>Max Markets</label>
-
-<input
-id="maxMarkets"
-type="number"
-value="40"
-min="5"
-max="60"
->
+<input id="maxMarkets" type="number" value="40" min="5" max="60">
 </div>
 
 </div>
 </div>
-
-
-<!-- STRATEGY -->
 
 <div class="card">
 
@@ -422,101 +321,54 @@ max="60"
 
 <div>
 <label>Minimum AI Score</label>
-
-<input
-id="minScore"
-type="number"
-value="64"
-min="50"
-max="90"
->
+<input id="minScore" type="number" value="64" min="50" max="90">
 </div>
 
 <div>
 <label>Minimum 100-Tick Trend %</label>
-
-<input
-id="minTrend"
-type="number"
-value="54"
-min="50"
-max="90"
->
+<input id="minTrend" type="number" value="54" min="50" max="90">
 </div>
 
 <div>
 <label>Minimum 25-Tick Trend %</label>
-
-<input
-id="minShortTrend"
-type="number"
-value="53"
-min="50"
-max="90"
->
+<input id="minShortTrend" type="number" value="53" min="50" max="90">
 </div>
 
 <div>
 <label>Maximum Chop %</label>
-
-<input
-id="maxChop"
-type="number"
-value="70"
-min="10"
-max="90"
->
+<input id="maxChop" type="number" value="70" min="10" max="90">
 </div>
 
 <div>
 <label>Market Cooldown / sec</label>
-
-<input
-id="cooldown"
-type="number"
-value="45"
-min="10"
-max="600"
->
+<input id="cooldown" type="number" value="45" min="10" max="600">
 </div>
 
 <div>
 <label>Market Loss Lock</label>
-
-<input
-id="lossLock"
-type="number"
-value="1"
-min="1"
-max="10"
->
+<input id="lossLock" type="number" value="1" min="1" max="10">
 </div>
 
 </div>
 
 <div class="info">
 
-<strong>How the signal works:</strong><br><br>
+<strong>AI signal engine</strong><br><br>
 
 100 ticks = main directional bias.<br>
 25 ticks = short-term momentum.<br>
 EMA 9/21 = trend confirmation.<br>
-Momentum = acceleration/strength.<br>
-Pullback = temporary move against the main trend followed by recovery.<br>
-Breakout = recent high/low continuation.<br>
-Chop = measures unstable back-and-forth movement.<br><br>
+Momentum = acceleration.<br>
+Pullback = temporary retracement followed by recovery.<br>
+Breakout = recent price structure continuation.<br>
+Chop = unstable back-and-forth movement.<br><br>
 
-The bot uses two engines:
-<strong>PULLBACK</strong> and <strong>MOMENTUM</strong>.
-
-The filters are intentionally less restrictive so the scanner can actually find opportunities.
+The bot uses <strong>PULLBACK</strong> and
+<strong>MOMENTUM</strong> engines and does not require perfect EMA alignment.
 
 </div>
 
 </div>
-
-
-<!-- SESSION -->
 
 <div class="card">
 
@@ -526,97 +378,43 @@ The filters are intentionally less restrictive so the scanner can actually find 
 
 <div>
 <label>Max Trades</label>
-
-<input
-id="maxTrades"
-type="number"
-value="20"
-min="1"
->
+<input id="maxTrades" type="number" value="20" min="1">
 </div>
 
 <div>
 <label>Max Losses</label>
-
-<input
-id="maxLosses"
-type="number"
-value="5"
-min="1"
->
+<input id="maxLosses" type="number" value="5" min="1">
 </div>
 
 <div>
 <label>Take Profit</label>
-
-<input
-id="takeProfit"
-type="number"
-value="0"
-min="0"
-step="0.01"
->
+<input id="takeProfit" type="number" value="0" min="0" step="0.01">
 </div>
 
 <div>
 <label>Stop Loss</label>
-
-<input
-id="stopLoss"
-type="number"
-value="0"
-min="0"
-step="0.01"
->
+<input id="stopLoss" type="number" value="0" min="0" step="0.01">
 </div>
 
 </div>
 
 <div class="buttons">
 
-<button
-class="connect"
-onclick="connectAccount()"
->
-Connect
-</button>
+<button class="connect" onclick="connectAccount()">Connect</button>
 
-<button
-id="startBtn"
-class="start"
-onclick="startTrading()"
-disabled
->
+<button id="startBtn" class="start" onclick="startTrading()" disabled>
 Start Trading
 </button>
 
-<button
-class="stop"
-onclick="stopTrading()"
->
-Stop Trading
-</button>
+<button class="stop" onclick="stopTrading()">Stop Trading</button>
 
-<button
-class="disconnect"
-onclick="disconnect()"
->
-Disconnect
-</button>
+<button class="disconnect" onclick="disconnect()">Disconnect</button>
 
-<button
-class="reset"
-onclick="resetSession()"
->
-Reset Trade Session
-</button>
+<button class="reset" onclick="resetSession()">Reset Trade Session</button>
 
 </div>
 
 </div>
-
-
-<!-- STATUS -->
 
 <div class="card">
 
@@ -626,93 +424,66 @@ Reset Trade Session
 
 <div class="status">
 <div class="statusTitle">Connection</div>
-<div id="connectionStatus" class="statusValue red">
-Disconnected
-</div>
+<div id="connectionStatus" class="statusValue red">Disconnected</div>
 </div>
 
 <div class="status">
 <div class="statusTitle">Account</div>
-<div id="accountStatus" class="statusValue">
-—
-</div>
+<div id="accountStatus" class="statusValue">—</div>
 </div>
 
 <div class="status">
 <div class="statusTitle">Balance</div>
-<div id="balanceStatus" class="statusValue">
-—
-</div>
+<div id="balanceStatus" class="statusValue">—</div>
 </div>
 
 <div class="status">
 <div class="statusTitle">Trading</div>
-<div id="tradingStatus" class="statusValue yellow">
-STOPPED
-</div>
+<div id="tradingStatus" class="statusValue yellow">STOPPED</div>
 </div>
 
 <div class="status">
 <div class="statusTitle">Markets</div>
-<div id="marketStatus" class="statusValue">
-0
-</div>
+<div id="marketStatus" class="statusValue">0</div>
 </div>
 
 <div class="status">
 <div class="statusTitle">Trades</div>
-<div id="tradesStatus" class="statusValue">
-0
-</div>
+<div id="tradesStatus" class="statusValue">0</div>
 </div>
 
 <div class="status">
 <div class="statusTitle">Wins</div>
-<div id="winsStatus" class="statusValue green">
-0
-</div>
+<div id="winsStatus" class="statusValue green">0</div>
 </div>
 
 <div class="status">
 <div class="statusTitle">Losses</div>
-<div id="lossesStatus" class="statusValue red">
-0
-</div>
+<div id="lossesStatus" class="statusValue red">0</div>
 </div>
 
 <div class="status">
 <div class="statusTitle">Session P/L</div>
-<div id="profitStatus" class="statusValue">
-0.00
-</div>
+<div id="profitStatus" class="statusValue">0.00</div>
 </div>
 
 <div class="status">
 <div class="statusTitle">Win Rate</div>
-<div id="winRateStatus" class="statusValue">
-0%
-</div>
+<div id="winRateStatus" class="statusValue">0%</div>
 </div>
 
 <div class="status">
 <div class="statusTitle">Qualified</div>
-<div id="candidateStatus" class="statusValue blue">
-0
-</div>
+<div id="candidateStatus" class="statusValue blue">0</div>
 </div>
 
 <div class="status">
 <div class="statusTitle">Trade State</div>
-<div id="tradeState" class="statusValue">
-IDLE
-</div>
+<div id="tradeState" class="statusValue">IDLE</div>
 </div>
 
 </div>
 </div>
-
-
-<!-- SIGNAL -->
 
 <div class="card">
 
@@ -723,33 +494,17 @@ IDLE
 <div class="signalHeader">
 
 <div>
-
-<div id="signalType" class="signalType">
-WAITING
+<div id="signalType" class="signalType">WAITING</div>
+<div id="signalMarket" class="signalMarket">Scanning...</div>
 </div>
 
-<div id="signalMarket" class="signalMarket">
-Scanning...
-</div>
+<div id="signalScore" class="signalScore">0</div>
 
 </div>
-
-<div id="signalScore" class="signalScore">
-0
-</div>
-
-</div>
-
 
 <div class="progress">
-
-<div
-id="signalProgress"
-class="progressBar"
-></div>
-
+<div id="signalProgress" class="progressBar"></div>
 </div>
-
 
 <div class="metrics">
 
@@ -815,17 +570,12 @@ class="progressBar"
 
 </div>
 
-
 <div id="signalReason" class="reason">
 Waiting for market analysis...
 </div>
 
 </div>
-
 </div>
-
-
-<!-- LOG -->
 
 <div class="card">
 
@@ -837,40 +587,11 @@ Waiting for market analysis...
 
 </div>
 
-
 <script>
 
 /* =========================================================
    AI PULSE RISE/FALL TRADER
-
-   RISE/FALL ONLY
-
-   NO:
-   EVEN
-   ODD
-   OVER
-   UNDER
-   MATCH
-   DIFFERS
-
-   ENGINE:
-   1. PULLBACK
-   2. MOMENTUM
-
-   DATA:
-   200 historical ticks
-   100T main trend
-   25T short trend
-
-   SAFETY:
-   one trade at a time
-   no martingale
-   no recovery
-   market cooldown
-   market loss lock
-   session limits
    ========================================================= */
-
 
 const API_BASE =
 "https://api.derivws.com";
@@ -884,52 +605,88 @@ const ALLOWED_CONTRACTS = [
 ];
 
 const AUTO_DURATIONS = [
-  1,
-  2,
-  3,
-  4,
-  5,
-  10,
-  15,
-  20
+  1,2,3,4,5,10,15,20
 ];
 
 
+/* =========================================================
+   IMPORTANT FIX:
+   THE PREVIOUS VERSION WAS MISSING THIS VARIABLE.
+   ========================================================= */
+
+let trading = false;
+
+
+/* =========================================================
+   CONNECTION STATE
+   ========================================================= */
+
 let ws = null;
+
 let connected = false;
+
 let disconnecting = false;
 
 let accountId = null;
+
 let accountType = null;
+
 let currency = "USD";
+
 let balance = 0;
 
 let requestId = 1000;
 
+
+/* =========================================================
+   REQUEST STATE
+   ========================================================= */
+
 const pending = new Map();
+
 const markets = new Map();
 
 const durationCache = new Map();
+
 const badDurations = new Map();
 
 const marketLastTrade = new Map();
+
 const marketLosses = new Map();
+
 const marketLastEvaluation = new Map();
 
+
+/* =========================================================
+   ENGINE STATE
+   ========================================================= */
+
 let scanTimer = null;
+
 let balanceTimer = null;
+
 let balanceInFlight = false;
 
 let proposalInFlight = false;
+
 let tradeInFlight = false;
 
 let currentContractId = null;
+
 let currentMarket = null;
+
 let currentContract = null;
+
 let currentDuration = null;
+
 let currentFinalized = false;
 
 let candidateCount = 0;
+
+
+/* =========================================================
+   SESSION
+   ========================================================= */
 
 let session = {
   trades:0,
@@ -953,6 +710,7 @@ function el(id){
    ========================================================= */
 
 function num(id,fallback){
+
   const value =
     Number(el(id).value);
 
@@ -985,10 +743,7 @@ function settings(){
         Math.min(
           60,
           Math.floor(
-            num(
-              "maxMarkets",
-              40
-            )
+            num("maxMarkets",40)
           )
         )
       ),
@@ -998,10 +753,7 @@ function settings(){
         50,
         Math.min(
           90,
-          num(
-            "minScore",
-            64
-          )
+          num("minScore",64)
         )
       ),
 
@@ -1010,10 +762,7 @@ function settings(){
         50,
         Math.min(
           90,
-          num(
-            "minTrend",
-            54
-          )
+          num("minTrend",54)
         )
       ),
 
@@ -1022,10 +771,7 @@ function settings(){
         50,
         Math.min(
           90,
-          num(
-            "minShortTrend",
-            53
-          )
+          num("minShortTrend",53)
         )
       ),
 
@@ -1034,30 +780,21 @@ function settings(){
         10,
         Math.min(
           90,
-          num(
-            "maxChop",
-            70
-          )
+          num("maxChop",70)
         )
       ),
 
     cooldown:
       Math.max(
         10,
-        num(
-          "cooldown",
-          45
-        )
+        num("cooldown",45)
       ),
 
     lossLock:
       Math.max(
         1,
         Math.floor(
-          num(
-            "lossLock",
-            1
-          )
+          num("lossLock",1)
         )
       ),
 
@@ -1065,10 +802,7 @@ function settings(){
       Math.max(
         1,
         Math.floor(
-          num(
-            "maxTrades",
-            20
-          )
+          num("maxTrades",20)
         )
       ),
 
@@ -1076,31 +810,21 @@ function settings(){
       Math.max(
         1,
         Math.floor(
-          num(
-            "maxLosses",
-            5
-          )
+          num("maxLosses",5)
         )
       ),
 
     takeProfit:
       Math.max(
         0,
-        num(
-          "takeProfit",
-          0
-        )
+        num("takeProfit",0)
       ),
 
     stopLoss:
       Math.max(
         0,
-        num(
-          "stopLoss",
-          0
-        )
+        num("stopLoss",0)
       )
-
   };
 }
 
@@ -1118,8 +842,7 @@ function log(message,type=""){
     document.createElement("div");
 
   line.className =
-    "logLine " +
-    type;
+    "logLine " + type;
 
   line.textContent =
     "[" +
@@ -1130,8 +853,7 @@ function log(message,type=""){
   box.appendChild(line);
 
   while(
-    box.children.length >
-    600
+    box.children.length > 600
   ){
 
     box.removeChild(
@@ -1203,13 +925,11 @@ function updateUI(){
       ? (
           session.wins /
           session.trades
-        ) *
-        100
+        ) * 100
       : 0;
 
   el("winRateStatus").textContent =
-    winRate.toFixed(1) +
-    "%";
+    winRate.toFixed(1) + "%";
 
   el("candidateStatus").textContent =
     candidateCount;
@@ -1224,8 +944,7 @@ function updateUI(){
           : "IDLE";
 
   el("startBtn").disabled =
-    !connected ||
-    trading;
+    !connected || trading;
 }
 
 
@@ -1236,25 +955,17 @@ function updateUI(){
 function credentials(){
 
   const pat =
-    el("pat")
-      .value
-      .trim();
+    el("pat").value.trim();
 
   const appId =
-    el("appId")
-      .value
-      .trim();
+    el("appId").value.trim();
 
   if(!pat){
-    throw new Error(
-      "PAT is empty."
-    );
+    throw new Error("PAT is empty.");
   }
 
   if(!appId){
-    throw new Error(
-      "App ID is empty."
-    );
+    throw new Error("App ID is empty.");
   }
 
   return {
@@ -1311,8 +1022,7 @@ async function getAccounts(){
   const {
     pat,
     appId
-  } =
-    credentials();
+  } = credentials();
 
   log(
     "Requesting Options accounts...",
@@ -1359,7 +1069,7 @@ async function getAccounts(){
 
 
 /* =========================================================
-   CHOOSE ACCOUNT
+   ACCOUNT SELECTION
    ========================================================= */
 
 function chooseAccount(
@@ -1376,10 +1086,8 @@ function chooseAccount(
     accounts.find(
       item =>
         String(
-          item.account_type ||
-          ""
-        ).toLowerCase() ===
-        target
+          item.account_type || ""
+        ).toLowerCase() === target
     );
 
   if(!found){
@@ -1404,17 +1112,14 @@ async function getOTP(id){
   const {
     pat,
     appId
-  } =
-    credentials();
+  } = credentials();
 
   const response =
     await fetch(
-
       API_BASE +
       "/trading/v1/options/accounts/" +
       encodeURIComponent(id) +
       "/otp",
-
       {
         method:"POST",
         headers:{
@@ -1471,8 +1176,7 @@ async function connectAccount(){
     return;
   }
 
-  disconnecting =
-    false;
+  disconnecting = false;
 
   try{
 
@@ -1492,14 +1196,10 @@ async function connectAccount(){
       account.account_type;
 
     currency =
-      account.currency ||
-      "USD";
+      account.currency || "USD";
 
     balance =
-      Number(
-        account.balance
-      ) ||
-      0;
+      Number(account.balance) || 0;
 
     log(
       "Selected " +
@@ -1512,9 +1212,7 @@ async function connectAccount(){
     updateUI();
 
     const url =
-      await getOTP(
-        accountId
-      );
+      await getOTP(accountId);
 
     log(
       "Authenticated WebSocket URL received.",
@@ -1525,12 +1223,10 @@ async function connectAccount(){
 
   }catch(error){
 
-    connected =
-      false;
+    connected = false;
 
     log(
-      error.message ||
-      String(error),
+      error.message || String(error),
       "error"
     );
 
@@ -1551,13 +1247,9 @@ async function connectAccount(){
 function openSocket(url){
 
   return new Promise(
-    (
-      resolve,
-      reject
-    ) => {
+    (resolve,reject) => {
 
-      let settled =
-        false;
+      let settled = false;
 
       ws =
         new WebSocket(url);
@@ -1568,8 +1260,7 @@ function openSocket(url){
 
             if(!settled){
 
-              settled =
-                true;
+              settled = true;
 
               try{
                 ws.close();
@@ -1587,97 +1278,85 @@ function openSocket(url){
         );
 
 
-      ws.onopen =
-        () => {
+      ws.onopen = () => {
 
-          clearTimeout(
-            timeout
+        clearTimeout(timeout);
+
+        connected = true;
+
+        setConnection(
+          "Connected",
+          "green"
+        );
+
+        log(
+          "Authenticated WebSocket connected.",
+          "trade"
+        );
+
+        updateUI();
+
+        if(!settled){
+
+          settled = true;
+
+          resolve();
+        }
+
+        initialize()
+          .catch(
+            error =>
+              log(
+                "Initialization failed: " +
+                error.message,
+                "error"
+              )
           );
+      };
 
-          connected =
-            true;
 
-          setConnection(
-            "Connected",
-            "green"
+      ws.onerror = () => {
+
+        if(!settled){
+
+          clearTimeout(timeout);
+
+          settled = true;
+
+          reject(
+            new Error(
+              "WebSocket connection failed."
+            )
           );
+        }
+      };
+
+
+      ws.onclose = () => {
+
+        connected = false;
+
+        trading = false;
+
+        rejectPending(
+          "WebSocket closed."
+        );
+
+        if(!disconnecting){
 
           log(
-            "Authenticated WebSocket connected.",
-            "trade"
+            "WebSocket closed.",
+            "warn"
           );
+        }
 
-          updateUI();
+        setConnection(
+          "Disconnected",
+          "red"
+        );
 
-          if(!settled){
-
-            settled =
-              true;
-
-            resolve();
-          }
-
-          initialize()
-            .catch(
-              error =>
-                log(
-                  "Initialization failed: " +
-                  error.message,
-                  "error"
-                )
-            );
-        };
-
-
-      ws.onerror =
-        () => {
-
-          if(!settled){
-
-            clearTimeout(
-              timeout
-            );
-
-            settled =
-              true;
-
-            reject(
-              new Error(
-                "WebSocket connection failed."
-              )
-            );
-          }
-        };
-
-
-      ws.onclose =
-        () => {
-
-          connected =
-            false;
-
-          trading =
-            false;
-
-          rejectPending(
-            "WebSocket closed."
-          );
-
-          if(!disconnecting){
-
-            log(
-              "WebSocket closed.",
-              "warn"
-            );
-          }
-
-          setConnection(
-            "Disconnected",
-            "red"
-          );
-
-          updateUI();
-        };
+        updateUI();
+      };
 
 
       ws.onmessage =
@@ -1714,8 +1393,7 @@ function setConnection(
     text;
 
   el("connectionStatus").className =
-    "statusValue " +
-    cls;
+    "statusValue " + cls;
 }
 
 
@@ -1729,10 +1407,7 @@ function send(
 ){
 
   return new Promise(
-    (
-      resolve,
-      reject
-    ) => {
+    (resolve,reject) => {
 
       if(
         !ws ||
@@ -1752,8 +1427,7 @@ function send(
       const id =
         ++requestId;
 
-      payload.req_id =
-        id;
+      payload.req_id = id;
 
       const timer =
         setTimeout(
@@ -1811,10 +1485,8 @@ function send(
 function rejectPending(message){
 
   for(
-    const [
-      id,
-      item
-    ] of pending
+    const [id,item]
+    of pending
   ){
 
     clearTimeout(
@@ -1859,8 +1531,7 @@ function handleMessage(data){
           new Error(
             (
               data.error.code
-                ? data.error.code +
-                  ": "
+                ? data.error.code + ": "
                 : ""
             ) +
             (
@@ -1899,8 +1570,7 @@ function handleMessage(data){
 
 
   if(
-    data.msg_type ===
-    "tick"
+    data.msg_type === "tick"
   ){
 
     onTick(data.tick);
@@ -1910,20 +1580,17 @@ function handleMessage(data){
 
 
   if(
-    data.msg_type ===
-    "balance"
+    data.msg_type === "balance"
   ){
 
-    balanceInFlight =
-      false;
+    balanceInFlight = false;
 
     if(data.balance){
 
       balance =
         Number(
           data.balance.balance
-        ) ||
-        balance;
+        ) || balance;
 
       currency =
         data.balance.currency ||
@@ -1961,16 +1628,13 @@ async function initialize(){
     "ai"
   );
 
-
   const result =
     await send(
       {
-        active_symbols:
-          "brief"
+        active_symbols:"brief"
       },
       15000
     );
-
 
   const symbols =
     Array.isArray(
@@ -1979,15 +1643,6 @@ async function initialize(){
       ? result.active_symbols
       : [];
 
-
-  /*
-    Prefer actual synthetic-index
-    markets.
-
-    We intentionally exclude
-    forex/stock/commodity-style
-    symbols here.
-  */
 
   const synthetic =
     symbols.filter(
@@ -2001,14 +1656,12 @@ async function initialize(){
 
         const market =
           String(
-            item.market ||
-            ""
+            item.market || ""
           ).toLowerCase();
 
         return (
           type ===
-          "synthetic_index"
-          ||
+          "synthetic_index" ||
           market ===
           "synthetic_index"
         );
@@ -2034,32 +1687,20 @@ async function initialize(){
       continue;
     }
 
-
     markets.set(
       symbol,
       {
-
         symbol,
-
         name:
           item.underlying_symbol_name ||
           symbol,
-
         pipSize:
-          Number(
-            item.pip_size
-          ) ||
+          Number(item.pip_size) ||
           0.01,
-
         ticks:[],
-
-        contracts:
-          new Set(),
-
+        contracts:new Set(),
         ready:false,
-
         contractsReady:false
-
       }
     );
   }
@@ -2085,10 +1726,7 @@ async function initialize(){
 
 
   if(balanceTimer){
-
-    clearInterval(
-      balanceTimer
-    );
+    clearInterval(balanceTimer);
   }
 
 
@@ -2117,8 +1755,7 @@ async function loadHistory(){
       markets.values()
     );
 
-  let count =
-    0;
+  let count = 0;
 
 
   for(
@@ -2129,23 +1766,16 @@ async function loadHistory(){
 
       const result =
         await send(
-
           {
-
             ticks_history:
               market.symbol,
-
             count:
               HISTORY_SIZE,
-
             end:
               "latest",
-
             style:
               "ticks"
-
           },
-
           12000
         );
 
@@ -2160,19 +1790,14 @@ async function loadHistory(){
         market.ticks =
           result.history.prices
             .map(Number)
-            .filter(
-              Number.isFinite
-            )
-            .slice(
-              -HISTORY_SIZE
-            );
+            .filter(Number.isFinite)
+            .slice(-HISTORY_SIZE);
       }
 
 
       market.ready =
         market.ticks.length >=
         HISTORY_SIZE;
-
 
       count++;
 
@@ -2191,7 +1816,6 @@ async function loadHistory(){
         );
       }
 
-
     }catch(error){
 
       log(
@@ -2201,7 +1825,6 @@ async function loadHistory(){
         "warn"
       );
     }
-
 
     await wait(60);
   }
@@ -2219,8 +1842,7 @@ async function loadContracts(){
       markets.values()
     );
 
-  let count =
-    0;
+  let count = 0;
 
 
   for(
@@ -2231,12 +1853,10 @@ async function loadContracts(){
 
       const result =
         await send(
-
           {
             contracts_for:
               market.symbol
           },
-
           10000
         );
 
@@ -2272,8 +1892,7 @@ async function loadContracts(){
       }
 
 
-      market.contractsReady =
-        true;
+      market.contractsReady = true;
 
       count++;
 
@@ -2293,7 +1912,6 @@ async function loadContracts(){
           : "warn"
       );
 
-
     }catch(error){
 
       log(
@@ -2303,7 +1921,6 @@ async function loadContracts(){
         "warn"
       );
     }
-
 
     await wait(60);
   }
@@ -2321,35 +1938,28 @@ async function loadContracts(){
 
 
 /* =========================================================
-   TICK SUBSCRIPTIONS
+   TICKS
    ========================================================= */
 
 async function subscribeTicks(){
 
   for(
-    const market of
-    markets.values()
+    const market of markets.values()
   ){
 
     if(!market.ready){
       continue;
     }
 
-
     try{
 
       ws.send(
         JSON.stringify({
-
           ticks:
             market.symbol,
-
-          subscribe:
-            1,
-
+          subscribe:1,
           req_id:
             ++requestId
-
         })
       );
 
@@ -2361,7 +1971,6 @@ async function subscribeTicks(){
         "error"
       );
     }
-
 
     await wait(40);
   }
@@ -2389,34 +1998,25 @@ function refreshBalance(){
     return;
   }
 
-
   if(balanceInFlight){
     return;
   }
 
-
-  balanceInFlight =
-    true;
-
+  balanceInFlight = true;
 
   try{
 
     ws.send(
       JSON.stringify({
-
-        balance:
-          1,
-
+        balance:1,
         req_id:
           ++requestId
-
       })
     );
 
   }catch(error){
 
-    balanceInFlight =
-      false;
+    balanceInFlight = false;
   }
 }
 
@@ -2431,29 +2031,23 @@ function onTick(tick){
     return;
   }
 
-
   const symbol =
     tick.underlying_symbol ||
     tick.symbol;
-
 
   if(!symbol){
     return;
   }
 
-
   const market =
     markets.get(symbol);
-
 
   if(!market){
     return;
   }
 
-
   const quote =
     Number(tick.quote);
-
 
   if(
     !Number.isFinite(quote)
@@ -2461,11 +2055,7 @@ function onTick(tick){
     return;
   }
 
-
-  market.ticks.push(
-    quote
-  );
-
+  market.ticks.push(quote);
 
   if(
     market.ticks.length >
@@ -2477,7 +2067,6 @@ function onTick(tick){
         -HISTORY_SIZE
       );
   }
-
 
   market.ready =
     market.ticks.length >=
@@ -2495,31 +2084,22 @@ function ema(
 ){
 
   if(
-    values.length <
-    period
+    values.length < period
   ){
     return null;
   }
-
 
   const multiplier =
     2 /
     (period + 1);
 
-
   let value =
     values
-      .slice(
-        0,
-        period
-      )
+      .slice(0,period)
       .reduce(
-        (a,b) =>
-          a+b,
+        (a,b)=>a+b,
         0
-      ) /
-      period;
-
+      ) / period;
 
   for(
     let i=period;
@@ -2538,7 +2118,6 @@ function ema(
       value;
   }
 
-
   return value;
 }
 
@@ -2551,8 +2130,6 @@ function trendStats(values){
 
   let up = 0;
   let down = 0;
-  let flat = 0;
-
 
   for(
     let i=1;
@@ -2573,10 +2150,6 @@ function trendStats(values){
     ){
 
       down++;
-
-    }else{
-
-      flat++;
     }
   }
 
@@ -2589,8 +2162,7 @@ function trendStats(values){
 
     return {
       upPct:50,
-      downPct:50,
-      changes:0
+      downPct:50
     };
   }
 
@@ -2598,17 +2170,10 @@ function trendStats(values){
   return {
 
     upPct:
-      up /
-      total *
-      100,
+      up / total * 100,
 
     downPct:
-      down /
-      total *
-      100,
-
-    changes:
-      total
+      down / total * 100
   };
 }
 
@@ -2622,7 +2187,6 @@ function chopScore(values){
   let changes = 0;
   let previous = 0;
 
-
   for(
     let i=1;
     i<values.length;
@@ -2633,14 +2197,12 @@ function chopScore(values){
       values[i] -
       values[i-1];
 
-
     const sign =
       delta > 0
         ? 1
         : delta < 0
           ? -1
           : 0;
-
 
     if(
       sign !== 0 &&
@@ -2651,23 +2213,18 @@ function chopScore(values){
       changes++;
     }
 
-
     if(sign !== 0){
       previous = sign;
     }
   }
 
 
-  const possible =
+  return clamp(
+    changes /
     Math.max(
       1,
       values.length - 2
-    );
-
-
-  return clamp(
-    changes /
-    possible *
+    ) *
     100,
     0,
     100
@@ -2685,83 +2242,47 @@ function momentumScore(
 ){
 
   if(
-    values.length <
-    20
+    values.length < 20
   ){
     return 50;
   }
 
-
   const recent =
     values.slice(-10);
 
-
   const previous =
     values.slice(-20,-10);
-
 
   const expected =
     direction === "CALL"
       ? 1
       : -1;
 
-
   const recentMove =
     (
-      recent[
-        recent.length-1
-      ] -
+      recent[recent.length-1] -
       recent[0]
-    ) *
-    expected;
-
+    ) * expected;
 
   const previousMove =
     (
-      previous[
-        previous.length-1
-      ] -
+      previous[previous.length-1] -
       previous[0]
-    ) *
-    expected;
-
+    ) * expected;
 
   let score = 50;
 
-
-  if(
-    recentMove > 0
-  ){
-
+  if(recentMove > 0)
     score += 15;
-  }
 
-
-  if(
-    previousMove > 0
-  ){
-
+  if(previousMove > 0)
     score += 8;
-  }
 
-
-  if(
-    recentMove >
-    previousMove
-  ){
-
+  if(recentMove > previousMove)
     score += 12;
-  }
 
-
-  if(
-    recentMove <
-    0
-  ){
-
+  if(recentMove < 0)
     score -= 20;
-  }
-
 
   return clamp(
     score,
@@ -2783,16 +2304,12 @@ function structureAnalysis(
   const recent =
     values.slice(-12);
 
-
   const previous =
     values.slice(-25,-12);
 
-
   if(
-    recent.length <
-    10 ||
-    previous.length <
-    10
+    recent.length < 10 ||
+    previous.length < 10
   ){
 
     return {
@@ -2803,114 +2320,59 @@ function structureAnalysis(
 
 
   const current =
-    values[
-      values.length-1
-    ];
-
+    values[values.length-1];
 
   const recentHigh =
     Math.max(
-      ...recent.slice(
-        0,
-        -1
-      )
+      ...recent.slice(0,-1)
     );
-
 
   const recentLow =
     Math.min(
-      ...recent.slice(
-        0,
-        -1
-      )
+      ...recent.slice(0,-1)
     );
-
 
   const previousHigh =
-    Math.max(
-      ...previous
-    );
-
+    Math.max(...previous);
 
   const previousLow =
-    Math.min(
-      ...previous
-    );
-
+    Math.min(...previous);
 
   let breakout = 50;
   let pullback = 50;
 
 
-  if(
-    direction ===
-    "CALL"
-  ){
+  if(direction === "CALL"){
 
-    if(
-      current >
-      recentHigh
-    ){
-
-      breakout =
-        100;
-
-    }else if(
-      current >
-      previousHigh
-    ){
-
-      breakout =
-        90;
-
-    }else if(
-      current >
-      recent[0]
-    ){
-
-      breakout =
-        70;
-    }
-
+    if(current > recentHigh)
+      breakout = 100;
+    else if(current > previousHigh)
+      breakout = 90;
+    else if(current > recent[0])
+      breakout = 70;
 
     const priorMove =
-      previous[
-        previous.length-1
-      ] -
+      previous[previous.length-1] -
       previous[0];
 
-
     const currentMove =
-      recent[
-        recent.length-1
-      ] -
+      recent[recent.length-1] -
       recent[0];
-
-
-    /*
-      Pullback:
-      previous direction positive,
-      recent movement temporarily weaker,
-      then latest movement begins recovering.
-    */
 
     if(
       priorMove > 0 &&
       currentMove >= 0
     ){
 
-      pullback =
-        80;
+      pullback = 80;
     }
 
-
     if(
-      recent
-        .slice(-3)
+      recent.slice(-3)
         .every(
-          (v,i,a) =>
+          (v,i,a)=>
             i===0 ||
-            v >= a[i-1]
+            v>=a[i-1]
         )
     ){
 
@@ -2921,66 +2383,37 @@ function structureAnalysis(
         );
     }
 
-
   }else{
 
-    if(
-      current <
-      recentLow
-    ){
-
-      breakout =
-        100;
-
-    }else if(
-      current <
-      previousLow
-    ){
-
-      breakout =
-        90;
-
-    }else if(
-      current <
-      recent[0]
-    ){
-
-      breakout =
-        70;
-    }
-
+    if(current < recentLow)
+      breakout = 100;
+    else if(current < previousLow)
+      breakout = 90;
+    else if(current < recent[0])
+      breakout = 70;
 
     const priorMove =
-      previous[
-        previous.length-1
-      ] -
+      previous[previous.length-1] -
       previous[0];
 
-
     const currentMove =
-      recent[
-        recent.length-1
-      ] -
+      recent[recent.length-1] -
       recent[0];
-
 
     if(
       priorMove < 0 &&
       currentMove <= 0
     ){
 
-      pullback =
-        80;
+      pullback = 80;
     }
 
-
     if(
-      recent
-        .slice(-3)
+      recent.slice(-3)
         .every(
-          (v,i,a) =>
+          (v,i,a)=>
             i===0 ||
-            v <= a[i-1]
+            v<=a[i-1]
         )
     ){
 
@@ -3001,12 +2434,10 @@ function structureAnalysis(
 
 
 /* =========================================================
-   ANALYZE
+   MARKET ANALYSIS
    ========================================================= */
 
-function analyzeMarket(
-  market
-){
+function analyzeMarket(market){
 
   if(
     !market.ready ||
@@ -3023,30 +2454,23 @@ function analyzeMarket(
       -HISTORY_SIZE
     );
 
-
   const w100 =
     values.slice(-100);
-
 
   const w25 =
     values.slice(-25);
 
-
   const s100 =
     trendStats(w100);
-
 
   const s25 =
     trendStats(w25);
 
-
   const ema9 =
     ema(w25,9);
 
-
   const ema21 =
     ema(w25,21);
-
 
   let emaDirection =
     "NEUTRAL";
@@ -3057,22 +2481,11 @@ function analyzeMarket(
     ema21 !== null
   ){
 
-    if(
-      ema9 >
-      ema21
-    ){
+    if(ema9 > ema21)
+      emaDirection = "CALL";
 
-      emaDirection =
-        "CALL";
-
-    }else if(
-      ema9 <
-      ema21
-    ){
-
-      emaDirection =
-        "PUT";
-    }
+    else if(ema9 < ema21)
+      emaDirection = "PUT";
   }
 
 
@@ -3098,17 +2511,13 @@ function analyzeMarket(
         ? s100.upPct
         : s100.downPct;
 
-
     const trend25 =
       direction === "CALL"
         ? s25.upPct
         : s25.downPct;
 
-
     const emaAligned =
-      emaDirection ===
-      direction;
-
+      emaDirection === direction;
 
     const momentum =
       momentumScore(
@@ -3116,73 +2525,34 @@ function analyzeMarket(
         direction
       );
 
-
     const structure =
       structureAnalysis(
         values,
         direction
       );
 
-
     const chop =
       chopScore(w25);
 
 
-    const agreement =
-      trend100 >= 54 &&
-      trend25 >= 53;
-
-
-    /*
-      =====================================================
-      PULLBACK SCORE
-
-      More forgiving than the previous version.
-      =====================================================
-    */
-
     let pullbackScore =
 
-        trend100 *
-        0.30
+        trend100 * .30 +
 
-      +
-
-        trend25 *
-        0.25
-
-      +
+        trend25 * .25 +
 
         (
           emaAligned
             ? 100
             : 50
-        ) *
-        0.12
+        ) * .12 +
 
-      +
+        momentum * .13 +
 
-        momentum *
-        0.13
+        structure.pullback * .10 +
 
-      +
+        (100-chop) * .10;
 
-        structure.pullback *
-        0.10
-
-      +
-
-        (
-          100 -
-          chop
-        ) *
-        0.10;
-
-
-    /*
-      Small penalty if the two windows
-      disagree strongly.
-    */
 
     if(
       trend100 < 52 ||
@@ -3193,55 +2563,24 @@ function analyzeMarket(
     }
 
 
-    /*
-      =====================================================
-      MOMENTUM SCORE
-      =====================================================
-    */
+    let momentumScoreValue =
 
-    let momentumEngineScore =
+        trend100 * .30 +
 
-        trend100 *
-        0.30
+        trend25 * .25 +
 
-      +
+        momentum * .20 +
 
-        trend25 *
-        0.25
-
-      +
-
-        momentum *
-        0.20
-
-      +
-
-        structure.breakout *
-        0.10
-
-      +
+        structure.breakout * .10 +
 
         (
           emaAligned
             ? 100
             : 50
-        ) *
-        0.10
+        ) * .10 +
 
-      +
+        (100-chop) * .05;
 
-        (
-          100 -
-          chop
-        ) *
-        0.05;
-
-
-    /*
-      Don't completely reject a momentum
-      signal merely because EMA is not
-      aligned yet.
-    */
 
     if(
       trend100 >= 58 &&
@@ -3249,7 +2588,7 @@ function analyzeMarket(
       momentum >= 65
     ){
 
-      momentumEngineScore += 5;
+      momentumScoreValue += 5;
     }
 
 
@@ -3260,20 +2599,13 @@ function analyzeMarket(
         100
       );
 
-
-    momentumEngineScore =
+    momentumScoreValue =
       clamp(
-        momentumEngineScore,
+        momentumScoreValue,
         0,
         100
       );
 
-
-    /*
-      =====================================================
-      PULLBACK CANDIDATE
-      =====================================================
-    */
 
     const pullbackValid =
       trend100 >=
@@ -3306,13 +2638,11 @@ function analyzeMarket(
           direction,
 
         label:
-          direction ===
-          "CALL"
+          direction === "CALL"
             ? "RISE"
             : "FALL",
 
-        engine:
-          "PULLBACK",
+        engine:"PULLBACK",
 
         score:
           pullbackScore,
@@ -3322,10 +2652,6 @@ function analyzeMarket(
         trend25,
 
         emaDirection,
-
-        ema9,
-
-        ema21,
 
         momentum,
 
@@ -3349,16 +2675,9 @@ function analyzeMarket(
             structure.breakout,
             chop
           )
-
       });
     }
 
-
-    /*
-      =====================================================
-      MOMENTUM CANDIDATE
-      =====================================================
-    */
 
     const momentumValid =
       trend100 >=
@@ -3370,13 +2689,12 @@ function analyzeMarket(
       chop <=
       settings().maxChop &&
 
-      momentum >=
-      55;
+      momentum >= 55;
 
 
     if(
       momentumValid &&
-      momentumEngineScore >=
+      momentumScoreValue >=
       settings().minScore
     ){
 
@@ -3388,26 +2706,20 @@ function analyzeMarket(
           direction,
 
         label:
-          direction ===
-          "CALL"
+          direction === "CALL"
             ? "RISE"
             : "FALL",
 
-        engine:
-          "MOMENTUM",
+        engine:"MOMENTUM",
 
         score:
-          momentumEngineScore,
+          momentumScoreValue,
 
         trend100,
 
         trend25,
 
         emaDirection,
-
-        ema9,
-
-        ema21,
 
         momentum,
 
@@ -3431,18 +2743,15 @@ function analyzeMarket(
             structure.breakout,
             chop
           )
-
       });
     }
   }
 
 
   candidates.sort(
-    (a,b) =>
-      b.score -
-      a.score
+    (a,b)=>
+      b.score-a.score
   );
-
 
   return candidates;
 }
@@ -3466,13 +2775,11 @@ function buildReason(
 
   const parts = [];
 
-
   parts.push(
     direction === "CALL"
       ? "100T RISE bias"
       : "100T FALL bias"
   );
-
 
   parts.push(
     "100T " +
@@ -3480,13 +2787,11 @@ function buildReason(
     "%"
   );
 
-
   parts.push(
     "25T " +
     trend25.toFixed(1) +
     "%"
   );
-
 
   parts.push(
     emaAligned
@@ -3494,30 +2799,18 @@ function buildReason(
       : "EMA neutral"
   );
 
-
   parts.push(
     "Momentum " +
     momentum.toFixed(0)
   );
 
-
-  if(
+  parts.push(
     engine === "PULLBACK"
-  ){
-
-    parts.push(
-      "Pullback " +
-      pullback.toFixed(0)
-    );
-
-  }else{
-
-    parts.push(
-      "Breakout " +
-      breakout.toFixed(0)
-    );
-  }
-
+      ? "Pullback " +
+        pullback.toFixed(0)
+      : "Breakout " +
+        breakout.toFixed(0)
+  );
 
   parts.push(
     "Chop " +
@@ -3525,21 +2818,17 @@ function buildReason(
     "%"
   );
 
-
-  return parts.join(
-    " • "
-  );
+  return parts.join(" • ");
 }
 
 
 /* =========================================================
-   CANDIDATES
+   COLLECT CANDIDATES
    ========================================================= */
 
 function collectCandidates(){
 
   const all = [];
-
 
   const s =
     settings();
@@ -3558,18 +2847,10 @@ function collectCandidates(){
     }
 
 
-    /*
-      Evaluation throttle.
-      This prevents the same market
-      from repeatedly creating the
-      exact same signal every second.
-    */
-
     const evaluated =
       marketLastEvaluation.get(
         market.symbol
-      ) ||
-      0;
+      ) || 0;
 
 
     if(
@@ -3577,7 +2858,6 @@ function collectCandidates(){
       evaluated <
       3000
     ){
-
       continue;
     }
 
@@ -3591,15 +2871,13 @@ function collectCandidates(){
     const lastTrade =
       marketLastTrade.get(
         market.symbol
-      ) ||
-      0;
+      ) || 0;
 
 
     if(
       Date.now() -
       lastTrade <
-      s.cooldown *
-      1000
+      s.cooldown * 1000
     ){
       continue;
     }
@@ -3608,8 +2886,7 @@ function collectCandidates(){
     const losses =
       marketLosses.get(
         market.symbol
-      ) ||
-      0;
+      ) || 0;
 
 
     if(
@@ -3621,9 +2898,7 @@ function collectCandidates(){
 
 
     const candidates =
-      analyzeMarket(
-        market
-      );
+      analyzeMarket(market);
 
 
     if(
@@ -3641,9 +2916,8 @@ function collectCandidates(){
 
 
   all.sort(
-    (a,b) =>
-      b.score -
-      a.score
+    (a,b)=>
+      b.score-a.score
   );
 
 
@@ -3652,12 +2926,10 @@ function collectCandidates(){
 
 
 /* =========================================================
-   DISPLAY
+   DISPLAY CANDIDATE
    ========================================================= */
 
-function displayCandidate(
-  candidate
-){
+function displayCandidate(candidate){
 
   if(!candidate){
 
@@ -3719,76 +2991,59 @@ function displayCandidate(
   el("signalType").textContent =
     candidate.label;
 
-
   el("signalMarket").textContent =
     candidate.market.name +
     " • " +
     candidate.engine;
 
-
   el("signalScore").textContent =
     candidate.score.toFixed(1);
-
 
   el("signalProgress").style.width =
     clamp(
       candidate.score,
       0,
       100
-    ) +
-    "%";
-
+    ) + "%";
 
   el("m100").textContent =
     candidate.trend100.toFixed(1) +
     "%";
 
-
   el("m25").textContent =
     candidate.trend25.toFixed(1) +
     "%";
 
-
   el("mEMA").textContent =
     candidate.emaDirection;
-
 
   el("mMomentum").textContent =
     candidate.momentum.toFixed(0);
 
-
   el("mPullback").textContent =
     candidate.pullback.toFixed(0);
 
-
   el("mBreakout").textContent =
     candidate.breakout.toFixed(0);
-
 
   el("mChop").textContent =
     candidate.chop.toFixed(1) +
     "%";
 
-
   el("mEV").textContent =
     "CHECK";
-
 
   el("mDuration").textContent =
     "AUTO";
 
-
   el("mEngine").textContent =
     candidate.engine;
-
 
   el("mDirection").textContent =
     candidate.label;
 
-
   el("mCandidates").textContent =
     candidateCount;
-
 
   el("signalReason").textContent =
     candidate.reason;
@@ -3796,7 +3051,7 @@ function displayCandidate(
 
 
 /* =========================================================
-   DURATION CACHE
+   DURATION
    ========================================================= */
 
 function durationKey(
@@ -3804,11 +3059,9 @@ function durationKey(
   contract
 ){
 
-  return (
-    symbol +
+  return symbol +
     "|" +
-    contract
-  );
+    contract;
 }
 
 
@@ -3818,13 +3071,11 @@ function badKey(
   duration
 ){
 
-  return (
-    symbol +
+  return symbol +
     "|" +
     contract +
     "|" +
-    duration
-  );
+    duration;
 }
 
 
@@ -3843,16 +3094,11 @@ function durationBad(
       )
     );
 
-
   if(!expiry){
     return false;
   }
 
-
-  if(
-    Date.now() >
-    expiry
-  ){
+  if(Date.now() > expiry){
 
     badDurations.delete(
       badKey(
@@ -3865,27 +3111,16 @@ function durationBad(
     return false;
   }
 
-
   return true;
 }
 
 
-/* =========================================================
-   DURATION LIST
-   ========================================================= */
-
-function durationList(
-  candidate
-){
+function durationList(candidate){
 
   const chosen =
     settings().duration;
 
-
-  if(
-    chosen !==
-    "AUTO"
-  ){
+  if(chosen !== "AUTO"){
 
     return [
       Number(chosen)
@@ -3894,7 +3129,6 @@ function durationList(
 
 
   const list = [];
-
 
   const cached =
     durationCache.get(
@@ -3919,16 +3153,11 @@ function durationList(
 
 
   for(
-    const d of
-    AUTO_DURATIONS
+    const d of AUTO_DURATIONS
   ){
 
-    if(
-      list.includes(d)
-    ){
+    if(list.includes(d))
       continue;
-    }
-
 
     if(
       !durationBad(
@@ -3958,35 +3187,18 @@ async function proposal(
 
   const result =
     await send(
-
       {
-
-        proposal:
-          1,
-
-        amount:
-          settings().stake,
-
-        basis:
-          "stake",
-
+        proposal:1,
+        amount:settings().stake,
+        basis:"stake",
         contract_type:
           candidate.contract,
-
-        currency:
-          currency,
-
-        duration:
-          duration,
-
-        duration_unit:
-          "t",
-
+        currency:currency,
+        duration:duration,
+        duration_unit:"t",
         underlying_symbol:
           candidate.market.symbol
-
       },
-
       10000
     );
 
@@ -4010,19 +3222,14 @@ async function proposal(
    FIND VALID DURATION
    ========================================================= */
 
-async function findProposal(
-  candidate
-){
+async function findProposal(candidate){
 
   const durations =
-    durationList(
-      candidate
-    );
+    durationList(candidate);
 
 
   for(
-    const duration of
-    durations
+    const duration of durations
   ){
 
     if(!trading){
@@ -4078,8 +3285,7 @@ async function findProposal(
 
       const message =
         String(
-          error.message ||
-          ""
+          error.message || ""
         ).toLowerCase();
 
 
@@ -4096,9 +3302,7 @@ async function findProposal(
             duration
           ),
           Date.now() +
-          10 *
-          60 *
-          1000
+          10*60*1000
         );
 
         continue;
@@ -4213,13 +3417,9 @@ async function scan(){
   updateUI();
 
 
-  if(
-    !candidates.length
-  ){
+  if(!candidates.length){
 
-    displayCandidate(
-      null
-    );
+    displayCandidate(null);
 
     return;
   }
@@ -4229,9 +3429,7 @@ async function scan(){
     candidates[0];
 
 
-  displayCandidate(
-    candidate
-  );
+  displayCandidate(candidate);
 
 
   log(
@@ -4262,9 +3460,7 @@ async function scan(){
    EXECUTE
    ========================================================= */
 
-async function executeCandidate(
-  candidate
-){
+async function executeCandidate(candidate){
 
   if(
     proposalInFlight ||
@@ -4275,9 +3471,7 @@ async function executeCandidate(
   }
 
 
-  proposalInFlight =
-    true;
-
+  proposalInFlight = true;
 
   updateUI();
 
@@ -4285,9 +3479,7 @@ async function executeCandidate(
   try{
 
     const found =
-      await findProposal(
-        candidate
-      );
+      await findProposal(candidate);
 
 
     if(!found){
@@ -4298,43 +3490,25 @@ async function executeCandidate(
     const p =
       found.proposal;
 
-
     const duration =
       found.duration;
 
-
     const ask =
-      Number(
-        p.ask_price
-      );
-
+      Number(p.ask_price);
 
     const payout =
-      Number(
-        p.payout
-      );
+      Number(p.payout);
 
-
-    /*
-      Conservative rough probability
-      estimate from the signal itself.
-
-      This is NOT a guarantee and is
-      only displayed as an estimate.
-    */
 
     const probability =
       clamp(
-
         (
-          candidate.trend100 * 0.45 +
-          candidate.trend25 * 0.35 +
-          candidate.momentum * 0.20
-        ) /
-        100,
-
+          candidate.trend100 * .45 +
+          candidate.trend25 * .35 +
+          candidate.momentum * .20
+        ) / 100,
         0,
-        0.95
+        .95
       );
 
 
@@ -4349,8 +3523,7 @@ async function executeCandidate(
 
       ev =
         (
-          probability *
-          payout -
+          probability * payout -
           ask
         ) /
         ask *
@@ -4359,13 +3532,10 @@ async function executeCandidate(
 
 
     el("mEV").textContent =
-      ev.toFixed(1) +
-      "%";
-
+      ev.toFixed(1) + "%";
 
     el("mDuration").textContent =
-      duration +
-      "T";
+      duration + "T";
 
 
     log(
@@ -4392,35 +3562,20 @@ async function executeCandidate(
     );
 
 
-    /*
-      We don't use an aggressive EV
-      rejection here because the signal
-      itself is already filtered.
-    */
-
-
     const bought =
       await send(
-
         {
-
-          buy:
-            p.id,
-
+          buy:p.id,
           price:
             Number.isFinite(ask)
               ? ask
               : settings().stake
-
         },
-
         10000
       );
 
 
-    if(
-      !bought.buy
-    ){
+    if(!bought.buy){
 
       throw new Error(
         "Buy response was empty."
@@ -4445,8 +3600,7 @@ async function executeCandidate(
 
   }finally{
 
-    proposalInFlight =
-      false;
+    proposalInFlight = false;
 
     updateUI();
   }
@@ -4463,9 +3617,7 @@ function openTrade(
   duration
 ){
 
-  if(
-    !buy.contract_id
-  ){
+  if(!buy.contract_id){
 
     throw new Error(
       "No contract ID returned."
@@ -4473,29 +3625,21 @@ function openTrade(
   }
 
 
-  tradeInFlight =
-    true;
-
+  tradeInFlight = true;
 
   currentContractId =
     buy.contract_id;
 
-
   currentMarket =
     candidate.market.symbol;
-
 
   currentContract =
     candidate.contract;
 
-
   currentDuration =
     duration;
 
-
-  currentFinalized =
-    false;
-
+  currentFinalized = false;
 
   session.trades++;
 
@@ -4526,19 +3670,12 @@ function openTrade(
 
   ws.send(
     JSON.stringify({
-
-      proposal_open_contract:
-        1,
-
+      proposal_open_contract:1,
       contract_id:
         currentContractId,
-
-      subscribe:
-        1,
-
+      subscribe:1,
       req_id:
         ++requestId
-
     })
   );
 }
@@ -4557,12 +3694,8 @@ function onContract(contract){
 
   if(
     !currentContractId ||
-    String(
-      contract.contract_id
-    ) !==
-    String(
-      currentContractId
-    )
+    String(contract.contract_id) !==
+    String(currentContractId)
   ){
     return;
   }
@@ -4570,8 +3703,7 @@ function onContract(contract){
 
   const status =
     String(
-      contract.status ||
-      ""
+      contract.status || ""
     ).toLowerCase();
 
 
@@ -4594,14 +3726,11 @@ function onContract(contract){
   }
 
 
-  currentFinalized =
-    true;
+  currentFinalized = true;
 
 
   const pnl =
-    Number(
-      contract.profit
-    );
+    Number(contract.profit);
 
 
   finishTrade(
@@ -4616,30 +3745,22 @@ function onContract(contract){
    FINISH TRADE
    ========================================================= */
 
-function finishTrade(
-  pnl
-){
+function finishTrade(pnl){
 
-  tradeInFlight =
-    false;
+  tradeInFlight = false;
 
 
   const won =
     pnl > 0;
 
 
-  if(won){
-
+  if(won)
     session.wins++;
-
-  }else{
-
+  else
     session.losses++;
-  }
 
 
-  session.profit +=
-    pnl;
+  session.profit += pnl;
 
 
   if(currentMarket){
@@ -4658,8 +3779,7 @@ function finishTrade(
         (
           marketLosses.get(
             currentMarket
-          ) ||
-          0
+          ) || 0
         ) + 1
       );
     }
@@ -4674,9 +3794,7 @@ function finishTrade(
     ) +
     " | " +
     (
-      pnl >= 0
-        ? "+"
-        : ""
+      pnl >= 0 ? "+" : ""
     ) +
     pnl.toFixed(2) +
     " | Session P/L " +
@@ -4700,8 +3818,7 @@ function finishTrade(
     const losses =
       marketLosses.get(
         currentMarket
-      ) ||
-      0;
+      ) || 0;
 
 
     if(
@@ -4720,20 +3837,11 @@ function finishTrade(
   }
 
 
-  currentContractId =
-    null;
-
-  currentMarket =
-    null;
-
-  currentContract =
-    null;
-
-  currentDuration =
-    null;
-
-  currentFinalized =
-    false;
+  currentContractId = null;
+  currentMarket = null;
+  currentContract = null;
+  currentDuration = null;
+  currentFinalized = false;
 
 
   setTimeout(
@@ -4836,8 +3944,7 @@ function startTrading(){
   }
 
 
-  trading =
-    true;
+  trading = true;
 
 
   log(
@@ -4845,19 +3952,10 @@ function startTrading(){
     "trade"
   );
 
-
   log(
     "RISE/FALL only.",
     "ai"
   );
-
-
-  log(
-    "Minimum score: " +
-    settings().minScore,
-    "ai"
-  );
-
 
   log(
     "100T threshold: " +
@@ -4866,7 +3964,6 @@ function startTrading(){
     "ai"
   );
 
-
   log(
     "25T threshold: " +
     settings().minShortTrend +
@@ -4874,9 +3971,9 @@ function startTrading(){
     "ai"
   );
 
-
   log(
-    "Target: frequent qualified setups, not forced trades.",
+    "Minimum AI score: " +
+    settings().minScore,
     "ai"
   );
 
@@ -4885,10 +3982,7 @@ function startTrading(){
 
 
   if(scanTimer){
-
-    clearInterval(
-      scanTimer
-    );
+    clearInterval(scanTimer);
   }
 
 
@@ -4909,8 +4003,7 @@ function startTrading(){
 
 function stopTrading(){
 
-  trading =
-    false;
+  trading = false;
 
 
   if(scanTimer){
@@ -4919,8 +4012,7 @@ function stopTrading(){
       scanTimer
     );
 
-    scanTimer =
-      null;
+    scanTimer = null;
   }
 
 
@@ -4935,7 +4027,7 @@ function stopTrading(){
 
 
 /* =========================================================
-   RESET SESSION
+   RESET
    ========================================================= */
 
 function resetSession(){
@@ -4963,8 +4055,7 @@ function resetSession(){
   marketLastTrade.clear();
 
 
-  candidateCount =
-    0;
+  candidateCount = 0;
 
 
   log(
@@ -4983,9 +4074,7 @@ function resetSession(){
 
 function disconnect(){
 
-  disconnecting =
-    true;
-
+  disconnecting = true;
 
   stopTrading();
 
@@ -4996,13 +4085,11 @@ function disconnect(){
       balanceTimer
     );
 
-    balanceTimer =
-      null;
+    balanceTimer = null;
   }
 
 
-  balanceInFlight =
-    false;
+  balanceInFlight = false;
 
 
   if(ws){
@@ -5013,18 +4100,13 @@ function disconnect(){
   }
 
 
-  ws =
-    null;
+  ws = null;
 
+  connected = false;
 
-  connected =
-    false;
+  accountId = null;
 
-  accountId =
-    null;
-
-  accountType =
-    null;
+  accountType = null;
 
 
   markets.clear();
@@ -5035,27 +4117,15 @@ function disconnect(){
   marketLastEvaluation.clear();
 
 
-  proposalInFlight =
-    false;
-
-  tradeInFlight =
-    false;
+  proposalInFlight = false;
+  tradeInFlight = false;
 
 
-  currentContractId =
-    null;
-
-  currentMarket =
-    null;
-
-  currentContract =
-    null;
-
-  currentDuration =
-    null;
-
-  currentFinalized =
-    false;
+  currentContractId = null;
+  currentMarket = null;
+  currentContract = null;
+  currentDuration = null;
+  currentFinalized = false;
 
 
   setConnection(
@@ -5116,48 +4186,20 @@ function clamp(
 
 updateUI();
 
-
 log(
   "AI Pulse RISE/FALL Trader loaded.",
   "ai"
 );
 
-
 log(
-  "EVEN/ODD removed.",
+  "RISE/FALL only — EVEN/ODD, OVER/UNDER and MATCH removed.",
   "ai"
 );
 
-
 log(
-  "OVER/UNDER removed.",
+  "100T + 25T + EMA + Momentum + Pullback + Breakout engine ready.",
   "ai"
 );
-
-
-log(
-  "MATCH/DIFFERS removed.",
-  "ai"
-);
-
-
-log(
-  "RISE/FALL only.",
-  "ai"
-);
-
-
-log(
-  "100T + 25T + EMA + momentum + structure engine ready.",
-  "ai"
-);
-
-
-log(
-  "Scanner will actively look for more frequent qualified setups.",
-  "ai"
-);
-
 
 log(
   "Waiting for connection...",
