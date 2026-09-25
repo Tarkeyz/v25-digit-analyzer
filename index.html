@@ -263,7 +263,7 @@ button:disabled{
 }
 
 .log{
-  height:300px;
+  height:330px;
   overflow:auto;
   background:#050b14;
   border:1px solid #1d314d;
@@ -314,6 +314,11 @@ button:disabled{
   color:#e8aaaa;
 }
 
+.reversalNote{
+  border-color:#395c85;
+  color:#9dbce5;
+}
+
 </style>
 </head>
 
@@ -324,7 +329,7 @@ button:disabled{
 <h1>⚡ AI Pulse Surge Trader</h1>
 
 <div class="subtitle">
-AI-style multi-market scanner • Rise/Fall + Even/Odd only
+AI-style multi-market scanner • RISE/FALL + EVEN/ODD
 </div>
 
 
@@ -424,7 +429,7 @@ AUTO — find allowed duration
 </select>
 
 <div class="small">
-AUTO automatically finds a duration accepted by Deriv.
+AUTO finds a duration accepted by Deriv.
 </div>
 
 </div>
@@ -494,7 +499,7 @@ max="100"
 <input
 id="minScore"
 type="number"
-value="65"
+value="62"
 min="50"
 max="92"
 >
@@ -525,7 +530,7 @@ step="0.1"
 <input
 id="maxChop"
 type="number"
-value="65"
+value="70"
 min="0"
 max="100"
 >
@@ -540,7 +545,7 @@ max="100"
 <input
 id="persistence"
 type="number"
-value="55"
+value="0"
 min="0"
 max="100"
 >
@@ -580,12 +585,30 @@ max="10"
 </div>
 
 
+<div class="info reversalNote">
+
+<strong>EVEN/ODD reversal engine:</strong><br>
+
+If the 100-tick analysis shows a clear EVEN bias,
+the bot watches for 3 consecutive ODD digits.
+If that happens, EVEN becomes a reversal candidate.
+
+The opposite works for ODD:
+ODD bias + 3 consecutive EVEN digits
+→ ODD reversal candidate.
+
+The 3-digit streak is a trigger, not a guarantee.
+
+</div>
+
+
 <div class="info">
 
-The scanner uses 200 ticks:
-100 current ticks + 100 previous ticks.
+The engine uses 200 ticks:
+100 current + 100 previous.
 
-A trade requires multiple confirmations rather than relying on one percentage alone.
+RISE/FALL uses trend/momentum analysis.
+EVEN/ODD uses parity analysis plus the reversal engine.
 
 </div>
 
@@ -622,7 +645,7 @@ max="500"
 <input
 id="maxLosses"
 type="number"
-value="3"
+value="10"
 min="1"
 max="100"
 >
@@ -947,7 +970,7 @@ WAITING
 id="signalMarket"
 class="signalMarket"
 >
-Scanning markets...
+No qualified signal
 </div>
 
 </div>
@@ -1017,6 +1040,11 @@ class="progressBar"
 </div>
 
 <div class="metric">
+<b id="mStreak">0</b>
+<span>Opposite Streak</span>
+</div>
+
+<div class="metric">
 <b id="mDuration">AUTO</b>
 <span>Duration</span>
 </div>
@@ -1062,7 +1090,7 @@ class="log"
    DIGITEVEN  = EVEN
    DIGITODD   = ODD
 
-   NOT USED:
+   DISABLED:
 
    DIGITOVER
    DIGITUNDER
@@ -1071,9 +1099,17 @@ class="log"
 
    ANALYSIS:
 
-   200 ticks
+   200 ticks total
    100 current
    100 previous
+
+   EVEN/ODD:
+
+   Historical parity analysis
+   +
+   3 consecutive opposite digits
+   +
+   reversal confirmation
 
    NO MARTINGALE
    NO RECOVERY
@@ -1081,8 +1117,8 @@ class="log"
 
    BALANCE:
 
-   NO BALANCE SUBSCRIPTION.
-   Balance is requested one time at a time.
+   No balance subscription.
+   One-time balance requests only.
 
    ========================================================= */
 
@@ -1099,7 +1135,9 @@ const API_BASE =
    CONSTANTS
    ========================================================= */
 
-const HISTORY_SIZE = 200;
+const HISTORY_SIZE =
+200;
+
 
 const ALLOWED_CONTRACTS = [
   "CALL",
@@ -1107,6 +1145,7 @@ const ALLOWED_CONTRACTS = [
   "DIGITEVEN",
   "DIGITODD"
 ];
+
 
 const AUTO_DURATIONS = [
   1,
@@ -1124,63 +1163,120 @@ const AUTO_DURATIONS = [
    GLOBAL STATE
    ========================================================= */
 
-let ws = null;
+let ws =
+null;
 
-let connected = false;
 
-let trading = false;
+let connected =
+false;
 
-let disconnecting = false;
 
-let accountId = null;
+let trading =
+false;
 
-let accountType = null;
 
-let currency = "USD";
+let disconnecting =
+false;
 
-let balance = 0;
 
-let requestId = 1000;
+let accountId =
+null;
 
-const pendingRequests = new Map();
 
-const markets = new Map();
+let accountType =
+null;
 
-const durationCache = new Map();
 
-const badDurationCache = new Map();
+let currency =
+"USD";
 
-const marketLosses = new Map();
 
-const marketLastTrade = new Map();
+let balance =
+0;
 
-let scanTimer = null;
 
-let balanceRefreshTimer = null;
+let requestId =
+1000;
 
-let balanceRequestInFlight = false;
 
-let proposalInFlight = false;
+const pendingRequests =
+new Map();
 
-let tradeInFlight = false;
 
-let currentContractId = null;
+const markets =
+new Map();
 
-let currentTradeMarket = null;
 
-let currentTradeType = null;
+const durationCache =
+new Map();
 
-let currentTradeDuration = null;
 
-let currentTradeFinalized = false;
+const badDurationCache =
+new Map();
 
-let lastCandidateCount = 0;
+
+const marketLosses =
+new Map();
+
+
+const marketLastTrade =
+new Map();
+
+
+let scanTimer =
+null;
+
+
+let balanceRefreshTimer =
+null;
+
+
+let balanceRequestInFlight =
+false;
+
+
+let proposalInFlight =
+false;
+
+
+let tradeInFlight =
+false;
+
+
+let currentContractId =
+null;
+
+
+let currentTradeMarket =
+null;
+
+
+let currentTradeType =
+null;
+
+
+let currentTradeDuration =
+null;
+
+
+let currentTradeFinalized =
+false;
+
+
+let lastCandidateCount =
+0;
+
 
 let session = {
+
   trades:0,
+
   wins:0,
+
   losses:0,
+
   profit:0
+
 };
 
 
@@ -1189,7 +1285,11 @@ let session = {
    ========================================================= */
 
 function el(id){
-  return document.getElementById(id);
+
+  return document.getElementById(
+    id
+  );
+
 }
 
 
@@ -1197,14 +1297,20 @@ function el(id){
    NUMBER
    ========================================================= */
 
-function num(id,fallback){
+function num(
+  id,
+  fallback
+){
 
   const value =
     Number(
       el(id).value
     );
 
-  return Number.isFinite(value)
+
+  return Number.isFinite(
+    value
+  )
     ? value
     : fallback;
 }
@@ -1219,113 +1325,182 @@ function settings(){
   const durationValue =
     el("duration").value;
 
+
   return {
 
-    stake:Math.max(
-      0.35,
-      num("stake",1)
-    ),
+    stake:
+      Math.max(
+        0.35,
+        num("stake",1)
+      ),
+
 
     duration:
-      durationValue === "AUTO"
+      durationValue ===
+      "AUTO"
         ? "AUTO"
         : Math.max(
             1,
-            Number(durationValue)
+            Number(
+              durationValue
+            )
           ),
 
-    maxMarkets:Math.max(
-      5,
-      Math.min(
-        60,
+
+    maxMarkets:
+      Math.max(
+        5,
+        Math.min(
+          60,
+          Math.floor(
+            num(
+              "maxMarkets",
+              40
+            )
+          )
+        )
+      ),
+
+
+    minValidation:
+      Math.max(
+        50,
+        Math.min(
+          95,
+          num(
+            "minValidation",
+            56
+          )
+        )
+      ),
+
+
+    minSamples:
+      Math.max(
+        20,
+        Math.min(
+          100,
+          Math.floor(
+            num(
+              "minSamples",
+              30
+            )
+          )
+        )
+      ),
+
+
+    minScore:
+      Math.max(
+        50,
+        Math.min(
+          92,
+          num(
+            "minScore",
+            62
+          )
+        )
+      ),
+
+
+    minEV:
+      num(
+        "minEV",
+        0
+      ),
+
+
+    maxChop:
+      Math.max(
+        0,
+        Math.min(
+          100,
+          num(
+            "maxChop",
+            70
+          )
+        )
+      ),
+
+
+    persistence:
+      Math.max(
+        0,
+        Math.min(
+          100,
+          num(
+            "persistence",
+            0
+          )
+        )
+      ),
+
+
+    cooldown:
+      Math.max(
+        0,
+        num(
+          "cooldown",
+          15
+        )
+      ),
+
+
+    lossLock:
+      Math.max(
+        1,
         Math.floor(
-          num("maxMarkets",40)
+          num(
+            "lossLock",
+            1
+          )
+        )
+      ),
+
+
+    maxTrades:
+      Math.max(
+        1,
+        Math.floor(
+          num(
+            "maxTrades",
+            20
+          )
+        )
+      ),
+
+
+    maxLosses:
+      Math.max(
+        1,
+        Math.floor(
+          num(
+            "maxLosses",
+            10
+          )
+        )
+      ),
+
+
+    takeProfit:
+      Math.max(
+        0,
+        num(
+          "takeProfit",
+          0
+        )
+      ),
+
+
+    stopLoss:
+      Math.max(
+        0,
+        num(
+          "stopLoss",
+          0
         )
       )
-    ),
 
-    minValidation:Math.max(
-      50,
-      Math.min(
-        95,
-        num("minValidation",56)
-      )
-    ),
-
-    minSamples:Math.max(
-      20,
-      Math.min(
-        100,
-        Math.floor(
-          num("minSamples",30)
-        )
-      )
-    ),
-
-    minScore:Math.max(
-      50,
-      Math.min(
-        92,
-        num("minScore",65)
-      )
-    ),
-
-    minEV:num(
-      "minEV",
-      0
-    ),
-
-    maxChop:Math.max(
-      0,
-      Math.min(
-        100,
-        num("maxChop",65)
-      )
-    ),
-
-    persistence:Math.max(
-      0,
-      Math.min(
-        100,
-        num("persistence",55)
-      )
-    ),
-
-    cooldown:Math.max(
-      0,
-      num("cooldown",15)
-    ),
-
-    lossLock:Math.max(
-      1,
-      Math.floor(
-        num("lossLock",1)
-      )
-    ),
-
-    maxTrades:Math.max(
-      1,
-      Math.floor(
-        num("maxTrades",20)
-      )
-    ),
-
-    maxLosses:Math.max(
-      1,
-      Math.floor(
-        num("maxLosses",3)
-      )
-    ),
-
-    takeProfit:Math.max(
-      0,
-      num("takeProfit",0)
-    ),
-
-    stopLoss:Math.max(
-      0,
-      num("stopLoss",0)
-    )
   };
 }
 
@@ -1334,38 +1509,50 @@ function settings(){
    LOG
    ========================================================= */
 
-function log(message,type=""){
+function log(
+  message,
+  type=""
+){
 
   const box =
     el("log");
+
 
   const line =
     document.createElement(
       "div"
     );
 
+
   line.className =
-    "logLine " + type;
+    "logLine " +
+    type;
+
 
   line.textContent =
     "[" +
-    new Date().toLocaleTimeString() +
+    new Date()
+      .toLocaleTimeString() +
     "] " +
     message;
+
 
   box.appendChild(
     line
   );
 
+
   while(
     box.children.length >
-    350
+    400
   ){
 
     box.removeChild(
       box.firstChild
     );
+
   }
+
 
   box.scrollTop =
     box.scrollHeight;
@@ -1381,12 +1568,15 @@ function setConnectionStatus(
   className
 ){
 
-  el("connectionStatus")
-    .textContent =
+  el(
+    "connectionStatus"
+  ).textContent =
     text;
 
-  el("connectionStatus")
-    .className =
+
+  el(
+    "connectionStatus"
+  ).className =
     "value " +
     className;
 }
@@ -1394,27 +1584,34 @@ function setConnectionStatus(
 
 function updateUI(){
 
-  el("accountStatus")
-    .textContent =
+  el(
+    "accountStatus"
+  ).textContent =
     accountId ||
     "—";
 
-  el("balanceStatus")
-    .textContent =
+
+  el(
+    "balanceStatus"
+  ).textContent =
     balance
       ? balance.toFixed(2) +
         " " +
         currency
       : "—";
 
-  el("tradingStatus")
-    .textContent =
+
+  el(
+    "tradingStatus"
+  ).textContent =
     trading
       ? "RUNNING"
       : "STOPPED";
 
-  el("tradingStatus")
-    .className =
+
+  el(
+    "tradingStatus"
+  ).className =
     "value " +
     (
       trading
@@ -1422,28 +1619,42 @@ function updateUI(){
         : "yellow"
     );
 
-  el("marketStatus")
-    .textContent =
+
+  el(
+    "marketStatus"
+  ).textContent =
     markets.size;
 
-  el("tradesStatus")
-    .textContent =
+
+  el(
+    "tradesStatus"
+  ).textContent =
     session.trades;
 
-  el("winsStatus")
-    .textContent =
+
+  el(
+    "winsStatus"
+  ).textContent =
     session.wins;
 
-  el("lossesStatus")
-    .textContent =
+
+  el(
+    "lossesStatus"
+  ).textContent =
     session.losses;
 
-  el("profitStatus")
-    .textContent =
-    session.profit.toFixed(2);
 
-  el("profitStatus")
-    .className =
+  el(
+    "profitStatus"
+  ).textContent =
+    session.profit.toFixed(
+      2
+    );
+
+
+  el(
+    "profitStatus"
+  ).className =
     "value " +
     (
       session.profit > 0
@@ -1453,25 +1664,35 @@ function updateUI(){
           : ""
     );
 
+
   const winRate =
     session.trades > 0
       ? (
           session.wins /
           session.trades
-        ) * 100
+        ) *
+        100
       : 0;
 
-  el("winRateStatus")
-    .textContent =
-    winRate.toFixed(1) +
+
+  el(
+    "winRateStatus"
+  ).textContent =
+    winRate.toFixed(
+      1
+    ) +
     "%";
 
-  el("candidateStatus")
-    .textContent =
+
+  el(
+    "candidateStatus"
+  ).textContent =
     lastCandidateCount;
 
-  el("tradeState")
-    .textContent =
+
+  el(
+    "tradeState"
+  ).textContent =
     tradeInFlight
       ? "IN TRADE"
       : proposalInFlight
@@ -1480,7 +1701,10 @@ function updateUI(){
           ? "SCANNING"
           : "IDLE";
 
-  el("startBtn").disabled =
+
+  el(
+    "startBtn"
+  ).disabled =
     !connected ||
     trading;
 }
@@ -1493,10 +1717,16 @@ function updateUI(){
 function credentials(){
 
   const pat =
-    el("pat").value.trim();
+    el("pat")
+      .value
+      .trim();
+
 
   const appId =
-    el("appId").value.trim();
+    el("appId")
+      .value
+      .trim();
+
 
   if(!pat){
 
@@ -1505,6 +1735,7 @@ function credentials(){
     );
   }
 
+
   if(!appId){
 
     throw new Error(
@@ -1512,9 +1743,13 @@ function credentials(){
     );
   }
 
+
   return {
+
     pat,
+
     appId
+
   };
 }
 
@@ -1527,7 +1762,9 @@ async function parseRestError(
   response
 ){
 
-  let body = null;
+  let body =
+    null;
+
 
   try{
 
@@ -1536,9 +1773,11 @@ async function parseRestError(
 
   }catch(e){}
 
+
   let message =
     "HTTP " +
     response.status;
+
 
   if(
     body &&
@@ -1550,6 +1789,7 @@ async function parseRestError(
 
     const error =
       body.errors[0];
+
 
     message =
       (
@@ -1564,12 +1804,13 @@ async function parseRestError(
       );
   }
 
+
   return message;
 }
 
 
 /* =========================================================
-   OPTIONS ACCOUNTS
+   GET OPTIONS ACCOUNTS
    ========================================================= */
 
 async function getOptionsAccounts(){
@@ -1577,12 +1818,15 @@ async function getOptionsAccounts(){
   const {
     pat,
     appId
-  } = credentials();
+  } =
+    credentials();
+
 
   log(
     "Requesting Options accounts...",
     "ai"
   );
+
 
   const response =
     await fetch(
@@ -1591,9 +1835,12 @@ async function getOptionsAccounts(){
       "/trading/v1/options/accounts",
 
       {
-        method:"GET",
+
+        method:
+          "GET",
 
         headers:{
+
           "Authorization":
             "Bearer " +
             pat,
@@ -1603,8 +1850,11 @@ async function getOptionsAccounts(){
 
           "Content-Type":
             "application/json"
+
         }
+
       }
+
     );
 
 
@@ -1614,6 +1864,7 @@ async function getOptionsAccounts(){
       await parseRestError(
         response
       );
+
 
     throw new Error(
       "Accounts request failed: " +
@@ -1665,8 +1916,7 @@ function selectAccount(
           account.account_type ||
           ""
         )
-        .toLowerCase()
-        ===
+          .toLowerCase() ===
         desired
     );
 
@@ -1689,12 +1939,15 @@ function selectAccount(
    OTP
    ========================================================= */
 
-async function getOTP(id){
+async function getOTP(
+  id
+){
 
   const {
     pat,
     appId
-  } = credentials();
+  } =
+    credentials();
 
 
   log(
@@ -1708,13 +1961,18 @@ async function getOTP(id){
 
       API_BASE +
       "/trading/v1/options/accounts/" +
-      encodeURIComponent(id) +
+      encodeURIComponent(
+        id
+      ) +
       "/otp",
 
       {
-        method:"POST",
+
+        method:
+          "POST",
 
         headers:{
+
           "Authorization":
             "Bearer " +
             pat,
@@ -1724,8 +1982,11 @@ async function getOTP(id){
 
           "Content-Type":
             "application/json"
+
         }
+
       }
+
     );
 
 
@@ -1735,6 +1996,7 @@ async function getOTP(id){
       await parseRestError(
         response
       );
+
 
     throw new Error(
       "OTP request failed: " +
@@ -1766,7 +2028,7 @@ async function getOTP(id){
 
 
 /* =========================================================
-   CONNECT
+   CONNECT ACCOUNT
    ========================================================= */
 
 async function connectAccount(){
@@ -1777,6 +2039,7 @@ async function connectAccount(){
       "Already connected.",
       "warn"
     );
+
 
     return;
   }
@@ -1789,7 +2052,9 @@ async function connectAccount(){
   try{
 
     const type =
-      el("accountType").value;
+      el(
+        "accountType"
+      ).value;
 
 
     const accounts =
@@ -1819,12 +2084,14 @@ async function connectAccount(){
     balance =
       Number(
         account.balance
-      ) || 0;
+      ) ||
+      0;
 
 
     log(
       "Selected " +
-      accountType.toUpperCase() +
+      accountType
+        .toUpperCase() +
       " Options account: " +
       accountId,
       "trade"
@@ -1876,13 +2143,18 @@ async function connectAccount(){
 
 
 /* =========================================================
-   WEBSOCKET
+   OPEN WEBSOCKET
    ========================================================= */
 
-function openWebSocket(url){
+function openWebSocket(
+  url
+){
 
   return new Promise(
-    (resolve,reject)=>{
+    (
+      resolve,
+      reject
+    ) => {
 
       let settled =
         false;
@@ -1896,7 +2168,8 @@ function openWebSocket(url){
 
       const timeout =
         setTimeout(
-          ()=>{
+
+          () => {
 
             if(!settled){
 
@@ -1917,12 +2190,14 @@ function openWebSocket(url){
             }
 
           },
+
           15000
+
         );
 
 
       ws.onopen =
-        ()=>{
+        () => {
 
           clearTimeout(
             timeout
@@ -1953,6 +2228,7 @@ function openWebSocket(url){
             settled =
               true;
 
+
             resolve();
           }
 
@@ -1970,7 +2246,7 @@ function openWebSocket(url){
 
 
       ws.onerror =
-        ()=>{
+        () => {
 
           log(
             "WebSocket error.",
@@ -1999,7 +2275,7 @@ function openWebSocket(url){
 
 
       ws.onclose =
-        ()=>{
+        () => {
 
           connected =
             false;
@@ -2034,7 +2310,7 @@ function openWebSocket(url){
 
 
       ws.onmessage =
-        event =>{
+        event => {
 
           let data;
 
@@ -2063,7 +2339,7 @@ function openWebSocket(url){
 
 
 /* =========================================================
-   REQUEST
+   SEND REQUEST
    ========================================================= */
 
 function sendRequest(
@@ -2072,7 +2348,10 @@ function sendRequest(
 ){
 
   return new Promise(
-    (resolve,reject)=>{
+    (
+      resolve,
+      reject
+    ) => {
 
       if(
         !ws ||
@@ -2085,6 +2364,7 @@ function sendRequest(
             "WebSocket is not connected."
           )
         );
+
 
         return;
       }
@@ -2100,7 +2380,8 @@ function sendRequest(
 
       const timer =
         setTimeout(
-          ()=>{
+
+          () => {
 
             if(
               pendingRequests.has(
@@ -2121,17 +2402,26 @@ function sendRequest(
             }
 
           },
+
           timeout
+
         );
 
 
       pendingRequests.set(
+
         id,
+
         {
+
           resolve,
+
           reject,
+
           timer
+
         }
+
       );
 
 
@@ -2142,6 +2432,7 @@ function sendRequest(
             payload
           )
         );
+
 
       }catch(error){
 
@@ -2199,10 +2490,12 @@ function rejectPendingRequests(
 
 
 /* =========================================================
-   MESSAGE ROUTER
+   MESSAGE HANDLER
    ========================================================= */
 
-function handleMessage(data){
+function handleMessage(
+  data
+){
 
   if(data.error){
 
@@ -2243,6 +2536,7 @@ function handleMessage(data){
             )
 
           )
+
         );
       }
     }
@@ -2263,6 +2557,7 @@ function handleMessage(data){
       ),
 
       "error"
+
     );
 
 
@@ -2306,6 +2601,7 @@ function handleMessage(data){
       data.tick
     );
 
+
     return;
   }
 
@@ -2319,6 +2615,7 @@ function handleMessage(data){
       data.proposal_open_contract
     );
 
+
     return;
   }
 
@@ -2327,13 +2624,6 @@ function handleMessage(data){
     data.msg_type ===
     "balance"
   ){
-
-    /*
-      IMPORTANT:
-
-      This is a ONE-TIME balance response.
-      There is NO balance subscription.
-    */
 
     balanceRequestInFlight =
       false;
@@ -2379,10 +2669,16 @@ async function initializeMarketData(){
 
   const result =
     await sendRequest(
+
       {
-        active_symbols:"brief"
+
+        active_symbols:
+          "brief"
+
       },
+
       15000
+
     );
 
 
@@ -2396,42 +2692,54 @@ async function initializeMarketData(){
 
   const synthetic =
     list.filter(
-      item =>{
+
+      item => {
 
         const type =
           String(
             item.underlying_symbol_type ||
             ""
-          ).toLowerCase();
+          )
+            .toLowerCase();
 
 
         const market =
           String(
             item.market ||
             ""
-          ).toLowerCase();
+          )
+            .toLowerCase();
 
 
         return (
+
           type ===
           "synthetic_index"
+
           ||
+
           market ===
           "synthetic_index"
+
         );
       }
+
     );
 
 
   synthetic.sort(
-    (a,b)=>
+    (
+      a,
+      b
+    ) =>
       String(
         a.underlying_symbol
-      ).localeCompare(
-        String(
-          b.underlying_symbol
-        )
       )
+        .localeCompare(
+          String(
+            b.underlying_symbol
+          )
+        )
   );
 
 
@@ -2466,7 +2774,9 @@ async function initializeMarketData(){
 
 
     markets.set(
+
       symbol,
+
       {
 
         symbol,
@@ -2482,21 +2792,28 @@ async function initializeMarketData(){
         pipSize:
           Number(
             item.pip_size
-          ) || 0.01,
+          ) ||
+          0.01,
 
         ticks:[],
 
-        contracts:new Set(),
+        contracts:
+          new Set(),
 
-        contractsLoaded:false,
+        contractsLoaded:
+          false,
 
-        ready:false,
+        ready:
+          false,
 
-        lastTick:0,
+        lastTick:
+          0,
 
-        lastEpoch:0
+        lastEpoch:
+          0
 
       }
+
     );
   }
 
@@ -2512,13 +2829,6 @@ async function initializeMarketData(){
 
   await subscribeMarkets();
 
-
-  /*
-    NO balance subscription.
-
-    Request current balance once,
-    then refresh it every 5 seconds.
-  */
 
   refreshBalance();
 
@@ -2546,7 +2856,7 @@ async function initializeMarketData(){
 
 
 /* =========================================================
-   HISTORY
+   LOAD HISTORY
    ========================================================= */
 
 async function loadHistoricalData(){
@@ -2569,6 +2879,7 @@ async function loadHistoricalData(){
 
       const result =
         await sendRequest(
+
           {
 
             ticks_history:
@@ -2584,7 +2895,9 @@ async function loadHistoricalData(){
               "ticks"
 
           },
+
           12000
+
         );
 
 
@@ -2652,7 +2965,9 @@ async function loadHistoricalData(){
     }
 
 
-    await delay(60);
+    await delay(
+      60
+    );
   }
 }
 
@@ -2681,11 +2996,16 @@ async function loadContractAvailability(){
 
       const result =
         await sendRequest(
+
           {
+
             contracts_for:
               market.symbol
+
           },
+
           10000
+
         );
 
 
@@ -2758,7 +3078,9 @@ async function loadContractAvailability(){
     }
 
 
-    await delay(70);
+    await delay(
+      70
+    );
   }
 
 
@@ -2774,13 +3096,14 @@ async function loadContractAvailability(){
 
 
 /* =========================================================
-   LIVE TICKS
+   LIVE TICK SUBSCRIPTIONS
    ========================================================= */
 
 async function subscribeMarkets(){
 
   for(
-    const market of markets.values()
+    const market of
+    markets.values()
   ){
 
     if(!market.ready){
@@ -2791,7 +3114,9 @@ async function subscribeMarkets(){
     try{
 
       ws.send(
+
         JSON.stringify(
+
           {
 
             ticks:
@@ -2804,7 +3129,9 @@ async function subscribeMarkets(){
               ++requestId
 
           }
+
         )
+
       );
 
 
@@ -2818,7 +3145,9 @@ async function subscribeMarkets(){
     }
 
 
-    await delay(50);
+    await delay(
+      50
+    );
   }
 
 
@@ -2830,10 +3159,7 @@ async function subscribeMarkets(){
 
 
 /* =========================================================
-   BALANCE REFRESH
-   IMPORTANT:
-
-   There is NO subscribe:1 here.
+   BALANCE
    ========================================================= */
 
 function refreshBalance(){
@@ -2864,7 +3190,9 @@ function refreshBalance(){
   try{
 
     ws.send(
+
       JSON.stringify(
+
         {
 
           balance:
@@ -2874,7 +3202,9 @@ function refreshBalance(){
             ++requestId
 
         }
+
       )
+
     );
 
 
@@ -2894,10 +3224,12 @@ function refreshBalance(){
 
 
 /* =========================================================
-   TICK PROCESSING
+   PROCESS TICK
    ========================================================= */
 
-function processTick(tick){
+function processTick(
+  tick
+){
 
   if(!tick){
     return;
@@ -2996,7 +3328,7 @@ function clamp(
 
 
 /* =========================================================
-   RISE/FALL ANALYSIS
+   RISE/FALL
    ========================================================= */
 
 function analyzeRiseFall(
@@ -3032,8 +3364,10 @@ function analyzeRiseFall(
     let up =
       0;
 
+
     let down =
       0;
+
 
     const deltas =
       [];
@@ -3067,10 +3401,13 @@ function analyzeRiseFall(
 
 
     const total =
-      up + down;
+      up +
+      down;
 
 
-    if(total < 10){
+    if(
+      total < 10
+    ){
 
       return {
 
@@ -3087,10 +3424,18 @@ function analyzeRiseFall(
     return {
 
       upPct:
-        (up / total) * 100,
+        (
+          up /
+          total
+        ) *
+        100,
 
       downPct:
-        (down / total) * 100,
+        (
+          down /
+          total
+        ) *
+        100,
 
       deltas
 
@@ -3232,7 +3577,8 @@ function analyzeRiseFall(
           1,
           cur.deltas.length - 1
         )
-      ) * 100,
+      ) *
+      100,
 
       0,
       100
@@ -3242,13 +3588,6 @@ function analyzeRiseFall(
 
   const persistence =
     currentValidation;
-
-
-  const windowAgreement =
-    currentDirection ===
-    previousDirection
-      ? 100
-      : 0;
 
 
   let score =
@@ -3263,7 +3602,7 @@ function analyzeRiseFall(
 
     +
 
-      windowAgreement *
+      regimeAgreement *
       0.20
 
     +
@@ -3288,7 +3627,8 @@ function analyzeRiseFall(
     previousDirection
   ){
 
-    score -= 15;
+    score -=
+      15;
   }
 
 
@@ -3305,6 +3645,9 @@ function analyzeRiseFall(
     family:
       "RISE/FALL",
 
+    engine:
+      "TREND",
+
     contract:
       currentDirection,
 
@@ -3317,26 +3660,34 @@ function analyzeRiseFall(
     validation:
       currentValidation,
 
-    previousValidation,
+    previousValidation:
+      previousValidation,
 
-    persistence,
+    persistence:
+      persistence,
 
-    chop,
+    chop:
+      chop,
 
-    score,
+    score:
+      score,
 
-    samples:100,
+    samples:
+      100,
 
     confirmed:
       currentDirection ===
-      previousDirection
+      previousDirection,
+
+    streak:
+      0
 
   };
 }
 
 
 /* =========================================================
-   QUOTE DIGIT
+   LAST DIGIT
    ========================================================= */
 
 function quoteDigit(
@@ -3352,7 +3703,8 @@ function quoteDigit(
     pipSize &&
     Number.isFinite(
       pipSize
-    )
+    ) &&
+    pipSize > 0
   ){
 
     decimals =
@@ -3370,12 +3722,35 @@ function quoteDigit(
   }
 
 
+  /*
+    Avoid scientific notation and
+    preserve the quote's pip precision.
+  */
+
   const fixed =
     Number(
       quote
     ).toFixed(
       decimals
     );
+
+
+  const decimalPart =
+    fixed.includes(".")
+      ? fixed.split(".")[1]
+      : "";
+
+
+  if(
+    decimalPart.length > 0
+  ){
+
+    return Number(
+      decimalPart[
+        decimalPart.length - 1
+      ]
+    );
+  }
 
 
   const digits =
@@ -3400,7 +3775,44 @@ function quoteDigit(
 
 
 /* =========================================================
-   PARITY
+   PARITY ARRAY
+   ========================================================= */
+
+function parityArray(
+  ticks,
+  pipSize
+){
+
+  return ticks.map(
+    price => {
+
+      const digit =
+        quoteDigit(
+          price,
+          pipSize
+        );
+
+
+      return {
+
+        digit:
+
+          digit,
+
+        parity:
+
+          digit % 2 === 0
+            ? "EVEN"
+            : "ODD"
+
+      };
+    }
+  );
+}
+
+
+/* =========================================================
+   PARITY STATS
    ========================================================= */
 
 function parityStats(
@@ -3408,40 +3820,27 @@ function parityStats(
   pipSize
 ){
 
+  const values =
+    parityArray(
+      ticks,
+      pipSize
+    );
+
+
   let even =
     0;
+
 
   let odd =
     0;
 
-  const parity =
-    [];
-
 
   for(
-    const price of ticks
+    const item of values
   ){
 
-    const digit =
-      quoteDigit(
-        price,
-        pipSize
-      );
-
-
-    const value =
-      digit % 2 === 0
-        ? "EVEN"
-        : "ODD";
-
-
-    parity.push(
-      value
-    );
-
-
     if(
-      value ===
+      item.parity ===
       "EVEN"
     ){
 
@@ -3455,7 +3854,8 @@ function parityStats(
 
 
   const total =
-    even + odd;
+    even +
+    odd;
 
 
   if(!total){
@@ -3467,22 +3867,118 @@ function parityStats(
   return {
 
     evenPct:
-      (even / total) * 100,
+      (
+        even /
+        total
+      ) *
+      100,
 
     oddPct:
-      (odd / total) * 100,
+      (
+        odd /
+        total
+      ) *
+      100,
 
-    parity
+    values
 
   };
 }
 
 
 /* =========================================================
-   EVEN/ODD ANALYSIS
+   CONSECUTIVE OPPOSITE STREAK
    ========================================================= */
 
-function analyzeEvenOdd(
+function getParityStreak(
+  ticks,
+  pipSize
+){
+
+  const values =
+    parityArray(
+      ticks,
+      pipSize
+    );
+
+
+  if(
+    values.length === 0
+  ){
+
+    return {
+
+      parity:
+        null,
+
+      streak:
+        0,
+
+      digits:[]
+
+    };
+  }
+
+
+  const last =
+    values[
+      values.length - 1
+    ].parity;
+
+
+  let streak =
+    0;
+
+
+  const digits =
+    [];
+
+
+  for(
+    let i=
+      values.length - 1;
+    i>=0;
+    i--
+  ){
+
+    if(
+      values[i].parity !==
+      last
+    ){
+
+      break;
+    }
+
+
+    streak++;
+
+
+    digits.unshift(
+      values[i].digit
+    );
+  }
+
+
+  return {
+
+    parity:
+      last,
+
+    streak:
+      streak,
+
+    digits:
+      digits
+
+  };
+}
+
+
+/* =========================================================
+   EVEN/ODD TREND ANALYSIS
+   ========================================================= */
+
+function analyzeEvenOddTrend(
   ticks,
   pipSize
 ){
@@ -3567,7 +4063,7 @@ function analyzeEvenOdd(
       : "DIGITODD";
 
 
-  const currentValidation =
+  const validation =
     Math.max(
       currentStats.evenPct,
       currentStats.oddPct
@@ -3595,45 +4091,22 @@ function analyzeEvenOdd(
     );
 
 
-  let alignment =
-    0;
-
-
-  if(
-    currentWinner ===
-    previousWinner
-  ){
-
-    alignment +=
-      50;
-  }
-
-
-  if(
-    currentWinner ===
-    recentWinner
-  ){
-
-    alignment +=
-      50;
-  }
-
-
   let same =
     0;
 
 
   for(
     let i=1;
-    i<recentStats.parity.length;
+    i<recentStats.values.length;
     i++
   ){
 
     if(
-      recentStats.parity[i] ===
-      recentStats.parity[
+      recentStats.values[i]
+        .parity ===
+      recentStats.values[
         i-1
-      ]
+      ].parity
     ){
 
       same++;
@@ -3646,9 +4119,10 @@ function analyzeEvenOdd(
       same /
       Math.max(
         1,
-        recentStats.parity.length - 1
+        recentStats.values.length - 1
       )
-    ) * 100;
+    ) *
+    100;
 
 
   const regimeAgreement =
@@ -3665,8 +4139,10 @@ function analyzeEvenOdd(
         Math.min(
           currentPressure,
           previousPressure
-        ) / 50
-      ) * 100,
+        ) /
+        50
+      ) *
+      100,
 
       0,
       100
@@ -3695,7 +4171,7 @@ function analyzeEvenOdd(
 
     +
 
-      alignment *
+      regimeAgreement *
       0.20
 
     +
@@ -3705,22 +4181,12 @@ function analyzeEvenOdd(
 
     +
 
-      regimeAgreement *
+      pressureStability *
       0.10
 
     +
 
-      pressureStability *
-      0.10;
-
-
-  score +=
-    35;
-
-
-  score -=
-    chop *
-    0.05;
+      10;
 
 
   if(
@@ -3729,7 +4195,7 @@ function analyzeEvenOdd(
   ){
 
     score -=
-      15;
+      8;
   }
 
 
@@ -3746,6 +4212,9 @@ function analyzeEvenOdd(
     family:
       "EVEN/ODD",
 
+    engine:
+      "TREND",
+
     contract:
       currentWinner,
 
@@ -3756,21 +4225,405 @@ function analyzeEvenOdd(
         : "ODD",
 
     validation:
-      currentValidation,
+      validation,
 
-    previousValidation,
+    previousValidation:
+      previousValidation,
 
-    persistence,
+    persistence:
+      persistence,
 
-    chop,
+    chop:
+      chop,
 
-    score,
+    score:
+      score,
 
-    samples:100,
+    samples:
+      100,
 
     confirmed:
       currentWinner ===
+      previousWinner,
+
+    streak:
+      0,
+
+    currentWinner:
+      currentWinner,
+
+    previousWinner:
       previousWinner
+
+  };
+}
+
+
+/* =========================================================
+   EVEN/ODD REVERSAL ANALYSIS
+   ========================================================= */
+
+function analyzeEvenOddReversal(
+  ticks,
+  pipSize
+){
+
+  if(
+    ticks.length <
+    HISTORY_SIZE
+  ){
+
+    return null;
+  }
+
+
+  const previous =
+    ticks.slice(
+      -200,
+      -100
+    );
+
+
+  const current =
+    ticks.slice(
+      -100
+    );
+
+
+  const previousStats =
+    parityStats(
+      previous,
+      pipSize
+    );
+
+
+  const currentStats =
+    parityStats(
+      current,
+      pipSize
+    );
+
+
+  if(
+    !previousStats ||
+    !currentStats
+  ){
+
+    return null;
+  }
+
+
+  /*
+    Determine the historical bias.
+
+    Example:
+
+    EVEN 64%
+    ODD  36%
+
+    Historical bias = EVEN.
+  */
+
+  const historicalBias =
+    currentStats.evenPct >=
+    currentStats.oddPct
+      ? "DIGITEVEN"
+      : "DIGITODD";
+
+
+  const historicalLabel =
+    historicalBias ===
+    "DIGITEVEN"
+      ? "EVEN"
+      : "ODD";
+
+
+  const historicalValidation =
+    Math.max(
+      currentStats.evenPct,
+      currentStats.oddPct
+    );
+
+
+  const previousValidation =
+    historicalBias ===
+    "DIGITEVEN"
+
+      ? previousStats.evenPct
+
+      : previousStats.oddPct;
+
+
+  /*
+    Get latest consecutive parity.
+  */
+
+  const streak =
+    getParityStreak(
+      current,
+      pipSize
+    );
+
+
+  /*
+    The streak must be the OPPOSITE
+    of the historical bias.
+  */
+
+  const oppositeParity =
+    historicalBias ===
+    "DIGITEVEN"
+      ? "ODD"
+      : "EVEN";
+
+
+  if(
+    streak.parity !==
+    oppositeParity
+  ){
+
+    return null;
+  }
+
+
+  /*
+    Require at least 3 consecutive
+    opposite digits.
+  */
+
+  if(
+    streak.streak <
+    3
+  ){
+
+    return null;
+  }
+
+
+  /*
+    Target is the historical bias.
+
+    Historical EVEN +
+    ODD x3
+    =
+    EVEN reversal.
+  */
+
+  const target =
+    historicalBias;
+
+
+  const targetLabel =
+    historicalLabel;
+
+
+  /*
+    Short-term reversal pressure.
+
+    More consecutive opposite digits
+    increases the trigger score,
+    but it is capped so that a long
+    streak doesn't become an automatic
+    guarantee.
+  */
+
+  const streakScore =
+    clamp(
+      50 +
+      (
+        streak.streak -
+        3
+      ) *
+      8,
+
+      50,
+      82
+    );
+
+
+  /*
+    Historical bias strength.
+  */
+
+  const biasStrength =
+    clamp(
+
+      Math.abs(
+        currentStats.evenPct -
+        currentStats.oddPct
+      ) *
+      2,
+
+      0,
+      100
+
+    );
+
+
+  /*
+    Previous window support.
+  */
+
+  const previousSupport =
+    clamp(
+      previousValidation,
+      0,
+      100
+    );
+
+
+  /*
+    Recent reversal pressure.
+
+    If the opposite streak is 3+,
+    this confirms that the recent
+    sequence is moving against the
+    longer historical bias.
+  */
+
+  const reversalPressure =
+    clamp(
+
+      (
+        streak.streak /
+        6
+      ) *
+      100,
+
+      0,
+      100
+
+    );
+
+
+  /*
+    We intentionally do NOT require
+    current and previous windows to
+    agree here.
+
+    That's the main difference from
+    the old EVEN/ODD engine.
+
+    The historical bias plus the
+    short opposite streak is the
+    trigger.
+  */
+
+  let score =
+
+      biasStrength *
+      0.28
+
+    +
+
+      previousSupport *
+      0.22
+
+    +
+
+      streakScore *
+      0.25
+
+    +
+
+      reversalPressure *
+      0.15
+
+    +
+
+      10;
+
+
+  /*
+    Stronger historical bias gets
+    preference.
+  */
+
+  if(
+    historicalValidation >=
+    65
+  ){
+
+    score +=
+      5;
+  }
+
+
+  if(
+    historicalValidation >=
+    70
+  ){
+
+    score +=
+      5;
+  }
+
+
+  score =
+    clamp(
+      score,
+      0,
+      92
+    );
+
+
+  return {
+
+    family:
+      "EVEN/ODD",
+
+    engine:
+      "REVERSAL",
+
+    contract:
+      target,
+
+    label:
+      targetLabel,
+
+    validation:
+      historicalValidation,
+
+    previousValidation:
+      previousValidation,
+
+    persistence:
+      streakScore,
+
+    chop:
+      clamp(
+        100 -
+        biasStrength,
+        0,
+        100
+      ),
+
+    score:
+      score,
+
+    samples:
+      100,
+
+    confirmed:
+      true,
+
+    streak:
+      streak.streak,
+
+    streakParity:
+      streak.parity,
+
+    streakDigits:
+      streak.digits,
+
+    historicalBias:
+      historicalBias,
+
+    historicalLabel:
+      historicalLabel,
+
+    oppositeParity:
+      oppositeParity
 
   };
 }
@@ -3808,8 +4661,15 @@ function analyzeMarket(
     );
 
 
-  const eo =
-    analyzeEvenOdd(
+  const eoTrend =
+    analyzeEvenOddTrend(
+      ticks,
+      market.pipSize
+    );
+
+
+  const eoReversal =
+    analyzeEvenOddReversal(
       ticks,
       market.pipSize
     );
@@ -3823,7 +4683,11 @@ function analyzeMarket(
     [];
 
 
-  /* RISE/FALL */
+  /*
+    ========================================================
+    RISE/FALL
+    ========================================================
+  */
 
   if(
     rf &&
@@ -3875,70 +4739,180 @@ function analyzeMarket(
         market
 
       });
+
     }
   }
 
 
-  /* EVEN/ODD */
+  /*
+    ========================================================
+    EVEN/ODD NORMAL TREND
+    ========================================================
+  */
 
   if(
-    eo &&
+    eoTrend &&
     market.contracts.has(
-      eo.contract
+      eoTrend.contract
     )
   ){
 
     if(
 
-      eo.validation >=
+      eoTrend.validation >=
       s.minValidation
 
       &&
 
-      eo.previousValidation >=
+      eoTrend.previousValidation >=
       s.minValidation
 
       &&
 
-      eo.score >=
+      eoTrend.score >=
       s.minScore
 
       &&
 
-      eo.chop <=
+      eoTrend.chop <=
       s.maxChop
 
       &&
 
-      eo.persistence >=
+      eoTrend.persistence >=
       s.persistence
 
       &&
 
-      eo.samples >=
+      eoTrend.samples >=
       s.minSamples
 
       &&
 
-      eo.confirmed
+      eoTrend.confirmed
 
     ){
 
       candidates.push({
 
-        ...eo,
+        ...eoTrend,
 
         market
 
       });
+
+    }
+  }
+
+
+  /*
+    ========================================================
+    EVEN/ODD REVERSAL
+    ========================================================
+  */
+
+  if(
+    eoReversal &&
+    market.contracts.has(
+      eoReversal.contract
+    )
+  ){
+
+    /*
+      Reversal has a slightly different
+      validation rule.
+
+      It requires the historical bias
+      to be meaningful, but it does not
+      require the previous 100 ticks to
+      agree with the current 100 ticks.
+
+      This is what makes it possible
+      to generate signals during periods
+      where the old engine would simply
+      WAIT.
+    */
+
+    if(
+
+      eoReversal.validation >=
+      s.minValidation
+
+      &&
+
+      eoReversal.previousValidation >=
+      s.minValidation
+
+      &&
+
+      eoReversal.score >=
+      s.minScore
+
+      &&
+
+      eoReversal.streak >=
+      3
+
+      &&
+
+      eoReversal.samples >=
+      s.minSamples
+
+    ){
+
+      candidates.push({
+
+        ...eoReversal,
+
+        market
+
+      });
+
     }
   }
 
 
   candidates.sort(
-    (a,b)=>
-      b.score -
-      a.score
+
+    (
+      a,
+      b
+    ) => {
+
+      /*
+        Give reversal a small
+        priority when the scores
+        are close because it is
+        specifically designed to
+        catch the short-term setup.
+      */
+
+      const aScore =
+        a.score +
+        (
+          a.engine ===
+          "REVERSAL"
+            ? 2
+            : 0
+        );
+
+
+      const bScore =
+        b.score +
+        (
+          b.engine ===
+          "REVERSAL"
+            ? 2
+            : 0
+        );
+
+
+      return (
+        bScore -
+        aScore
+      );
+    }
+
   );
 
 
@@ -3948,7 +4922,9 @@ function analyzeMarket(
 
     rf,
 
-    eo,
+    eoTrend,
+
+    eoReversal,
 
     candidates
 
@@ -3987,13 +4963,15 @@ function collectCandidates(){
     const lastTrade =
       marketLastTrade.get(
         market.symbol
-      ) || 0;
+      ) ||
+      0;
 
 
     if(
       Date.now() -
       lastTrade <
-      s.cooldown * 1000
+      s.cooldown *
+      1000
     ){
 
       continue;
@@ -4003,7 +4981,8 @@ function collectCandidates(){
     const losses =
       marketLosses.get(
         market.symbol
-      ) || 0;
+      ) ||
+      0;
 
 
     if(
@@ -4036,34 +5015,41 @@ function collectCandidates(){
         candidate
       );
     }
+
   }
 
 
   all.sort(
-    (a,b)=>{
+    (
+      a,
+      b
+    ) => {
 
-      if(
-        b.score !==
-        a.score
-      ){
-
-        return b.score -
-          a.score;
-      }
-
-
-      if(
-        b.validation !==
-        a.validation
-      ){
-
-        return b.validation -
-          a.validation;
-      }
+      const aScore =
+        a.score +
+        (
+          a.engine ===
+          "REVERSAL"
+            ? 2
+            : 0
+        );
 
 
-      return b.persistence -
-        a.persistence;
+      const bScore =
+        b.score +
+        (
+          b.engine ===
+          "REVERSAL"
+            ? 2
+            : 0
+        );
+
+
+      return (
+        bScore -
+        aScore
+      );
+
     }
   );
 
@@ -4073,7 +5059,7 @@ function collectCandidates(){
 
 
 /* =========================================================
-   DISPLAY CANDIDATE
+   DISPLAY SIGNAL
    ========================================================= */
 
 function displayCandidate(
@@ -4084,73 +5070,93 @@ function displayCandidate(
 
   if(!candidate){
 
-    el("signalType")
-      .textContent =
+    el(
+      "signalType"
+    ).textContent =
       "WAITING";
 
 
-    el("signalMarket")
-      .textContent =
+    el(
+      "signalMarket"
+    ).textContent =
       "No qualified signal";
 
 
-    el("signalScore")
-      .textContent =
+    el(
+      "signalScore"
+    ).textContent =
       "0";
 
 
-    el("signalProgress")
-      .style.width =
+    el(
+      "signalProgress"
+    ).style.width =
       "0%";
 
 
-    el("mValidation")
-      .textContent =
+    el(
+      "mValidation"
+    ).textContent =
       "0%";
 
 
-    el("mPrevious")
-      .textContent =
+    el(
+      "mPrevious"
+    ).textContent =
       "0%";
 
 
-    el("mPersistence")
-      .textContent =
+    el(
+      "mPersistence"
+    ).textContent =
       "0%";
 
 
-    el("mChop")
-      .textContent =
+    el(
+      "mChop"
+    ).textContent =
       "0%";
 
 
-    el("mSamples")
-      .textContent =
+    el(
+      "mSamples"
+    ).textContent =
       "0";
 
 
-    el("mEV")
-      .textContent =
+    el(
+      "mEV"
+    ).textContent =
       "0%";
 
 
-    el("mRF")
-      .textContent =
+    el(
+      "mRF"
+    ).textContent =
       "0";
 
 
-    el("mEO")
-      .textContent =
+    el(
+      "mEO"
+    ).textContent =
       "0";
 
 
-    el("mDuration")
-      .textContent =
+    el(
+      "mStreak"
+    ).textContent =
+      "0";
+
+
+    el(
+      "mDuration"
+    ).textContent =
       "AUTO";
 
 
-    el("mMode")
-      .textContent =
+    el(
+      "mMode"
+    ).textContent =
       "WAIT";
 
 
@@ -4158,94 +5164,128 @@ function displayCandidate(
   }
 
 
-  el("signalType")
-    .textContent =
+  el(
+    "signalType"
+  ).textContent =
     candidate.label;
 
 
-  el("signalMarket")
-    .textContent =
-      candidate.market.name +
-      " • " +
-      candidate.family;
+  let marketText =
+    candidate.market.name +
+    " • " +
+    candidate.family;
 
 
-  el("signalScore")
-    .textContent =
+  if(
+    candidate.engine ===
+    "REVERSAL"
+  ){
+
+    marketText +=
+      " • REVERSAL";
+  }
+
+
+  el(
+    "signalMarket"
+  ).textContent =
+    marketText;
+
+
+  el(
+    "signalScore"
+  ).textContent =
     candidate.score.toFixed(
       1
     );
 
 
-  el("signalProgress")
-    .style.width =
-      clamp(
-        candidate.score,
-        0,
-        92
-      ) +
-      "%";
+  el(
+    "signalProgress"
+  ).style.width =
+    clamp(
+      candidate.score,
+      0,
+      92
+    ) +
+    "%";
 
 
-  el("mValidation")
-    .textContent =
-      candidate.validation.toFixed(
-        1
-      ) +
-      "%";
+  el(
+    "mValidation"
+  ).textContent =
+    candidate.validation.toFixed(
+      1
+    ) +
+    "%";
 
 
-  el("mPrevious")
-    .textContent =
-      (
-        candidate.previousValidation ||
-        0
-      ).toFixed(
-        1
-      ) +
-      "%";
+  el(
+    "mPrevious"
+  ).textContent =
+    (
+      candidate.previousValidation ||
+      0
+    ).toFixed(
+      1
+    ) +
+    "%";
 
 
-  el("mPersistence")
-    .textContent =
-      candidate.persistence.toFixed(
-        1
-      ) +
-      "%";
+  el(
+    "mPersistence"
+  ).textContent =
+    candidate.persistence.toFixed(
+      1
+    ) +
+    "%";
 
 
-  el("mChop")
-    .textContent =
-      candidate.chop.toFixed(
-        1
-      ) +
-      "%";
+  el(
+    "mChop"
+  ).textContent =
+    candidate.chop.toFixed(
+      1
+    ) +
+    "%";
 
 
-  el("mSamples")
-    .textContent =
+  el(
+    "mSamples"
+  ).textContent =
     candidate.samples;
 
 
-  el("mEV")
-    .textContent =
-      ev.toFixed(
-        2
-      ) +
-      "%";
+  el(
+    "mEV"
+  ).textContent =
+    ev.toFixed(
+      2
+    ) +
+    "%";
 
 
-  el("mDuration")
-    .textContent =
-      duration === "AUTO"
-        ? "AUTO"
-        : duration +
-          "T";
+  el(
+    "mStreak"
+  ).textContent =
+    candidate.streak ||
+    0;
 
 
-  el("mMode")
-    .textContent =
-    candidate.family;
+  el(
+    "mDuration"
+  ).textContent =
+    duration ===
+    "AUTO"
+      ? "AUTO"
+      : duration +
+        "T";
+
+
+  el(
+    "mMode"
+  ).textContent =
+    candidate.engine;
 
 
   const analysis =
@@ -4254,24 +5294,49 @@ function displayCandidate(
     );
 
 
-  el("mRF")
-    .textContent =
-      analysis &&
-      analysis.rf
-        ? analysis.rf.score.toFixed(
-            1
-          )
-        : "0";
+  el(
+    "mRF"
+  ).textContent =
+    analysis &&
+    analysis.rf
+      ? analysis.rf.score.toFixed(
+          1
+        )
+      : "0";
 
 
-  el("mEO")
-    .textContent =
-      analysis &&
-      analysis.eo
-        ? analysis.eo.score.toFixed(
-            1
-          )
-        : "0";
+  let eoScore =
+    0;
+
+
+  if(
+    analysis &&
+    analysis.eoTrend
+  ){
+
+    eoScore =
+      analysis.eoTrend.score;
+  }
+
+
+  if(
+    analysis &&
+    analysis.eoReversal &&
+    analysis.eoReversal.score >
+    eoScore
+  ){
+
+    eoScore =
+      analysis.eoReversal.score;
+  }
+
+
+  el(
+    "mEO"
+  ).textContent =
+    eoScore.toFixed(
+      1
+    );
 }
 
 
@@ -4371,7 +5436,9 @@ function durationList(
   ){
 
     return [
-      Number(selected)
+      Number(
+        selected
+      )
     ];
   }
 
@@ -4439,7 +5506,7 @@ function durationList(
 
 
 /* =========================================================
-   PROPOSAL
+   GET PROPOSAL
    ========================================================= */
 
 async function getProposal(
@@ -4483,6 +5550,7 @@ async function getProposal(
       },
 
       10000
+
     );
 
 
@@ -4502,7 +5570,7 @@ async function getProposal(
 
 
 /* =========================================================
-   FIND WORKING PROPOSAL
+   FIND VALID DURATION
    ========================================================= */
 
 async function findWorkingProposal(
@@ -4521,7 +5589,8 @@ async function findWorkingProposal(
 
 
   for(
-    const duration of durations
+    const duration of
+    durations
   ){
 
     if(!trading){
@@ -4788,28 +5857,59 @@ async function scanCycle(){
   );
 
 
-  log(
+  if(
+    best.engine ===
+    "REVERSAL"
+  ){
 
-    "AI candidate: " +
-    best.market.symbol +
-    " " +
-    best.label +
-    " | " +
-    best.family +
-    " | Score " +
-    best.score.toFixed(1) +
-    " | Current " +
-    best.validation.toFixed(1) +
-    "% | Previous " +
-    (
-      best.previousValidation ||
-      0
-    ).toFixed(1) +
-    "%",
+    log(
 
-    "ai"
+      "REVERSAL candidate: " +
+      best.market.symbol +
+      " " +
+      best.label +
+      " | Historical " +
+      best.historicalLabel +
+      " bias | " +
+      best.streak +
+      " consecutive " +
+      best.streakParity +
+      " | Score " +
+      best.score.toFixed(1) +
+      " | Validation " +
+      best.validation.toFixed(1) +
+      "%",
 
-  );
+      "ai"
+
+    );
+
+
+  }else{
+
+    log(
+
+      "AI candidate: " +
+      best.market.symbol +
+      " " +
+      best.label +
+      " | " +
+      best.family +
+      " | Score " +
+      best.score.toFixed(1) +
+      " | Current " +
+      best.validation.toFixed(1) +
+      "% | Previous " +
+      (
+        best.previousValidation ||
+        0
+      ).toFixed(1) +
+      "%",
+
+      "ai"
+
+    );
+  }
 
 
   await requestAndBuy(
@@ -4891,8 +5991,11 @@ async function requestAndBuy(
 
 
     /*
-      EV uses historical validation,
-      not the AI score itself.
+      Estimate probability from the
+      historical validation.
+
+      For reversal signals, the historical
+      bias is the target direction.
     */
 
     const estimatedProbability =
@@ -4901,7 +6004,8 @@ async function requestAndBuy(
         (
           candidate.validation +
           candidate.previousValidation
-        ) / 200,
+        ) /
+        200,
 
         0,
         0.95
@@ -4914,9 +6018,13 @@ async function requestAndBuy(
 
 
     if(
-      Number.isFinite(ask) &&
+      Number.isFinite(
+        ask
+      ) &&
       ask > 0 &&
-      Number.isFinite(payout)
+      Number.isFinite(
+        payout
+      )
     ){
 
       const expectedValue =
@@ -4951,13 +6059,17 @@ async function requestAndBuy(
       duration +
       "T | Ask " +
       (
-        Number.isFinite(ask)
+        Number.isFinite(
+          ask
+        )
           ? ask.toFixed(2)
           : "?"
       ) +
       " | Payout " +
       (
-        Number.isFinite(payout)
+        Number.isFinite(
+          payout
+        )
           ? payout.toFixed(2)
           : "?"
       ) +
@@ -4994,13 +6106,16 @@ async function requestAndBuy(
             proposal.id,
 
           price:
-            Number.isFinite(ask)
+            Number.isFinite(
+              ask
+            )
               ? ask
               : settings().stake
 
         },
 
         10000
+
       );
 
 
@@ -5042,7 +6157,7 @@ async function requestAndBuy(
 
 
 /* =========================================================
-   BUY
+   PROCESS BUY
    ========================================================= */
 
 function processBuy(
@@ -5112,6 +6227,8 @@ function processBuy(
     " | " +
     candidate.label +
     " | " +
+    candidate.engine +
+    " | " +
     duration +
     "T | Contract " +
     contractId,
@@ -5127,7 +6244,9 @@ function processBuy(
   try{
 
     ws.send(
+
       JSON.stringify(
+
         {
 
           proposal_open_contract:
@@ -5143,7 +6262,9 @@ function processBuy(
             ++requestId
 
         }
+
       )
+
     );
 
 
@@ -5283,14 +6404,17 @@ function finishTrade(
         0
       );
 
+
     }else{
 
       const losses =
         (
           marketLosses.get(
             symbol
-          ) || 0
-        ) + 1;
+          ) ||
+          0
+        ) +
+        1;
 
 
       marketLosses.set(
@@ -5351,7 +6475,8 @@ function finishTrade(
     const losses =
       marketLosses.get(
         symbol
-      ) || 0;
+      ) ||
+      0;
 
 
     if(
@@ -5391,8 +6516,8 @@ function finishTrade(
 
 
   /*
-    ONE-TIME balance request.
-    It does NOT subscribe.
+    Refresh balance once.
+    NO subscribe.
   */
 
   setTimeout(
@@ -5484,7 +6609,7 @@ function finishTrade(
 
 
 /* =========================================================
-   START TRADING
+   START
    ========================================================= */
 
 function startTrading(){
@@ -5530,7 +6655,19 @@ function startTrading(){
 
 
   log(
-    "200-tick confirmation engine active.",
+    "RISE/FALL trend engine active.",
+    "ai"
+  );
+
+
+  log(
+    "EVEN/ODD reversal engine active: 3 opposite digits.",
+    "ai"
+  );
+
+
+  log(
+    "200-tick analysis active.",
     "ai"
   );
 
@@ -5564,7 +6701,7 @@ function startTrading(){
 
 
 /* =========================================================
-   STOP TRADING
+   STOP
    ========================================================= */
 
 function stopTrading(){
@@ -5596,7 +6733,7 @@ function stopTrading(){
 
 
 /* =========================================================
-   RESET TRADE SESSION
+   RESET SESSION
    ========================================================= */
 
 function resetTradeSession(){
@@ -5627,6 +6764,7 @@ function resetTradeSession(){
 
 
   marketLosses.clear();
+
 
   marketLastTrade.clear();
 
@@ -5675,7 +6813,9 @@ function disconnect(){
   if(ws){
 
     try{
+
       ws.close();
+
     }catch(e){}
   }
 
@@ -5700,6 +6840,7 @@ function disconnect(){
 
 
   durationCache.clear();
+
 
   badDurationCache.clear();
 
@@ -5752,7 +6893,9 @@ function disconnect(){
    DELAY
    ========================================================= */
 
-function delay(ms){
+function delay(
+  ms
+){
 
   return new Promise(
     resolve =>
@@ -5784,13 +6927,19 @@ log(
 
 
 log(
-  "Over/Under/Match/Differs disabled.",
+  "OVER/UNDER/MATCH/DIFFERS disabled.",
   "ai"
 );
 
 
 log(
-  "Balance subscription disabled. Using one-time balance requests.",
+  "EVEN/ODD reversal: 3 consecutive opposite digits.",
+  "ai"
+);
+
+
+log(
+  "Balance subscription disabled.",
   "ai"
 );
 
