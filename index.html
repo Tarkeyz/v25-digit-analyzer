@@ -585,8 +585,7 @@ max="10"
 The scanner uses 200 ticks:
 100 current ticks + 100 previous ticks.
 
-A trade requires multiple confirmations rather than relying on one
-percentage alone.
+A trade requires multiple confirmations rather than relying on one percentage alone.
 
 </div>
 
@@ -1034,7 +1033,7 @@ class="progressBar"
 </div>
 
 
-<!-- LOG -->
+<!-- ENGINE LOG -->
 
 <div class="card">
 
@@ -1056,14 +1055,14 @@ class="log"
    AI PULSE SURGE TRADER
    =========================================================
 
-   ACTIVE CONTRACTS:
+   CONTRACTS:
 
    CALL       = RISE
    PUT        = FALL
    DIGITEVEN  = EVEN
    DIGITODD   = ODD
 
-   REMOVED:
+   NOT USED:
 
    DIGITOVER
    DIGITUNDER
@@ -1072,13 +1071,18 @@ class="log"
 
    ANALYSIS:
 
-   200 ticks total
+   200 ticks
    100 current
    100 previous
 
    NO MARTINGALE
    NO RECOVERY
    ONE TRADE AT A TIME
+
+   BALANCE:
+
+   NO BALANCE SUBSCRIPTION.
+   Balance is requested one time at a time.
 
    ========================================================= */
 
@@ -1152,6 +1156,10 @@ const marketLastTrade = new Map();
 
 let scanTimer = null;
 
+let balanceRefreshTimer = null;
+
+let balanceRequestInFlight = false;
+
 let proposalInFlight = false;
 
 let tradeInFlight = false;
@@ -1165,8 +1173,6 @@ let currentTradeType = null;
 let currentTradeDuration = null;
 
 let currentTradeFinalized = false;
-
-let balanceSubscribed = false;
 
 let lastCandidateCount = 0;
 
@@ -1193,9 +1199,10 @@ function el(id){
 
 function num(id,fallback){
 
-  const value = Number(
-    el(id).value
-  );
+  const value =
+    Number(
+      el(id).value
+    );
 
   return Number.isFinite(value)
     ? value
@@ -1329,10 +1336,13 @@ function settings(){
 
 function log(message,type=""){
 
-  const box = el("log");
+  const box =
+    el("log");
 
   const line =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
 
   line.className =
     "logLine " + type;
@@ -1343,16 +1353,18 @@ function log(message,type=""){
     "] " +
     message;
 
-  box.appendChild(line);
+  box.appendChild(
+    line
+  );
 
   while(
-    box.children.length > 350
+    box.children.length >
+    350
   ){
 
     box.removeChild(
       box.firstChild
     );
-
   }
 
   box.scrollTop =
@@ -1370,11 +1382,13 @@ function setConnectionStatus(
 ){
 
   el("connectionStatus")
-    .textContent = text;
+    .textContent =
+    text;
 
   el("connectionStatus")
     .className =
-      "value " + className;
+    "value " +
+    className;
 }
 
 
@@ -1382,61 +1396,62 @@ function updateUI(){
 
   el("accountStatus")
     .textContent =
-      accountId || "—";
+    accountId ||
+    "—";
 
   el("balanceStatus")
     .textContent =
-      balance
-        ? balance.toFixed(2) +
-          " " +
-          currency
-        : "—";
+    balance
+      ? balance.toFixed(2) +
+        " " +
+        currency
+      : "—";
 
   el("tradingStatus")
     .textContent =
-      trading
-        ? "RUNNING"
-        : "STOPPED";
+    trading
+      ? "RUNNING"
+      : "STOPPED";
 
   el("tradingStatus")
     .className =
-      "value " +
-      (
-        trading
-          ? "green"
-          : "yellow"
-      );
+    "value " +
+    (
+      trading
+        ? "green"
+        : "yellow"
+    );
 
   el("marketStatus")
     .textContent =
-      markets.size;
+    markets.size;
 
   el("tradesStatus")
     .textContent =
-      session.trades;
+    session.trades;
 
   el("winsStatus")
     .textContent =
-      session.wins;
+    session.wins;
 
   el("lossesStatus")
     .textContent =
-      session.losses;
+    session.losses;
 
   el("profitStatus")
     .textContent =
-      session.profit.toFixed(2);
+    session.profit.toFixed(2);
 
   el("profitStatus")
     .className =
-      "value " +
-      (
-        session.profit > 0
-          ? "green"
-          : session.profit < 0
-            ? "red"
-            : ""
-      );
+    "value " +
+    (
+      session.profit > 0
+        ? "green"
+        : session.profit < 0
+          ? "red"
+          : ""
+    );
 
   const winRate =
     session.trades > 0
@@ -1448,22 +1463,22 @@ function updateUI(){
 
   el("winRateStatus")
     .textContent =
-      winRate.toFixed(1) +
-      "%";
+    winRate.toFixed(1) +
+    "%";
 
   el("candidateStatus")
     .textContent =
-      lastCandidateCount;
+    lastCandidateCount;
 
   el("tradeState")
     .textContent =
-      tradeInFlight
-        ? "IN TRADE"
-        : proposalInFlight
-          ? "PROPOSAL"
-          : trading
-            ? "SCANNING"
-            : "IDLE";
+    tradeInFlight
+      ? "IN TRADE"
+      : proposalInFlight
+        ? "PROPOSAL"
+        : trading
+          ? "SCANNING"
+          : "IDLE";
 
   el("startBtn").disabled =
     !connected ||
@@ -1484,12 +1499,14 @@ function credentials(){
     el("appId").value.trim();
 
   if(!pat){
+
     throw new Error(
       "PAT is empty."
     );
   }
 
   if(!appId){
+
     throw new Error(
       "App ID is empty."
     );
@@ -1506,12 +1523,17 @@ function credentials(){
    REST ERROR
    ========================================================= */
 
-async function parseRestError(response){
+async function parseRestError(
+  response
+){
 
   let body = null;
 
   try{
-    body = await response.json();
+
+    body =
+      await response.json();
+
   }catch(e){}
 
   let message =
@@ -1520,7 +1542,9 @@ async function parseRestError(response){
 
   if(
     body &&
-    Array.isArray(body.errors) &&
+    Array.isArray(
+      body.errors
+    ) &&
     body.errors.length
   ){
 
@@ -1530,7 +1554,8 @@ async function parseRestError(response){
     message =
       (
         error.code
-          ? error.code + ": "
+          ? error.code +
+            ": "
           : ""
       ) +
       (
@@ -1561,14 +1586,17 @@ async function getOptionsAccounts(){
 
   const response =
     await fetch(
+
       API_BASE +
       "/trading/v1/options/accounts",
+
       {
         method:"GET",
 
         headers:{
           "Authorization":
-            "Bearer " + pat,
+            "Bearer " +
+            pat,
 
           "Deriv-App-ID":
             appId,
@@ -1578,6 +1606,7 @@ async function getOptionsAccounts(){
         }
       }
     );
+
 
   if(!response.ok){
 
@@ -1592,16 +1621,23 @@ async function getOptionsAccounts(){
     );
   }
 
+
   const result =
     await response.json();
+
 
   let data =
     result.data;
 
+
   if(!Array.isArray(data)){
+
     data =
-      data ? [data] : [];
+      data
+        ? [data]
+        : [];
   }
+
 
   return data;
 }
@@ -1621,14 +1657,19 @@ function selectAccount(
       ? "real"
       : "demo";
 
+
   const found =
     accounts.find(
       account =>
         String(
-          account.account_type || ""
-        ).toLowerCase()
-        === desired
+          account.account_type ||
+          ""
+        )
+        .toLowerCase()
+        ===
+        desired
     );
+
 
   if(!found){
 
@@ -1638,6 +1679,7 @@ function selectAccount(
       " Options account was returned."
     );
   }
+
 
   return found;
 }
@@ -1654,10 +1696,12 @@ async function getOTP(id){
     appId
   } = credentials();
 
+
   log(
     "Requesting authenticated WebSocket URL...",
     "ai"
   );
+
 
   const response =
     await fetch(
@@ -1672,7 +1716,8 @@ async function getOTP(id){
 
         headers:{
           "Authorization":
-            "Bearer " + pat,
+            "Bearer " +
+            pat,
 
           "Deriv-App-ID":
             appId,
@@ -1682,6 +1727,7 @@ async function getOTP(id){
         }
       }
     );
+
 
   if(!response.ok){
 
@@ -1696,13 +1742,16 @@ async function getOTP(id){
     );
   }
 
+
   const result =
     await response.json();
+
 
   const url =
     result &&
     result.data &&
     result.data.url;
+
 
   if(!url){
 
@@ -1710,6 +1759,7 @@ async function getOTP(id){
       "OTP response did not contain a WebSocket URL."
     );
   }
+
 
   return url;
 }
@@ -1731,15 +1781,20 @@ async function connectAccount(){
     return;
   }
 
-  disconnecting = false;
+
+  disconnecting =
+    false;
+
 
   try{
 
     const type =
       el("accountType").value;
 
+
     const accounts =
       await getOptionsAccounts();
+
 
     const account =
       selectAccount(
@@ -1747,20 +1802,25 @@ async function connectAccount(){
         type
       );
 
+
     accountId =
       account.account_id;
 
+
     accountType =
       account.account_type;
+
 
     currency =
       account.currency ||
       "USD";
 
+
     balance =
       Number(
         account.balance
       ) || 0;
+
 
     log(
       "Selected " +
@@ -1770,21 +1830,26 @@ async function connectAccount(){
       "trade"
     );
 
+
     updateUI();
+
 
     const wsUrl =
       await getOTP(
         accountId
       );
 
+
     log(
       "Authenticated WebSocket URL received.",
       "ai"
     );
 
+
     await openWebSocket(
       wsUrl
     );
+
 
   }catch(error){
 
@@ -1794,12 +1859,16 @@ async function connectAccount(){
       "error"
     );
 
+
     setConnectionStatus(
       "Error",
       "red"
     );
 
-    connected = false;
+
+    connected =
+      false;
+
 
     updateUI();
   }
@@ -1815,21 +1884,30 @@ function openWebSocket(url){
   return new Promise(
     (resolve,reject)=>{
 
-      let settled = false;
+      let settled =
+        false;
+
 
       ws =
-        new WebSocket(url);
+        new WebSocket(
+          url
+        );
+
 
       const timeout =
         setTimeout(
           ()=>{
+
             if(!settled){
 
-              settled = true;
+              settled =
+                true;
+
 
               try{
                 ws.close();
               }catch(e){}
+
 
               reject(
                 new Error(
@@ -1837,9 +1915,11 @@ function openWebSocket(url){
                 )
               );
             }
+
           },
           15000
         );
+
 
       ws.onopen =
         ()=>{
@@ -1848,26 +1928,34 @@ function openWebSocket(url){
             timeout
           );
 
-          connected = true;
+
+          connected =
+            true;
+
 
           setConnectionStatus(
             "Connected",
             "green"
           );
 
+
           log(
             "Authenticated WebSocket connected.",
             "trade"
           );
 
+
           updateUI();
+
 
           if(!settled){
 
-            settled = true;
+            settled =
+              true;
 
             resolve();
           }
+
 
           initializeMarketData()
             .catch(
@@ -1880,6 +1968,7 @@ function openWebSocket(url){
             );
         };
 
+
       ws.onerror =
         ()=>{
 
@@ -1888,13 +1977,17 @@ function openWebSocket(url){
             "error"
           );
 
+
           if(!settled){
 
             clearTimeout(
               timeout
             );
 
-            settled = true;
+
+            settled =
+              true;
+
 
             reject(
               new Error(
@@ -1904,16 +1997,19 @@ function openWebSocket(url){
           }
         };
 
+
       ws.onclose =
         ()=>{
 
-          connected = false;
+          connected =
+            false;
 
-          balanceSubscribed = false;
 
           if(!disconnecting){
 
-            trading = false;
+            trading =
+              false;
+
 
             log(
               "WebSocket closed.",
@@ -1921,31 +2017,40 @@ function openWebSocket(url){
             );
           }
 
+
           setConnectionStatus(
             "Disconnected",
             "red"
           );
 
+
           updateUI();
+
 
           rejectPendingRequests(
             "WebSocket closed."
           );
         };
 
+
       ws.onmessage =
         event =>{
 
           let data;
 
+
           try{
+
             data =
               JSON.parse(
                 event.data
               );
+
           }catch(e){
+
             return;
           }
+
 
           handleMessage(
             data
@@ -1984,23 +2089,29 @@ function sendRequest(
         return;
       }
 
+
       const id =
         ++requestId;
 
+
       payload.req_id =
         id;
+
 
       const timer =
         setTimeout(
           ()=>{
 
             if(
-              pendingRequests.has(id)
+              pendingRequests.has(
+                id
+              )
             ){
 
               pendingRequests.delete(
                 id
               );
+
 
               reject(
                 new Error(
@@ -2008,9 +2119,11 @@ function sendRequest(
                 )
               );
             }
+
           },
           timeout
         );
+
 
       pendingRequests.set(
         id,
@@ -2020,6 +2133,7 @@ function sendRequest(
           timer
         }
       );
+
 
       try{
 
@@ -2035,11 +2149,15 @@ function sendRequest(
           timer
         );
 
+
         pendingRequests.delete(
           id
         );
 
-        reject(error);
+
+        reject(
+          error
+        );
       }
 
     }
@@ -2067,12 +2185,14 @@ function rejectPendingRequests(
       pending.timer
     );
 
+
     pending.reject(
       new Error(
         message
       )
     );
   }
+
 
   pendingRequests.clear();
 }
@@ -2093,15 +2213,18 @@ function handleMessage(data){
           data.req_id
         );
 
+
       if(pending){
 
         clearTimeout(
           pending.timer
         );
 
+
         pendingRequests.delete(
           data.req_id
         );
+
 
         pending.reject(
 
@@ -2113,6 +2236,7 @@ function handleMessage(data){
                   ": "
                 : ""
             ) +
+
             (
               data.error.message ||
               "Deriv request failed."
@@ -2123,6 +2247,7 @@ function handleMessage(data){
       }
     }
 
+
     log(
 
       (
@@ -2131,6 +2256,7 @@ function handleMessage(data){
             ": "
           : ""
       ) +
+
       (
         data.error.message ||
         "API error"
@@ -2138,6 +2264,7 @@ function handleMessage(data){
 
       "error"
     );
+
 
     return;
   }
@@ -2150,15 +2277,18 @@ function handleMessage(data){
         data.req_id
       );
 
+
     if(pending){
 
       clearTimeout(
         pending.timer
       );
 
+
       pendingRequests.delete(
         data.req_id
       );
+
 
       pending.resolve(
         data
@@ -2198,19 +2328,34 @@ function handleMessage(data){
     "balance"
   ){
 
+    /*
+      IMPORTANT:
+
+      This is a ONE-TIME balance response.
+      There is NO balance subscription.
+    */
+
+    balanceRequestInFlight =
+      false;
+
+
     if(data.balance){
 
       balance =
         Number(
           data.balance.balance
-        ) || balance;
+        ) ||
+        balance;
+
 
       currency =
         data.balance.currency ||
         currency;
 
+
       updateUI();
     }
+
 
     return;
   }
@@ -2218,7 +2363,7 @@ function handleMessage(data){
 
 
 /* =========================================================
-   INITIALIZE
+   INITIALIZE MARKET DATA
    ========================================================= */
 
 async function initializeMarketData(){
@@ -2228,7 +2373,9 @@ async function initializeMarketData(){
     "ai"
   );
 
+
   markets.clear();
+
 
   const result =
     await sendRequest(
@@ -2238,12 +2385,14 @@ async function initializeMarketData(){
       15000
     );
 
+
   const list =
     Array.isArray(
       result.active_symbols
     )
       ? result.active_symbols
       : [];
+
 
   const synthetic =
     list.filter(
@@ -2255,11 +2404,13 @@ async function initializeMarketData(){
             ""
           ).toLowerCase();
 
+
         const market =
           String(
             item.market ||
             ""
           ).toLowerCase();
+
 
         return (
           type ===
@@ -2270,6 +2421,7 @@ async function initializeMarketData(){
         );
       }
     );
+
 
   synthetic.sort(
     (a,b)=>
@@ -2282,11 +2434,13 @@ async function initializeMarketData(){
       )
   );
 
+
   const selected =
     synthetic.slice(
       0,
       settings().maxMarkets
     );
+
 
   log(
     "Found " +
@@ -2297,6 +2451,7 @@ async function initializeMarketData(){
     "ai"
   );
 
+
   for(
     const item of selected
   ){
@@ -2304,9 +2459,11 @@ async function initializeMarketData(){
     const symbol =
       item.underlying_symbol;
 
+
     if(!symbol){
       continue;
     }
+
 
     markets.set(
       symbol,
@@ -2343,15 +2500,43 @@ async function initializeMarketData(){
     );
   }
 
+
   updateUI();
+
 
   await loadHistoricalData();
 
+
   await loadContractAvailability();
+
 
   await subscribeMarkets();
 
-  subscribeBalance();
+
+  /*
+    NO balance subscription.
+
+    Request current balance once,
+    then refresh it every 5 seconds.
+  */
+
+  refreshBalance();
+
+
+  if(balanceRefreshTimer){
+
+    clearInterval(
+      balanceRefreshTimer
+    );
+  }
+
+
+  balanceRefreshTimer =
+    setInterval(
+      refreshBalance,
+      5000
+    );
+
 
   log(
     "Scanner ready. Waiting for qualified signals.",
@@ -2371,7 +2556,10 @@ async function loadHistoricalData(){
       markets.values()
     );
 
-  let completed = 0;
+
+  let completed =
+    0;
+
 
   for(
     const market of list
@@ -2399,10 +2587,14 @@ async function loadHistoricalData(){
           12000
         );
 
+
       const history =
         result.history;
 
-      let prices = [];
+
+      let prices =
+        [];
+
 
       if(
         history &&
@@ -2419,16 +2611,20 @@ async function loadHistoricalData(){
             );
       }
 
+
       market.ticks =
         prices.slice(
           -HISTORY_SIZE
         );
 
+
       market.ready =
         market.ticks.length >=
         HISTORY_SIZE;
 
+
       completed++;
+
 
       if(
         completed % 5 === 0 ||
@@ -2444,6 +2640,7 @@ async function loadHistoricalData(){
         );
       }
 
+
     }catch(error){
 
       log(
@@ -2453,6 +2650,7 @@ async function loadHistoricalData(){
         "warn"
       );
     }
+
 
     await delay(60);
   }
@@ -2470,7 +2668,10 @@ async function loadContractAvailability(){
       markets.values()
     );
 
-  let completed = 0;
+
+  let completed =
+    0;
+
 
   for(
     const market of list
@@ -2487,6 +2688,7 @@ async function loadContractAvailability(){
           10000
         );
 
+
       const available =
         result &&
         result.contracts_for &&
@@ -2496,8 +2698,10 @@ async function loadContractAvailability(){
           ? result.contracts_for.available
           : [];
 
+
       market.contracts =
         new Set();
+
 
       for(
         const item of available
@@ -2515,10 +2719,13 @@ async function loadContractAvailability(){
         }
       }
 
+
       market.contractsLoaded =
         true;
 
+
       completed++;
+
 
       log(
 
@@ -2539,6 +2746,7 @@ async function loadContractAvailability(){
 
       );
 
+
     }catch(error){
 
       log(
@@ -2549,8 +2757,10 @@ async function loadContractAvailability(){
       );
     }
 
+
     await delay(70);
   }
+
 
   log(
     "Contract availability loaded for " +
@@ -2577,21 +2787,26 @@ async function subscribeMarkets(){
       continue;
     }
 
+
     try{
 
       ws.send(
         JSON.stringify(
           {
+
             ticks:
               market.symbol,
 
-            subscribe:1,
+            subscribe:
+              1,
 
             req_id:
               ++requestId
+
           }
         )
       );
+
 
     }catch(error){
 
@@ -2602,8 +2817,10 @@ async function subscribeMarkets(){
       );
     }
 
+
     await delay(50);
   }
+
 
   log(
     "Live tick subscriptions active.",
@@ -2613,57 +2830,10 @@ async function subscribeMarkets(){
 
 
 /* =========================================================
-   BALANCE SUBSCRIPTION
-   ========================================================= */
-
-function subscribeBalance(){
-
-  if(balanceSubscribed){
-
-    return;
-  }
-
-  if(
-    !connected ||
-    !ws ||
-    ws.readyState !==
-    WebSocket.OPEN
-  ){
-
-    return;
-  }
-
-  try{
-
-    ws.send(
-      JSON.stringify(
-        {
-          balance:1,
-          subscribe:1,
-          req_id:
-            ++requestId
-        }
-      )
-    );
-
-    balanceSubscribed =
-      true;
-
-  }catch(error){
-
-    log(
-      "Balance subscription failed: " +
-      error.message,
-      "warn"
-    );
-  }
-}
-
-
-/* =========================================================
    BALANCE REFRESH
    IMPORTANT:
-   NO subscribe:1 HERE
+
+   There is NO subscribe:1 here.
    ========================================================= */
 
 function refreshBalance(){
@@ -2678,19 +2848,41 @@ function refreshBalance(){
     return;
   }
 
+
+  if(
+    balanceRequestInFlight
+  ){
+
+    return;
+  }
+
+
+  balanceRequestInFlight =
+    true;
+
+
   try{
 
     ws.send(
       JSON.stringify(
         {
-          balance:1,
+
+          balance:
+            1,
+
           req_id:
             ++requestId
+
         }
       )
     );
 
+
   }catch(error){
+
+    balanceRequestInFlight =
+      false;
+
 
     log(
       "Balance refresh failed: " +
@@ -2711,46 +2903,59 @@ function processTick(tick){
     return;
   }
 
+
   const symbol =
     tick.underlying_symbol ||
     tick.symbol;
+
 
   if(!symbol){
     return;
   }
 
+
   const market =
-    markets.get(symbol);
+    markets.get(
+      symbol
+    );
+
 
   if(!market){
     return;
   }
+
 
   const quote =
     Number(
       tick.quote
     );
 
+
   if(
     !Number.isFinite(
       quote
     )
   ){
+
     return;
   }
 
+
   market.lastTick =
     quote;
+
 
   market.lastEpoch =
     Number(
       tick.epoch
     ) ||
-    Date.now()/1000;
+    Date.now() / 1000;
+
 
   market.ticks.push(
     quote
   );
+
 
   if(
     market.ticks.length >
@@ -2762,6 +2967,7 @@ function processTick(tick){
         -HISTORY_SIZE
       );
   }
+
 
   market.ready =
     market.ticks.length >=
@@ -2790,7 +2996,7 @@ function clamp(
 
 
 /* =========================================================
-   RISE/FALL
+   RISE/FALL ANALYSIS
    ========================================================= */
 
 function analyzeRiseFall(
@@ -2805,26 +3011,33 @@ function analyzeRiseFall(
     return null;
   }
 
+
   const previous =
     ticks.slice(
       -200,
       -100
     );
 
+
   const current =
     ticks.slice(
       -100
     );
 
+
   function directionStats(
     values
   ){
 
-    let up = 0;
+    let up =
+      0;
 
-    let down = 0;
+    let down =
+      0;
 
-    const deltas = [];
+    const deltas =
+      [];
+
 
     for(
       let i=1;
@@ -2836,29 +3049,40 @@ function analyzeRiseFall(
         values[i] -
         values[i-1];
 
+
       deltas.push(
         delta
       );
 
+
       if(delta > 0){
+
         up++;
-      }
-      else if(delta < 0){
+
+      }else if(delta < 0){
+
         down++;
       }
     }
 
+
     const total =
       up + down;
+
 
     if(total < 10){
 
       return {
+
         upPct:50,
+
         downPct:50,
+
         deltas
+
       };
     }
+
 
     return {
 
@@ -2869,18 +3093,22 @@ function analyzeRiseFall(
         (down / total) * 100,
 
       deltas
+
     };
   }
+
 
   const cur =
     directionStats(
       current
     );
 
+
   const prev =
     directionStats(
       previous
     );
+
 
   const currentDirection =
     cur.upPct >=
@@ -2888,11 +3116,13 @@ function analyzeRiseFall(
       ? "CALL"
       : "PUT";
 
+
   const previousDirection =
     prev.upPct >=
     prev.downPct
       ? "CALL"
       : "PUT";
+
 
   const currentValidation =
     Math.max(
@@ -2900,11 +3130,13 @@ function analyzeRiseFall(
       cur.downPct
     );
 
+
   const previousValidation =
     Math.max(
       prev.upPct,
       prev.downPct
     );
+
 
   const regimeAgreement =
     currentDirection ===
@@ -2912,16 +3144,19 @@ function analyzeRiseFall(
       ? 100
       : 0;
 
+
   const currentMove =
     current[
-      current.length-1
+      current.length - 1
     ] -
     current[0];
+
 
   const momentumDirection =
     currentMove >= 0
       ? "CALL"
       : "PUT";
+
 
   const momentumAgreement =
     momentumDirection ===
@@ -2929,13 +3164,20 @@ function analyzeRiseFall(
       ? 100
       : 0;
 
+
   const absoluteMovement =
     cur.deltas.reduce(
-      (total,delta)=>
+      (
+        total,
+        delta
+      ) =>
         total +
-        Math.abs(delta),
+        Math.abs(
+          delta
+        ),
       0
     );
+
 
   const efficiency =
     absoluteMovement > 0
@@ -2945,7 +3187,10 @@ function analyzeRiseFall(
         absoluteMovement
       : 0;
 
-  let changes = 0;
+
+  let changes =
+    0;
+
 
   for(
     let i=1;
@@ -2955,13 +3200,17 @@ function analyzeRiseFall(
 
     const a =
       Math.sign(
-        cur.deltas[i-1]
+        cur.deltas[
+          i-1
+        ]
       );
+
 
     const b =
       Math.sign(
         cur.deltas[i]
       );
+
 
     if(
       a !== 0 &&
@@ -2973,37 +3222,34 @@ function analyzeRiseFall(
     }
   }
 
+
   const chop =
     clamp(
+
       (
         changes /
         Math.max(
           1,
-          cur.deltas.length-1
+          cur.deltas.length - 1
         )
       ) * 100,
+
       0,
       100
+
     );
 
-  /*
-    Persistence is deliberately based on
-    the current directional consistency.
-  */
 
   const persistence =
     currentValidation;
 
-  /*
-    Stronger confirmation requires
-    BOTH windows to point the same way.
-  */
 
   const windowAgreement =
     currentDirection ===
     previousDirection
       ? 100
       : 0;
+
 
   let score =
 
@@ -3031,14 +3277,11 @@ function analyzeRiseFall(
       100 *
       0.15;
 
+
   score -=
     chop *
     0.15;
 
-  /*
-    If current and previous windows
-    disagree, significantly reduce score.
-  */
 
   if(
     currentDirection !==
@@ -3048,12 +3291,14 @@ function analyzeRiseFall(
     score -= 15;
   }
 
+
   score =
     clamp(
       score,
       0,
       92
     );
+
 
   return {
 
@@ -3091,7 +3336,7 @@ function analyzeRiseFall(
 
 
 /* =========================================================
-   DIGIT
+   QUOTE DIGIT
    ========================================================= */
 
 function quoteDigit(
@@ -3099,7 +3344,9 @@ function quoteDigit(
   pipSize
 ){
 
-  let decimals = 2;
+  let decimals =
+    2;
+
 
   if(
     pipSize &&
@@ -3122,6 +3369,7 @@ function quoteDigit(
       );
   }
 
+
   const fixed =
     Number(
       quote
@@ -3129,19 +3377,23 @@ function quoteDigit(
       decimals
     );
 
+
   const digits =
     fixed.replace(
       /[^0-9]/g,
       ""
     );
 
+
   if(!digits.length){
+
     return 0;
   }
 
+
   return Number(
     digits[
-      digits.length-1
+      digits.length - 1
     ]
   );
 }
@@ -3156,11 +3408,15 @@ function parityStats(
   pipSize
 ){
 
-  let even = 0;
+  let even =
+    0;
 
-  let odd = 0;
+  let odd =
+    0;
 
-  const parity = [];
+  const parity =
+    [];
+
 
   for(
     const price of ticks
@@ -3172,31 +3428,41 @@ function parityStats(
         pipSize
       );
 
+
     const value =
       digit % 2 === 0
         ? "EVEN"
         : "ODD";
 
+
     parity.push(
       value
     );
 
+
     if(
-      value === "EVEN"
+      value ===
+      "EVEN"
     ){
+
       even++;
-    }
-    else{
+
+    }else{
+
       odd++;
     }
   }
 
+
   const total =
     even + odd;
 
+
   if(!total){
+
     return null;
   }
+
 
   return {
 
@@ -3207,12 +3473,13 @@ function parityStats(
       (odd / total) * 100,
 
     parity
+
   };
 }
 
 
 /* =========================================================
-   EVEN/ODD
+   EVEN/ODD ANALYSIS
    ========================================================= */
 
 function analyzeEvenOdd(
@@ -3228,21 +3495,25 @@ function analyzeEvenOdd(
     return null;
   }
 
+
   const previous =
     ticks.slice(
       -200,
       -100
     );
 
+
   const current =
     ticks.slice(
       -100
     );
 
+
   const recent =
     current.slice(
       -30
     );
+
 
   const previousStats =
     parityStats(
@@ -3250,17 +3521,20 @@ function analyzeEvenOdd(
       pipSize
     );
 
+
   const currentStats =
     parityStats(
       current,
       pipSize
     );
 
+
   const recentStats =
     parityStats(
       recent,
       pipSize
     );
+
 
   if(
     !previousStats ||
@@ -3271,11 +3545,13 @@ function analyzeEvenOdd(
     return null;
   }
 
+
   const currentWinner =
     currentStats.evenPct >=
     currentStats.oddPct
       ? "DIGITEVEN"
       : "DIGITODD";
+
 
   const previousWinner =
     previousStats.evenPct >=
@@ -3283,11 +3559,13 @@ function analyzeEvenOdd(
       ? "DIGITEVEN"
       : "DIGITODD";
 
+
   const recentWinner =
     recentStats.evenPct >=
     recentStats.oddPct
       ? "DIGITEVEN"
       : "DIGITODD";
+
 
   const currentValidation =
     Math.max(
@@ -3295,11 +3573,13 @@ function analyzeEvenOdd(
       currentStats.oddPct
     );
 
+
   const previousValidation =
     Math.max(
       previousStats.evenPct,
       previousStats.oddPct
     );
+
 
   const currentPressure =
     Math.abs(
@@ -3307,31 +3587,41 @@ function analyzeEvenOdd(
       currentStats.oddPct
     );
 
+
   const previousPressure =
     Math.abs(
       previousStats.evenPct -
       previousStats.oddPct
     );
 
-  let alignment = 0;
+
+  let alignment =
+    0;
+
 
   if(
     currentWinner ===
     previousWinner
   ){
 
-    alignment += 50;
+    alignment +=
+      50;
   }
+
 
   if(
     currentWinner ===
     recentWinner
   ){
 
-    alignment += 50;
+    alignment +=
+      50;
   }
 
-  let same = 0;
+
+  let same =
+    0;
+
 
   for(
     let i=1;
@@ -3341,21 +3631,25 @@ function analyzeEvenOdd(
 
     if(
       recentStats.parity[i] ===
-      recentStats.parity[i-1]
+      recentStats.parity[
+        i-1
+      ]
     ){
 
       same++;
     }
   }
 
+
   const persistence =
     (
       same /
       Math.max(
         1,
-        recentStats.parity.length-1
+        recentStats.parity.length - 1
       )
     ) * 100;
+
 
   const regimeAgreement =
     currentWinner ===
@@ -3363,17 +3657,22 @@ function analyzeEvenOdd(
       ? 100
       : 0;
 
+
   const pressureStability =
     clamp(
+
       (
         Math.min(
           currentPressure,
           previousPressure
         ) / 50
       ) * 100,
+
       0,
       100
+
     );
+
 
   const chop =
     clamp(
@@ -3382,6 +3681,7 @@ function analyzeEvenOdd(
       0,
       100
     );
+
 
   let score =
 
@@ -3413,24 +3713,25 @@ function analyzeEvenOdd(
       pressureStability *
       0.10;
 
-  score += 35;
+
+  score +=
+    35;
+
 
   score -=
     chop *
     0.05;
 
-  /*
-    If the current and previous windows
-    disagree, penalize the setup.
-  */
 
   if(
     currentWinner !==
     previousWinner
   ){
 
-    score -= 15;
+    score -=
+      15;
   }
+
 
   score =
     clamp(
@@ -3438,6 +3739,7 @@ function analyzeEvenOdd(
       0,
       92
     );
+
 
   return {
 
@@ -3469,6 +3771,7 @@ function analyzeEvenOdd(
     confirmed:
       currentWinner ===
       previousWinner
+
   };
 }
 
@@ -3492,15 +3795,18 @@ function analyzeMarket(
     return null;
   }
 
+
   const ticks =
     market.ticks.slice(
       -HISTORY_SIZE
     );
 
+
   const rf =
     analyzeRiseFall(
       ticks
     );
+
 
   const eo =
     analyzeEvenOdd(
@@ -3508,10 +3814,13 @@ function analyzeMarket(
       market.pipSize
     );
 
+
   const s =
     settings();
 
-  const candidates = [];
+
+  const candidates =
+    [];
 
 
   /* RISE/FALL */
@@ -3653,13 +3962,17 @@ function analyzeMarket(
 
 function collectCandidates(){
 
-  const all = [];
+  const all =
+    [];
+
 
   const s =
     settings();
 
+
   for(
-    const market of markets.values()
+    const market of
+    markets.values()
   ){
 
     if(
@@ -3709,6 +4022,7 @@ function collectCandidates(){
 
 
     if(!analysis){
+
       continue;
     }
 
@@ -3737,6 +4051,7 @@ function collectCandidates(){
           a.score;
       }
 
+
       if(
         b.validation !==
         a.validation
@@ -3745,6 +4060,7 @@ function collectCandidates(){
         return b.validation -
           a.validation;
       }
+
 
       return b.persistence -
         a.persistence;
@@ -3757,7 +4073,7 @@ function collectCandidates(){
 
 
 /* =========================================================
-   DISPLAY
+   DISPLAY CANDIDATE
    ========================================================= */
 
 function displayCandidate(
@@ -3772,57 +4088,71 @@ function displayCandidate(
       .textContent =
       "WAITING";
 
+
     el("signalMarket")
       .textContent =
       "No qualified signal";
+
 
     el("signalScore")
       .textContent =
       "0";
 
+
     el("signalProgress")
       .style.width =
       "0%";
+
 
     el("mValidation")
       .textContent =
       "0%";
 
+
     el("mPrevious")
       .textContent =
       "0%";
+
 
     el("mPersistence")
       .textContent =
       "0%";
 
+
     el("mChop")
       .textContent =
       "0%";
+
 
     el("mSamples")
       .textContent =
       "0";
 
+
     el("mEV")
       .textContent =
       "0%";
+
 
     el("mRF")
       .textContent =
       "0";
 
+
     el("mEO")
       .textContent =
       "0";
+
 
     el("mDuration")
       .textContent =
       "AUTO";
 
+
     el("mMode")
       .textContent =
       "WAIT";
+
 
     return;
   }
@@ -3842,7 +4172,9 @@ function displayCandidate(
 
   el("signalScore")
     .textContent =
-      candidate.score.toFixed(1);
+    candidate.score.toFixed(
+      1
+    );
 
 
   el("signalProgress")
@@ -3851,12 +4183,15 @@ function displayCandidate(
         candidate.score,
         0,
         92
-      ) + "%";
+      ) +
+      "%";
 
 
   el("mValidation")
     .textContent =
-      candidate.validation.toFixed(1) +
+      candidate.validation.toFixed(
+        1
+      ) +
       "%";
 
 
@@ -3865,30 +4200,38 @@ function displayCandidate(
       (
         candidate.previousValidation ||
         0
-      ).toFixed(1) +
+      ).toFixed(
+        1
+      ) +
       "%";
 
 
   el("mPersistence")
     .textContent =
-      candidate.persistence.toFixed(1) +
+      candidate.persistence.toFixed(
+        1
+      ) +
       "%";
 
 
   el("mChop")
     .textContent =
-      candidate.chop.toFixed(1) +
+      candidate.chop.toFixed(
+        1
+      ) +
       "%";
 
 
   el("mSamples")
     .textContent =
-      candidate.samples;
+    candidate.samples;
 
 
   el("mEV")
     .textContent =
-      ev.toFixed(2) +
+      ev.toFixed(
+        2
+      ) +
       "%";
 
 
@@ -3896,12 +4239,13 @@ function displayCandidate(
     .textContent =
       duration === "AUTO"
         ? "AUTO"
-        : duration + "T";
+        : duration +
+          "T";
 
 
   el("mMode")
     .textContent =
-      candidate.family;
+    candidate.family;
 
 
   const analysis =
@@ -3914,7 +4258,9 @@ function displayCandidate(
     .textContent =
       analysis &&
       analysis.rf
-        ? analysis.rf.score.toFixed(1)
+        ? analysis.rf.score.toFixed(
+            1
+          )
         : "0";
 
 
@@ -3922,7 +4268,9 @@ function displayCandidate(
     .textContent =
       analysis &&
       analysis.eo
-        ? analysis.eo.score.toFixed(1)
+        ? analysis.eo.score.toFixed(
+            1
+          )
         : "0";
 }
 
@@ -3973,14 +4321,18 @@ function isBadDuration(
       duration
     );
 
+
   const expiry =
     badDurationCache.get(
       key
     );
 
+
   if(!expiry){
+
     return false;
   }
+
 
   if(
     Date.now() >=
@@ -3991,8 +4343,10 @@ function isBadDuration(
       key
     );
 
+
     return false;
   }
+
 
   return true;
 }
@@ -4031,7 +4385,8 @@ function durationList(
     );
 
 
-  const list = [];
+  const list =
+    [];
 
 
   if(
@@ -4101,7 +4456,8 @@ async function getProposal(
 
       {
 
-        proposal:1,
+        proposal:
+          1,
 
         amount:
           s.stake,
@@ -4169,6 +4525,7 @@ async function findWorkingProposal(
   ){
 
     if(!trading){
+
       return null;
     }
 
@@ -4334,7 +4691,9 @@ async function scanCycle(){
       "warn"
     );
 
+
     stopTrading();
+
 
     return;
   }
@@ -4350,7 +4709,9 @@ async function scanCycle(){
       "warn"
     );
 
+
     stopTrading();
+
 
     return;
   }
@@ -4367,7 +4728,9 @@ async function scanCycle(){
       "trade"
     );
 
+
     stopTrading();
+
 
     return;
   }
@@ -4384,7 +4747,9 @@ async function scanCycle(){
       "warn"
     );
 
+
     stopTrading();
+
 
     return;
   }
@@ -4408,6 +4773,7 @@ async function scanCycle(){
     displayCandidate(
       null
     );
+
 
     return;
   }
@@ -4525,26 +4891,26 @@ async function requestAndBuy(
 
 
     /*
-      EV is deliberately calculated from
-      the historical validation estimate,
+      EV uses historical validation,
       not the AI score itself.
-
-      This avoids treating a composite
-      score as a direct probability.
     */
 
     const estimatedProbability =
       clamp(
+
         (
           candidate.validation +
           candidate.previousValidation
         ) / 200,
+
         0,
         0.95
+
       );
 
 
-    let ev = 0;
+    let ev =
+      0;
 
 
     if(
@@ -4565,7 +4931,8 @@ async function requestAndBuy(
         (
           expectedValue /
           ask
-        ) * 100;
+        ) *
+        100;
     }
 
 
@@ -4612,6 +4979,7 @@ async function requestAndBuy(
         "Proposal rejected by EV filter.",
         "warn"
       );
+
 
       return;
     }
@@ -4667,6 +5035,7 @@ async function requestAndBuy(
     proposalInFlight =
       false;
 
+
     updateUI();
   }
 }
@@ -4697,6 +5066,7 @@ function processBuy(
       "Buy succeeded but no contract ID was returned.",
       "error"
     );
+
 
     return;
   }
@@ -4776,6 +5146,7 @@ function processBuy(
       )
     );
 
+
   }catch(error){
 
     log(
@@ -4796,6 +5167,7 @@ function processOpenContract(
 ){
 
   if(!contract){
+
     return;
   }
 
@@ -4837,6 +5209,7 @@ function processOpenContract(
 
 
   if(!closed){
+
     return;
   }
 
@@ -4884,9 +5257,11 @@ function finishTrade(
 
 
   if(won){
+
     session.wins++;
-  }
-  else{
+
+  }else{
+
     session.losses++;
   }
 
@@ -4908,8 +5283,7 @@ function finishTrade(
         0
       );
 
-    }
-    else{
+    }else{
 
       const losses =
         (
@@ -5017,8 +5391,8 @@ function finishTrade(
 
 
   /*
-    IMPORTANT:
-    Refresh balance without subscribing again.
+    ONE-TIME balance request.
+    It does NOT subscribe.
   */
 
   setTimeout(
@@ -5044,7 +5418,9 @@ function finishTrade(
       "warn"
     );
 
+
     stopTrading();
+
 
     return;
   }
@@ -5060,7 +5436,9 @@ function finishTrade(
       "warn"
     );
 
+
     stopTrading();
+
 
     return;
   }
@@ -5077,7 +5455,9 @@ function finishTrade(
       "trade"
     );
 
+
     stopTrading();
+
 
     return;
   }
@@ -5094,7 +5474,9 @@ function finishTrade(
       "warn"
     );
 
+
     stopTrading();
+
 
     return;
   }
@@ -5102,7 +5484,7 @@ function finishTrade(
 
 
 /* =========================================================
-   START
+   START TRADING
    ========================================================= */
 
 function startTrading(){
@@ -5114,11 +5496,13 @@ function startTrading(){
       "warn"
     );
 
+
     return;
   }
 
 
   if(trading){
+
     return;
   }
 
@@ -5180,7 +5564,7 @@ function startTrading(){
 
 
 /* =========================================================
-   STOP
+   STOP TRADING
    ========================================================= */
 
 function stopTrading(){
@@ -5194,6 +5578,7 @@ function stopTrading(){
     clearInterval(
       scanTimer
     );
+
 
     scanTimer =
       null;
@@ -5211,7 +5596,7 @@ function stopTrading(){
 
 
 /* =========================================================
-   RESET SESSION
+   RESET TRADE SESSION
    ========================================================= */
 
 function resetTradeSession(){
@@ -5222,6 +5607,7 @@ function resetTradeSession(){
       "Cannot reset session while a trade is active.",
       "warn"
     );
+
 
     return;
   }
@@ -5268,6 +5654,24 @@ function disconnect(){
   stopTrading();
 
 
+  if(
+    balanceRefreshTimer
+  ){
+
+    clearInterval(
+      balanceRefreshTimer
+    );
+
+
+    balanceRefreshTimer =
+      null;
+  }
+
+
+  balanceRequestInFlight =
+    false;
+
+
   if(ws){
 
     try{
@@ -5276,40 +5680,53 @@ function disconnect(){
   }
 
 
-  ws = null;
+  ws =
+    null;
 
-  connected = false;
 
-  balanceSubscribed =
+  connected =
     false;
 
-  accountId = null;
 
-  accountType = null;
+  accountId =
+    null;
+
+
+  accountType =
+    null;
+
 
   markets.clear();
+
 
   durationCache.clear();
 
   badDurationCache.clear();
 
+
   proposalInFlight =
     false;
+
 
   tradeInFlight =
     false;
 
+
   currentContractId =
     null;
+
 
   currentTradeMarket =
     null;
 
+
   currentTradeType =
     null;
 
+
   currentTradeDuration =
     null;
+
 
   currentTradeFinalized =
     false;
@@ -5368,6 +5785,12 @@ log(
 
 log(
   "Over/Under/Match/Differs disabled.",
+  "ai"
+);
+
+
+log(
+  "Balance subscription disabled. Using one-time balance requests.",
   "ai"
 );
 
