@@ -2,4350 +2,3648 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport"
-      content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
-
-<title>Deriv Even/Odd Live Bot</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Deriv Even/Odd Multi-Market Bot</title>
 
 <style>
 *{
-    box-sizing:border-box;
+  box-sizing:border-box;
 }
 
 body{
-    margin:0;
-    background:#070c17;
-    color:#edf2ff;
-    font-family:Arial,Helvetica,sans-serif;
-}
-
-header{
-    padding:18px;
-    background:#10182b;
-    border-bottom:1px solid #293650;
-}
-
-h1{
-    margin:0;
-    font-size:22px;
-}
-
-.sub{
-    color:#8e9ab5;
-    font-size:13px;
-    margin-top:5px;
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  background:#07111f;
+  color:#e8eef7;
 }
 
 .container{
-    max-width:1500px;
-    margin:auto;
-    padding:15px;
+  max-width:1450px;
+  margin:auto;
+  padding:18px;
 }
 
-.panel{
-    background:#10192c;
-    border:1px solid #293650;
-    border-radius:14px;
-    padding:15px;
-    margin-bottom:15px;
+h1{
+  margin:0 0 6px;
+  font-size:26px;
+}
+
+.subtitle{
+  color:#8fa3bd;
+  margin-bottom:18px;
+}
+
+.card{
+  background:#0d1a2b;
+  border:1px solid #20344e;
+  border-radius:12px;
+  padding:16px;
+  margin-bottom:16px;
+}
+
+h2{
+  margin:0 0 14px;
+  font-size:18px;
 }
 
 .grid{
-    display:grid;
-    grid-template-columns:
-        repeat(auto-fit,minmax(150px,1fr));
-    gap:10px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
+  gap:12px;
 }
 
-.field label{
-    display:block;
-    color:#8996b3;
-    font-size:11px;
-    margin-bottom:5px;
+label{
+  display:block;
+  color:#91a5be;
+  font-size:12px;
+  margin-bottom:5px;
 }
 
 input,
-select,
-button{
-    width:100%;
-    padding:11px;
-    border-radius:8px;
-    border:1px solid #344361;
-    background:#080f1e;
-    color:#fff;
+select{
+  width:100%;
+  padding:10px;
+  border-radius:7px;
+  border:1px solid #29415f;
+  background:#081321;
+  color:white;
+  outline:none;
+}
+
+input:focus,
+select:focus{
+  border-color:#3b82f6;
 }
 
 button{
-    cursor:pointer;
-    font-weight:bold;
+  border:0;
+  border-radius:7px;
+  padding:11px 15px;
+  cursor:pointer;
+  background:#2563eb;
+  color:white;
+  font-weight:bold;
+  margin:4px;
 }
 
 button:hover{
-    filter:brightness(1.15);
+  filter:brightness(1.12);
 }
 
-.connect{
-    background:#245ca8;
+button.start{
+  background:#16a34a;
 }
 
-.start{
-    background:#087c59;
+button.stop{
+  background:#dc2626;
 }
 
-.stop{
-    background:#a52e3b;
+button.warn{
+  background:#d97706;
 }
 
-.reset{
-    background:#76551c;
-}
-
-.disconnect{
-    background:#7f2043;
+button.secondary{
+  background:#475569;
 }
 
 .status{
-    display:flex;
-    flex-wrap:wrap;
-    gap:8px;
-    margin-top:12px;
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  padding:7px 11px;
+  border-radius:20px;
+  background:#17253a;
+  color:#9fb3ca;
+  font-size:12px;
 }
 
-.badge{
-    padding:7px 11px;
-    border-radius:20px;
-    background:#222d46;
-    font-size:12px;
+.dot{
+  width:9px;
+  height:9px;
+  border-radius:50%;
+  background:#ef4444;
 }
 
-.green{
-    background:#075b43;
+.dot.green{
+  background:#22c55e;
 }
 
-.red{
-    background:#64212c;
-}
-
-.orange{
-    background:#775619;
-}
-
-.blue{
-    background:#174d79;
-}
-
-.warning{
-    background:#4d1827;
-    border:1px solid #8b2c48;
-    color:#ffbdc9;
-    padding:12px;
-    border-radius:9px;
-    margin-top:12px;
-    font-size:12px;
+.dot.yellow{
+  background:#eab308;
 }
 
 .stats{
-    display:grid;
-    grid-template-columns:
-        repeat(auto-fit,minmax(130px,1fr));
-    gap:10px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  gap:10px;
 }
 
 .stat{
-    background:#080f1e;
-    border:1px solid #293650;
-    border-radius:10px;
-    padding:12px;
+  background:#081321;
+  border:1px solid #20344e;
+  border-radius:9px;
+  padding:12px;
 }
 
 .stat-title{
-    color:#8794b2;
-    font-size:10px;
+  color:#7f94ae;
+  font-size:11px;
+  margin-bottom:6px;
 }
 
 .stat-value{
-    margin-top:5px;
-    font-size:20px;
-    font-weight:bold;
+  font-size:20px;
+  font-weight:bold;
 }
 
-.good{
-    color:#3cdaa0;
+.green-text{
+  color:#4ade80;
 }
 
-.bad{
-    color:#ff6d6d;
+.red-text{
+  color:#f87171;
 }
 
-.yellow{
-    color:#ffd166;
+.yellow-text{
+  color:#facc15;
+}
+
+.blue-text{
+  color:#60a5fa;
 }
 
 .table-wrap{
-    width:100%;
-    overflow:auto;
+  overflow:auto;
+  max-height:620px;
 }
 
 table{
-    width:100%;
-    min-width:1050px;
-    border-collapse:collapse;
+  width:100%;
+  border-collapse:collapse;
+  min-width:900px;
 }
 
 th,
 td{
-    padding:9px;
-    border-bottom:1px solid #293650;
-    font-size:12px;
-    text-align:left;
+  padding:9px 8px;
+  border-bottom:1px solid #1c2d43;
+  text-align:left;
+  font-size:12px;
 }
 
 th{
-    color:#8290ae;
+  color:#91a5be;
+  background:#0a1625;
+  position:sticky;
+  top:0;
+  z-index:2;
 }
 
-.even{
-    color:#3bd99c;
-    font-weight:bold;
+tr:hover td{
+  background:#102136;
 }
 
-.odd{
-    color:#ffd166;
-    font-weight:bold;
+.badge{
+  display:inline-block;
+  padding:4px 7px;
+  border-radius:5px;
+  font-size:10px;
+  font-weight:bold;
 }
 
-.wait{
-    color:#74819e;
+.badge-even{
+  background:#123b64;
+  color:#60a5fa;
+}
+
+.badge-odd{
+  background:#4a2612;
+  color:#fb923c;
+}
+
+.badge-good{
+  background:#123d27;
+  color:#4ade80;
+}
+
+.badge-neutral{
+  background:#263449;
+  color:#cbd5e1;
+}
+
+.badge-real{
+  background:#4a1d1d;
+  color:#fca5a5;
+}
+
+.badge-demo{
+  background:#123d27;
+  color:#86efac;
 }
 
 .log{
-    background:#040811;
-    border:1px solid #1d2940;
-    border-radius:9px;
-    height:250px;
-    padding:10px;
-    overflow:auto;
-    font-family:monospace;
-    font-size:11px;
-    white-space:pre-wrap;
+  height:260px;
+  overflow:auto;
+  background:#050b13;
+  border:1px solid #1d3047;
+  border-radius:8px;
+  padding:10px;
+  font-family:monospace;
+  font-size:11px;
+  line-height:1.55;
 }
 
-.checkbox{
-    display:flex;
-    align-items:center;
-    gap:8px;
-    padding:11px;
-    background:#080f1e;
-    border:1px solid #293650;
-    border-radius:8px;
-}
-
-.checkbox input{
-    width:auto;
+.logline{
+  margin-bottom:2px;
 }
 
 .small{
-    color:#74819e;
-    font-size:11px;
+  color:#7f94ae;
+  font-size:11px;
 }
 
-.account-select{
-    margin-top:10px;
+.warning{
+  background:#39250c;
+  border:1px solid #79520d;
+  color:#facc15;
+  border-radius:8px;
+  padding:10px;
+  font-size:12px;
+  margin-top:10px;
 }
 
-.hidden{
-    display:none;
+.account-info{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:10px;
+}
+
+.account-chip{
+  padding:6px 9px;
+  background:#142338;
+  border-radius:6px;
+  font-size:11px;
+}
+
+.signal{
+  font-weight:bold;
+}
+
+.empty{
+  color:#657993;
+  text-align:center;
+  padding:30px;
+}
+
+@media(max-width:700px){
+  .container{
+    padding:10px;
+  }
+
+  h1{
+    font-size:21px;
+  }
+
+  button{
+    width:100%;
+    margin:3px 0;
+  }
 }
 </style>
 </head>
 
-
 <body>
-
-
-<header>
-
-<h1>Deriv Even/Odd Multi-Market Bot</h1>
-
-<div class="sub">
-    Current Deriv API • Live balance • Multi-market digit analysis • DIGITEVEN / DIGITODD
-</div>
-
-</header>
-
 
 <div class="container">
 
+  <h1>Deriv Even/Odd Multi-Market Bot</h1>
+  <div class="subtitle">
+    Live digit analysis • DEMO/REAL accounts • DIGITEVEN / DIGITODD
+  </div>
 
-<!-- =====================================================
-     CONNECTION
-====================================================== -->
-
-<div class="panel">
-
-<h3>Deriv Connection</h3>
-
-<div class="grid">
-
-<div class="field">
-
-<label>Deriv Personal Access Token</label>
-
-<input
-    id="token"
-    type="password"
-    autocomplete="off"
-    placeholder="Paste PAT here">
-
-</div>
-
-
-<div class="field">
-
-<label>Current Deriv App ID</label>
-
-<input
-    id="appId"
-    type="text"
-    placeholder="Your current App ID">
-
-</div>
-
-</div>
-
-
-<div class="small" style="margin-top:8px">
-
-Do NOT use the old legacy App ID such as 1089.
-Use the App ID associated with your current Deriv application.
-
-</div>
-
-
-<br>
-
-
-<div class="grid">
-
-<button
-    class="connect"
-    onclick="connectDeriv()">
-
-CONNECT LIVE ACCOUNT
-
-</button>
-
-
-<button
-    class="start"
-    onclick="startBot()">
-
-START LIVE BOT
-
-</button>
-
-
-<button
-    class="stop"
-    onclick="stopBot()">
-
-STOP BOT
-
-</button>
-
-
-<button
-    class="reset"
-    onclick="resetSession()">
-
-RESET TRADE SESSION
-
-</button>
-
-
-<button
-    class="disconnect"
-    onclick="disconnectAll()">
-
-DISCONNECT
-
-</button>
-
-</div>
-
-
-<div class="status">
-
-<span
-    id="connectionBadge"
-    class="badge red">
-
-● DISCONNECTED
-
-</span>
-
-
-<span
-    id="botBadge"
-    class="badge red">
-
-BOT STOPPED
-
-</span>
-
-
-<span
-    id="modeBadge"
-    class="badge orange">
-
-LIVE TRADING
-
-</span>
-
-</div>
-
-
-<div class="warning">
-
-⚠ LIVE MODE IS ENABLED.
-The bot can place real DIGITEVEN / DIGITODD contracts.
-Never enter an API token you do not intend to use for trading.
-
-</div>
-
-
-</div>
-
-
-<!-- =====================================================
-     ACCOUNT
-====================================================== -->
-
-<div class="panel">
-
-<h3>Options Account</h3>
-
-<div class="field">
-
-<label>Account</label>
-
-<select
-    id="accountSelect"
-    class="account-select">
-
-<option>
-Connect first
-</option>
-
-</select>
-
-</div>
-
-<br>
-
-<div class="grid">
-
-<div class="stat">
-
-<div class="stat-title">
-ACCOUNT ID
-</div>
-
-<div
-    id="accountId"
-    class="stat-value">
-
---
-
-</div>
-
-</div>
-
-
-<div class="stat">
-
-<div class="stat-title">
-ACCOUNT TYPE
-</div>
-
-<div
-    id="accountType"
-    class="stat-value">
-
---
-
-</div>
-
-</div>
-
-
-<div class="stat">
-
-<div class="stat-title">
-CURRENCY
-</div>
-
-<div
-    id="currency"
-    class="stat-value">
-
---
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-
-<!-- =====================================================
-     SETTINGS
-====================================================== -->
-
-<div class="panel">
-
-<h3>Trading Settings</h3>
-
-
-<div class="grid">
-
-
-<div class="field">
-
-<label>Stake</label>
-
-<input
-    id="stake"
-    type="number"
-    min="0.35"
-    step="0.01"
-    value="1">
-
-</div>
-
-
-<div class="field">
-
-<label>History Ticks</label>
-
-<input
-    id="sampleSize"
-    type="number"
-    min="20"
-    max="500"
-    value="100">
-
-</div>
-
-
-<div class="field">
-
-<label>Minimum Confidence %</label>
-
-<input
-    id="minConfidence"
-    type="number"
-    min="50"
-    max="99"
-    value="60">
-
-</div>
-
-
-<div class="field">
-
-<label>Minimum Payout %</label>
-
-<input
-    id="minPayout"
-    type="number"
-    min="0"
-    max="100"
-    value="90">
-
-</div>
-
-
-<div class="field">
-
-<label>Maximum Trades</label>
-
-<input
-    id="maxTrades"
-    type="number"
-    min="1"
-    value="20">
-
-</div>
-
-
-<div class="field">
-
-<label>Maximum Session Loss</label>
-
-<input
-    id="maxLoss"
-    type="number"
-    min="0"
-    step="0.01"
-    value="20">
-
-</div>
-
-
-<div class="field">
-
-<label>Cooldown Seconds</label>
-
-<input
-    id="cooldown"
-    type="number"
-    min="0"
-    value="10">
-
-</div>
-
-
-<div class="field">
-
-<label>Markets To Scan</label>
-
-<input
-    id="marketLimit"
-    type="number"
-    min="1"
-    max="100"
-    value="20">
-
-</div>
-
-</div>
-
-
-<br>
-
-
-<div class="grid">
-
-<label class="checkbox">
-
-<input
-    id="allowEven"
-    type="checkbox"
-    checked>
-
-ALLOW EVEN
-
-</label>
-
-
-<label class="checkbox">
-
-<input
-    id="allowOdd"
-    type="checkbox"
-    checked>
-
-ALLOW ODD
-
-</label>
-
-</div>
-
-
-</div>
-
-
-<!-- =====================================================
-     LIVE ACCOUNT STATS
-====================================================== -->
-
-<div class="panel">
-
-<h3>Live Account / Trade Session</h3>
-
-
-<div class="stats">
-
-
-<div class="stat">
-
-<div class="stat-title">
-LIVE BALANCE
-</div>
-
-<div
-    id="balance"
-    class="stat-value">
-
---
-
-</div>
-
-</div>
-
-
-<div class="stat">
-
-<div class="stat-title">
-SESSION START
-</div>
-
-<div
-    id="startBalance"
-    class="stat-value">
-
---
-
-</div>
-
-</div>
-
-
-<div class="stat">
-
-<div class="stat-title">
-SESSION P&L
-</div>
-
-<div
-    id="sessionPnL"
-    class="stat-value">
-
-0.00
-
-</div>
-
-</div>
-
-
-<div class="stat">
-
-<div class="stat-title">
-TRADES
-</div>
-
-<div
-    id="tradeCount"
-    class="stat-value">
-
-0
-
-</div>
-
-</div>
-
-
-<div class="stat">
-
-<div class="stat-title">
-WINS
-</div>
-
-<div
-    id="wins"
-    class="stat-value good">
-
-0
-
-</div>
-
-</div>
-
-
-<div class="stat">
-
-<div class="stat-title">
-LOSSES
-</div>
-
-<div
-    id="losses"
-    class="stat-value bad">
-
-0
-
-</div>
-
-</div>
-
-
-<div class="stat">
-
-<div class="stat-title">
-WIN RATE
-</div>
-
-<div
-    id="winRate"
-    class="stat-value">
-
-0%
-
-</div>
-
-</div>
-
-
-</div>
-
-</div>
-
-
-<!-- =====================================================
-     MARKET SCANNER
-====================================================== -->
-
-<div class="panel">
-
-<h3>Live Market Scanner</h3>
-
-<div class="table-wrap">
-
-<table>
-
-<thead>
-
-<tr>
-
-<th>
-Market
-</th>
-
-<th>
-Name
-</th>
-
-<th>
-Ticks
-</th>
-
-<th>
-Even
-</th>
-
-<th>
-Odd
-</th>
-
-<th>
-Last
-</th>
-
-<th>
-E Streak
-</th>
-
-<th>
-O Streak
-</th>
-
-<th>
-Signal
-</th>
-
-<th>
-Confidence
-</th>
-
-<th>
-Status
-</th>
-
-</tr>
-
-</thead>
-
-<tbody
-    id="marketTable">
-
-</tbody>
-
-</table>
-
-</div>
-
-</div>
-
-
-<!-- =====================================================
-     TRADE HISTORY
-====================================================== -->
-
-<div class="panel">
-
-<h3>Trade History</h3>
-
-<div class="table-wrap">
-
-<table>
-
-<thead>
-
-<tr>
-
-<th>
-Time
-</th>
-
-<th>
-Market
-</th>
-
-<th>
-Contract
-</th>
-
-<th>
-Stake
-</th>
-
-<th>
-Payout
-</th>
-
-<th>
-Result
-</th>
-
-<th>
-P&L
-</th>
-
-<th>
-Mode
-</th>
-
-</tr>
-
-</thead>
-
-
-<tbody
-    id="tradeTable">
-
-</tbody>
-
-</table>
-
-</div>
-
-</div>
-
-
-<!-- =====================================================
-     LOG
-====================================================== -->
-
-<div class="panel">
-
-<h3>Bot Log</h3>
-
-<div
-    id="log"
-    class="log">
-
-</div>
-
-</div>
-
+  <!-- CONNECTION -->
+  <div class="card">
+
+    <h2>1. Deriv Connection</h2>
+
+    <div class="grid">
+
+      <div>
+        <label>Personal Access Token</label>
+        <input
+          id="pat"
+          type="password"
+          placeholder="Paste your Deriv PAT"
+        >
+      </div>
+
+      <div>
+        <label>Deriv App ID</label>
+        <input
+          id="appId"
+          placeholder="Your Deriv App ID"
+        >
+      </div>
+
+      <div>
+        <label>Trading Account</label>
+        <select id="accountSelect">
+          <option value="">Connect first...</option>
+        </select>
+      </div>
+
+    </div>
+
+    <div style="margin-top:12px">
+
+      <button onclick="connectDeriv()">
+        CONNECT DERIV
+      </button>
+
+      <button
+        class="secondary"
+        onclick="connectSelectedAccount()"
+      >
+        CONNECT SELECTED ACCOUNT
+      </button>
+
+      <button
+        class="warn"
+        onclick="disconnect()"
+      >
+        DISCONNECT
+      </button>
+
+    </div>
+
+    <div class="account-info">
+
+      <div class="account-chip">
+        Connection:
+        <span id="connectionText">Disconnected</span>
+      </div>
+
+      <div class="account-chip">
+        Account:
+        <span id="accountText">None</span>
+      </div>
+
+      <div class="account-chip">
+        Type:
+        <span id="accountTypeText">None</span>
+      </div>
+
+      <div class="account-chip">
+        Currency:
+        <span id="currencyText">USD</span>
+      </div>
+
+      <div class="status">
+        <span id="connectionDot" class="dot"></span>
+        <span id="statusText">Offline</span>
+      </div>
+
+    </div>
+
+    <div class="warning">
+      DEMO is selected by default when available. REAL trading uses real money.
+      Do not select REAL unless you intentionally want the bot to place live trades.
+    </div>
+
+  </div>
+
+
+  <!-- BOT SETTINGS -->
+  <div class="card">
+
+    <h2>2. Bot Settings</h2>
+
+    <div class="grid">
+
+      <div>
+        <label>Stake per Trade</label>
+        <input
+          id="stake"
+          type="number"
+          min="0.01"
+          step="0.01"
+          value="1"
+        >
+      </div>
+
+      <div>
+        <label>History Ticks</label>
+        <input
+          id="historyTicks"
+          type="number"
+          min="20"
+          max="1000"
+          value="100"
+        >
+      </div>
+
+      <div>
+        <label>Minimum Confidence %</label>
+        <input
+          id="minConfidence"
+          type="number"
+          min="50"
+          max="100"
+          step="1"
+          value="60"
+        >
+      </div>
+
+      <div>
+        <label>Minimum Payout %</label>
+        <input
+          id="minPayout"
+          type="number"
+          min="0"
+          max="1000"
+          step="1"
+          value="0"
+        >
+      </div>
+
+      <div>
+        <label>Maximum Trades / Session</label>
+        <input
+          id="maxTrades"
+          type="number"
+          min="1"
+          value="20"
+        >
+      </div>
+
+      <div>
+        <label>Maximum Session Loss</label>
+        <input
+          id="maxLoss"
+          type="number"
+          min="0"
+          step="0.01"
+          value="10"
+        >
+      </div>
+
+      <div>
+        <label>Cooldown Seconds</label>
+        <input
+          id="cooldown"
+          type="number"
+          min="0"
+          value="5"
+        >
+      </div>
+
+      <div>
+        <label>Markets to Scan</label>
+        <input
+          id="maxMarkets"
+          type="number"
+          min="0"
+          value="0"
+          placeholder="0 = all"
+        >
+      </div>
+
+      <div>
+        <label>Contract</label>
+        <select id="contractMode">
+          <option value="both">Even + Odd</option>
+          <option value="even">Even only</option>
+          <option value="odd">Odd only</option>
+        </select>
+      </div>
+
+      <div>
+        <label>Analysis Mode</label>
+        <select id="analysisMode">
+          <option value="frequency">Frequency + streak</option>
+          <option value="frequencyOnly">Frequency only</option>
+          <option value="streak">Streak focused</option>
+        </select>
+      </div>
+
+    </div>
+
+    <div style="margin-top:12px">
+
+      <button
+        class="start"
+        onclick="startTrading()"
+      >
+        START BOT
+      </button>
+
+      <button
+        class="stop"
+        onclick="stopTrading()"
+      >
+        STOP BOT
+      </button>
+
+      <button
+        class="warn"
+        onclick="resetTradeSession()"
+      >
+        RESET TRADE SESSION
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- STATS -->
+  <div class="card">
+
+    <h2>3. Session Statistics</h2>
+
+    <div class="stats">
+
+      <div class="stat">
+        <div class="stat-title">BALANCE</div>
+        <div class="stat-value" id="balance">$0.00</div>
+      </div>
+
+      <div class="stat">
+        <div class="stat-title">START BALANCE</div>
+        <div class="stat-value" id="startBalance">$0.00</div>
+      </div>
+
+      <div class="stat">
+        <div class="stat-title">SESSION P/L</div>
+        <div class="stat-value" id="sessionPL">$0.00</div>
+      </div>
+
+      <div class="stat">
+        <div class="stat-title">TRADES</div>
+        <div class="stat-value" id="tradeCount">0</div>
+      </div>
+
+      <div class="stat">
+        <div class="stat-title">WINS</div>
+        <div class="stat-value green-text" id="wins">0</div>
+      </div>
+
+      <div class="stat">
+        <div class="stat-title">LOSSES</div>
+        <div class="stat-value red-text" id="losses">0</div>
+      </div>
+
+      <div class="stat">
+        <div class="stat-title">WIN RATE</div>
+        <div class="stat-value" id="winRate">0%</div>
+      </div>
+
+      <div class="stat">
+        <div class="stat-title">BOT</div>
+        <div class="stat-value" id="botStatus">STOPPED</div>
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- MARKET SCANNER -->
+  <div class="card">
+
+    <h2>4. Live Market Scanner</h2>
+
+    <div class="small" style="margin-bottom:10px">
+      The scanner only marks markets that actually expose DIGITEVEN/DIGITODD contracts.
+    </div>
+
+    <div class="table-wrap">
+
+      <table>
+
+        <thead>
+
+          <tr>
+            <th>Market</th>
+            <th>Price</th>
+            <th>Last Digit</th>
+            <th>Even %</th>
+            <th>Odd %</th>
+            <th>Even Streak</th>
+            <th>Odd Streak</th>
+            <th>Signal</th>
+            <th>Confidence</th>
+            <th>Eligible</th>
+          </tr>
+
+        </thead>
+
+        <tbody id="marketTable">
+
+          <tr>
+            <td colspan="10" class="empty">
+              No markets loaded yet.
+            </td>
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+
+  <!-- TRADE HISTORY -->
+  <div class="card">
+
+    <h2>5. Trade History</h2>
+
+    <div class="table-wrap">
+
+      <table>
+
+        <thead>
+
+          <tr>
+            <th>Time</th>
+            <th>Market</th>
+            <th>Contract</th>
+            <th>Stake</th>
+            <th>Confidence</th>
+            <th>Result</th>
+            <th>P/L</th>
+            <th>Contract ID</th>
+          </tr>
+
+        </thead>
+
+        <tbody id="tradeTable">
+
+          <tr>
+            <td colspan="8" class="empty">
+              No trades yet.
+            </td>
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+
+  <!-- LOG -->
+  <div class="card">
+
+    <h2>6. Bot Log</h2>
+
+    <div id="log" class="log"></div>
+
+  </div>
 
 </div>
 
 
 <script>
 
-/*
-============================================================
-DERIV CURRENT OPTIONS API
-EVEN / ODD MULTI-MARKET BOT
-============================================================
+/* =========================================================
+   DERIV EVEN/ODD BOT
+   CURRENT OPTIONS API
+========================================================= */
 
-Authentication:
-
-PAT
- ↓
-GET /trading/v1/options/accounts
- ↓
-choose REAL account
- ↓
-POST /trading/v1/options/accounts/{accountId}/otp
- ↓
-WebSocket URL returned by Deriv
- ↓
-authenticated real WebSocket
-
-============================================================
-*/
-
-
-const API_BASE =
-    "https://api.derivws.com";
-
+const API_BASE = "https://api.derivws.com";
 
 let restToken = "";
-
 let appId = "";
 
 let ws = null;
-
 let wsConnected = false;
-
 let authorized = false;
+
+let accounts = [];
+let selectedAccount = null;
+
+let currency = "USD";
+let balance = 0;
+let startingBalance = null;
 
 let botRunning = false;
 
-let selectedAccount = null;
+let reqCounter = 1000;
 
-let accounts = [];
+let markets = new Map();
 
-let currency = "USD";
+let tradeHistory = [];
 
-let balance = 0;
-
-let startingBalance = null;
-
-let sessionPnL = 0;
-
-let totalTrades = 0;
-
-let wins = 0;
-
-let losses = 0;
+let activeTrades = new Map();
 
 let lastTradeTime = 0;
 
-let firstTradeConfirmed = false;
+let scanningContracts = false;
 
-let requestCounter = 1000;
-
-let markets = {};
-
-let tickSubscriptions = {};
-
-let pendingProposals = {};
-
-let openContracts = {};
-
-let pendingHistory = {};
-
-let activeMarketRequests = 0;
+let reconnecting = false;
 
 
-/*
-============================================================
-REQUEST ID
-============================================================
-*/
+/* =========================================================
+   BASIC HELPERS
+========================================================= */
+
+function $(id){
+  return document.getElementById(id);
+}
 
 function reqId(){
-
-    requestCounter++;
-
-    return requestCounter;
+  reqCounter++;
+  return reqCounter;
 }
 
+function num(value, fallback=0){
+  const n = Number(value);
+  return Number.isFinite(n) ? n : fallback;
+}
 
-/*
-============================================================
-LOG
-============================================================
-*/
+function sleep(ms){
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function money(value){
+  return `${currency} ${num(value).toFixed(2)}`;
+}
+
+function nowTime(){
+  return new Date().toLocaleTimeString();
+}
 
 function log(message){
+  const box = $("log");
 
-    const box =
-        document.getElementById("log");
+  const line = document.createElement("div");
+  line.className = "logline";
+  line.textContent = `[${nowTime()}] ${message}`;
 
-    const time =
-        new Date()
-            .toLocaleTimeString();
+  box.appendChild(line);
 
-    box.textContent +=
-        `[${time}] ${message}\n`;
+  box.scrollTop = box.scrollHeight;
 
-    box.scrollTop =
-        box.scrollHeight;
+  while(box.children.length > 500){
+    box.removeChild(box.firstChild);
+  }
+}
 
+function setStatus(text, type="red"){
+  $("statusText").textContent = text;
+
+  const dot = $("connectionDot");
+
+  dot.className = "dot";
+
+  if(type === "green"){
+    dot.classList.add("green");
+  }
+
+  if(type === "yellow"){
+    dot.classList.add("yellow");
+  }
+}
+
+function setBotStatus(text){
+  $("botStatus").textContent = text;
+}
+
+function send(data){
+  if(!ws || ws.readyState !== WebSocket.OPEN){
+    log("Cannot send: WebSocket is not connected.");
+    return false;
+  }
+
+  try{
+    ws.send(JSON.stringify(data));
+    return true;
+  }catch(error){
+    log("WebSocket send error: " + error.message);
+    return false;
+  }
 }
 
 
-/*
-============================================================
-ESCAPE HTML
-============================================================
-*/
-
-function esc(value){
-
-    return String(value)
-        .replaceAll("&","&amp;")
-        .replaceAll("<","&lt;")
-        .replaceAll(">","&gt;")
-        .replaceAll('"',"&quot;")
-        .replaceAll("'","&#039;");
-
-}
-
-
-/*
-============================================================
-UI STATUS
-============================================================
-*/
-
-function connectionStatus(online){
-
-    const el =
-        document.getElementById(
-            "connectionBadge"
-        );
-
-    if(online){
-
-        el.textContent =
-            "● CONNECTED";
-
-        el.className =
-            "badge green";
-
-    }else{
-
-        el.textContent =
-            "● DISCONNECTED";
-
-        el.className =
-            "badge red";
-
-    }
-
-}
-
-
-function botStatus(running){
-
-    const el =
-        document.getElementById(
-            "botBadge"
-        );
-
-    if(running){
-
-        el.textContent =
-            "BOT RUNNING";
-
-        el.className =
-            "badge green";
-
-    }else{
-
-        el.textContent =
-            "BOT STOPPED";
-
-        el.className =
-            "badge red";
-
-    }
-
-}
-
-
-/*
-============================================================
-SETTINGS
-============================================================
-*/
-
-function getSettings(){
-
-    return {
-
-        stake:
-            Number(
-                document.getElementById(
-                    "stake"
-                ).value
-            ),
-
-        sample:
-            Number(
-                document.getElementById(
-                    "sampleSize"
-                ).value
-            ),
-
-        confidence:
-            Number(
-                document.getElementById(
-                    "minConfidence"
-                ).value
-            ),
-
-        payout:
-            Number(
-                document.getElementById(
-                    "minPayout"
-                ).value
-            ),
-
-        maxTrades:
-            Number(
-                document.getElementById(
-                    "maxTrades"
-                ).value
-            ),
-
-        maxLoss:
-            Number(
-                document.getElementById(
-                    "maxLoss"
-                ).value
-            ),
-
-        cooldown:
-            Number(
-                document.getElementById(
-                    "cooldown"
-                ).value
-            ),
-
-        marketLimit:
-            Number(
-                document.getElementById(
-                    "marketLimit"
-                ).value
-            ),
-
-        even:
-            document.getElementById(
-                "allowEven"
-            ).checked,
-
-        odd:
-            document.getElementById(
-                "allowOdd"
-            ).checked
-
-    };
-
-}
-
-
-/*
-============================================================
-REST HEADERS
-============================================================
-*/
+/* =========================================================
+   REST HEADERS
+========================================================= */
 
 function restHeaders(){
 
-    const headers = {
+  const headers = {
+    "Authorization": `Bearer ${restToken}`,
+    "Content-Type": "application/json"
+  };
 
-        "Authorization":
-            `Bearer ${restToken}`,
+  if(appId){
+    headers["Deriv-App-ID"] = appId;
+  }
 
-        "Content-Type":
-            "application/json"
-
-    };
-
-
-    /*
-    PAT authentication requires Deriv-App-ID.
-    */
-
-    if(appId){
-
-        headers[
-            "Deriv-App-ID"
-        ] = appId;
-
-    }
-
-
-    return headers;
-
+  return headers;
 }
 
 
-/*
-============================================================
-CONNECT DERIV
-============================================================
-*/
+/* =========================================================
+   MAIN CONNECT
+========================================================= */
 
 async function connectDeriv(){
 
-    if(ws){
+  if(botRunning){
+    stopTrading();
+  }
 
-        try{
+  restToken = $("pat").value.trim();
+  appId = $("appId").value.trim();
 
-            ws.close();
+  if(!restToken){
+    alert("Enter your Deriv Personal Access Token.");
+    return;
+  }
 
-        }catch(e){}
+  if(!appId){
+    alert("Enter your Deriv App ID.");
+    return;
+  }
 
-        ws = null;
+  log("Connecting through current Deriv REST API...");
 
+  setStatus("Connecting...", "yellow");
+
+  try{
+
+    await getAccounts();
+
+    if(!accounts.length){
+      throw new Error(
+        "No Options trading accounts were returned."
+      );
     }
 
+    populateAccounts();
 
-    restToken =
-        document.getElementById(
-            "token"
-        ).value.trim();
+    /*
+      Prefer DEMO automatically.
+    */
+    const demo =
+      accounts.find(a =>
+        String(a.account_type || "").toLowerCase() === "demo"
+      );
 
+    selectedAccount = demo || accounts[0];
 
-    appId =
-        document.getElementById(
-            "appId"
-        ).value.trim();
+    $("accountSelect").value =
+      selectedAccount.account_id;
 
-
-    if(!restToken){
-
-        alert(
-            "Enter your Deriv Personal Access Token."
-        );
-
-        return;
-
-    }
-
-
-    if(!appId){
-
-        alert(
-            "Enter your current Deriv App ID."
-        );
-
-        return;
-
-    }
-
+    updateAccountUI();
 
     log(
-        "Connecting through current Deriv REST API..."
+      `${selectedAccount.account_type === "demo" ? "Demo" : "Real"} account selected: ${selectedAccount.account_id}`
     );
 
+    await connectSelectedAccount();
 
-    try{
+  }catch(error){
 
-        await getAccounts();
+    console.error(error);
 
-    }catch(error){
+    log("CONNECTION ERROR: " + error.message);
 
-        log(
-            "CONNECTION FAILED: " +
-            error.message
-        );
+    setStatus("Connection failed", "red");
 
-    }
+    alert(error.message);
+
+  }
 
 }
 
 
-/*
-============================================================
-GET ACCOUNTS
-============================================================
-*/
+/* =========================================================
+   GET ACCOUNTS
+========================================================= */
 
 async function getAccounts(){
 
-    const response =
-        await fetch(
-            `${API_BASE}/trading/v1/options/accounts`,
-            {
+  log("Requesting all Options accounts...");
 
-                method:"GET",
+  const response = await fetch(
+    `${API_BASE}/trading/v1/options/accounts`,
+    {
+      method:"GET",
+      headers:restHeaders()
+    }
+  );
 
-                headers:
-                    restHeaders()
+  const json = await response.json();
 
-            }
-        );
+  if(!response.ok){
+
+    const message =
+      json?.errors?.[0]?.message ||
+      json?.error?.message ||
+      `HTTP ${response.status}`;
+
+    throw new Error(
+      `Accounts request failed: ${message}`
+    );
+  }
+
+  let data = json.data;
+
+  /*
+    Current API can return an array or an object
+    depending on endpoint response.
+  */
+
+  if(Array.isArray(data)){
+    accounts = data;
+  }else if(data && Array.isArray(data.accounts)){
+    accounts = data.accounts;
+  }else if(data){
+    accounts = [data];
+  }else{
+    accounts = [];
+  }
+
+  /*
+    Keep only usable active accounts where possible.
+  */
+
+  accounts = accounts.filter(account => {
+
+    if(!account) return false;
+
+    const id =
+      account.account_id ||
+      account.id;
+
+    return !!id;
+
+  });
+
+  /*
+    Demo first.
+  */
+
+  accounts.sort((a,b) => {
+
+    const ad =
+      String(a.account_type || "").toLowerCase() === "demo";
+
+    const bd =
+      String(b.account_type || "").toLowerCase() === "demo";
+
+    return Number(bd) - Number(ad);
+
+  });
+
+  log(`Found ${accounts.length} Options account(s).`);
+
+  accounts.forEach(account => {
+
+    log(
+      `Account: ${account.account_id} | ` +
+      `${String(account.account_type || "").toUpperCase()} | ` +
+      `${account.currency || "USD"} | ` +
+      `Balance ${account.balance ?? "?"}`
+    );
+
+  });
+
+}
 
 
-    const data =
-        await response.json();
+/* =========================================================
+   ACCOUNT DROPDOWN
+========================================================= */
 
+function populateAccounts(){
+
+  const select = $("accountSelect");
+
+  select.innerHTML = "";
+
+  if(!accounts.length){
+
+    select.innerHTML =
+      `<option value="">No accounts found</option>`;
+
+    return;
+  }
+
+  accounts.forEach(account => {
+
+    const option = document.createElement("option");
+
+    const type =
+      String(account.account_type || "unknown").toLowerCase();
+
+    const label =
+      type === "demo"
+        ? "DEMO"
+        : type === "real"
+          ? "REAL"
+          : type.toUpperCase();
+
+    option.value =
+      account.account_id;
+
+    option.textContent =
+      `${label} — ${account.account_id} — ${account.currency || "USD"}`;
+
+    select.appendChild(option);
+
+  });
+
+  select.onchange = async function(){
+
+    const id = this.value;
+
+    const account =
+      accounts.find(a => a.account_id === id);
+
+    if(!account){
+      return;
+    }
+
+    selectedAccount = account;
+
+    updateAccountUI();
+
+    if(ws){
+      disconnectWebSocketOnly();
+    }
+
+    await connectSelectedAccount();
+
+  };
+
+}
+
+
+/* =========================================================
+   ACCOUNT UI
+========================================================= */
+
+function updateAccountUI(){
+
+  if(!selectedAccount){
+
+    $("accountText").textContent = "None";
+    $("accountTypeText").textContent = "None";
+
+    return;
+  }
+
+  $("accountText").textContent =
+    selectedAccount.account_id;
+
+  $("accountTypeText").textContent =
+    String(selectedAccount.account_type || "")
+      .toUpperCase();
+
+  currency =
+    selectedAccount.currency || "USD";
+
+  $("currencyText").textContent =
+    currency;
+
+}
+
+
+/* =========================================================
+   CONNECT SELECTED ACCOUNT
+========================================================= */
+
+async function connectSelectedAccount(){
+
+  if(!restToken || !appId){
+
+    log("Enter PAT and App ID first.");
+
+    return;
+
+  }
+
+  const id =
+    $("accountSelect").value ||
+    selectedAccount?.account_id;
+
+  if(!id){
+
+    log("No account selected.");
+
+    return;
+
+  }
+
+  const account =
+    accounts.find(a => a.account_id === id);
+
+  if(!account){
+
+    log("Selected account was not found.");
+
+    return;
+
+  }
+
+  selectedAccount = account;
+
+  updateAccountUI();
+
+  disconnectWebSocketOnly();
+
+  log(
+    `Requesting one-time WebSocket URL for ${String(account.account_type).toUpperCase()} account...`
+  );
+
+  setStatus("Requesting secure WebSocket...", "yellow");
+
+  try{
+
+    const response = await fetch(
+      `${API_BASE}/trading/v1/options/accounts/${encodeURIComponent(id)}/otp`,
+      {
+        method:"POST",
+        headers:restHeaders()
+      }
+    );
+
+    const json = await response.json();
 
     if(!response.ok){
 
-        throw new Error(
-            extractApiError(data)
-        );
+      const message =
+        json?.errors?.[0]?.message ||
+        json?.error?.message ||
+        `HTTP ${response.status}`;
 
+      throw new Error(
+        `OTP request failed: ${message}`
+      );
     }
-
-
-    let list =
-        data.data;
-
-
-    /*
-    API may return array or object depending
-    on endpoint/version.
-    */
-
-    if(!Array.isArray(list)){
-
-        if(list && list.account_id){
-
-            list = [list];
-
-        }else{
-
-            list = [];
-
-        }
-
-    }
-
-
-    accounts =
-        list;
-
-
-    /*
-    Only active real accounts.
-    */
-
-    const realAccounts =
-        accounts.filter(
-            account =>
-                String(
-                    account.account_type
-                ).toLowerCase() ===
-                "real"
-        );
-
-
-    if(realAccounts.length === 0){
-
-        throw new Error(
-            "No real Options account was returned. " +
-            "Make sure your PAT has the trade scope " +
-            "and your account has a real Options account."
-        );
-
-    }
-
-
-    populateAccounts(
-        realAccounts
-    );
-
-
-    /*
-    Automatically select first real account.
-    */
-
-    selectedAccount =
-        realAccounts[0];
-
-
-    updateAccountDetails();
-
-
-    log(
-        "Real account found: " +
-        selectedAccount.account_id
-    );
-
-
-    await getOtpAndConnect();
-
-}
-
-
-/*
-============================================================
-POPULATE ACCOUNTS
-============================================================
-*/
-
-function populateAccounts(list){
-
-    const select =
-        document.getElementById(
-            "accountSelect"
-        );
-
-
-    select.innerHTML = "";
-
-
-    list.forEach(
-        (account,index) => {
-
-            const option =
-                document.createElement(
-                    "option"
-                );
-
-
-            option.value =
-                account.account_id;
-
-
-            option.textContent =
-                `${account.account_id} • ` +
-                `${account.currency || "USD"} • REAL`;
-
-
-            select.appendChild(
-                option
-            );
-
-        }
-    );
-
-
-    select.onchange =
-        function(){
-
-            const id =
-                this.value;
-
-
-            selectedAccount =
-                list.find(
-                    account =>
-                        account.account_id ===
-                        id
-                );
-
-
-            updateAccountDetails();
-
-            /*
-            Reconnect OTP for selected account.
-            */
-
-            if(
-                selectedAccount &&
-                botRunning
-            ){
-
-                stopBot();
-
-            }
-
-        };
-
-}
-
-
-/*
-============================================================
-ACCOUNT DETAILS
-============================================================
-*/
-
-function updateAccountDetails(){
-
-    if(!selectedAccount){
-
-        return;
-
-    }
-
-
-    document.getElementById(
-        "accountId"
-    ).textContent =
-        selectedAccount.account_id ||
-        "--";
-
-
-    document.getElementById(
-        "accountType"
-    ).textContent =
-        (
-            selectedAccount.account_type ||
-            "--"
-        ).toUpperCase();
-
-
-    currency =
-        selectedAccount.currency ||
-        "USD";
-
-
-    document.getElementById(
-        "currency"
-    ).textContent =
-        currency;
-
-
-    if(
-        selectedAccount.balance !== undefined
-    ){
-
-        balance =
-            Number(
-                selectedAccount.balance
-            );
-
-        if(
-            startingBalance === null
-        ){
-
-            startingBalance =
-                balance;
-
-        }
-
-        updateStats();
-
-    }
-
-}
-
-
-/*
-============================================================
-GET OTP
-============================================================
-*/
-
-async function getOtpAndConnect(){
-
-    if(!selectedAccount){
-
-        throw new Error(
-            "No account selected."
-        );
-
-    }
-
-
-    const accountId =
-        encodeURIComponent(
-            selectedAccount.account_id
-        );
-
-
-    log(
-        "Requesting one-time WebSocket URL..."
-    );
-
-
-    const response =
-        await fetch(
-            `${API_BASE}/trading/v1/options/accounts/${accountId}/otp`,
-            {
-
-                method:"POST",
-
-                headers:
-                    restHeaders()
-
-            }
-        );
-
-
-    const data =
-        await response.json();
-
-
-    if(!response.ok){
-
-        throw new Error(
-            extractApiError(data)
-        );
-
-    }
-
 
     const wsUrl =
-        data &&
-        data.data &&
-        data.data.url;
-
+      json?.data?.url ||
+      json?.url;
 
     if(!wsUrl){
 
-        throw new Error(
-            "Deriv did not return a WebSocket URL."
-        );
+      console.log(json);
 
+      throw new Error(
+        "Deriv did not return a WebSocket URL."
+      );
     }
 
+    log("Authenticated WebSocket URL received.");
+
+    connectWebSocket(wsUrl);
+
+  }catch(error){
 
     log(
-        "Authenticated WebSocket URL received."
+      "ACCOUNT CONNECTION ERROR: " +
+      error.message
     );
 
+    setStatus("Account connection failed", "red");
 
-    connectWebSocket(
-        wsUrl
-    );
+  }
 
 }
 
 
-/*
-============================================================
-API ERROR
-============================================================
-*/
-
-function extractApiError(data){
-
-    if(
-        data &&
-        Array.isArray(
-            data.errors
-        ) &&
-        data.errors.length
-    ){
-
-        return data.errors
-            .map(
-                e =>
-                    e.message ||
-                    e.code ||
-                    "API error"
-            )
-            .join(" | ");
-
-    }
-
-
-    if(
-        data &&
-        data.message
-    ){
-
-        return data.message;
-
-    }
-
-
-    return "Unknown Deriv API error.";
-
-}
-
-
-/*
-============================================================
-WEBSOCKET
-============================================================
-*/
+/* =========================================================
+   WEBSOCKET
+========================================================= */
 
 function connectWebSocket(url){
 
+  disconnectWebSocketOnly();
+
+  log("Opening authenticated Deriv WebSocket...");
+
+  try{
+
+    ws = new WebSocket(url);
+
+  }catch(error){
+
+    log("WebSocket creation error: " + error.message);
+
+    return;
+
+  }
+
+  ws.onopen = function(){
+
+    wsConnected = true;
+    authorized = true;
+
+    $("connectionText").textContent =
+      "Connected";
+
+    setStatus(
+      `${String(selectedAccount?.account_type || "").toUpperCase()} connected`,
+      "green"
+    );
+
+    log("✓ CURRENT DERIV WEBSOCKET CONNECTED.");
+
+    requestBalance();
+
+    requestActiveSymbols();
+
+  };
+
+
+  ws.onmessage = function(event){
+
     try{
 
-        ws =
-            new WebSocket(url);
+      const data =
+        JSON.parse(event.data);
+
+      handleMessage(data);
 
     }catch(error){
 
-        log(
-            "WebSocket creation failed: " +
-            error.message
-        );
-
-        return;
+      log(
+        "Message parse error: " +
+        error.message
+      );
 
     }
 
+  };
 
-    ws.onopen =
-        function(){
 
-            wsConnected =
-                true;
+  ws.onerror = function(){
 
-            authorized =
-                true;
+    log("WebSocket error.");
 
-            connectionStatus(true);
+    setStatus("WebSocket error", "red");
 
-            log(
-                "✓ CURRENT DERIV WEBSOCKET CONNECTED."
-            );
+  };
 
 
-            /*
-            Subscribe to balance.
-            */
+  ws.onclose = function(){
 
-            sendWs({
+    wsConnected = false;
+    authorized = false;
 
-                balance:1,
-
-                subscribe:1,
-
-                req_id:reqId()
-
-            });
-
-
-            /*
-            Discover markets.
-            */
-
-            requestActiveSymbols();
-
-        };
-
-
-    ws.onmessage =
-        function(event){
-
-            let data;
-
-            try{
-
-                data =
-                    JSON.parse(
-                        event.data
-                    );
-
-            }catch(error){
-
-                log(
-                    "Invalid WebSocket JSON."
-                );
-
-                return;
-
-            }
-
-
-            handleWsMessage(
-                data
-            );
-
-        };
-
-
-    ws.onerror =
-        function(){
-
-            log(
-                "WebSocket error."
-            );
-
-        };
-
-
-    ws.onclose =
-        function(){
-
-            wsConnected =
-                false;
-
-            authorized =
-                false;
-
-            connectionStatus(false);
-
-            botStatus(false);
-
-            botRunning =
-                false;
-
-            log(
-                "WebSocket disconnected."
-            );
-
-        };
-
-}
-
-
-/*
-============================================================
-SEND WS
-============================================================
-*/
-
-function sendWs(data){
-
-    if(
-        !ws ||
-        ws.readyState !==
-        WebSocket.OPEN
-    ){
-
-        log(
-            "Cannot send: WebSocket not open."
-        );
-
-        return false;
-
-    }
-
-
-    ws.send(
-        JSON.stringify(data)
-    );
-
-    return true;
-
-}
-
-
-/*
-============================================================
-WS ROUTER
-============================================================
-*/
-
-function handleWsMessage(data){
-
-    if(data.error){
-
-        log(
-            "DERIV: " +
-            extractApiError(data)
-        );
-
-        handleApiError(
-            data
-        );
-
-        return;
-
-    }
-
-
-    switch(
-        data.msg_type
-    ){
-
-        case "balance":
-
-            handleBalance(
-                data
-            );
-
-            break;
-
-
-        case "active_symbols":
-
-            handleActiveSymbols(
-                data
-            );
-
-            break;
-
-
-        case "history":
-
-            handleHistory(
-                data
-            );
-
-            break;
-
-
-        case "tick":
-
-            handleTick(
-                data
-            );
-
-            break;
-
-
-        case "proposal":
-
-            handleProposal(
-                data
-            );
-
-            break;
-
-
-        case "buy":
-
-            handleBuy(
-                data
-            );
-
-            break;
-
-
-        case "proposal_open_contract":
-
-            handleOpenContract(
-                data
-            );
-
-            break;
-
-
-        default:
-
-            break;
-
-    }
-
-}
-
-
-/*
-============================================================
-API ERROR HANDLER
-============================================================
-*/
-
-function handleApiError(data){
-
-    const echo =
-        data.echo_req;
-
-
-    if(
-        echo &&
-        echo.req_id &&
-        pendingProposals[
-            echo.req_id
-        ]
-    ){
-
-        const pending =
-            pendingProposals[
-                echo.req_id
-            ];
-
-
-        delete pendingProposals[
-            echo.req_id
-        ];
-
-
-        if(
-            markets[
-                pending.symbol
-            ]
-        ){
-
-            markets[
-                pending.symbol
-            ].pending =
-                false;
-
-        }
-
-    }
-
-}
-
-
-/*
-============================================================
-BALANCE
-============================================================
-*/
-
-function handleBalance(data){
-
-    if(
-        !data.balance
-    ){
-
-        return;
-
-    }
-
-
-    balance =
-        Number(
-            data.balance.balance
-        );
-
-
-    currency =
-        data.balance.currency ||
-        currency;
-
-
-    if(
-        startingBalance === null
-    ){
-
-        startingBalance =
-            balance;
-
-    }
-
-
-    updateStats();
-
-}
-
-
-/*
-============================================================
-ACTIVE SYMBOLS
-============================================================
-*/
-
-function requestActiveSymbols(){
-
-    log(
-        "Requesting all active markets..."
-    );
-
-
-    sendWs({
-
-        active_symbols:"brief",
-
-        product_type:"basic",
-
-        req_id:reqId()
-
-    });
-
-}
-
-
-/*
-============================================================
-HANDLE ACTIVE SYMBOLS
-============================================================
-*/
-
-function handleActiveSymbols(data){
-
-    if(
-        !Array.isArray(
-            data.active_symbols
-        )
-    ){
-
-        log(
-            "No active markets returned."
-        );
-
-        return;
-
-    }
-
-
-    const candidates =
-        data.active_symbols
-            .filter(
-                s =>
-                    s &&
-                    s.underlying_symbol &&
-                    !Number(
-                        s.is_trading_suspended
-                    )
-            );
-
-
-    /*
-    Sort synthetic markets first,
-    then everything else.
-    */
-
-    candidates.sort(
-        (a,b) => {
-
-            const as =
-                a.market ===
-                "synthetic_index"
-                    ? 0
-                    : 1;
-
-            const bs =
-                b.market ===
-                "synthetic_index"
-                    ? 0
-                    : 1;
-
-            return as - bs;
-
-        }
-    );
-
-
-    const limit =
-        getSettings()
-            .marketLimit;
-
-
-    const selected =
-        candidates.slice(
-            0,
-            Math.max(
-                limit,
-                1
-            )
-        );
-
-
-    log(
-        `Loading ${selected.length} markets...`
-    );
-
-
-    selected.forEach(
-        market => {
-
-            const symbol =
-                market.underlying_symbol;
-
-
-            markets[
-                symbol
-            ] = {
-
-                symbol,
-
-                name:
-                    market.underlying_symbol_name ||
-                    symbol,
-
-                market:
-                    market.market ||
-                    "",
-
-                digits:[],
-
-                even:0,
-
-                odd:0,
-
-                evenPct:0,
-
-                oddPct:0,
-
-                lastDigit:null,
-
-                evenStreak:0,
-
-                oddStreak:0,
-
-                signal:null,
-
-                confidence:0,
-
-                historyLoaded:false,
-
-                subscribed:false,
-
-                pending:false,
-
-                tradeLocked:false,
-
-                supported:null,
-
-                lastTickTime:0
-
-            };
-
-        }
-    );
-
-
-    /*
-    First load history for every selected market.
-    */
-
-    Object.keys(markets)
-        .slice(
-            0,
-            limit
-        )
-        .forEach(
-            symbol =>
-                requestHistory(
-                    symbol
-                )
-        );
-
-}
-
-
-/*
-============================================================
-HISTORY
-============================================================
-*/
-
-function requestHistory(symbol){
-
-    if(
-        !markets[symbol]
-    ){
-
-        return;
-
-    }
-
-
-    const id =
-        reqId();
-
-
-    pendingHistory[id] =
-        symbol;
-
-
-    sendWs({
-
-        ticks_history:symbol,
-
-        count:getSettings()
-            .sample,
-
-        end:"latest",
-
-        style:"ticks",
-
-        req_id:id
-
-    });
-
-}
-
-
-/*
-============================================================
-HISTORY HANDLER
-============================================================
-*/
-
-function handleHistory(data){
-
-    const id =
-        data.echo_req &&
-        data.echo_req.req_id;
-
-
-    const symbol =
-        pendingHistory[id];
-
-
-    if(!symbol){
-
-        return;
-
-    }
-
-
-    delete pendingHistory[id];
-
-
-    const market =
-        markets[symbol];
-
-
-    if(!market){
-
-        return;
-
-    }
-
-
-    const prices =
-        data.history &&
-        data.history.prices;
-
-
-    if(
-        !Array.isArray(prices)
-    ){
-
-        log(
-            `${symbol}: no tick history.`
-        );
-
-        return;
-
-    }
-
-
-    market.digits = [];
-
-
-    prices.forEach(
-        price => {
-
-            const digit =
-                extractLastDigit(
-                    price
-                );
-
-
-            if(
-                digit !== null
-            ){
-
-                market.digits.push(
-                    digit
-                );
-
-            }
-
-        }
-    );
-
-
-    recalculate(
-        symbol
-    );
-
-
-    market.historyLoaded =
-        true;
-
-
-    subscribeTicks(
-        symbol
-    );
-
-
-    renderMarkets();
-
-}
-
-
-/*
-============================================================
-LAST DIGIT
-============================================================
-*/
-
-function extractLastDigit(value){
-
-    let text =
-        String(value);
-
-
-    /*
-    Handle ordinary decimal values.
-    */
-
-    if(
-        text.includes(".")
-    ){
-
-        const parts =
-            text.split(".");
-
-
-        const decimals =
-            parts[1] || "";
-
-
-        const clean =
-            decimals.replace(
-                /[^0-9]/g,
-                ""
-            );
-
-
-        if(clean.length){
-
-            return Number(
-                clean[
-                    clean.length - 1
-                ]
-            );
-
-        }
-
-    }
-
-
-    /*
-    Fallback.
-    */
-
-    const clean =
-        text.replace(
-            /[^0-9]/g,
-            ""
-        );
-
-
-    if(!clean){
-
-        return null;
-
-    }
-
-
-    return Number(
-        clean[
-            clean.length - 1
-        ]
-    );
-
-}
-
-
-/*
-============================================================
-TICK SUBSCRIPTION
-============================================================
-*/
-
-function subscribeTicks(symbol){
-
-    if(
-        tickSubscriptions[
-            symbol
-        ]
-    ){
-
-        return;
-
-    }
-
-
-    const ok =
-        sendWs({
-
-            ticks:symbol,
-
-            subscribe:1,
-
-            req_id:reqId()
-
-        });
-
-
-    if(ok){
-
-        tickSubscriptions[
-            symbol
-        ] = true;
-
-
-        markets[
-            symbol
-        ].subscribed =
-            true;
-
-    }
-
-}
-
-
-/*
-============================================================
-TICK HANDLER
-============================================================
-*/
-
-function handleTick(data){
-
-    if(
-        !data.tick
-    ){
-
-        return;
-
-    }
-
-
-    const symbol =
-        data.tick.symbol ||
-        data.tick.underlying_symbol;
-
-
-    if(
-        !markets[symbol]
-    ){
-
-        return;
-
-    }
-
-
-    const digit =
-        extractLastDigit(
-            data.tick.quote
-        );
-
-
-    if(
-        digit === null
-    ){
-
-        return;
-
-    }
-
-
-    const market =
-        markets[symbol];
-
-
-    market.digits.push(
-        digit
-    );
-
-
-    const max =
-        getSettings().sample;
-
-
-    if(
-        market.digits.length >
-        max
-    ){
-
-        market.digits =
-            market.digits.slice(
-                -max
-            );
-
-    }
-
-
-    market.lastTickTime =
-        Date.now();
-
-
-    recalculate(
-        symbol
-    );
-
-
-    renderMarkets();
-
+    $("connectionText").textContent =
+      "Disconnected";
 
     if(botRunning){
 
-        evaluateMarket(
-            symbol
-        );
+      setStatus(
+        "Disconnected — bot stopped",
+        "red"
+      );
 
-    }
+      botRunning = false;
 
-}
-
-
-/*
-============================================================
-RECALCULATE
-============================================================
-*/
-
-function recalculate(symbol){
-
-    const m =
-        markets[symbol];
-
-
-    if(
-        !m ||
-        !m.digits.length
-    ){
-
-        return;
-
-    }
-
-
-    let even = 0;
-
-    let odd = 0;
-
-
-    m.digits.forEach(
-        digit => {
-
-            if(
-                digit % 2 === 0
-            ){
-
-                even++;
-
-            }else{
-
-                odd++;
-
-            }
-
-        }
-    );
-
-
-    const total =
-        even + odd;
-
-
-    m.even =
-        even;
-
-    m.odd =
-        odd;
-
-
-    m.evenPct =
-        total
-            ? even / total * 100
-            : 0;
-
-
-    m.oddPct =
-        total
-            ? odd / total * 100
-            : 0;
-
-
-    m.lastDigit =
-        m.digits[
-            m.digits.length - 1
-        ];
-
-
-    /*
-    EVEN streak
-    */
-
-    let evenStreak = 0;
-
-
-    for(
-        let i =
-            m.digits.length - 1;
-
-        i >= 0;
-
-        i--
-    ){
-
-        if(
-            m.digits[i] % 2 === 0
-        ){
-
-            evenStreak++;
-
-        }else{
-
-            break;
-
-        }
-
-    }
-
-
-    /*
-    ODD streak
-    */
-
-    let oddStreak = 0;
-
-
-    for(
-        let i =
-            m.digits.length - 1;
-
-        i >= 0;
-
-        i--
-    ){
-
-        if(
-            m.digits[i] % 2 !== 0
-        ){
-
-            oddStreak++;
-
-        }else{
-
-            break;
-
-        }
-
-    }
-
-
-    m.evenStreak =
-        evenStreak;
-
-    m.oddStreak =
-        oddStreak;
-
-
-    /*
-    SIGNAL ENGINE
-
-    This does NOT claim to predict the
-    next digit with certainty.
-
-    It simply identifies the side with
-    the stronger measured frequency.
-    */
-
-
-    m.signal = null;
-
-    m.confidence = 0;
-
-
-    const minimumSamples =
-        Math.max(
-            20,
-            Math.floor(
-                getSettings().sample *
-                0.8
-            )
-        );
-
-
-    if(
-        total <
-        minimumSamples
-    ){
-
-        return;
-
-    }
-
-
-    const confidence =
-        getSettings().confidence;
-
-
-    if(
-        m.evenPct >= confidence &&
-        m.evenPct > m.oddPct
-    ){
-
-        m.signal =
-            "EVEN";
-
-        m.confidence =
-            m.evenPct;
-
-    }
-
-
-    else if(
-        m.oddPct >= confidence &&
-        m.oddPct > m.evenPct
-    ){
-
-        m.signal =
-            "ODD";
-
-        m.confidence =
-            m.oddPct;
-
-    }
-
-}
-
-
-/*
-============================================================
-MARKET TABLE
-============================================================
-*/
-
-function renderMarkets(){
-
-    const tbody =
-        document.getElementById(
-            "marketTable"
-        );
-
-
-    tbody.innerHTML = "";
-
-
-    const symbols =
-        Object.keys(markets);
-
-
-    symbols.forEach(
-        symbol => {
-
-            const m =
-                markets[symbol];
-
-
-            const total =
-                m.even +
-                m.odd;
-
-
-            let signalClass =
-                "wait";
-
-
-            if(
-                m.signal === "EVEN"
-            ){
-
-                signalClass =
-                    "even";
-
-            }
-
-
-            if(
-                m.signal === "ODD"
-            ){
-
-                signalClass =
-                    "odd";
-
-            }
-
-
-            let status =
-                "ANALYZING";
-
-
-            if(
-                m.tradeLocked
-            ){
-
-                status =
-                    "TRADE ACTIVE";
-
-            }
-            else if(
-                m.pending
-            ){
-
-                status =
-                    "CHECKING";
-
-            }
-            else if(
-                m.historyLoaded
-            ){
-
-                status =
-                    "READY";
-
-            }
-
-
-            const row =
-                document.createElement(
-                    "tr"
-                );
-
-
-            row.innerHTML = `
-
-<td>
-${esc(symbol)}
-</td>
-
-<td>
-${esc(m.name)}
-</td>
-
-<td>
-${total}
-</td>
-
-<td>
-${m.evenPct.toFixed(1)}%
-</td>
-
-<td>
-${m.oddPct.toFixed(1)}%
-</td>
-
-<td>
-${
-    m.lastDigit === null
-        ? "-"
-        : m.lastDigit
-}
-</td>
-
-<td>
-${m.evenStreak}
-</td>
-
-<td>
-${m.oddStreak}
-</td>
-
-<td class="${signalClass}">
-${
-    m.signal ||
-    "WAIT"
-}
-</td>
-
-<td>
-${
-    m.confidence
-        ? m.confidence.toFixed(1) + "%"
-        : "-"
-}
-</td>
-
-<td>
-${status}
-</td>
-
-`;
-
-
-            tbody.appendChild(
-                row
-            );
-
-        }
-    );
-
-}
-
-
-/*
-============================================================
-EVALUATE MARKET
-============================================================
-*/
-
-function evaluateMarket(symbol){
-
-    if(!botRunning){
-
-        return;
-
-    }
-
-
-    const m =
-        markets[symbol];
-
-
-    if(!m){
-
-        return;
-
-    }
-
-
-    if(
-        !m.historyLoaded
-    ){
-
-        return;
-
-    }
-
-
-    if(
-        m.pending ||
-        m.tradeLocked
-    ){
-
-        return;
-
-    }
-
-
-    /*
-    Only one open trade.
-    */
-
-    if(
-        Object.keys(
-            openContracts
-        ).length > 0
-    ){
-
-        return;
-
-    }
-
-
-    const s =
-        getSettings();
-
-
-    /*
-    Maximum trades.
-    */
-
-    if(
-        totalTrades >=
-        s.maxTrades
-    ){
-
-        log(
-            "Maximum trades reached."
-        );
-
-        stopBot();
-
-        return;
-
-    }
-
-
-    /*
-    Maximum loss.
-    */
-
-    if(
-        sessionPnL <=
-        -Math.abs(
-            s.maxLoss
-        )
-    ){
-
-        log(
-            "Maximum session loss reached."
-        );
-
-        stopBot();
-
-        return;
-
-    }
-
-
-    /*
-    Cooldown.
-    */
-
-    const seconds =
-        (
-            Date.now() -
-            lastTradeTime
-        ) / 1000;
-
-
-    if(
-        seconds <
-        s.cooldown
-    ){
-
-        return;
-
-    }
-
-
-    if(
-        !m.signal
-    ){
-
-        return;
-
-    }
-
-
-    if(
-        m.confidence <
-        s.confidence
-    ){
-
-        return;
-
-    }
-
-
-    if(
-        m.signal === "EVEN" &&
-        !s.even
-    ){
-
-        return;
-
-    }
-
-
-    if(
-        m.signal === "ODD" &&
-        !s.odd
-    ){
-
-        return;
-
-    }
-
-
-    requestProposal(
-        symbol,
-        m.signal
-    );
-
-}
-
-
-/*
-============================================================
-PROPOSAL
-============================================================
-*/
-
-function requestProposal(
-    symbol,
-    signal
-){
-
-    const m =
-        markets[symbol];
-
-
-    if(
-        !m ||
-        m.pending
-    ){
-
-        return;
-
-    }
-
-
-    const s =
-        getSettings();
-
-
-    const contractType =
-        signal === "EVEN"
-            ? "DIGITEVEN"
-            : "DIGITODD";
-
-
-    const id =
-        reqId();
-
-
-    m.pending =
-        true;
-
-
-    pendingProposals[id] = {
-
-        symbol,
-
-        signal,
-
-        contractType,
-
-        created:
-            Date.now()
-
-    };
-
-
-    log(
-        `Checking ${contractType} on ${symbol}...`
-    );
-
-
-    sendWs({
-
-        proposal:1,
-
-        amount:s.stake,
-
-        basis:"stake",
-
-        contract_type:
-            contractType,
-
-        currency:currency,
-
-        duration:1,
-
-        duration_unit:"t",
-
-        underlying_symbol:
-            symbol,
-
-        req_id:id
-
-    });
-
-}
-
-
-/*
-============================================================
-PROPOSAL RESPONSE
-============================================================
-*/
-
-function handleProposal(data){
-
-    const id =
-        data.echo_req &&
-        data.echo_req.req_id;
-
-
-    const pending =
-        pendingProposals[id];
-
-
-    if(!pending){
-
-        return;
-
-    }
-
-
-    delete pendingProposals[id];
-
-
-    const m =
-        markets[
-            pending.symbol
-        ];
-
-
-    if(m){
-
-        m.pending =
-            false;
-
-    }
-
-
-    if(
-        !data.proposal
-    ){
-
-        return;
-
-    }
-
-
-    const p =
-        data.proposal;
-
-
-    const ask =
-        Number(
-            p.ask_price
-        );
-
-
-    const payout =
-        Number(
-            p.payout
-        );
-
-
-    if(
-        !Number.isFinite(ask) ||
-        !Number.isFinite(payout)
-    ){
-
-        log(
-            "Invalid proposal pricing."
-        );
-
-        return;
-
-    }
-
-
-    /*
-    Payout percentage compared
-    with stake.
-    */
-
-    const payoutPercent =
-        ask > 0
-            ? (
-                payout /
-                ask
-            ) * 100
-            : 0;
-
-
-    if(m){
-
-        m.payout =
-            payoutPercent;
-
-    }
-
-
-    log(
-        `${pending.symbol} ` +
-        `${pending.contractType} ` +
-        `payout ${payoutPercent.toFixed(1)}%`
-    );
-
-
-    if(
-        payoutPercent <
-        getSettings().payout
-    ){
-
-        log(
-            "Proposal rejected: payout below minimum."
-        );
-
-        return;
-
-    }
-
-
-    /*
-    FIRST LIVE TRADE CONFIRMATION
-    */
-
-    if(
-        !firstTradeConfirmed
-    ){
-
-        const approved =
-            confirm(
-
-                "REAL LIVE TRADE\n\n" +
-
-                "Market: " +
-                pending.symbol +
-
-                "\nContract: " +
-                pending.contractType +
-
-                "\nStake: " +
-                ask.toFixed(2) +
-                " " +
-                currency +
-
-                "\nPayout: " +
-                payout.toFixed(2) +
-
-                "\n\n" +
-
-                "Place this REAL trade?"
-
-            );
-
-
-        if(!approved){
-
-            log(
-                "First live trade rejected."
-            );
-
-            stopBot();
-
-            return;
-
-        }
-
-
-        firstTradeConfirmed =
-            true;
-
-
-        log(
-            "Live trading confirmed."
-        );
-
-    }
-
-
-    /*
-    BUY
-    */
-
-    if(!p.id){
-
-        log(
-            "Proposal did not contain an ID."
-        );
-
-        return;
-
-    }
-
-
-    const buyId =
-        reqId();
-
-
-    m.tradeLocked =
-        true;
-
-
-    sendWs({
-
-        buy:
-            p.id,
-
-        price:
-            ask,
-
-        req_id:
-            buyId
-
-    });
-
-
-    log(
-        `BUY SENT: ${pending.contractType} ${pending.symbol}`
-    );
-
-}
-
-
-/*
-============================================================
-BUY RESPONSE
-============================================================
-*/
-
-function handleBuy(data){
-
-    if(
-        !data.buy
-    ){
-
-        return;
-
-    }
-
-
-    const b =
-        data.buy;
-
-
-    const contractId =
-        b.contract_id;
-
-
-    if(!contractId){
-
-        log(
-            "Buy response did not contain contract ID."
-        );
-
-        return;
-
-    }
-
-
-    const symbol =
-        b.underlying_symbol ||
-        b.symbol ||
-        "UNKNOWN";
-
-
-    openContracts[
-        contractId
-    ] = {
-
-        id:
-            contractId,
-
-        symbol,
-
-        buyPrice:
-            Number(
-                b.buy_price ||
-                0
-            ),
-
-        payout:
-            Number(
-                b.payout ||
-                0
-            ),
-
-        contractType:
-            b.contract_type ||
-            "DIGIT"
-
-    };
-
-
-    totalTrades++;
-
-
-    lastTradeTime =
-        Date.now();
-
-
-    updateStats();
-
-
-    log(
-        `✓ REAL TRADE OPENED: ${contractId}`
-    );
-
-
-    /*
-    Monitor contract.
-    */
-
-    sendWs({
-
-        proposal_open_contract:1,
-
-        contract_id:
-            contractId,
-
-        subscribe:1,
-
-        req_id:reqId()
-
-    });
-
-
-    renderMarkets();
-
-}
-
-
-/*
-============================================================
-OPEN CONTRACT
-============================================================
-*/
-
-function handleOpenContract(data){
-
-    const c =
-        data.proposal_open_contract;
-
-
-    if(!c){
-
-        return;
-
-    }
-
-
-    const id =
-        c.contract_id;
-
-
-    if(
-        !openContracts[id]
-    ){
-
-        return;
-
-    }
-
-
-    /*
-    Balance update.
-    */
-
-    if(
-        c.balance_after !==
-        undefined
-    ){
-
-        balance =
-            Number(
-                c.balance_after
-            );
-
-        updateStats();
-
-    }
-
-
-    /*
-    Contract still active.
-    */
-
-    if(
-        !isContractFinished(c)
-    ){
-
-        return;
-
-    }
-
-
-    settleContract(c);
-
-}
-
-
-/*
-============================================================
-CONTRACT FINISHED?
-============================================================
-*/
-
-function isContractFinished(c){
-
-    if(
-        c.is_sold === 1 ||
-        c.is_sold === true
-    ){
-
-        return true;
-
-    }
-
-
-    if(
-        c.is_expired === 1 ||
-        c.is_expired === true
-    ){
-
-        return true;
-
-    }
-
-
-    if(
-        c.status === "won" ||
-        c.status === "lost"
-    ){
-
-        return true;
-
-    }
-
-
-    return false;
-
-}
-
-
-/*
-============================================================
-SETTLE
-============================================================
-*/
-
-function settleContract(c){
-
-    const id =
-        c.contract_id;
-
-
-    const trade =
-        openContracts[id];
-
-
-    if(!trade){
-
-        return;
-
-    }
-
-
-    delete openContracts[id];
-
-
-    const profit =
-        Number(
-            c.profit_loss !==
-            undefined
-                ? c.profit_loss
-                : 0
-        );
-
-
-    const won =
-        c.status === "won" ||
-        profit > 0;
-
-
-    if(won){
-
-        wins++;
+      setBotStatus("STOPPED");
 
     }else{
 
-        losses++;
+      setStatus(
+        "Disconnected",
+        "red"
+      );
 
     }
 
+    log("WebSocket closed.");
 
-    sessionPnL +=
-        profit;
+  };
 
+}
+
+
+/* =========================================================
+   DISCONNECT
+========================================================= */
+
+function disconnectWebSocketOnly(){
+
+  if(ws){
+
+    try{
+      ws.close();
+    }catch(e){}
+
+  }
+
+  ws = null;
+
+  wsConnected = false;
+  authorized = false;
+
+}
+
+function disconnect(){
+
+  stopTrading();
+
+  disconnectWebSocketOnly();
+
+  accounts = [];
+  selectedAccount = null;
+
+  markets.clear();
+
+  $("accountSelect").innerHTML =
+    `<option value="">Connect first...</option>`;
+
+  $("accountText").textContent =
+    "None";
+
+  $("accountTypeText").textContent =
+    "None";
+
+  $("connectionText").textContent =
+    "Disconnected";
+
+  setStatus("Offline","red");
+
+  log("Disconnected.");
+
+}
+
+
+/* =========================================================
+   HANDLE MESSAGES
+========================================================= */
+
+function handleMessage(data){
+
+  if(data.error){
+
+    const message =
+      data.error.message ||
+      data.error.code ||
+      "Unknown Deriv API error";
+
+    log(
+      `DERIV ERROR: ${message}`
+    );
+
+    /*
+      Do not kill the entire scanner because
+      one request failed.
+    */
 
     if(
-        markets[
-            trade.symbol
-        ]
+      data.echo_req?.active_symbols !== undefined
     ){
 
-        markets[
-            trade.symbol
-        ].tradeLocked =
-            false;
+      log(
+        "Active market request failed."
+      );
 
     }
 
+    return;
+  }
 
-    updateStats();
+
+  switch(data.msg_type){
+
+    case "balance":
+      handleBalance(data);
+      break;
+
+    case "active_symbols":
+      handleActiveSymbols(data);
+      break;
+
+    case "contracts_for":
+      handleContractsFor(data);
+      break;
+
+    case "history":
+      handleHistory(data);
+      break;
+
+    case "tick":
+      handleTick(data);
+      break;
+
+    case "proposal":
+      handleProposal(data);
+      break;
+
+    case "buy":
+      handleBuy(data);
+      break;
+
+    case "proposal_open_contract":
+      handleOpenContract(data);
+      break;
+
+    default:
+      break;
+
+  }
+
+}
 
 
-    addTrade({
+/* =========================================================
+   BALANCE
+========================================================= */
 
-        time:
-            new Date()
-                .toLocaleTimeString(),
+function requestBalance(){
 
-        market:
-            trade.symbol,
+  send({
+    balance:1,
+    subscribe:1,
+    req_id:reqId()
+  });
 
-        contract:
-            trade.contractType,
+}
 
-        stake:
-            trade.buyPrice,
+function handleBalance(data){
 
-        payout:
-            trade.payout,
+  const b =
+    data.balance;
 
-        result:
-            won
-                ? "WIN"
-                : "LOSS",
+  if(!b){
+    return;
+  }
 
-        pnl:
-            profit,
+  balance =
+    num(b.balance, balance);
 
-        mode:
-            "LIVE"
+  currency =
+    b.currency ||
+    currency;
+
+  $("balance").textContent =
+    money(balance);
+
+  $("currencyText").textContent =
+    currency;
+
+  if(startingBalance === null){
+
+    startingBalance =
+      balance;
+
+    $("startBalance").textContent =
+      money(startingBalance);
+
+  }
+
+  updateSessionPL();
+
+}
+
+
+/* =========================================================
+   ACTIVE SYMBOLS
+========================================================= */
+
+function requestActiveSymbols(){
+
+  log("Requesting all active markets...");
+
+  /*
+    IMPORTANT:
+    Current Deriv API removed product_type.
+  */
+
+  send({
+    active_symbols:"brief",
+    req_id:reqId()
+  });
+
+}
+
+function handleActiveSymbols(data){
+
+  const list =
+    Array.isArray(data.active_symbols)
+      ? data.active_symbols
+      : [];
+
+  log(
+    `Received ${list.length} active market(s).`
+  );
+
+  markets.clear();
+
+  let usable = list.filter(symbol => {
+
+    const code =
+      symbol.underlying_symbol;
+
+    if(!code){
+      return false;
+    }
+
+    /*
+      Skip suspended markets.
+    */
+
+    if(
+      Number(symbol.is_trading_suspended) === 1
+    ){
+      return false;
+    }
+
+    /*
+      Keep symbols with an underlying code.
+    */
+
+    return true;
+
+  });
+
+
+  /*
+    Optional market limit.
+    0 means ALL.
+  */
+
+  const maxMarkets =
+    Math.max(
+      0,
+      parseInt($("maxMarkets").value,10) || 0
+    );
+
+  if(maxMarkets > 0){
+
+    usable =
+      usable.slice(0,maxMarkets);
+
+  }
+
+
+  usable.forEach(symbol => {
+
+    const code =
+      symbol.underlying_symbol;
+
+    markets.set(code,{
+
+      symbol:code,
+
+      name:
+        symbol.underlying_symbol_name ||
+        code,
+
+      type:
+        symbol.underlying_symbol_type ||
+        "",
+
+      market:
+        symbol.market ||
+        "",
+
+      subgroup:
+        symbol.subgroup ||
+        "",
+
+      submarket:
+        symbol.submarket ||
+        "",
+
+      pipSize:
+        num(symbol.pip_size,0),
+
+      decimals:
+        decimalPlacesFromStep(
+          num(symbol.pip_size,0)
+        ),
+
+      quote:null,
+
+      lastDigit:null,
+
+      history:[],
+
+      evenCount:0,
+
+      oddCount:0,
+
+      evenStreak:0,
+
+      oddStreak:0,
+
+      signal:null,
+
+      confidence:0,
+
+      eligible:false,
+
+      contractTypes:[],
+
+      historyLoaded:false,
+
+      subscribed:false,
+
+      lastAnalysis:0,
+
+      pendingProposal:false,
+
+      lastTrade:0
 
     });
 
+  });
 
-    log(
-        `TRADE CLOSED: ` +
-        `${won ? "WIN" : "LOSS"} ` +
-        `${trade.symbol} ` +
-        `P&L ${profit.toFixed(2)}`
+  renderMarketTable();
+
+  checkDigitContracts();
+
+}
+
+
+/* =========================================================
+   DECIMAL / LAST DIGIT
+========================================================= */
+
+function decimalPlacesFromStep(step){
+
+  if(!step || !Number.isFinite(step)){
+    return null;
+  }
+
+  let s =
+    String(step);
+
+  if(s.includes("e-")){
+
+    return parseInt(
+      s.split("e-")[1],
+      10
     );
 
+  }
 
-    /*
-    Risk controls.
-    */
+  if(!s.includes(".")){
+    return 0;
+  }
 
-    const s =
-        getSettings();
-
-
-    if(
-        sessionPnL <=
-        -Math.abs(
-            s.maxLoss
-        )
-    ){
-
-        log(
-            "BOT STOPPED: session loss limit reached."
-        );
-
-        stopBot();
-
-        return;
-
-    }
-
-
-    if(
-        totalTrades >=
-        s.maxTrades
-    ){
-
-        log(
-            "BOT STOPPED: maximum trades reached."
-        );
-
-        stopBot();
-
-        return;
-
-    }
+  return s.split(".")[1]
+    .replace(/0+$/,"")
+    .length;
 
 }
 
 
 /*
-============================================================
-TRADE ROW
-============================================================
+  This avoids the common JavaScript problem where:
+
+  100.20
+
+  becomes:
+
+  100.2
+
+  and the last digit is incorrectly read as 2.
+
+  The market pip_size determines the proper decimal precision.
 */
 
-function addTrade(t){
+function getLastDigit(quote, market){
 
-    const tbody =
-        document.getElementById(
-            "tradeTable"
+  if(
+    quote === null ||
+    quote === undefined ||
+    !Number.isFinite(Number(quote))
+  ){
+    return null;
+  }
+
+  let decimals =
+    market.decimals;
+
+  if(
+    decimals === null ||
+    decimals === undefined
+  ){
+
+    /*
+      Fallback.
+    */
+
+    const str =
+      String(quote);
+
+    const parts =
+      str.split(".");
+
+    decimals =
+      parts[1]
+        ? parts[1].length
+        : 0;
+
+  }
+
+  const fixed =
+    Number(quote).toFixed(decimals);
+
+  const digits =
+    fixed.replace(/\D/g,"");
+
+  if(!digits.length){
+    return null;
+  }
+
+  return Number(
+    digits.charAt(
+      digits.length - 1
+    )
+  );
+
+}
+
+
+/* =========================================================
+   CONTRACT AVAILABILITY
+========================================================= */
+
+async function checkDigitContracts(){
+
+  if(scanningContracts){
+    return;
+  }
+
+  scanningContracts = true;
+
+  log(
+    "Checking which markets support DIGITEVEN / DIGITODD..."
+  );
+
+  const list =
+    Array.from(markets.values());
+
+  let checked = 0;
+  let eligible = 0;
+
+  /*
+    We use the public market-data request format.
+    Current contracts_for needs only the symbol.
+  */
+
+  for(const market of list){
+
+    if(!wsConnected){
+      break;
+    }
+
+    const id =
+      reqId();
+
+    market.contractCheckReqId =
+      id;
+
+    send({
+      contracts_for:market.symbol,
+      req_id:id
+    });
+
+    checked++;
+
+    /*
+      Small delay to avoid blasting
+      the WebSocket with hundreds of requests.
+    */
+
+    await sleep(35);
+
+    /*
+      We cannot know the response immediately here.
+      It will be processed asynchronously.
+    */
+
+  }
+
+  log(
+    `Sent contracts_for checks for ${checked} market(s).`
+  );
+
+  scanningContracts = false;
+
+}
+
+
+/* =========================================================
+   CONTRACT RESPONSE
+========================================================= */
+
+function handleContractsFor(data){
+
+  const list =
+    data?.contracts_for?.available ||
+    [];
+
+  if(!Array.isArray(list)){
+    return;
+  }
+
+  let symbol =
+    data?.echo_req?.contracts_for;
+
+  if(!symbol){
+
+    symbol =
+      list[0]?.underlying_symbol;
+
+  }
+
+  if(!symbol){
+    return;
+  }
+
+  const market =
+    markets.get(symbol);
+
+  if(!market){
+    return;
+  }
+
+  market.contractTypes =
+    list.map(c =>
+      String(c.contract_type || "")
+        .toUpperCase()
+    );
+
+  const hasEven =
+    market.contractTypes
+      .includes("DIGITEVEN");
+
+  const hasOdd =
+    market.contractTypes
+      .includes("DIGITODD");
+
+  market.eligible =
+    hasEven || hasOdd;
+
+  if(market.eligible){
+
+    log(
+      `${market.name} (${symbol}) supports ` +
+      `${hasEven ? "DIGITEVEN " : ""}` +
+      `${hasOdd ? "DIGITODD" : ""}`
+    );
+
+    subscribeMarket(market);
+
+  }
+
+  renderMarketTable();
+
+}
+
+
+/* =========================================================
+   HISTORY
+========================================================= */
+
+function requestHistory(market){
+
+  const count =
+    Math.max(
+      20,
+      Math.min(
+        1000,
+        parseInt(
+          $("historyTicks").value,
+          10
+        ) || 100
+      )
+    );
+
+  send({
+
+    ticks_history:
+      market.symbol,
+
+    count:count,
+
+    end:"latest",
+
+    style:"ticks",
+
+    req_id:reqId()
+
+  });
+
+}
+
+function handleHistory(data){
+
+  const symbol =
+    data?.echo_req?.ticks_history;
+
+  if(!symbol){
+    return;
+  }
+
+  const market =
+    markets.get(symbol);
+
+  if(!market){
+    return;
+  }
+
+  const prices =
+    data?.history?.prices ||
+    [];
+
+  market.history = [];
+
+  prices.forEach(price => {
+
+    const digit =
+      getLastDigit(
+        price,
+        market
+      );
+
+    if(
+      digit !== null &&
+      Number.isFinite(digit)
+    ){
+
+      market.history.push(digit);
+
+    }
+
+  });
+
+  market.historyLoaded = true;
+
+  recalculateMarket(market);
+
+  renderMarketTable();
+
+}
+
+
+/* =========================================================
+   SUBSCRIBE MARKET
+========================================================= */
+
+function subscribeMarket(market){
+
+  if(market.subscribed){
+    return;
+  }
+
+  /*
+    Load history first.
+  */
+
+  requestHistory(market);
+
+  /*
+    Subscribe to current ticks.
+  */
+
+  const sent =
+    send({
+
+      ticks:
+        market.symbol,
+
+      subscribe:1,
+
+      req_id:reqId()
+
+    });
+
+  if(sent){
+
+    market.subscribed = true;
+
+  }
+
+}
+
+
+/* =========================================================
+   TICK HANDLER
+========================================================= */
+
+function handleTick(data){
+
+  const tick =
+    data.tick;
+
+  if(!tick){
+    return;
+  }
+
+  const symbol =
+    tick.symbol;
+
+  const market =
+    markets.get(symbol);
+
+  if(!market){
+    return;
+  }
+
+  const quote =
+    num(tick.quote,NaN);
+
+  if(!Number.isFinite(quote)){
+    return;
+  }
+
+  /*
+    Update pip precision if the current tick
+    provides pip_size.
+  */
+
+  if(
+    tick.pip_size !== undefined &&
+    tick.pip_size !== null
+  ){
+
+    const ps =
+      num(tick.pip_size,0);
+
+    if(ps > 0){
+
+      market.pipSize =
+        ps;
+
+      market.decimals =
+        decimalPlacesFromStep(ps);
+
+    }
+
+  }
+
+  const digit =
+    getLastDigit(
+      quote,
+      market
+    );
+
+  if(digit === null){
+    return;
+  }
+
+  market.quote =
+    quote;
+
+  market.lastDigit =
+    digit;
+
+  market.history.push(digit);
+
+  const maxHistory =
+    Math.max(
+      100,
+      parseInt(
+        $("historyTicks").value,
+        10
+      ) || 100
+    );
+
+  if(
+    market.history.length >
+    maxHistory
+  ){
+
+    market.history =
+      market.history.slice(
+        -maxHistory
+      );
+
+  }
+
+  recalculateMarket(market);
+
+  renderMarketTable();
+
+  if(botRunning){
+
+    maybeTrade(market);
+
+  }
+
+}
+
+
+/* =========================================================
+   MARKET ANALYSIS
+========================================================= */
+
+function recalculateMarket(market){
+
+  const h =
+    market.history;
+
+  if(!h || h.length < 10){
+    return;
+  }
+
+  let even = 0;
+  let odd = 0;
+
+  for(const digit of h){
+
+    if(digit % 2 === 0){
+      even++;
+    }else{
+      odd++;
+    }
+
+  }
+
+  market.evenCount =
+    even;
+
+  market.oddCount =
+    odd;
+
+  market.evenStreak =
+    calculateStreak(
+      h,
+      true
+    );
+
+  market.oddStreak =
+    calculateStreak(
+      h,
+      false
+    );
+
+  const total =
+    even + odd;
+
+  const evenPct =
+    total
+      ? (even / total) * 100
+      : 50;
+
+  const oddPct =
+    total
+      ? (odd / total) * 100
+      : 50;
+
+  const mode =
+    $("analysisMode").value;
+
+  let signal = null;
+  let confidence = 50;
+
+  if(mode === "frequencyOnly"){
+
+    if(evenPct >= oddPct){
+
+      signal = "EVEN";
+      confidence = evenPct;
+
+    }else{
+
+      signal = "ODD";
+      confidence = oddPct;
+
+    }
+
+  }
+
+  else if(mode === "streak"){
+
+    if(
+      market.evenStreak >
+      market.oddStreak
+    ){
+
+      signal = "EVEN";
+
+      confidence =
+        50 +
+        Math.min(
+          30,
+          market.evenStreak * 3
         );
 
+    }else{
+
+      signal = "ODD";
+
+      confidence =
+        50 +
+        Math.min(
+          30,
+          market.oddStreak * 3
+        );
+
+    }
+
+  }
+
+  else{
+
+    /*
+      Frequency + streak.
+
+      This is deliberately simple:
+      it does NOT claim to predict the next digit.
+      It creates a statistical signal from the
+      observed sample.
+    */
+
+    const evenScore =
+      evenPct +
+      Math.min(
+        15,
+        market.evenStreak * 2
+      );
+
+    const oddScore =
+      oddPct +
+      Math.min(
+        15,
+        market.oddStreak * 2
+      );
+
+    if(evenScore >= oddScore){
+
+      signal = "EVEN";
+
+      confidence =
+        Math.min(
+          99,
+          evenScore
+        );
+
+    }else{
+
+      signal = "ODD";
+
+      confidence =
+        Math.min(
+          99,
+          oddScore
+        );
+
+    }
+
+  }
+
+  market.signal =
+    signal;
+
+  market.confidence =
+    confidence;
+
+}
+
+
+/* =========================================================
+   STREAK
+========================================================= */
+
+function calculateStreak(history, even){
+
+  let streak = 0;
+
+  for(
+    let i = history.length - 1;
+    i >= 0;
+    i--
+  ){
+
+    const isEven =
+      history[i] % 2 === 0;
+
+    if(isEven === even){
+
+      streak++;
+
+    }else{
+
+      break;
+
+    }
+
+  }
+
+  return streak;
+
+}
+
+
+/* =========================================================
+   MARKET TABLE
+========================================================= */
+
+function renderMarketTable(){
+
+  const tbody =
+    $("marketTable");
+
+  const list =
+    Array.from(markets.values())
+      .filter(m => m.eligible)
+      .sort(
+        (a,b) =>
+          b.confidence -
+          a.confidence
+      );
+
+  if(!list.length){
+
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="10" class="empty">
+          Waiting for markets supporting Even/Odd contracts...
+        </td>
+      </tr>
+    `;
+
+    return;
+  }
+
+  tbody.innerHTML = "";
+
+  list.forEach(market => {
+
+    const total =
+      market.evenCount +
+      market.oddCount;
+
+    const evenPct =
+      total
+        ? market.evenCount / total * 100
+        : 0;
+
+    const oddPct =
+      total
+        ? market.oddCount / total * 100
+        : 0;
+
+    let signalHTML =
+      `<span class="badge badge-neutral">WAIT</span>`;
+
+    if(market.signal === "EVEN"){
+
+      signalHTML =
+        `<span class="badge badge-even signal">EVEN</span>`;
+
+    }
+
+    if(market.signal === "ODD"){
+
+      signalHTML =
+        `<span class="badge badge-odd signal">ODD</span>`;
+
+    }
+
+    const eligible =
+      market.eligible
+        ? `<span class="badge badge-good">YES</span>`
+        : `<span class="badge badge-neutral">NO</span>`;
 
     const row =
-        document.createElement(
-            "tr"
-        );
-
+      document.createElement("tr");
 
     row.innerHTML = `
 
-<td>
-${esc(t.time)}
-</td>
+      <td>
+        <strong>${escapeHTML(market.name)}</strong>
+        <div class="small">
+          ${escapeHTML(market.symbol)}
+        </div>
+      </td>
 
-<td>
-${esc(t.market)}
-</td>
+      <td>
+        ${
+          market.quote === null
+            ? "-"
+            : Number(market.quote).toFixed(
+                market.decimals ?? 2
+              )
+        }
+      </td>
 
-<td>
-${esc(t.contract)}
-</td>
+      <td>
+        ${
+          market.lastDigit === null
+            ? "-"
+            : `<strong>${market.lastDigit}</strong>`
+        }
+      </td>
 
-<td>
-${Number(t.stake).toFixed(2)}
-</td>
+      <td>${evenPct.toFixed(1)}%</td>
 
-<td>
-${Number(t.payout).toFixed(2)}
-</td>
+      <td>${oddPct.toFixed(1)}%</td>
 
-<td class="${
-    t.result === "WIN"
-        ? "good"
-        : "bad"
-}">
-${t.result}
-</td>
+      <td>${market.evenStreak}</td>
 
-<td class="${
-    t.pnl >= 0
-        ? "good"
-        : "bad"
-}">
-${Number(t.pnl).toFixed(2)}
-</td>
+      <td>${market.oddStreak}</td>
 
-<td>
-${t.mode}
-</td>
+      <td>${signalHTML}</td>
 
-`;
+      <td>
+        ${
+          market.confidence
+            ? market.confidence.toFixed(1) + "%"
+            : "-"
+        }
+      </td>
+
+      <td>${eligible}</td>
+
+    `;
+
+    tbody.appendChild(row);
+
+  });
+
+}
 
 
-    tbody.prepend(
-        row
+/* =========================================================
+   TRADING DECISION
+========================================================= */
+
+function maybeTrade(market){
+
+  if(!botRunning){
+    return;
+  }
+
+  if(!market.eligible){
+    return;
+  }
+
+  if(!market.historyLoaded){
+    return;
+  }
+
+  if(market.history.length < 20){
+    return;
+  }
+
+  if(market.pendingProposal){
+    return;
+  }
+
+  /*
+    Don't open another position on the same market
+    while one is active.
+  */
+
+  if(market.lastTrade &&
+     Date.now() - market.lastTrade <
+     1000
+  ){
+    return;
+  }
+
+  const maxTrades =
+    Math.max(
+      1,
+      parseInt(
+        $("maxTrades").value,
+        10
+      ) || 20
     );
 
-}
-
-
-/*
-============================================================
-STATS
-============================================================
-*/
-
-function updateStats(){
-
-    document.getElementById(
-        "balance"
-    ).textContent =
-        Number(balance).toFixed(2) +
-        " " +
-        currency;
-
-
-    document.getElementById(
-        "startBalance"
-    ).textContent =
-        startingBalance === null
-            ? "--"
-            : Number(
-                startingBalance
-            ).toFixed(2) +
-            " " +
-            currency;
-
-
-    const pnl =
-        document.getElementById(
-            "sessionPnL"
-        );
-
-
-    pnl.textContent =
-        Number(sessionPnL)
-            .toFixed(2) +
-        " " +
-        currency;
-
-
-    pnl.className =
-        "stat-value " +
-        (
-            sessionPnL >= 0
-                ? "good"
-                : "bad"
-        );
-
-
-    document.getElementById(
-        "tradeCount"
-    ).textContent =
-        totalTrades;
-
-
-    document.getElementById(
-        "wins"
-    ).textContent =
-        wins;
-
-
-    document.getElementById(
-        "losses"
-    ).textContent =
-        losses;
-
-
-    const total =
-        wins + losses;
-
-
-    document.getElementById(
-        "winRate"
-    ).textContent =
-        total
-            ? (
-                wins /
-                total *
-                100
-            ).toFixed(1) +
-            "%"
-            : "0%";
-
-}
-
-
-/*
-============================================================
-START BOT
-============================================================
-*/
-
-function startBot(){
-
-    if(
-        !wsConnected ||
-        !authorized
-    ){
-
-        alert(
-            "Connect your live Deriv account first."
-        );
-
-        return;
-
-    }
-
-
-    if(
-        !selectedAccount
-    ){
-
-        alert(
-            "No real account selected."
-        );
-
-        return;
-
-    }
-
-
-    if(
-        !botRunning
-    ){
-
-        if(
-            totalTrades === 0
-        ){
-
-            startingBalance =
-                balance;
-
-            sessionPnL =
-                0;
-
-            updateStats();
-
-        }
-
-
-        botRunning =
-            true;
-
-
-        botStatus(true);
-
-
-        log(
-            "===== LIVE BOT STARTED ====="
-        );
-
-
-        /*
-        Make sure all currently loaded
-        markets have enough history.
-        */
-
-        const symbols =
-            Object.keys(
-                markets
-            );
-
-
-        if(
-            symbols.length === 0
-        ){
-
-            log(
-                "No markets loaded yet."
-            );
-
-            requestActiveSymbols();
-
-        }else{
-
-            symbols.forEach(
-                symbol => {
-
-                    if(
-                        !markets[
-                            symbol
-                        ].historyLoaded
-                    ){
-
-                        requestHistory(
-                            symbol
-                        );
-
-                    }else{
-
-                        subscribeTicks(
-                            symbol
-                        );
-
-                    }
-
-                }
-            );
-
-        }
-
-    }
-
-}
-
-
-/*
-============================================================
-STOP BOT
-============================================================
-*/
-
-function stopBot(){
-
-    botRunning =
-        false;
-
-    botStatus(false);
+  if(tradeHistory.length >= maxTrades){
 
     log(
-        "New trades stopped."
+      "Maximum session trade count reached."
     );
+
+    stopTrading();
+
+    return;
+
+  }
+
+  const maxLoss =
+    Math.max(
+      0,
+      num(
+        $("maxLoss").value,
+        10
+      )
+    );
+
+  const sessionPL =
+    getSessionPL();
+
+  if(
+    maxLoss > 0 &&
+    sessionPL <= -maxLoss
+  ){
+
+    log(
+      `Maximum session loss reached: ${money(sessionPL)}`
+    );
+
+    stopTrading();
+
+    return;
+
+  }
+
+  const cooldown =
+    Math.max(
+      0,
+      num(
+        $("cooldown").value,
+        5
+      )
+    ) * 1000;
+
+  if(
+    Date.now() -
+    lastTradeTime <
+    cooldown
+  ){
+
+    return;
+
+  }
+
+  const minConfidence =
+    Math.max(
+      50,
+      Math.min(
+        100,
+        num(
+          $("minConfidence").value,
+          60
+        )
+      )
+    );
+
+  if(
+    market.confidence <
+    minConfidence
+  ){
+
+    return;
+
+  }
+
+  let signal =
+    market.signal;
+
+  const mode =
+    $("contractMode").value;
+
+  if(
+    mode === "even" &&
+    signal !== "EVEN"
+  ){
+    return;
+  }
+
+  if(
+    mode === "odd" &&
+    signal !== "ODD"
+  ){
+    return;
+  }
+
+  if(
+    signal !== "EVEN" &&
+    signal !== "ODD"
+  ){
+    return;
+  }
+
+  const contractType =
+    signal === "EVEN"
+      ? "DIGITEVEN"
+      : "DIGITODD";
+
+  /*
+    Check contract availability.
+  */
+
+  if(
+    !market.contractTypes.includes(
+      contractType
+    )
+  ){
+
+    return;
+
+  }
+
+  requestProposal(
+    market,
+    contractType
+  );
 
 }
 
 
-/*
-============================================================
-RESET SESSION
-============================================================
-*/
+/* =========================================================
+   PROPOSAL
+========================================================= */
 
-function resetSession(){
+function requestProposal(
+  market,
+  contractType
+){
 
-    const yes =
-        confirm(
-            "Reset session statistics?\n\n" +
-            "This does NOT close an existing trade."
-        );
+  if(!wsConnected){
+    return;
+  }
+
+  if(market.pendingProposal){
+    return;
+  }
+
+  const stake =
+    Math.max(
+      0.01,
+      num(
+        $("stake").value,
+        1
+      )
+    );
+
+  if(balance > 0 && stake > balance){
+
+    log(
+      `Skipping ${market.symbol}: stake exceeds balance.`
+    );
+
+    return;
+
+  }
+
+  market.pendingProposal = true;
+
+  const id =
+    reqId();
+
+  market.proposalReqId =
+    id;
+
+  const sent =
+    send({
+
+      proposal:1,
+
+      amount:stake,
+
+      basis:"stake",
+
+      contract_type:
+        contractType,
+
+      currency:
+        currency,
+
+      duration:1,
+
+      duration_unit:"t",
+
+      underlying_symbol:
+        market.symbol,
+
+      req_id:id
+
+    });
+
+  if(!sent){
+
+    market.pendingProposal = false;
+
+  }
+
+}
 
 
-    if(!yes){
+/* =========================================================
+   PROPOSAL RESPONSE
+========================================================= */
 
-        return;
+function handleProposal(data){
+
+  const proposal =
+    data.proposal;
+
+  if(!proposal){
+    return;
+  }
+
+  const req =
+    data.echo_req || {};
+
+  const symbol =
+    req.underlying_symbol;
+
+  if(!symbol){
+    return;
+  }
+
+  const market =
+    markets.get(symbol);
+
+  if(!market){
+    return;
+  }
+
+  market.pendingProposal = false;
+
+  const contractType =
+    String(
+      req.contract_type || ""
+    ).toUpperCase();
+
+  const askPrice =
+    num(
+      proposal.ask_price,
+      NaN
+    );
+
+  const payout =
+    num(
+      proposal.payout,
+      NaN
+    );
+
+  const stake =
+    num(
+      req.amount,
+      num(
+        $("stake").value,
+        1
+      )
+    );
+
+  if(!Number.isFinite(askPrice)){
+
+    log(
+      `No valid proposal price for ${symbol}.`
+    );
+
+    return;
+
+  }
+
+  /*
+    If the proposal gives a payout, calculate
+    approximate payout percentage.
+  */
+
+  let payoutPct = 0;
+
+  if(
+    Number.isFinite(payout) &&
+    stake > 0
+  ){
+
+    payoutPct =
+      ((payout - stake) /
+      stake) * 100;
+
+  }
+
+  const minPayout =
+    Math.max(
+      0,
+      num(
+        $("minPayout").value,
+        0
+      )
+    );
+
+  if(
+    payoutPct < minPayout
+  ){
+
+    log(
+      `Skipping ${symbol}: payout ${payoutPct.toFixed(1)}% below minimum.`
+    );
+
+    return;
+
+  }
+
+  /*
+    Prevent duplicate trade submissions.
+  */
+
+  if(!botRunning){
+    return;
+  }
+
+  if(
+    tradeHistory.length >=
+    Math.max(
+      1,
+      parseInt(
+        $("maxTrades").value,
+        10
+      ) || 20
+    )
+  ){
+    return;
+  }
+
+  /*
+    First REAL trade confirmation.
+  */
+
+  if(
+    String(
+      selectedAccount?.account_type || ""
+    ).toLowerCase() === "real" &&
+    !sessionStorage.getItem(
+      "deriv_real_trade_confirmed"
+    )
+  ){
+
+    const confirmed =
+      confirm(
+        `REAL ACCOUNT TRADE\n\n` +
+        `Market: ${market.name}\n` +
+        `Contract: ${contractType}\n` +
+        `Stake: ${money(stake)}\n` +
+        `Confidence: ${market.confidence.toFixed(1)}%\n\n` +
+        `This will use REAL MONEY. Continue?`
+      );
+
+    if(!confirmed){
+
+      log(
+        "Real-money first trade cancelled by user."
+      );
+
+      stopTrading();
+
+      return;
 
     }
 
+    sessionStorage.setItem(
+      "deriv_real_trade_confirmed",
+      "1"
+    );
 
-    sessionPnL =
-        0;
+  }
 
+  buyProposal(
+    proposal.id,
+    askPrice,
+    market,
+    contractType,
+    stake,
+    payoutPct
+  );
 
-    totalTrades =
-        0;
-
-
-    wins =
-        0;
-
-
-    losses =
-        0;
-
-
-    startingBalance =
-        balance;
+}
 
 
-    document.getElementById(
-        "tradeTable"
-    ).innerHTML = "";
+/* =========================================================
+   BUY
+========================================================= */
 
+function buyProposal(
+  proposalId,
+  price,
+  market,
+  contractType,
+  stake,
+  payoutPct
+){
+
+  if(!proposalId){
+    log("Cannot buy: proposal ID missing.");
+    return;
+  }
+
+  log(
+    `BUY ${contractType} ${market.symbol} | ` +
+    `stake ${money(stake)} | ` +
+    `confidence ${market.confidence.toFixed(1)}%`
+  );
+
+  market.lastTrade =
+    Date.now();
+
+  lastTradeTime =
+    Date.now();
+
+  send({
+
+    buy:String(proposalId),
+
+    price:Number(price),
+
+    req_id:reqId()
+
+  });
+
+}
+
+
+/* =========================================================
+   BUY RESPONSE
+========================================================= */
+
+function handleBuy(data){
+
+  const buy =
+    data.buy;
+
+  if(!buy){
+    return;
+  }
+
+  const contractId =
+    buy.contract_id;
+
+  if(!contractId){
+
+    log(
+      "Buy response did not contain contract ID."
+    );
+
+    return;
+
+  }
+
+  const price =
+    num(
+      buy.buy_price,
+      buy.price
+    );
+
+  const echo =
+    data.echo_req || {};
+
+  /*
+    We don't always receive all context back in
+    echo_req, so derive what we can.
+  */
+
+  const trade = {
+
+    id:String(contractId),
+
+    contractId:String(contractId),
+
+    time:new Date(),
+
+    market:
+      buy.underlying_symbol ||
+      echo.underlying_symbol ||
+      "Unknown",
+
+    contract:
+      buy.contract_type ||
+      echo.contract_type ||
+      "DIGIT",
+
+    stake:
+      price,
+
+    confidence:0,
+
+    result:"OPEN",
+
+    pnl:0,
+
+    settled:false
+
+  };
+
+  /*
+    Try to find market.
+  */
+
+  const market =
+    markets.get(
+      trade.market
+    );
+
+  if(market){
+
+    trade.confidence =
+      market.confidence;
+
+    market.lastTrade =
+      Date.now();
+
+  }
+
+  activeTrades.set(
+    String(contractId),
+    trade
+  );
+
+  renderTradeTable();
+
+  log(
+    `✓ TRADE OPENED | Contract ${contractId}`
+  );
+
+  /*
+    Subscribe to contract updates.
+  */
+
+  send({
+
+    proposal_open_contract:1,
+
+    contract_id:
+      contractId,
+
+    subscribe:1,
+
+    req_id:reqId()
+
+  });
+
+}
+
+
+/* =========================================================
+   OPEN CONTRACT
+========================================================= */
+
+function handleOpenContract(data){
+
+  const contract =
+    data.proposal_open_contract;
+
+  if(!contract){
+    return;
+  }
+
+  const id =
+    String(
+      contract.contract_id
+    );
+
+  const trade =
+    activeTrades.get(id);
+
+  if(!trade){
+
+    /*
+      It may be a contract opened before
+      the page received its current state.
+    */
+
+    return;
+
+  }
+
+  trade.pnl =
+    num(
+      contract.profit,
+      trade.pnl
+    );
+
+  trade.result =
+    contract.status ||
+    (
+      contract.is_sold
+        ? "sold"
+        : "open"
+    );
+
+  /*
+    Contract closed.
+  */
+
+  if(
+    contract.is_sold ||
+    ["won","lost","sold"].includes(
+      String(
+        contract.status || ""
+      ).toLowerCase()
+    )
+  ){
+
+    if(trade.settled){
+      return;
+    }
+
+    trade.settled = true;
+
+    const pnl =
+      num(
+        contract.profit,
+        0
+      );
+
+    if(
+      String(
+        contract.status || ""
+      ).toLowerCase() === "won" ||
+      pnl > 0
+    ){
+
+      trade.result =
+        "WON";
+
+    }else{
+
+      trade.result =
+        "LOST";
+
+    }
+
+    trade.pnl =
+      pnl;
+
+    tradeHistory.unshift(
+      trade
+    );
+
+    activeTrades.delete(id);
 
     updateStats();
 
+    renderTradeTable();
 
     log(
-        "===== TRADE SESSION RESET ====="
+      `TRADE CLOSED | ${trade.result} | P/L ${money(pnl)}`
     );
 
-}
+    /*
+      Stop if maximum loss has now been reached.
+    */
 
+    const maxLoss =
+      Math.max(
+        0,
+        num(
+          $("maxLoss").value,
+          10
+        )
+      );
 
-/*
-============================================================
-DISCONNECT
-============================================================
-*/
+    if(
+      maxLoss > 0 &&
+      getSessionPL() <= -maxLoss
+    ){
 
-function disconnectAll(){
+      log(
+        "Session loss limit reached after trade settlement."
+      );
 
-    stopBot();
-
-
-    if(ws){
-
-        try{
-
-            ws.close();
-
-        }catch(e){}
+      stopTrading();
 
     }
 
-
-    ws =
-        null;
-
-
-    wsConnected =
-        false;
-
-
-    authorized =
-        false;
-
-
-    selectedAccount =
-        null;
-
-
-    markets =
-        {};
-
-
-    tickSubscriptions =
-        {};
-
-
-    pendingProposals =
-        {};
-
-
-    openContracts =
-        {};
-
-
-    connectionStatus(false);
-
-
-    document.getElementById(
-        "marketTable"
-    ).innerHTML = "";
-
-
-    document.getElementById(
-        "accountId"
-    ).textContent =
-        "--";
-
-
-    document.getElementById(
-        "accountType"
-    ).textContent =
-        "--";
-
-
-    document.getElementById(
-        "currency"
-    ).textContent =
-        "--";
-
-
-    log(
-        "Disconnected."
-    );
+  }
 
 }
 
 
-/*
-============================================================
-INITIALIZE
-============================================================
-*/
+/* =========================================================
+   SESSION P/L
+========================================================= */
 
-connectionStatus(false);
+function getSessionPL(){
 
-botStatus(false);
+  return tradeHistory.reduce(
+    (sum,trade) =>
+      sum + num(trade.pnl,0),
+    0
+  );
 
-updateStats();
+}
+
+function updateSessionPL(){
+
+  const pl =
+    startingBalance === null
+      ? 0
+      : balance -
+        startingBalance;
+
+  /*
+    Prefer actual balance difference when
+    the balance feed is available.
+  */
+
+  const actual =
+    Number.isFinite(pl)
+      ? pl
+      : getSessionPL();
+
+  const element =
+    $("sessionPL");
+
+  element.textContent =
+    money(actual);
+
+  element.className =
+    "stat-value " +
+    (
+      actual > 0
+        ? "green-text"
+        : actual < 0
+          ? "red-text"
+          : ""
+    );
+
+}
+
+function updateStats(){
+
+  const trades =
+    tradeHistory.length;
+
+  const wins =
+    tradeHistory.filter(
+      t =>
+        String(t.result)
+          .toUpperCase() === "WON"
+    ).length;
+
+  const losses =
+    tradeHistory.filter(
+      t =>
+        String(t.result)
+          .toUpperCase() === "LOST"
+    ).length;
+
+  const rate =
+    trades
+      ? wins / trades * 100
+      : 0;
+
+  $("tradeCount").textContent =
+    trades;
+
+  $("wins").textContent =
+    wins;
+
+  $("losses").textContent =
+    losses;
+
+  $("winRate").textContent =
+    rate.toFixed(1) + "%";
+
+  updateSessionPL();
+
+}
 
 
-log(
-    "Even/Odd Live Bot loaded."
+/* =========================================================
+   TRADE TABLE
+========================================================= */
+
+function renderTradeTable(){
+
+  const tbody =
+    $("tradeTable");
+
+  if(!tradeHistory.length){
+
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="8" class="empty">
+          No completed trades yet.
+        </td>
+      </tr>
+    `;
+
+    return;
+
+  }
+
+  tbody.innerHTML = "";
+
+  tradeHistory
+    .slice(0,100)
+    .forEach(trade => {
+
+      const row =
+        document.createElement("tr");
+
+      const result =
+        String(
+          trade.result
+        ).toUpperCase();
+
+      let resultClass =
+        "badge-neutral";
+
+      if(result === "WON"){
+        resultClass =
+          "badge-good";
+      }
+
+      if(result === "LOST"){
+        resultClass =
+          "badge-odd";
+      }
+
+      row.innerHTML = `
+
+        <td>
+          ${trade.time
+            ? new Date(trade.time)
+                .toLocaleTimeString()
+            : "-"
+          }
+        </td>
+
+        <td>
+          ${escapeHTML(trade.market)}
+        </td>
+
+        <td>
+          ${escapeHTML(trade.contract)}
+        </td>
+
+        <td>
+          ${money(trade.stake)}
+        </td>
+
+        <td>
+          ${num(trade.confidence,0).toFixed(1)}%
+        </td>
+
+        <td>
+          <span class="badge ${resultClass}">
+            ${escapeHTML(result)}
+          </span>
+        </td>
+
+        <td class="${
+          trade.pnl > 0
+            ? "green-text"
+            : trade.pnl < 0
+              ? "red-text"
+              : ""
+        }">
+          ${money(trade.pnl)}
+        </td>
+
+        <td>
+          ${escapeHTML(trade.contractId)}
+        </td>
+
+      `;
+
+      tbody.appendChild(row);
+
+    });
+
+}
+
+
+/* =========================================================
+   RESET SESSION
+========================================================= */
+
+function resetTradeSession(){
+
+  if(botRunning){
+
+    alert(
+      "Stop the bot before resetting the trade session."
+    );
+
+    return;
+
+  }
+
+  tradeHistory = [];
+
+  activeTrades.clear();
+
+  lastTradeTime = 0;
+
+  startingBalance =
+    balance;
+
+  $("startBalance").textContent =
+    money(
+      startingBalance || 0
+    );
+
+  $("sessionPL").textContent =
+    money(0);
+
+  updateStats();
+
+  renderTradeTable();
+
+  log(
+    "✓ Trade session reset."
+  );
+
+}
+
+
+/* =========================================================
+   START BOT
+========================================================= */
+
+function startTrading(){
+
+  if(!wsConnected || !authorized){
+
+    alert(
+      "Connect a Deriv account first."
+    );
+
+    return;
+
+  }
+
+  if(botRunning){
+
+    log("Bot is already running.");
+
+    return;
+
+  }
+
+  if(!markets.size){
+
+    alert(
+      "Markets have not loaded yet."
+    );
+
+    return;
+
+  }
+
+  /*
+    Warn about REAL.
+  */
+
+  if(
+    String(
+      selectedAccount?.account_type || ""
+    ).toLowerCase() === "real"
+  ){
+
+    const confirmed =
+      confirm(
+        "REAL ACCOUNT SELECTED.\n\n" +
+        "The bot can place real-money trades.\n\n" +
+        "Start the bot?"
+      );
+
+    if(!confirmed){
+      return;
+    }
+
+  }
+
+  botRunning = true;
+
+  setBotStatus("RUNNING");
+
+  setStatus(
+    `${String(selectedAccount?.account_type || "").toUpperCase()} BOT RUNNING`,
+    "green"
+  );
+
+  log(
+    `✓ BOT STARTED on ${String(selectedAccount?.account_type || "").toUpperCase()} account.`
+  );
+
+  /*
+    Reset starting balance if this is
+    a fresh session.
+  */
+
+  if(startingBalance === null){
+
+    startingBalance =
+      balance;
+
+    $("startBalance").textContent =
+      money(startingBalance);
+
+  }
+
+  scanExistingMarkets();
+
+}
+
+
+/* =========================================================
+   SCAN EXISTING MARKETS
+========================================================= */
+
+function scanExistingMarkets(){
+
+  markets.forEach(market => {
+
+    if(
+      market.eligible &&
+      market.history.length
+    ){
+
+      recalculateMarket(
+        market
+      );
+
+      maybeTrade(
+        market
+      );
+
+    }
+
+  });
+
+}
+
+
+/* =========================================================
+   STOP BOT
+========================================================= */
+
+function stopTrading(){
+
+  if(!botRunning){
+    return;
+  }
+
+  botRunning = false;
+
+  setBotStatus("STOPPED");
+
+  setStatus(
+    "Connected — bot stopped",
+    "green"
+  );
+
+  /*
+    Do not close already purchased contracts.
+    They are allowed to settle normally.
+  */
+
+  log(
+    "BOT STOPPED. Existing contracts remain monitored."
+  );
+
+}
+
+
+/* =========================================================
+   ESCAPE HTML
+========================================================= */
+
+function escapeHTML(value){
+
+  return String(value)
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
+
+
+/* =========================================================
+   INITIAL STATE
+========================================================= */
+
+setStatus(
+  "Offline",
+  "red"
 );
 
-
-log(
-    "Current Deriv API authentication enabled."
+setBotStatus(
+  "STOPPED"
 );
 
+renderTradeTable();
+
+renderMarketTable();
 
 log(
-    "Enter your PAT and CURRENT App ID."
+  "Deriv Even/Odd bot loaded."
 );
 
-
 log(
-    "Live trading mode is enabled."
+  "Enter your PAT + App ID, then CONNECT DERIV."
 );
 
 </script>
